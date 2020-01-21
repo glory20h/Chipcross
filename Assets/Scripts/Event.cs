@@ -12,6 +12,10 @@ public class Event : MonoBehaviour
     public Button ResetBtn;         //퍼즐 초기화 버튼
     public Button GonfasterBtn;     //출발/가속 버튼
 
+    public GameObject OptionMenu; //옵션 panel
+    public static bool GameIsPaused = false; // Game pause
+    public Button OptionExit; // 옵션 나가기
+
     Vector2 mousePos;               //마우스의 2차원상 위치
     Transform objToFollowMouse;     //마우스를 따라 다닐 물체(퍼즐 조각)
     GameObject[] triggeredObjects; //Array stores info on EmptyTiles        //퍼즐 조각의 빈 타일 탐지용
@@ -449,5 +453,16 @@ public class Event : MonoBehaviour
     public void OnMoveRightBtnDown(bool set)
     {
         BlockPieceMoveRight = set;
+    }
+
+    public void OptionButton()
+    {
+        OptionMenu.SetActive(true);
+        Time.timeScale = 0f;
+    }
+    public void ExitButton()
+    {
+        OptionMenu.SetActive(false);
+        Time.timeScale = 1f;
     }
 }
