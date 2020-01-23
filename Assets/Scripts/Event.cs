@@ -16,6 +16,9 @@ public class Event : MonoBehaviour
     public static bool GameIsPaused = false; // Game pause
     public Button OptionExit; // 옵션 나가기
 
+    private AudioSource AudioSrc; //Audio Source
+    private float AudioVolume = 1f;
+
     Vector2 mousePos;               //마우스의 2차원상 위치
     Transform objToFollowMouse;     //마우스를 따라 다닐 물체(퍼즐 조각)
     GameObject[] triggeredObjects; //Array stores info on EmptyTiles        //퍼즐 조각의 빈 타일 탐지용
@@ -54,12 +57,15 @@ public class Event : MonoBehaviour
 
         //개발자 버튼용
         hohoho = 1;
+
+        AudioSrc = GetComponent<AudioSource>(); //오디오
     }
     
     void Update()
     {
+        AudioSrc.volume = AudioVolume; // 오디오 컨트롤 업뎃
         //퍼즐조각 움직임 enable/disable
-        if(MovePieceMode)
+        if (MovePieceMode && Time.timeScale != 0f)
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -464,5 +470,9 @@ public class Event : MonoBehaviour
     {
         OptionMenu.SetActive(false);
         Time.timeScale = 1f;
+    }
+    public void SetVolume(float vol)
+    {
+        AudioVolume = vol;
     }
 }
