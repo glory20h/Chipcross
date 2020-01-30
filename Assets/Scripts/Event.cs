@@ -412,11 +412,11 @@ public class Event : MonoBehaviour
         DeleteLevel();
         LoadLevel();
         SavePieceInitPosition();
-        Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
+        /*Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
         for (int i = 0; i < PieceInitPosition.Length; i++)
         {
             Debug.Log(" i = " + i + " : " + PieceInitPosition[i]);
-        }
+        }*/
     }
 
     //테스트용 개발자 버튼용
