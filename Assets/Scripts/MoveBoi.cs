@@ -114,7 +114,7 @@ public class MoveBoi : MonoBehaviour
         {
             isThereNextTile = true;
             GameObject nextTile = collision.gameObject;
-            int tileType = nextTile.name[4] - '0';
+            int tileType = nextTile.name[4] - '0';          //현재 숫자 한자리수 까지밖에 지원안되는데 (9까지) 나중에 두자리수까지 지원되게 고쳐야 됨.
             switch (tileType)
             {
                 case 1:
