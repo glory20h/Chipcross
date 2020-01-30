@@ -146,10 +146,10 @@ public class MoveBoi : MonoBehaviour
                     ydir = -temp;
                     break;
                 case 8:
-                    GameObject.FindWithTag("Boy").GetComponent<Event>().transform.position = GameObject.Find("Tile9").transform.position;
+                    gameObject.transform.position = GameObject.Find("Tile9").transform.position;
                     break;
                 case 9:
-                    GameObject.FindWithTag("Boy").GetComponent<Event>().transform.position = GameObject.Find("Tile8").transform.position;
+                    gameObject.transform.position = GameObject.Find("Tile8").transform.position;
                     break;
             }
         }
