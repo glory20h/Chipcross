@@ -146,13 +146,12 @@ public class MoveBoi : MonoBehaviour
                     ydir = -temp;
                     break;
                 case 8:
-                    GameObject.FindWithTag("Boy").GetComponent<Event>().transform.position = Gameobject.Find("Tile9").transform.position;
+                    GameObject.FindWithTag("Boy").GetComponent<Event>().transform.position = GameObject.Find("Tile9").transform.position;
                     break;
                 case 9:
-                    GameObject.FindWithTag("Boy").GetComponent<Event>().transform.position = Gameobject.Find("Tile8").transform.position;
+                    GameObject.FindWithTag("Boy").GetComponent<Event>().transform.position = GameObject.Find("Tile8").transform.position;
                     break;
-                     
-}
+            }
         }
         if(collision.tag == "FixedTile")
         {
@@ -206,8 +205,10 @@ public class MoveBoi : MonoBehaviour
         transform.position = boiInitPos;
     }
 
+    /*
     void search()
     {
         tpLoc.transform.position = 
     }
+    */
 }

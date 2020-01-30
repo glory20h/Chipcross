@@ -131,7 +131,6 @@ public class LevelDatabase
                 BoardEmptyTileTypeInfo = ConvertStringToIntArray(SetDefaultBoard());
                 ConvertStringToPieceInfo("211821131291");
                 break;
-
         }
     }
 
