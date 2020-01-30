@@ -121,6 +121,17 @@ public class LevelDatabase
                 BoardEmptyTileTypeInfo = ConvertStringToIntArray("1111111111116111111111111");
                 ConvertStringToPieceInfo("13113224013220112221340215131531121311221141231");
                 break;
+            case 6:
+                scaleSize = 1;
+                BoardWidth = 3;
+                BoardHeight = 2;
+                BoyPos = 0;
+                GirlPos = 1;
+                NumberOfPieces = 3;
+                BoardEmptyTileTypeInfo = ConvertStringToIntArray(SetDefaultBoard());
+                ConvertStringToPieceInfo("211821131291");
+                break;
+
         }
     }
 

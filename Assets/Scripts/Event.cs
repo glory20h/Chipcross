@@ -171,13 +171,13 @@ public class Event : MonoBehaviour
         }
 
         //조각 왼쪽으로 이동 버튼 눌렀을때
-        if(BlockPieceMoveLeft)
+        if(BlockPieceMoveLeft && Time.timeScale != 0f)
         {
             BlockPieces.transform.position = Vector3.MoveTowards(BlockPieces.transform.position, new Vector3(9 - (1.5f * levelData.NumberOfPieces), -3.75f, 0), 0.2f);
         }
 
         //조각 오른쪽으로 이동 버튼 눌렀을때
-        if (BlockPieceMoveRight)
+        if (BlockPieceMoveRight && Time.timeScale != 0f)
         {
             BlockPieces.transform.position = Vector3.MoveTowards(BlockPieces.transform.position, new Vector3(-(9 - (1.5f * levelData.NumberOfPieces)), -3.75f, 0), 0.2f);
         }

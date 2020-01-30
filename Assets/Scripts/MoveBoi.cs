@@ -31,6 +31,12 @@ public class MoveBoi : MonoBehaviour
     int ydir;
     int temp;
 
+    //텔레포트
+    bool bJump = false;
+    bool bJump2 = false;
+    private GameObject objToTP;
+    private Transform tpLoc;
+
     void Start()
     {
         isMoving = false;
@@ -139,7 +145,14 @@ public class MoveBoi : MonoBehaviour
                     xdir = ydir;
                     ydir = -temp;
                     break;
-            }
+                case 8:
+                    GameObject.FindWithTag("Boy").GetComponent<Event>().transform.position = Gameobject.Find("Tile9").transform.position;
+                    break;
+                case 9:
+                    GameObject.FindWithTag("Boy").GetComponent<Event>().transform.position = Gameobject.Find("Tile8").transform.position;
+                    break;
+                     
+}
         }
         if(collision.tag == "FixedTile")
         {
@@ -174,6 +187,10 @@ public class MoveBoi : MonoBehaviour
                     xdir = ydir;
                     ydir = -temp;
                     break;
+              //case 8:
+              //case 9:
+                    //private Transform target = nextTile.name[8];
+                    //private Transform target2 = nextTile.name[9];
             }
         }
         if(collision.gameObject.name == "Girl")
@@ -187,5 +204,10 @@ public class MoveBoi : MonoBehaviour
         yield return new WaitForSeconds(time);
         eventChanger.MovePieceMode = true;
         transform.position = boiInitPos;
+    }
+
+    void search()
+    {
+        tpLoc.transform.position = 
     }
 }
