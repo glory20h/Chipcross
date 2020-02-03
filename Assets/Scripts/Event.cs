@@ -57,13 +57,25 @@ public class Event : MonoBehaviour
 
         //개발자 버튼용
         hohoho = 1;
+    }
+
+    void InitializeVariables()
+    {
+        MovePieceMode = true;
+        BlockPieceMoveLeft = false;
+        BlockPieceMoveRight = false;
+
+        goNFastBtnState = 1;
+        GonfasterBtn.interactable = false;
+
+        levelNum = 1;
+        levelData = new LevelDatabase();
 
         AudioSrc = GetComponent<AudioSource>(); //오디오
     }
-    
+
     void Update()
     {
-        AudioSrc.volume = AudioVolume; // 오디오 컨트롤 업뎃
         //퍼즐조각 움직임 enable/disable
         if (MovePieceMode && Time.timeScale != 0f)
         {
@@ -76,8 +88,6 @@ public class Event : MonoBehaviour
 
                 if (hit.collider != null)
                 {
-                    Debug.Log(hit.transform.tag);
-
                     //충돌 물체가 퍼즐 조각일 경우
                     if (hit.transform.tag == "Tile")
                     {
@@ -181,20 +191,6 @@ public class Event : MonoBehaviour
         {
             BlockPieces.transform.position = Vector3.MoveTowards(BlockPieces.transform.position, new Vector3(-(9 - (1.5f * levelData.NumberOfPieces)), -3.75f, 0), 0.2f);
         }
-    }
-
-    //The functions from Start() comes right after Update() function in the same order in the Start() method
-    void InitializeVariables()
-    {
-        MovePieceMode = true;
-        BlockPieceMoveLeft = false;
-        BlockPieceMoveRight = false;
-
-        goNFastBtnState = 1;
-        GonfasterBtn.interactable = false;
-
-        levelNum = 1;
-        levelData = new LevelDatabase();
     }
 
     //게임 레벨 불러오기
@@ -461,12 +457,12 @@ public class Event : MonoBehaviour
         BlockPieceMoveRight = set;
     }
 
-    public void OptionButton()
+    public void OpenOptionPanel()
     {
         OptionMenu.SetActive(true);
         Time.timeScale = 0f;
     }
-    public void ExitButton()
+    public void CloseOptionPanel()
     {
         OptionMenu.SetActive(false);
         Time.timeScale = 1f;
@@ -474,5 +470,6 @@ public class Event : MonoBehaviour
     public void SetVolume(float vol)
     {
         AudioVolume = vol;
+        AudioSrc.volume = AudioVolume; // 오디오 컨트롤 업뎃 -> Update 함수에 있으면 프레임마다 계속 함수가 호출되서 프로그램이 느려져요, 그래서 여기로 옮김!
     }
 }
