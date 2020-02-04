@@ -173,7 +173,6 @@ public class Event : MonoBehaviour
                     {
                         ResetPiecePosition(objToFollowMouse);
                     }
-
                     
                     objToFollowMouse = null;
                 }
