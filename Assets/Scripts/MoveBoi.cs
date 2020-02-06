@@ -148,12 +148,14 @@ public class MoveBoi : MonoBehaviour
                     ydir = -temp;
                     break;
                 case 8:
-                        targetPosition = GameObject.Find("Tile9(Clone)").transform.position;
-                        warpDone = 1;
-                        break;
+                    gameObject.transform.position = GameObject.Find("Tile9(Clone)").transform.position;
+                    targetPosition = GameObject.Find("Tile9(Clone)").transform.position;
+                    warpDone = 1;
+                    break;
                 case 9:
-                        targetPosition = GameObject.Find("Tile8(Clone)").transform.position;
-                        warpDone = 1;
+                    gameObject.transform.position = GameObject.Find("Tile8(Clone)").transform.position;
+                    targetPosition = GameObject.Find("Tile8(Clone)").transform.position;
+                    warpDone = 1;
                         break;
             }
         }
@@ -198,6 +200,8 @@ public class MoveBoi : MonoBehaviour
         }
         if(collision.gameObject.name == "Girl")
         {
+            xdir = 0;
+            ydir = 0;
             metGirl = true;
         }
     }
