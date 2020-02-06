@@ -18,7 +18,7 @@ public class MoveBoi : MonoBehaviour
     public float distanceBetweenTiles;
 
     public Vector3 initTargetPosition;
-    Vector3 targetPosition;
+    Vector3 targetPosition; // 이거 중요함....
     Vector3 boiInitPos;
 
     public bool isMoving;
