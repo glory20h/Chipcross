@@ -30,12 +30,11 @@ public class MoveBoi : MonoBehaviour
     int xdir;
     int ydir;
     int temp;
+    int beforexdir;
+    int beforeydir;
 
     //텔레포트
-    int warpDone = 0;
-    int warpDone2 = 0;
-    private GameObject objToTP;
-    private Transform tpLoc;
+    bool warpDone = false;
 
     void Start()
     {
@@ -46,7 +45,7 @@ public class MoveBoi : MonoBehaviour
 
     void Update()
     {
-        if(isMoving)
+        if (isMoving)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * fastForwardFactor * Time.deltaTime);
             if(transform.position == targetPosition)
@@ -108,15 +107,13 @@ public class MoveBoi : MonoBehaviour
         isMoving = false;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == "Tile")
         {
             isThereNextTile = true;
             GameObject nextTile = collision.gameObject;
             int tileType = nextTile.name[4] - '0';          //현재 숫자 한자리수 까지밖에 지원안되는데 (9까지) 나중에 두자리수까지 지원되게 고쳐야 됨.
-            if (warpDone == 1 && (tileType == 8 || tileType == 9))
-                tileType = 1;
             switch (tileType)
             {
                 case 1:
@@ -148,13 +145,25 @@ public class MoveBoi : MonoBehaviour
                     ydir = -temp;
                     break;
                 case 8:
-                        gameObject.transform.position = GameObject.Find("Tile9(Clone)").transform.position;
-                        warpDone = 1;
-                        break;
+                    if (warpDone == false)
+                    {
+                        beforexdir = xdir;
+                        beforeydir = ydir;
+                        xdir = 0;
+                        ydir = 0;
+                        isMoving = false;
+                    }
+                    break;
                 case 9:
-                        gameObject.transform.position = GameObject.Find("Tile8(Clone)").transform.position;
-                        warpDone = 1;
-                        break;
+                    if(warpDone == false)
+                    {
+                        beforexdir = xdir;
+                        beforeydir = ydir;
+                        xdir = 0;
+                        ydir = 0;
+                        isMoving = false;
+                    }
+                    break;
             }
         }
         if(collision.tag == "FixedTile")
@@ -201,6 +210,58 @@ public class MoveBoi : MonoBehaviour
             metGirl = true;
         }
     }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.tag == "Tile")
+        {
+            isThereNextTile = true;
+            GameObject nextTile = collision.gameObject;
+            int tileType = nextTile.name[4] - '0';          //현재 숫자 한자리수 까지밖에 지원안되는데 (9까지) 나중에 두자리수까지 지원되게 고쳐야 됨.
+            switch (tileType)
+            {
+                case 8:
+                    if (warpDone == false)
+                    {
+                        targetPosition = GameObject.Find("Tile9(Clone)").transform.position;
+                        warpDone = true;
+                        collision.enabled = false;
+                        isMoving = true;
+                        xdir = beforexdir;
+                        ydir = beforeydir;
+                    }
+                    break;
+                case 9:
+                    if(warpDone == false)
+                    {
+                        targetPosition = GameObject.Find("Tile8(Clone)").transform.position;
+                        warpDone = true;
+                        collision.enabled = false;
+                        isMoving = true;
+                        xdir = beforexdir;
+                        ydir = beforeydir;
+                    }
+                    break;
+            }
+        }
+    }
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Tile")
+        {
+            isThereNextTile = true;
+            GameObject nextTile = collision.gameObject;
+            int tileType = nextTile.name[4] - '0';          //현재 숫자 한자리수 까지밖에 지원안되는데 (9까지) 나중에 두자리수까지 지원되게 고쳐야 됨.
+            switch (tileType)
+            {
+                case 8:
+                    collision.enabled = true;
+                    break;
+                case 9:
+                    collision.enabled = true;
+                    break;
+            }
+        }
+    }
 
     IEnumerator DelayBoyFail(float time)
     {
@@ -209,10 +270,4 @@ public class MoveBoi : MonoBehaviour
         transform.position = boiInitPos;
     }
 
-    /*
-    void search()
-    {
-        tpLoc.transform.position = 
-    }
-    */
 }
