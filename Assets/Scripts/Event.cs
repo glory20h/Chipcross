@@ -433,7 +433,7 @@ public class Event : MonoBehaviour
         if(hohoho == 1)
         {
             DeleteLevel();
-            Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
+            //Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
             hohoho++;
         }
         else
@@ -441,7 +441,7 @@ public class Event : MonoBehaviour
             levelNum++;
             LoadLevel();
             SavePieceInitPosition();
-            Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
+            //Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
             hohoho = 1;
         }
     }
@@ -469,7 +469,7 @@ public class Event : MonoBehaviour
     public void SetVolume(float vol)
     {
         AudioVolume = vol;
-        AudioSrc.volume = AudioVolume; // 오디오 컨트롤 업뎃 -> Update 함수에 있으면 프레임마다 계속 함수가 호출되서 프로그램이 느려져요, 그래서 여기로 옮김!
+        AudioSrc.volume = AudioVolume;
     }
     public void Hintsystem()
     {

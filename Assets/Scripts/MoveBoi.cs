@@ -31,7 +31,7 @@ public class MoveBoi : MonoBehaviour
     int ydir;
     int temp;
 
-    //텔레포트
+    //Warp Tile용 변수
     bool warpDone = false;
 
     void Start()
@@ -59,7 +59,7 @@ public class MoveBoi : MonoBehaviour
                     isMoving = false;
                     if (metGirl) //Correct Solution
                     {
-                        Debug.Log("You met the girl!! Congrats!! :)");
+                        Debug.Log("Puzzle solved!! Congrats!! :)");
                         GoToNextLevelBtn.interactable = true;
                         GoNFasterButton.interactable = false;
                         ResetButton.interactable = false;
@@ -112,8 +112,11 @@ public class MoveBoi : MonoBehaviour
             isThereNextTile = true;
             GameObject nextTile = collision.gameObject;
             int tileType = nextTile.name[4] - '0';          //현재 숫자 한자리수 까지밖에 지원안되는데 (9까지) 나중에 두자리수까지 지원되게 고쳐야 됨.
-            if (warpDone == true && (tileType == 8 || tileType == 9))
+            if (warpDone && (tileType == 8 || tileType == 9))
+            {
                 tileType = 1;
+                warpDone = false;
+            }
             switch (tileType)
             {
                 case 1:
