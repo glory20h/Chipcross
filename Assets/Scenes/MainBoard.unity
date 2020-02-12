@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 10895952}
   - component: {fileID: 10895953}
   - component: {fileID: 10895954}
+  - component: {fileID: 10895955}
   m_Layer: 0
   m_Name: EventChanger
   m_TagString: EventChanger
@@ -159,7 +160,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 10895951}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 27968f9613a5774439ba2e100aa3c708, type: 3}
   m_Name: 
@@ -270,6 +271,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &10895955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10895951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97d6435bc4850b74590800f18e1ba68e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TileBoard: {fileID: 227519821}
+  BlockPieces: {fileID: 1857018045}
+  BlockOnBoard: {fileID: 1098808361}
+  Boy: {fileID: 566818434}
+  Girl: {fileID: 25757805}
+  ResetBtn: {fileID: 711313912}
+  GonfasterBtn: {fileID: 682712124}
+  OptionMenu: {fileID: 871006764}
+  OptionExit: {fileID: 737905258}
+  MovePieceMode: 0
 --- !u!1 &25757805
 GameObject:
   m_ObjectHideFlags: 0

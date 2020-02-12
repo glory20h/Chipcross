@@ -12,13 +12,13 @@ public class MakeNewMap : MonoBehaviour
     public int NumberOfPieces;
     public int[] BoardEmptyTileTypeInfo;
     public PieceData[] pieceDatas;
+    public string Newmap;
 
     public class PieceData
     {
         public int PieceWidth;
         public int PieceHeight;
         public int[] TileType;
-        public int[] TileNumber; 
     }
 
     public int[] ConvertStringToIntArray(string data)
@@ -74,7 +74,7 @@ public class MakeNewMap : MonoBehaviour
         BoardHeight = UnityEngine.Random.Range(1, 5);
         int scalesizechanger = 0;
         scalesizechanger = (BoardWidth + BoardHeight) / 2;
-        switch(scaleSize)
+        switch(BoardHeight)
         {
             case 1:
             case 2:
@@ -82,82 +82,47 @@ public class MakeNewMap : MonoBehaviour
                 scaleSize = 1;
                 break;
             case 4:
-                scaleSize = 1;
+                scaleSize = 2;
                 break;
             case 5:
-                scaleSize = 1;
+                scaleSize = 3;
                 break;
         }
         BoyPos = UnityEngine.Random.Range(1, BoardHeight);
         GirlPos = UnityEngine.Random.Range(1, BoardHeight);
-        BoardEmptyTileTypeInfo = ConvertStringToIntArray("1111111111116111111111111"); // 이걸 통해 만들어서 확인후에 돌아가는지 확인하고 pieces 나누기로 합시당.
+        int tilevalue = 0;
+        int rangeoftile = 10;
+        bool tile8yes = false;
+        while (tile8yes == false)
+        {
+            for (int i = 0; i < BoardHeight; i++)
+                for (int j = 0; j < BoardWidth; j++)
+                {
+                    tilevalue = UnityEngine.Random.Range(1, rangeoftile);
+                    if (tilevalue == 8 || tilevalue == 9)
+                    {
+                        rangeoftile = 8;
+                        if (tilevalue == 8)
+                        {
+                            tile8yes = true;
+                        }
+                        else if (tilevalue == 8 && tile8yes)
+                        {
+                            tilevalue = 9;
+                            rangeoftile = 7;
+                            tile8yes = false;
+                        }
+                    }
+                    Newmap += tilevalue;
+                }
+        }
+
+        BoardEmptyTileTypeInfo = ConvertStringToIntArray(Newmap); // 이걸 통해 만들어서 확인후에 돌아가는지 확인하고 pieces 나누기로 합시당.
     }
 
     public void LoadLevelData(int num)
     {
-        switch (num)
-        {
-            case 1:
-                scaleSize = 1;
-                BoardWidth = 3;
-                BoardHeight = 2;
-                BoyPos = 0;
-                GirlPos = 1;
-                NumberOfPieces = 3;
-                BoardEmptyTileTypeInfo = ConvertStringToIntArray(SetDefaultBoard());
-                ConvertStringToPieceInfo("211421131241");
-                break;
-            case 2:
-                scaleSize = 1;
-                BoardWidth = 3;
-                BoardHeight = 2;
-                BoyPos = 0;
-                GirlPos = 1;
-                NumberOfPieces = 3;
-                BoardEmptyTileTypeInfo = ConvertStringToIntArray(SetDefaultBoard());
-                ConvertStringToPieceInfo("211821131291");
-                break;
-            case 3:
-                scaleSize = 1;
-                BoardWidth = 3;
-                BoardHeight = 3;
-                BoyPos = 0;
-                GirlPos = 2;
-                NumberOfPieces = 5;
-                BoardEmptyTileTypeInfo = ConvertStringToIntArray(SetDefaultBoard());
-                ConvertStringToPieceInfo("22301321141214113115");
-                break;
-            case 4:
-                scaleSize = 2;
-                BoardWidth = 4;
-                BoardHeight = 4;
-                BoyPos = 1;
-                GirlPos = 2;
-                NumberOfPieces = 7;
-                BoardEmptyTileTypeInfo = ConvertStringToIntArray(SetDefaultBoard());
-                ConvertStringToPieceInfo("1335122102112131234311522131114");
-                break;
-            case 5:
-                scaleSize = 2;
-                BoardWidth = 4;
-                BoardHeight = 4;
-                BoyPos = 0;
-                GirlPos = 3;
-                NumberOfPieces = 8;
-                BoardEmptyTileTypeInfo = ConvertStringToIntArray(SetDefaultBoard());
-                ConvertStringToPieceInfo("12572176117117226477127512461263");
-                break;
-            case 6:
-                scaleSize = 3;
-                BoardWidth = 5;
-                BoardHeight = 5;
-                BoyPos = 1;
-                GirlPos = 3;
-                NumberOfPieces = 10;
-                BoardEmptyTileTypeInfo = ConvertStringToIntArray("1111111111116111111111111");
-                ConvertStringToPieceInfo("13113224013220112221340215131531121311221141231");
-                break;
-        }
+        makeNewlevel();
     }
 
     string SetDefaultBoard()  //Return Default Board with all standard EmptyTiles
