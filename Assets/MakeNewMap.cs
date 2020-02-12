@@ -70,8 +70,8 @@ public class MakeNewMap : MonoBehaviour
 
     public void makeNewlevel()
     {
-        BoardWidth = UnityEngine.Random.Range(1, 5);
-        BoardHeight = UnityEngine.Random.Range(1, 5);
+        BoardWidth = UnityEngine.Random.Range(2, 5);
+        BoardHeight = UnityEngine.Random.Range(2, 5);
         int scalesizechanger = 0;
         scalesizechanger = (BoardWidth + BoardHeight) / 2;
         switch(BoardHeight)
@@ -88,13 +88,12 @@ public class MakeNewMap : MonoBehaviour
                 scaleSize = 3;
                 break;
         }
-        BoyPos = UnityEngine.Random.Range(1, BoardHeight);
-        GirlPos = UnityEngine.Random.Range(1, BoardHeight);
+        BoyPos = UnityEngine.Random.Range(0, BoardHeight-1);
+        GirlPos = UnityEngine.Random.Range(0, BoardHeight-1);
         int tilevalue = 0;
-        int rangeoftile = 10;
+        int rangeoftile = 9;
         bool tile8yes = false;
-        bool tile9yes = false;
-        while ((tile8yes == false && tile9yes == false) || (tile8yes == true && tile9yes == true))
+        while (tile8yes == false)
         {
             for (int i = 0; i < BoardHeight; i++)
                 for (int j = 0; j < BoardWidth; j++)
@@ -105,13 +104,16 @@ public class MakeNewMap : MonoBehaviour
                         rangeoftile = 8;
                         if (tilevalue == 8)
                         {
-                            if (tile8yes)
+                            if (tile8yes == false)
+                            {
                                 tilevalue = 9;
+                                rangeoftile = 7;
+                            }
                             tile8yes = true;
                         }
                         else if(tilevalue == 9)
                         {
-                            tile9yes = true;
+                            tile8yes = false;
                         }
                     }
                     Newmap += tilevalue;
