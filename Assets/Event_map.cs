@@ -66,7 +66,7 @@ public class Event_map : MonoBehaviour
         BlockPieceMoveRight = false;
 
         goNFastBtnState = 1;
-        GonfasterBtn.interactable = false;
+        //GonfasterBtn.interactable = false;
 
         levelNum = 1;
         levelData = new MakeNewMap();
