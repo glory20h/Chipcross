@@ -98,7 +98,7 @@ public class MakeNewMap : MonoBehaviour
             for (int i = 0; i < BoardHeight; i++)
                 for (int j = 0; j < BoardWidth; j++)
                 {
-                    tilevalue = UnityEngine.Random.Range(1, rangeoftile);
+                    tilevalue = UnityEngine.Random.Range(2, rangeoftile);
                     if (tilevalue == 8 || tilevalue == 9)
                     {
                         rangeoftile = 8;

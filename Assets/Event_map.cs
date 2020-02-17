@@ -294,14 +294,7 @@ public class Event_map : MonoBehaviour
     //퍼즐 조각들이 모두 타일위에 놓아졌는지 확인
     void CheckIfAllTilesInPlace()
     {
-        if (PieceInitPosition.Length == BlockOnBoard.childCount)
-        {
             GonfasterBtn.interactable = true;
-        }
-        else
-        {
-            GonfasterBtn.interactable = false;
-        }
     }
 
     //퍼즐 조각 하나의 위치 초기화
@@ -336,27 +329,8 @@ public class Event_map : MonoBehaviour
     //출발/가속 버튼 State 1 -> 누르면 이동 시작, 2 -> 누르면 빨라짐, 3 -> 누르면 다시 원래 속도로 돌아옴
     public void GoNFastForwardClick()
     {
-        if (goNFastBtnState == 1)
-        {
-            Boy.GetComponent<MoveBoi>().MoveDaBoi();
-            MovePieceMode = false;
-            goNFastBtnState = 2;
-            GonfasterBtn.image.sprite = Resources.Load<Sprite>("Arts/FastForward");
-        }
-        else if (goNFastBtnState == 2)
-        {
-            //Boy FastForward
-            Boy.GetComponent<MoveBoi>().FastForward();
-            goNFastBtnState = 3;
-            GonfasterBtn.image.sprite = Resources.Load<Sprite>("Arts/NormalSpeed");
-        }
-        else
-        {
-            //Boy Back to normal speed
-            Boy.GetComponent<MoveBoi>().BackToNormalSpeed();
-            goNFastBtnState = 2;
-            GonfasterBtn.image.sprite = Resources.Load<Sprite>("Arts/FastForward");
-        }
+        Boy.GetComponent<MoveBoi>().FastForward();
+        GonfasterBtn.image.sprite = Resources.Load<Sprite>("Arts/NormalSpeed");
     }
 
     //출발/가속 버튼 State 초기화
