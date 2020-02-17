@@ -70,8 +70,8 @@ public class MakeNewMap : MonoBehaviour
 
     public void makeNewlevel()
     {
-        BoardWidth = UnityEngine.Random.Range(2, 5);
-        BoardHeight = UnityEngine.Random.Range(2, 5);
+        BoardWidth = UnityEngine.Random.Range(3, 5);
+        BoardHeight = UnityEngine.Random.Range(3, 5);
         int scalesizechanger = 0;
         scalesizechanger = (BoardWidth + BoardHeight) / 2;
         switch(BoardHeight)

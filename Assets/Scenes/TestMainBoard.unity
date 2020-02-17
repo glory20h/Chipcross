@@ -723,7 +723,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 10895953}
+        - m_Target: {fileID: 10895955}
           m_MethodName: OnMoveRightBtnDown
           m_Mode: 6
           m_Arguments:
@@ -1278,7 +1278,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 10895953}
+      - m_Target: {fileID: 10895955}
         m_MethodName: GoNFastForwardClick
         m_Mode: 1
         m_Arguments:
@@ -1409,7 +1409,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 10895953}
+      - m_Target: {fileID: 10895955}
         m_MethodName: ResetLevelClick
         m_Mode: 1
         m_Arguments:
@@ -1540,7 +1540,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 10895953}
+      - m_Target: {fileID: 10895955}
         m_MethodName: CloseOptionPanel
         m_Mode: 1
         m_Arguments:
@@ -1702,7 +1702,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 10895953}
+      - m_Target: {fileID: 10895955}
         m_MethodName: OpenOptionPanel
         m_Mode: 1
         m_Arguments:
@@ -1942,7 +1942,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 10895953}
+      - m_Target: {fileID: 10895955}
         m_MethodName: GoToNextLevel
         m_Mode: 1
         m_Arguments:
@@ -2235,7 +2235,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 10895953}
+      - m_Target: {fileID: 10895955}
         m_MethodName: DevBtnAct
         m_Mode: 1
         m_Arguments:
@@ -2371,7 +2371,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 10895953}
+        - m_Target: {fileID: 10895955}
           m_MethodName: OnMoveLeftBtnDown
           m_Mode: 6
           m_Arguments:
@@ -2564,7 +2564,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 10895953}
+      - m_Target: {fileID: 10895955}
         m_MethodName: Hintsystem
         m_Mode: 1
         m_Arguments:
@@ -2763,7 +2763,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 10895953}
+      - m_Target: {fileID: 10895955}
         m_MethodName: SetVolume
         m_Mode: 0
         m_Arguments:
