@@ -91,7 +91,7 @@ public class MakeNewMap : MonoBehaviour
         BoyPos = UnityEngine.Random.Range(0, BoardHeight-1);
         GirlPos = UnityEngine.Random.Range(0, BoardHeight-1);
         int tilevalue = 0;
-        int rangeoftile = 9;
+        int rangeoftile = 7;
         bool tile8yes = false;
         while (tile8yes == false)
         {

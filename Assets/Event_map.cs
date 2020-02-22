@@ -190,6 +190,8 @@ public class Event_map : MonoBehaviour
         {
             BlockPieces.transform.position = Vector3.MoveTowards(BlockPieces.transform.position, new Vector3(-(9 - (1.5f * levelData.NumberOfPieces)), -3.75f, 0), 0.2f);
         }
+
+        GoNFastForwardClick();
     }
 
     //게임 레벨 불러오기
@@ -329,27 +331,10 @@ public class Event_map : MonoBehaviour
     //출발/가속 버튼 State 1 -> 누르면 이동 시작, 2 -> 누르면 빨라짐, 3 -> 누르면 다시 원래 속도로 돌아옴
     public void GoNFastForwardClick()
     {
-        if (goNFastBtnState == 1)
-        {
             Boy.GetComponent<MoveBoi>().MoveDaBoi();
             MovePieceMode = false;
             goNFastBtnState = 2;
             GonfasterBtn.image.sprite = Resources.Load<Sprite>("Arts/FastForward");
-        }
-        else if (goNFastBtnState == 2)
-        {
-            //Boy FastForward
-            Boy.GetComponent<MoveBoi>().FastForward();
-            goNFastBtnState = 3;
-            GonfasterBtn.image.sprite = Resources.Load<Sprite>("Arts/NormalSpeed");
-        }
-        else
-        {
-            //Boy Back to normal speed
-            Boy.GetComponent<MoveBoi>().BackToNormalSpeed();
-            goNFastBtnState = 2;
-            GonfasterBtn.image.sprite = Resources.Load<Sprite>("Arts/FastForward");
-        }
     }
 
     //출발/가속 버튼 State 초기화

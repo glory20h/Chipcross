@@ -164,7 +164,12 @@ public class MoveBoi : MonoBehaviour
             isThereNextTile = true;
             GameObject nextTile = collision.gameObject;
             int tileType = nextTile.name[9] - '0';
-            switch(tileType)
+            if (warpDone && (tileType == 8 || tileType == 9))
+            {
+                tileType = 1;
+                warpDone = false;
+            }
+            switch (tileType)
             {
                 case 2:
                     xdir = -1;
@@ -192,10 +197,16 @@ public class MoveBoi : MonoBehaviour
                     xdir = ydir;
                     ydir = -temp;
                     break;
-              //case 8:
-              //case 9:
-                    //private Transform target = nextTile.name[8];
-                    //private Transform target2 = nextTile.name[9];
+                case 8:
+                    gameObject.transform.position = GameObject.Find("Tile9(Clone)").transform.position;
+                    targetPosition = GameObject.Find("FixedTile9(Clone)").transform.position;
+                    warpDone = true;
+                    break;
+                case 9:
+                    gameObject.transform.position = GameObject.Find("Tile8(Clone)").transform.position;
+                    targetPosition = GameObject.Find("FixedTile8(Clone)").transform.position;
+                    warpDone = true;
+                    break;
             }
         }
         if(collision.gameObject.name == "Girl")
