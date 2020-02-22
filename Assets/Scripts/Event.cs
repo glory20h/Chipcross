@@ -102,7 +102,7 @@ public class Event : MonoBehaviour
                         //Enable EmptyTile Box Collider2D & Detectors
                         for (int i = 0; i < objToFollowMouse.childCount; i++)
                         {
-                            objToFollowMouse.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 100;
+                            objToFollowMouse.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 200;
 
                             //if Tile is on the board
                             if (objToFollowMouse.IsChildOf(BlockOnBoard))
@@ -256,7 +256,7 @@ public class Event : MonoBehaviour
         }
 
         //Instantiate 'Piece'
-        for (int i = 0; i < levelData.NumberOfPieces; i++)
+        /*for (int i = 0; i < levelData.NumberOfPieces; i++)
         {
             prefab = Resources.Load("Prefabs/Piece") as GameObject;
             obj = Instantiate(prefab, new Vector3(-3 * ((levelData.NumberOfPieces - 1) / 2f) + 3 * i, 0, 0), Quaternion.identity);           // 3 is the distance between pieces
@@ -275,6 +275,34 @@ public class Event : MonoBehaviour
                         prefab = Resources.Load("Prefabs/Tile" + levelData.pieceDatas[i].TileType[typeIndex].ToString()) as GameObject;
                         obj2 = Instantiate(prefab, new Vector3(-pieceWidth + 1 + 2 * k, pieceHeight - 1 - 2 * j, 0), Quaternion.identity);
                         obj2.transform.SetParent(obj.transform, false);
+                    }
+                    typeIndex++;
+                }
+            }
+        }*/
+
+        //Random Puzzle Piece Position Version
+        //PieceInitPosition = new Vector3[levelData.NumberOfPieces];
+        for (int i = 0; i < levelData.NumberOfPieces; i++)
+        {
+            prefab = Resources.Load("Prefabs/Piece") as GameObject;
+            obj = Instantiate(prefab, new Vector3(Random.value < 0.5 ? Random.Range(-7.6f, -5.9f) : Random.Range(5.9f, 7.6f), Random.Range(0, 7.4f)), Quaternion.identity);           // 3 is the distance between pieces
+            obj.transform.SetParent(BlockPieces, false);
+            obj.GetComponent<VariableProvider>().pieceNum = i;
+
+            typeIndex = 0;
+            pieceHeight = levelData.pieceDatas[i].PieceHeight;
+            pieceWidth = levelData.pieceDatas[i].PieceWidth;
+            for (int j = 0; j < pieceHeight; j++)
+            {
+                for (int k = 0; k < pieceWidth; k++)
+                {
+                    if (levelData.pieceDatas[i].TileType[typeIndex] != 0)
+                    {
+                        prefab = Resources.Load("Prefabs/Tile" + levelData.pieceDatas[i].TileType[typeIndex].ToString()) as GameObject;
+                        obj2 = Instantiate(prefab, new Vector3(-pieceWidth + 1 + 2 * k, pieceHeight - 1 - 2 * j, 0), Quaternion.identity);
+                        obj2.transform.SetParent(obj.transform, false);
+                        obj2.GetComponent<SpriteRenderer>().sortingOrder = 75 + i;
                     }
                     typeIndex++;
                 }
@@ -312,7 +340,7 @@ public class Event : MonoBehaviour
         piece.localScale = new Vector3(UIPieceScale, UIPieceScale, 1);
         for (int i = 0; i < piece.childCount; i++)
         {
-            piece.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 75;
+            piece.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 75 + piece.GetComponent<VariableProvider>().pieceNum;
         }
     }
 
