@@ -34,6 +34,9 @@ public class MoveBoi : MonoBehaviour
     //Warp Tile용 변수
     bool warpDone = false;
 
+    Event_map eventmap;
+    MakeNewMap makingnewmap;
+
     void Start()
     {
         isMoving = false;
@@ -69,6 +72,9 @@ public class MoveBoi : MonoBehaviour
                     {
                         StartCoroutine(DelayBoyFail(1.5f));
                         Debug.Log("Try try again!");
+                        eventmap.resettry();
+                        Debug.Log(eventmap.gobuttononoff);
+                        //여기서 부터가 내가 건든 부분 이부분은 테스트 부분임으로 지워도 무방합니다.
                     }
                 }
             }
@@ -171,6 +177,8 @@ public class MoveBoi : MonoBehaviour
             }
             switch (tileType)
             {
+                case 1:
+                    break;
                 case 2:
                     xdir = -1;
                     ydir = 0;

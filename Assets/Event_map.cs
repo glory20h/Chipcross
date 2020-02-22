@@ -43,6 +43,7 @@ public class Event_map : MonoBehaviour
 
     //Temporary Variables (For Testing Purposes) 테스트용 변수들
     int hohoho; //개발자 버튼용 변수
+    public bool gobuttononoff=true;
 
     void Start()
     {
@@ -190,12 +191,15 @@ public class Event_map : MonoBehaviour
         {
             BlockPieces.transform.position = Vector3.MoveTowards(BlockPieces.transform.position, new Vector3(-(9 - (1.5f * levelData.NumberOfPieces)), -3.75f, 0), 0.2f);
         }
+        if(gobuttononoff)
+        {
+            GoNFastForwardClick();
+        }
 
-        GoNFastForwardClick();
     }
 
     //게임 레벨 불러오기
-    void LoadLevel()
+    public void LoadLevel()
     {
         GameObject prefab;
         GameObject obj;
@@ -312,7 +316,7 @@ public class Event_map : MonoBehaviour
     }
 
     //현재 스테이지 요소들 삭제
-    void DeleteLevel()
+    public void DeleteLevel()
     {
         foreach (Transform child in TileBoard)
         {
@@ -331,10 +335,8 @@ public class Event_map : MonoBehaviour
     //출발/가속 버튼 State 1 -> 누르면 이동 시작, 2 -> 누르면 빨라짐, 3 -> 누르면 다시 원래 속도로 돌아옴
     public void GoNFastForwardClick()
     {
-            Boy.GetComponent<MoveBoi>().MoveDaBoi();
-            MovePieceMode = false;
-            goNFastBtnState = 2;
-            GonfasterBtn.image.sprite = Resources.Load<Sprite>("Arts/FastForward");
+        Boy.GetComponent<MoveBoi>().MoveDaBoi();
+        gobuttononoff = false;
     }
 
     //출발/가속 버튼 State 초기화
@@ -452,7 +454,10 @@ public class Event_map : MonoBehaviour
     public void Hintsystem()
     {
         Debug.Log("Hi");
-
+    }
+    public void resettry()
+    {
+        gobuttononoff = true;
     }
     // 생각하고 있는 힌트 방식은 우리가 밑에 있는 블럭중 하나를 클릭하게 되면 정답 레벨 데이터를 정한 부분을 해서 그것을 새롭게 레벨 데이터를 가져오는 방식으로 하는 것을 생각중임.
     // 해보니까 구성상으로 안됨 각타일의 것들이 각각있음
