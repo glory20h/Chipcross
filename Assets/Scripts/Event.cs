@@ -195,6 +195,8 @@ public class Event : MonoBehaviour
     //게임 레벨 불러오기
     void LoadLevel()
     {
+        Debug.Log("LoadLevel() Start");
+
         GameObject prefab;
         GameObject obj;
         GameObject obj2;
@@ -308,6 +310,8 @@ public class Event : MonoBehaviour
                 }
             }
         }
+
+        Debug.Log("LoadLevel() Finished");
     }
 
     void SavePieceInitPosition()
@@ -347,6 +351,7 @@ public class Event : MonoBehaviour
     //현재 스테이지 요소들 삭제
     void DeleteLevel()
     {
+        Debug.Log("DeleteLevel() Start");
         foreach (Transform child in TileBoard)
         {
             Destroy(child.gameObject);
@@ -359,6 +364,7 @@ public class Event : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+        Debug.Log("DeleteLevel() Finished");
     }
 
     //출발/가속 버튼 State 1 -> 누르면 이동 시작, 2 -> 누르면 빨라짐, 3 -> 누르면 다시 원래 속도로 돌아옴
@@ -445,7 +451,7 @@ public class Event : MonoBehaviour
     //테스트용 개발자 버튼용
     public void DevBtnAct()  //Go To Level X
     {
-        /*levelNum++;
+        levelNum++;
         DeleteLevel();
         LoadLevel();
         Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
@@ -454,9 +460,9 @@ public class Event : MonoBehaviour
         {
             Debug.Log(" i = " + i + " : " + PieceInitPosition[i]);
         }
-        Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);*/
+        Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
 
-        
+        /*
         //Change to next Level
         if(hohoho == 1)
         {
@@ -472,6 +478,7 @@ public class Event : MonoBehaviour
             //Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
             hohoho = 1;
         }
+        */
     }
 
     public void OnMoveLeftBtnDown(bool set)
