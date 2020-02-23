@@ -39,7 +39,7 @@ public class MoveBoi : MonoBehaviour
 
     void Start()
     {
-        isMoving = false;
+        //isMoving = false;
         metGirl = false;
         GoToNextLevelBtn.interactable = false;
     }

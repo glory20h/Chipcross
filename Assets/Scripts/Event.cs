@@ -489,16 +489,19 @@ public class Event : MonoBehaviour
         OptionMenu.SetActive(true);
         Time.timeScale = 0f;
     }
+
     public void CloseOptionPanel()
     {
         OptionMenu.SetActive(false);
         Time.timeScale = 1f;
     }
+
     public void SetVolume(float vol)
     {
         AudioVolume = vol;
         AudioSrc.volume = AudioVolume;
     }
+
     public void Hintsystem()
     {
         Debug.Log("Hi");
