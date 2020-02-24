@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 5303397137579468485}
   - component: {fileID: 5303397137579468482}
   m_Layer: 2
-  m_Name: EmptyTile
-  m_TagString: EmptyTile
+  m_Name: FixedTile1
+  m_TagString: FixedTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
