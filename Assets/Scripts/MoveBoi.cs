@@ -72,10 +72,9 @@ public class MoveBoi : MonoBehaviour
                     {
                         StartCoroutine(DelayBoyFail(1.5f));
                         Debug.Log("Try try again!");
-                        eventmap.resettry();
-                        Debug.Log(eventmap.gobuttononoff);
                         //여기서 부터가 내가 건든 부분 이부분은 테스트 부분임으로 지워도 무방합니다.
                     }
+                    eventmap.ChangeLevelAndMoveBoy();
                 }
             }
         }
