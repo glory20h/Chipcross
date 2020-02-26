@@ -59,7 +59,7 @@ public class Event_map : MonoBehaviour
         //개발자 버튼용
         hohoho = 1;
 
-        Boy.GetComponent<MoveBoi>().MoveDaBoi();
+        Boy.GetComponent<moveboy>().MoveDaBoi();
     }
 
     void InitializeVariables()
@@ -249,8 +249,8 @@ public class Event_map : MonoBehaviour
                 if (i == levelData.BoyPos && j == 0)
                 {
                     Boy.transform.position = obj.transform.position - new Vector3(distanceBetweenTiles, 0, 0);
-                    Boy.GetComponent<MoveBoi>().initTargetPosition = obj.transform.position;
-                    Boy.GetComponent<MoveBoi>().distanceBetweenTiles = distanceBetweenTiles;
+                    Boy.GetComponent<moveboy>().initTargetPosition = obj.transform.position;
+                    Boy.GetComponent<moveboy>().distanceBetweenTiles = distanceBetweenTiles;
                     Boy.transform.localScale = new Vector3(emptyTileScale, emptyTileScale, 1);
                 }
 
@@ -337,7 +337,7 @@ public class Event_map : MonoBehaviour
     //출발/가속 버튼 State 1 -> 누르면 이동 시작, 2 -> 누르면 빨라짐, 3 -> 누르면 다시 원래 속도로 돌아옴
     public void GoNFastForwardClick()
     {
-        Boy.GetComponent<MoveBoi>().MoveDaBoi();
+        Boy.GetComponent<moveboy>().MoveDaBoi();
         //gobuttononoff = false;
     }
 
@@ -351,10 +351,10 @@ public class Event_map : MonoBehaviour
     //초기화 버튼 눌렀을때
     public void ResetLevelClick()
     {
-        if (Boy.GetComponent<MoveBoi>().isMoving) //During Boy Moving Phase
+        if (Boy.GetComponent<moveboy>().isMoving) //During Boy Moving Phase
         {
             //Reset the boy moving
-            Boy.GetComponent<MoveBoi>().ResetBoyMove();
+            Boy.GetComponent<moveboy>().ResetBoyMove();
             ResetGoNFasterButton();
         }
         else //During Puzzle Solving Phase
@@ -463,7 +463,7 @@ public class Event_map : MonoBehaviour
         DeleteLevel();
 	LoadLevel();
     SavePieceInitPosition();
-    Boy.GetComponent<MoveBoi>().MoveDaBoi();
+    Boy.GetComponent<moveboy>().MoveDaBoi();
     }
     public void temper()
     {
