@@ -8,6 +8,8 @@ public class MoveBoi : MonoBehaviour
     /* 파랑이를 움직이게 만드는 Script */
 
     public Event eventChanger;
+    public Event_map eventmap;
+    public MakeNewMap makingnewmap;
 
     public GameObject TileBoard;
     public Button GoToNextLevelBtn;
@@ -34,8 +36,6 @@ public class MoveBoi : MonoBehaviour
     //Warp Tile용 변수
     bool warpDone = false;
 
-    Event_map eventmap;
-    MakeNewMap makingnewmap;
 
     void Start()
     {
@@ -46,7 +46,7 @@ public class MoveBoi : MonoBehaviour
 
     void Update()
     {
-        if(isMoving)
+        if (isMoving)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * fastForwardFactor * Time.deltaTime);
             if(transform.position == targetPosition)
