@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public class Event : MonoBehaviour
 {
+    public GameObject AudioManager;
+
     public Transform TileBoard;     //빈 타일 Parent
     public Transform BlockPieces;   //아직 타일 위에 안 놓아진 퍼즐 조각 Parent
     public Transform BlockOnBoard;  //타일위에 놓아진 퍼즐 조각 Parent
@@ -71,7 +73,7 @@ public class Event : MonoBehaviour
         levelNum = 1;
         levelData = new LevelDatabase();
 
-        AudioSrc = GetComponent<AudioSource>(); //오디오
+        AudioSrc = AudioManager.GetComponent<AudioSource>(); //오디오
     }
 
     void Update()
