@@ -455,7 +455,7 @@ public class Event_map : MonoBehaviour
     }
     public void Hintsystem()
     {
-        Debug.Log("Hi");
+        Debug.Log("Hello");
     }
     public void ChangeLevelAndMoveBoy()
     {
