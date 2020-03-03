@@ -43,7 +43,6 @@ public class Event : MonoBehaviour
     bool BlockPieceMoveLeft;
     bool BlockPieceMoveRight;
 
-    //Temporary Variables (For Testing Purposes) 테스트용 변수들
     int hohoho; //개발자 버튼용 변수
 
     void Start()
@@ -453,7 +452,7 @@ public class Event : MonoBehaviour
     //테스트용 개발자 버튼용
     public void DevBtnAct()  //Go To Level X
     {
-        levelNum++;
+        /*levelNum++;
         DeleteLevel();
         LoadLevel();
         Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
@@ -462,9 +461,8 @@ public class Event : MonoBehaviour
         {
             Debug.Log(" i = " + i + " : " + PieceInitPosition[i]);
         }
-        Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
+        Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);*/
 
-        /*
         //Change to next Level
         if(hohoho == 1)
         {
@@ -480,7 +478,6 @@ public class Event : MonoBehaviour
             //Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
             hohoho = 1;
         }
-        */
     }
 
     public void OnMoveLeftBtnDown(bool set)
@@ -514,10 +511,5 @@ public class Event : MonoBehaviour
     public void Hintsystem()
     {
         Debug.Log("Hi");
-        
     }
-    // 생각하고 있는 힌트 방식은 우리가 밑에 있는 블럭중 하나를 클릭하게 되면 정답 레벨 데이터를 정한 부분을 해서 그것을 새롭게 레벨 데이터를 가져오는 방식으로 하는 것을 생각중임.
-    // 해보니까 구성상으로 안됨 각타일의 것들이 각각있음
-    // 이러면 힌트를 구성을 어떻게 해야되는 것인가
-    // 쉬운것부터 우리가 강제로 하나씩 위치를 정해줘야되는것인가? 음....
 }
