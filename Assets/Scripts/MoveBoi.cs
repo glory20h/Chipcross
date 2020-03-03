@@ -8,8 +8,6 @@ public class MoveBoi : MonoBehaviour
     /* 파랑이를 움직이게 만드는 Script */
 
     public Event eventChanger;
-    public Event_map eventmap;
-    public MakeNewMap makingnewmap;
 
     public GameObject TileBoard;
     public Button GoToNextLevelBtn;
@@ -74,7 +72,6 @@ public class MoveBoi : MonoBehaviour
                         Debug.Log("Try try again!");
                         //여기서 부터가 내가 건든 부분 이부분은 테스트 부분임으로 지워도 무방합니다.
                     }
-                    eventmap.ChangeLevelAndMoveBoy();
                 }
             }
         }
