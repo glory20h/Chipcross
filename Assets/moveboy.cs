@@ -7,6 +7,7 @@ public class moveboy : MonoBehaviour
 {
     public Event_map eventmap;
     public MakeNewMap makingnewmap;
+    timestoper timer;
 
     public GameObject TileBoard;
     public Button GoToNextLevelBtn;
@@ -69,9 +70,8 @@ public class moveboy : MonoBehaviour
                     {
                         StartCoroutine(DelayBoyFail(1.5f));
                         Debug.Log("Try try again!");
-                        //여기서 부터가 내가 건든 부분 이부분은 테스트 부분임으로 지워도 무방합니다.
+                        eventmap.ChangeLevelAndMoveBoy();
                     }
-                    eventmap.ChangeLevelAndMoveBoy();
                 }
             }
         }
@@ -202,12 +202,12 @@ public class moveboy : MonoBehaviour
                     ydir = -temp;
                     break;
                 case 8:
-                    gameObject.transform.position = GameObject.Find("Tile9(Clone)").transform.position;
+                    gameObject.transform.position = GameObject.Find("FixedTile9(Clone)").transform.position;
                     targetPosition = GameObject.Find("FixedTile9(Clone)").transform.position;
                     warpDone = true;
                     break;
                 case 9:
-                    gameObject.transform.position = GameObject.Find("Tile8(Clone)").transform.position;
+                    gameObject.transform.position = GameObject.Find("FixedTile8(Clone)").transform.position;
                     targetPosition = GameObject.Find("FixedTile8(Clone)").transform.position;
                     warpDone = true;
                     break;
@@ -225,6 +225,6 @@ public class moveboy : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         eventmap.MovePieceMode = true;
-        transform.position = boiInitPos;
+        //transform.position = boiInitPos;
     }
 }

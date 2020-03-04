@@ -129,9 +129,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 10895952}
-  - component: {fileID: 10895953}
   - component: {fileID: 10895954}
   - component: {fileID: 10895955}
+  - component: {fileID: 10895953}
   m_Layer: 0
   m_Name: EventChanger
   m_TagString: EventChanger
@@ -160,21 +160,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 10895951}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27968f9613a5774439ba2e100aa3c708, type: 3}
+  m_Script: {fileID: 11500000, guid: 71603936663aeea45980d579e7eb04b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TileBoard: {fileID: 227519821}
-  BlockPieces: {fileID: 1857018045}
-  BlockOnBoard: {fileID: 1098808361}
-  Boy: {fileID: 566818434}
-  Girl: {fileID: 25757805}
-  ResetBtn: {fileID: 711313912}
-  GonfasterBtn: {fileID: 682712124}
-  OptionMenu: {fileID: 1473720125}
-  OptionExit: {fileID: 737905258}
-  MovePieceMode: 0
+  eventmap: {fileID: 0}
+  timeLeft: 10
 --- !u!82 &10895954
 AudioSource:
   m_ObjectHideFlags: 0
@@ -741,7 +733,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 10895953}
+        - m_Target: {fileID: 0}
           m_MethodName: OnMoveRightBtnDown
           m_Mode: 6
           m_Arguments:
@@ -1005,7 +997,6 @@ GameObject:
   - component: {fileID: 566818435}
   - component: {fileID: 566818439}
   - component: {fileID: 566818438}
-  - component: {fileID: 566818437}
   - component: {fileID: 566818441}
   - component: {fileID: 566818440}
   - component: {fileID: 566818442}
@@ -1080,29 +1071,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &566818437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 566818434}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d6bbf7011486c845a394ebc5e3487d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventChanger: {fileID: 10895953}
-  eventmap: {fileID: 0}
-  makingnewmap: {fileID: 0}
-  TileBoard: {fileID: 227519820}
-  GoToNextLevelBtn: {fileID: 1168419479}
-  GoNFasterButton: {fileID: 682712124}
-  ResetButton: {fileID: 711313912}
-  speed: 2
-  distanceBetweenTiles: 0
-  initTargetPosition: {x: 0, y: 0, z: 0}
-  isMoving: 0
 --- !u!50 &566818438
 Rigidbody2D:
   serializedVersion: 4
@@ -2414,7 +2382,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 10895953}
+        - m_Target: {fileID: 0}
           m_MethodName: OnMoveLeftBtnDown
           m_Mode: 6
           m_Arguments:

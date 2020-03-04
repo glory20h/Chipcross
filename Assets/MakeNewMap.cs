@@ -13,6 +13,7 @@ public class MakeNewMap : MonoBehaviour
     public int[] BoardEmptyTileTypeInfo;
     public PieceData[] pieceDatas;
     public string Newmap;
+    timestoper timer;
 
     public class PieceData
     {
