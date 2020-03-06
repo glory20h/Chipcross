@@ -29,7 +29,7 @@ public class Event_map : MonoBehaviour
     int goNFastBtnState;            //1 -> Move Boy!, 2 -> Make Boy Faster!, 3 -> Make Boy back to normal speed     출발/가속 버튼용 변수
 
     //Variables for Level Loading
-    timestoper timer;
+    public timestoper timestop;
     MakeNewMap levelData;
     int levelNum;
     float scaleFactor;
@@ -465,7 +465,7 @@ public class Event_map : MonoBehaviour
 	    LoadLevel();
         SavePieceInitPosition();
         Boy.GetComponent<moveboy>().MoveDaBoi();
-        timer.Reset();
+        timestop.last();
     }
     // 생각하고 있는 힌트 방식은 우리가 밑에 있는 블럭중 하나를 클릭하게 되면 정답 레벨 데이터를 정한 부분을 해서 그것을 새롭게 레벨 데이터를 가져오는 방식으로 하는 것을 생각중임.
     // 해보니까 구성상으로 안됨 각타일의 것들이 각각있음

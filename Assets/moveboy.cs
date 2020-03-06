@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class moveboy : MonoBehaviour
 {
     public Event_map eventmap;
     public MakeNewMap makingnewmap;
-    timestoper timer;
+    public timestoper timer;
 
     public GameObject TileBoard;
     public Button GoToNextLevelBtn;
@@ -34,12 +35,15 @@ public class moveboy : MonoBehaviour
     //Warp Tile용 변수
     bool warpDone = false;
 
+    //textfile용 변수
+    FileStream f;
 
     void Start()
     {
         //isMoving = false;
         metGirl = false;
         GoToNextLevelBtn.interactable = false;
+
     }
 
     void Update()
@@ -49,6 +53,14 @@ public class moveboy : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * fastForwardFactor * Time.deltaTime);
             if (transform.position == targetPosition)
             {
+                if(timer.timeLeft < 0)
+                {
+                    eventmap.ResetGoNFasterButton();
+                    isMoving = false;
+                    StartCoroutine(DelayBoyFail(1.5f));
+                    Debug.Log("Try try again!");
+                    eventmap.ChangeLevelAndMoveBoy();
+                }
                 if (isThereNextTile)    //If the Boi is still on the tile
                 {
                     targetPosition = targetPosition + new Vector3(xdir * distanceBetweenTiles, ydir * distanceBetweenTiles, 0);
@@ -60,11 +72,17 @@ public class moveboy : MonoBehaviour
                     isMoving = false;
                     if (metGirl) //Correct Solution
                     {
+                        StartCoroutine(DelayBoyFail(1.5f));
                         Debug.Log("Puzzle solved!! Congrats!! :)");
-                        GoToNextLevelBtn.interactable = true;
+                        f = new FileStream(Application.dataPath + "/Assets" + "map.txt", FileMode.Create, FileAccess.Write);
+                        StreamWriter writer = new StreamWriter(f, System.Text.Encoding.Unicode);
+                        writer.WriteLine(makingnewmap.Newmap);
+                        writer.Close();
+                        eventmap.ChangeLevelAndMoveBoy();
+                        /*GoToNextLevelBtn.interactable = true;
                         GoNFasterButton.interactable = false;
                         ResetButton.interactable = false;
-                        metGirl = false;
+                        metGirl = false;*/
                     }
                     else //Wrong Solution
                     {
