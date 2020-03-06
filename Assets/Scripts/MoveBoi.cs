@@ -150,12 +150,12 @@ public class MoveBoi : MonoBehaviour
                     ydir = -temp;
                     break;
                 case 8:
-                    gameObject.transform.position = GameObject.Find("Tile9(Clone)").transform.position;
+                    gameObject.transform.position = GameObject.Find("FixedTile9(Clone)").transform.position;
                     targetPosition = GameObject.Find("FixedTile9(Clone)").transform.position;
                     warpDone = true;
                     break;
                 case 9:
-                    gameObject.transform.position = GameObject.Find("Tile8(Clone)").transform.position;
+                    gameObject.transform.position = GameObject.Find("FixedTile8(Clone)").transform.position;
                     targetPosition = GameObject.Find("FixedTile8(Clone)").transform.position;
                     warpDone = true;
                     break;
