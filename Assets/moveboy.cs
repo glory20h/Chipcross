@@ -127,58 +127,6 @@ public class moveboy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Tile")
-        {
-            isThereNextTile = true;
-            GameObject nextTile = collision.gameObject;
-            int tileType = nextTile.name[4] - '0';          //현재 숫자 한자리수 까지밖에 지원안되는데 (9까지) 나중에 두자리수까지 지원되게 고쳐야 됨.
-            if (warpDone && (tileType == 8 || tileType == 9))
-            {
-                tileType = 1;
-                warpDone = false;
-            }
-            switch (tileType)
-            {
-                case 1:
-                    break;
-                case 2:
-                    xdir = -1;
-                    ydir = 0;
-                    break;
-                case 3:
-                    xdir = 1;
-                    ydir = 0;
-                    break;
-                case 4:
-                    xdir = 0;
-                    ydir = -1;
-                    break;
-                case 5:
-                    xdir = 0;
-                    ydir = 1;
-                    break;
-                case 6:
-                    temp = xdir;
-                    xdir = -ydir;
-                    ydir = temp;
-                    break;
-                case 7:
-                    temp = xdir;
-                    xdir = ydir;
-                    ydir = -temp;
-                    break;
-                case 8:
-                    gameObject.transform.position = GameObject.Find("Tile9(Clone)").transform.position;
-                    targetPosition = GameObject.Find("Tile9(Clone)").transform.position;
-                    warpDone = true;
-                    break;
-                case 9:
-                    gameObject.transform.position = GameObject.Find("Tile8(Clone)").transform.position;
-                    targetPosition = GameObject.Find("Tile8(Clone)").transform.position;
-                    warpDone = true;
-                    break;
-            }
-        }
         if (collision.tag == "FixedTile")
         {
             isThereNextTile = true;
@@ -227,6 +175,58 @@ public class moveboy : MonoBehaviour
                 case 9:
                     gameObject.transform.position = GameObject.Find("FixedTile8(Clone)").transform.position;
                     targetPosition = GameObject.Find("FixedTile8(Clone)").transform.position;
+                    warpDone = true;
+                    break;
+            }
+        }
+        if (collision.tag == "Tile")
+        {
+            isThereNextTile = true;
+            GameObject nextTile = collision.gameObject;
+            int tileType = nextTile.name[4] - '0';          //현재 숫자 한자리수 까지밖에 지원안되는데 (9까지) 나중에 두자리수까지 지원되게 고쳐야 됨.
+            if (warpDone && (tileType == 8 || tileType == 9))
+            {
+                tileType = 1;
+                warpDone = false;
+            }
+            switch (tileType)
+            {
+                case 1:
+                    break;
+                case 2:
+                    xdir = -1;
+                    ydir = 0;
+                    break;
+                case 3:
+                    xdir = 1;
+                    ydir = 0;
+                    break;
+                case 4:
+                    xdir = 0;
+                    ydir = -1;
+                    break;
+                case 5:
+                    xdir = 0;
+                    ydir = 1;
+                    break;
+                case 6:
+                    temp = xdir;
+                    xdir = -ydir;
+                    ydir = temp;
+                    break;
+                case 7:
+                    temp = xdir;
+                    xdir = ydir;
+                    ydir = -temp;
+                    break;
+                case 8:
+                    gameObject.transform.position = GameObject.Find("Tile9(Clone)").transform.position;
+                    targetPosition = GameObject.Find("Tile9(Clone)").transform.position;
+                    warpDone = true;
+                    break;
+                case 9:
+                    gameObject.transform.position = GameObject.Find("Tile8(Clone)").transform.position;
+                    targetPosition = GameObject.Find("Tile8(Clone)").transform.position;
                     warpDone = true;
                     break;
             }
