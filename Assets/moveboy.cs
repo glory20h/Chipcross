@@ -7,10 +7,10 @@ using System.IO;
 public class moveboy : MonoBehaviour
 {
     public Event_map eventmap;
-    public MakeNewMap makingnewmap;
     public timestoper timer;
 
     public GameObject TileBoard;
+    public GameObject map;
     public Button GoToNextLevelBtn;
     public Button GoNFasterButton;
     public Button ResetButton;
@@ -36,14 +36,14 @@ public class moveboy : MonoBehaviour
     bool warpDone = false;
 
     //textfile용 변수
-    FileStream f;
+    string content;
 
     void Start()
     {
         //isMoving = false;
         metGirl = false;
         GoToNextLevelBtn.interactable = false;
-
+        content = map.GetComponent<MakeNewMap>().nevergiveup;
     }
 
     void Update()
@@ -74,10 +74,8 @@ public class moveboy : MonoBehaviour
                     {
                         StartCoroutine(DelayBoyFail(1.5f));
                         Debug.Log("Puzzle solved!! Congrats!! :)");
-                        f = new FileStream(Application.dataPath + "/Assets" + "map.txt", FileMode.Create, FileAccess.Write);
-                        StreamWriter writer = new StreamWriter(f, System.Text.Encoding.Unicode);
-                        writer.WriteLine(makingnewmap.Newmap);
-                        writer.Close();
+                        metGirl = false;
+                        CreateText();
                         eventmap.ChangeLevelAndMoveBoy();
                         /*GoToNextLevelBtn.interactable = true;
                         GoNFasterButton.interactable = false;
@@ -244,5 +242,21 @@ public class moveboy : MonoBehaviour
         yield return new WaitForSeconds(time);
         eventmap.MovePieceMode = true;
         //transform.position = boiInitPos;
+    }
+
+    void CreateText()
+    {
+        //Path of the file
+        string path = Application.dataPath + "/Mapcontent.txt";
+        //Create File if it doesn't exist
+        if (!File.Exists(path))
+        {
+            File.WriteAllText(path, "start \n\n");
+        }
+        //Content of the file
+        content = map.GetComponent<MakeNewMap>().nevergiveup;
+        Debug.Log(content);
+        //Add some to text to it
+        File.AppendAllText(path, content);
     }
 }

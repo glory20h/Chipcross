@@ -986,7 +986,7 @@ GameObject:
   - component: {fileID: 566818441}
   - component: {fileID: 566818440}
   - component: {fileID: 566818442}
-  - component: {fileID: 566818443}
+  - component: {fileID: 566818437}
   m_Layer: 0
   m_Name: Boy
   m_TagString: Untagged
@@ -1057,6 +1057,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &566818437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 566818434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 859548d99f89181498ccd23c09374a42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventmap: {fileID: 10895955}
+  timer: {fileID: 1783125464}
+  TileBoard: {fileID: 227519820}
+  map: {fileID: 1113007799}
+  GoToNextLevelBtn: {fileID: 1168419479}
+  GoNFasterButton: {fileID: 682712124}
+  ResetButton: {fileID: 711313912}
+  speed: 4
+  distanceBetweenTiles: 0
+  initTargetPosition: {x: 0, y: 0, z: 0}
+  isMoving: 0
 --- !u!50 &566818438
 Rigidbody2D:
   serializedVersion: 4
@@ -1155,29 +1178,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &566818443
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 566818434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 859548d99f89181498ccd23c09374a42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventmap: {fileID: 10895955}
-  makingnewmap: {fileID: 0}
-  timer: {fileID: 1783125464}
-  TileBoard: {fileID: 227519820}
-  GoToNextLevelBtn: {fileID: 1168419479}
-  GoNFasterButton: {fileID: 682712124}
-  ResetButton: {fileID: 711313912}
-  speed: 2
-  distanceBetweenTiles: 0
-  initTargetPosition: {x: 0, y: 0, z: 0}
-  isMoving: 0
 --- !u!1 &682712122
 GameObject:
   m_ObjectHideFlags: 0
@@ -1841,6 +1841,58 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1113007799
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1113007801}
+  - component: {fileID: 1113007800}
+  m_Layer: 0
+  m_Name: Mapmaker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1113007800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1113007799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9ccec3e8e4d9be468ca9b6af348c61a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleSize: 0
+  BoardWidth: 0
+  BoardHeight: 0
+  BoyPos: 0
+  GirlPos: 0
+  NumberOfPieces: 0
+  BoardEmptyTileTypeInfo: 
+  Newmap: 
+  timer: {fileID: 1783125464}
+--- !u!4 &1113007801
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1113007799}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1168419477
 GameObject:

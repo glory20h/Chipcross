@@ -4,16 +4,26 @@ using UnityEngine;
 
 public class MakeNewMap : MonoBehaviour
 {
+    [HideInInspector]
     public int scaleSize;
+    [HideInInspector]
     public int BoardWidth;
+    [HideInInspector]
     public int BoardHeight;
+    [HideInInspector]
     public int BoyPos;
+    [HideInInspector]
     public int GirlPos;
+    [HideInInspector]
     public int NumberOfPieces;
+    [HideInInspector]
     public int[] BoardEmptyTileTypeInfo;
     public PieceData[] pieceDatas;
-    public string Newmap;
+    [HideInInspector]
+    private string Newmap;
     public timestoper timer;
+    [HideInInspector]
+    public string nevergiveup;
 
     public class PieceData
     {
@@ -94,6 +104,7 @@ public class MakeNewMap : MonoBehaviour
         int tilevalue = 0;
         int rangeoftile = 9;
         bool tile8yes = false;
+        bool tile9yes = false;
         while (tile8yes == false)
         {
             for (int i = 0; i < BoardHeight; i++)
@@ -105,9 +116,13 @@ public class MakeNewMap : MonoBehaviour
                         rangeoftile = 8;
                         if (tilevalue == 8)
                         {
-                            if (tile8yes == false)
+                            if (tile8yes == false && tile9yes == false)
                             {
                                 tilevalue = 9;
+                            }
+                            else if(tile9yes)
+                            {
+                                tilevalue = 8;
                                 rangeoftile = 7;
                             }
                             tile8yes = true;
@@ -115,6 +130,7 @@ public class MakeNewMap : MonoBehaviour
                         else if(tilevalue == 9)
                         {
                             tile8yes = false;
+                            tile9yes = true;
                         }
                     }
                     Newmap += tilevalue;
@@ -126,7 +142,23 @@ public class MakeNewMap : MonoBehaviour
 
     public void LoadLevelData(int num)
     {
-        makeNewlevel();
+        switch (num)
+        {
+            case 1:
+            scaleSize = 1;
+            BoardWidth = 3;
+            BoardHeight = 2;
+            BoyPos = 0;
+            GirlPos = 0;
+            NumberOfPieces = 0;
+            Newmap = "333333";
+            nevergiveup = Newmap;
+            BoardEmptyTileTypeInfo = ConvertStringToIntArray(Newmap);
+            break;
+            case 2:
+                makeNewlevel();
+            break;
+        }
     }
 
     string SetDefaultBoard()  //Return Default Board with all standard EmptyTiles
