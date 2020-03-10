@@ -24,7 +24,7 @@ public class Event : MonoBehaviour
     Vector2 mousePos;               //마우스의 2차원상 위치
     Transform objToFollowMouse;     //마우스를 따라 다닐 물체(퍼즐 조각)
     GameObject[] triggeredObjects; //Array stores info on EmptyTiles        //퍼즐 조각의 빈 타일 탐지용
-    Vector3[] PieceInitPosition;   //Stores initial position of Pieces      //초기 퍼즐 조각 위치 저장
+    Vector3[] PiecePosition;   //Stores initial position of Pieces      //초기 퍼즐 조각 위치 저장
 
     float UIPieceScale = 0.4f;      //UI에서의 퍼즐 조각 크기. 화면/퍼즐에 놓았을 때는 1, UI상에서는 현재 값으로 축소
 
@@ -54,7 +54,7 @@ public class Event : MonoBehaviour
         LoadLevel();
 
         //퍼즐 조각 초기 위치 저장
-        SavePieceInitPosition();
+        SavePiecePosition();
 
         //개발자 버튼용
         hohoho = 1;
@@ -172,32 +172,18 @@ public class Event : MonoBehaviour
                     }
                     else
                     {
-                        ResetPiecePosition(objToFollowMouse);
+                        ResetPiecePosition(objToFollowMouse, (Mathf.Abs(objToFollowMouse.localPosition.x) >= 5.0f && Mathf.Abs(objToFollowMouse.localPosition.x) < 8.5f && objToFollowMouse.localPosition.y >= -0.4f && objToFollowMouse.localPosition.y < 8.5f));
                     }
                     
                     objToFollowMouse = null;
                 }
             }
         }
-
-        //조각 왼쪽으로 이동 버튼 눌렀을때
-        if(BlockPieceMoveLeft && Time.timeScale != 0f)
-        {
-            BlockPieces.transform.position = Vector3.MoveTowards(BlockPieces.transform.position, new Vector3(9 - (1.5f * levelData.NumberOfPieces), -3.75f, 0), 0.2f);
-        }
-
-        //조각 오른쪽으로 이동 버튼 눌렀을때
-        if (BlockPieceMoveRight && Time.timeScale != 0f)
-        {
-            BlockPieces.transform.position = Vector3.MoveTowards(BlockPieces.transform.position, new Vector3(-(9 - (1.5f * levelData.NumberOfPieces)), -3.75f, 0), 0.2f);
-        }
     }
 
     //게임 레벨 불러오기
     void LoadLevel()
     {
-        Debug.Log("LoadLevel() Start");
-
         GameObject prefab;
         GameObject obj;
         GameObject obj2;
@@ -258,38 +244,12 @@ public class Event : MonoBehaviour
             }
         }
 
-        //Instantiate 'Piece'
-        /*for (int i = 0; i < levelData.NumberOfPieces; i++)
-        {
-            prefab = Resources.Load("Prefabs/Piece") as GameObject;
-            obj = Instantiate(prefab, new Vector3(-3 * ((levelData.NumberOfPieces - 1) / 2f) + 3 * i, 0, 0), Quaternion.identity);           // 3 is the distance between pieces
-            obj.transform.SetParent(BlockPieces, false);
-            obj.GetComponent<VariableProvider>().pieceNum = i;
-
-            typeIndex = 0;
-            pieceHeight = levelData.pieceDatas[i].PieceHeight;
-            pieceWidth = levelData.pieceDatas[i].PieceWidth;
-            for(int j = 0; j < pieceHeight; j++)
-            {
-                for(int k = 0; k < pieceWidth; k++)
-                {
-                    if(levelData.pieceDatas[i].TileType[typeIndex] != 0)
-                    {
-                        prefab = Resources.Load("Prefabs/Tile" + levelData.pieceDatas[i].TileType[typeIndex].ToString()) as GameObject;
-                        obj2 = Instantiate(prefab, new Vector3(-pieceWidth + 1 + 2 * k, pieceHeight - 1 - 2 * j, 0), Quaternion.identity);
-                        obj2.transform.SetParent(obj.transform, false);
-                    }
-                    typeIndex++;
-                }
-            }
-        }*/
-
         //Random Puzzle Piece Position Version
         //PieceInitPosition = new Vector3[levelData.NumberOfPieces];
         for (int i = 0; i < levelData.NumberOfPieces; i++)
         {
             prefab = Resources.Load("Prefabs/Piece") as GameObject;
-            obj = Instantiate(prefab, new Vector3(Random.value < 0.5 ? Random.Range(-7.6f, -5.9f) : Random.Range(5.9f, 7.6f), Random.Range(0, 7.4f)), Quaternion.identity);           // 3 is the distance between pieces
+            obj = Instantiate(prefab, new Vector3(Random.value < 0.5 ? Random.Range(-7.6f, -5.9f) : Random.Range(5.9f, 7.6f), Random.Range(0, 7.4f)), Quaternion.identity);
             obj.transform.SetParent(BlockPieces, false);
             obj.GetComponent<VariableProvider>().pieceNum = i;
 
@@ -311,23 +271,21 @@ public class Event : MonoBehaviour
                 }
             }
         }
-
-        Debug.Log("LoadLevel() Finished");
     }
 
-    void SavePieceInitPosition()
+    void SavePiecePosition()
     {
-        PieceInitPosition = new Vector3[BlockPieces.childCount];
+        PiecePosition = new Vector3[BlockPieces.childCount];
         for (int i = 0; i < BlockPieces.childCount; i++)
         {
-            PieceInitPosition[i] = BlockPieces.GetChild(i).localPosition;
+            PiecePosition[i] = BlockPieces.GetChild(i).localPosition;
         }
     }
 
     //퍼즐 조각들이 모두 타일위에 놓아졌는지 확인
     void CheckIfAllTilesInPlace()
     {
-        if(PieceInitPosition.Length == BlockOnBoard.childCount)
+        if(PiecePosition.Length == BlockOnBoard.childCount)
         {
             GonfasterBtn.interactable = true;
         }
@@ -338,11 +296,20 @@ public class Event : MonoBehaviour
     }
 
     //퍼즐 조각 하나의 위치 초기화
-    void ResetPiecePosition(Transform piece)     //For some reason this works!
+    void ResetPiecePosition(Transform piece, bool movePiecePosition = false)
     {
         piece.SetParent(BlockPieces);
-        piece.localPosition = PieceInitPosition[piece.GetComponent<VariableProvider>().pieceNum];
         piece.localScale = new Vector3(UIPieceScale, UIPieceScale, 1);
+
+        if (movePiecePosition)
+        {
+            PiecePosition[objToFollowMouse.GetComponent<VariableProvider>().pieceNum] = objToFollowMouse.localPosition;
+        }
+        else
+        {
+            piece.localPosition = PiecePosition[piece.GetComponent<VariableProvider>().pieceNum];
+        }
+        
         for (int i = 0; i < piece.childCount; i++)
         {
             piece.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 75 + piece.GetComponent<VariableProvider>().pieceNum;
@@ -352,7 +319,6 @@ public class Event : MonoBehaviour
     //현재 스테이지 요소들 삭제
     void DeleteLevel()
     {
-        Debug.Log("DeleteLevel() Start");
         foreach (Transform child in TileBoard)
         {
             Destroy(child.gameObject);
@@ -365,7 +331,6 @@ public class Event : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        Debug.Log("DeleteLevel() Finished");
     }
 
     //출발/가속 버튼 State 1 -> 누르면 이동 시작, 2 -> 누르면 빨라짐, 3 -> 누르면 다시 원래 속도로 돌아옴
@@ -441,7 +406,7 @@ public class Event : MonoBehaviour
         ResetBtn.interactable = true;
         DeleteLevel();
         LoadLevel();
-        SavePieceInitPosition();
+        SavePiecePosition();
         /*Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
         for (int i = 0; i < PieceInitPosition.Length; i++)
         {
@@ -474,7 +439,7 @@ public class Event : MonoBehaviour
         {
             levelNum++;
             LoadLevel();
-            SavePieceInitPosition();
+            SavePiecePosition();
             //Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
             hohoho = 1;
         }
