@@ -272,6 +272,7 @@ MonoBehaviour:
   timestop: {fileID: 1783125464}
   MovePieceMode: 0
   gobuttononoff: 1
+  checking: 
 --- !u!1 &25757805
 GameObject:
   m_ObjectHideFlags: 0
@@ -350,7 +351,7 @@ Transform:
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &25757808
 BoxCollider2D:
@@ -1055,7 +1056,7 @@ Transform:
   m_Children:
   - {fileID: 110685763}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &566818437
 MonoBehaviour:
@@ -1080,6 +1081,7 @@ MonoBehaviour:
   distanceBetweenTiles: 0
   initTargetPosition: {x: 0, y: 0, z: 0}
   isMoving: 0
+  content: 
 --- !u!50 &566818438
 Rigidbody2D:
   serializedVersion: 4
@@ -1810,7 +1812,7 @@ Transform:
   m_LocalScale: {x: 0.44, y: 0.45, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1098808360
 GameObject:
@@ -1878,8 +1880,8 @@ MonoBehaviour:
   GirlPos: 0
   NumberOfPieces: 0
   BoardEmptyTileTypeInfo: 
-  Newmap: 
   timer: {fileID: 1783125464}
+  nevergiveup: 
 --- !u!4 &1113007801
 Transform:
   m_ObjectHideFlags: 0
@@ -1892,7 +1894,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1168419477
 GameObject:
@@ -2346,7 +2348,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1725743230
 GameObject:
@@ -2558,7 +2560,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1817190562
 GameObject:
