@@ -36,7 +36,8 @@ public class moveboy : MonoBehaviour
     bool warpDone = false;
 
     //textfile용 변수
-    string content;
+    [HideInInspector]
+    public string content;
 
     void Start()
     {
@@ -259,4 +260,5 @@ public class moveboy : MonoBehaviour
         //Add some to text to it
         File.AppendAllText(path, content);
     }
+
 }

@@ -46,6 +46,10 @@ public class Event_map : MonoBehaviour
     int hohoho; //개발자 버튼용 변수
     public bool gobuttononoff=true;
 
+    //checking
+    [HideInInspector]
+    public string checking;
+
     void Start()
     {
         //변수 초기화

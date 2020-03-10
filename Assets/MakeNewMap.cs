@@ -24,6 +24,7 @@ public class MakeNewMap : MonoBehaviour
     public timestoper timer;
     [HideInInspector]
     public string nevergiveup;
+    private moveboy boys;
 
     public class PieceData
     {
