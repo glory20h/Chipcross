@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class MakeNewMap : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class MakeNewMap : MonoBehaviour
     public int[] BoardEmptyTileTypeInfo;
     public PieceData[] pieceDatas;
     [HideInInspector]
-    private string Newmap;
+    public string Newmap;
     public timestoper timer;
     [HideInInspector]
     public string nevergiveup;
@@ -82,8 +83,8 @@ public class MakeNewMap : MonoBehaviour
 
     public void makeNewlevel()
     {
-        BoardWidth = UnityEngine.Random.Range(3, 5);
-        BoardHeight = UnityEngine.Random.Range(3, 5);
+        BoardWidth = Random.Range(3, 5);
+        BoardHeight = Random.Range(3, 5);
         int scalesizechanger = 0;
         scalesizechanger = (BoardWidth + BoardHeight) / 2;
         switch(BoardHeight)
@@ -100,50 +101,39 @@ public class MakeNewMap : MonoBehaviour
                 scaleSize = 3;
                 break;
         }
-        BoyPos = UnityEngine.Random.Range(0, BoardHeight-1);
-        GirlPos = UnityEngine.Random.Range(0, BoardHeight-1);
+        BoyPos = Random.Range(0, BoardHeight-1);
+        GirlPos = Random.Range(0, BoardHeight-1);
         int tilevalue = 0;
         int rangeoftile = 9;
-        bool tile8yes = false;
-        bool tile9yes = false;
-        while (tile8yes == false)
-        {
+        bool tile8yes = true;//tile8yes 없애면 tile9 1개랑 나머지는 tile8개로 나옴
+        bool tile9yes = true;
             for (int i = 0; i < BoardHeight; i++)
                 for (int j = 0; j < BoardWidth; j++)
                 {
-                    tilevalue = UnityEngine.Random.Range(1, rangeoftile);
-                    if (tilevalue == 8 || tilevalue == 9)
+                    tilevalue = Random.Range(1, rangeoftile);// 1부터
+                if (tilevalue == 8 && tile8yes)
+                {
+                    if (tile9yes)
                     {
-                        rangeoftile = 8;
-                        if (tilevalue == 8)
-                        {
-                            if (tile8yes == false && tile9yes == false)
-                            {
-                                tilevalue = 9;
-                            }
-                            else if(tile9yes)
-                            {
-                                tilevalue = 8;
-                                rangeoftile = 7;
-                            }
-                            tile8yes = true;
-                        }
-                        else if(tilevalue == 9)
-                        {
-                            tile8yes = false;
-                            tile9yes = true;
-                        }
+                        tilevalue = 9;
+                        tile9yes = false;
                     }
+                    else
+                    {
+                        tile8yes = false;
+                        rangeoftile = 8;
+                    }
+                }
+                  
                     Newmap += tilevalue;
                 }
-        }
 
         BoardEmptyTileTypeInfo = ConvertStringToIntArray(Newmap); // 이걸 통해 만들어서 확인후에 돌아가는지 확인하고 pieces 나누기로 합시당.
     }
 
     public void LoadLevelData(int num)
     {
-        switch (num)
+        /*switch (num)
         {
             case 1:
             scaleSize = 1;
@@ -153,13 +143,13 @@ public class MakeNewMap : MonoBehaviour
             GirlPos = 0;
             NumberOfPieces = 0;
             Newmap = "333333";
-            nevergiveup = Newmap;
             BoardEmptyTileTypeInfo = ConvertStringToIntArray(Newmap);
             break;
             case 2:
                 makeNewlevel();
             break;
-        }
+        }*/
+        makeNewlevel();
     }
 
     string SetDefaultBoard()  //Return Default Board with all standard EmptyTiles
