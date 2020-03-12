@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class Event : MonoBehaviour
 {
-    public GameObject AudioManager;
+    public AudioManager AudioManager;
 
     public Transform TileBoard;     //빈 타일 Parent
     public Transform BlockPieces;   //아직 타일 위에 안 놓아진 퍼즐 조각 Parent
@@ -58,6 +58,8 @@ public class Event : MonoBehaviour
 
         //개발자 버튼용
         hohoho = 1;
+
+        AudioManager.Play("Nature Ambience");
     }
 
     void InitializeVariables()
@@ -72,7 +74,7 @@ public class Event : MonoBehaviour
         levelNum = 1;
         levelData = new LevelDatabase();
 
-        AudioSrc = AudioManager.GetComponent<AudioSource>(); //오디오
+        //AudioSrc = AudioManager.GetComponent<AudioSource>(); //오디오
     }
 
     void Update()

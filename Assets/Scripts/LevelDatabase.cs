@@ -71,7 +71,7 @@ public class LevelDatabase
     {
         switch (num)
         {
-            case 3:
+            case 1:
                 scaleSize = 1;
                 BoardWidth = 3;
                 BoardHeight = 2;
@@ -91,7 +91,7 @@ public class LevelDatabase
                 BoardEmptyTileTypeInfo = ConvertStringToIntArray(SetDefaultBoard());
                 ConvertStringToPieceInfo("211821131291");
                 break;
-            case 1:
+            case 3:
                 scaleSize = 1;
                 BoardWidth = 3;
                 BoardHeight = 3;
