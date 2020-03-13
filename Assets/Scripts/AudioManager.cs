@@ -8,9 +8,10 @@ public class AudioManager : MonoBehaviour
 
 	public Sound[] sounds;
 
+    /*
 	void Awake()
 	{
-		/*if (instance != null)
+		if (instance != null)
 		{
 			Destroy(gameObject);
 		}
@@ -18,7 +19,7 @@ public class AudioManager : MonoBehaviour
 		{
 			instance = this;
 			DontDestroyOnLoad(gameObject);
-		}*/
+		}
 
 		foreach (Sound s in sounds)
 		{
@@ -29,6 +30,7 @@ public class AudioManager : MonoBehaviour
 			//s.source.outputAudioMixerGroup = mixerGroup;
 		}
 	}
+    */
 
 	public void Play(string sound)
 	{
