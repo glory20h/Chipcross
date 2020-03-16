@@ -3,8 +3,6 @@ using UnityEngine.UI;
 
 public class Event : MonoBehaviour
 {
-    public AudioManager AudioManager;
-
     public Transform TileBoard;     //빈 타일 Parent
     public Transform BlockPieces;   //아직 타일 위에 안 놓아진 퍼즐 조각 Parent
     public Transform BlockOnBoard;  //타일위에 놓아진 퍼즐 조각 Parent
@@ -58,8 +56,6 @@ public class Event : MonoBehaviour
 
         //개발자 버튼용
         hohoho = 1;
-
-        AudioManager.Play("Nature Ambience");
     }
 
     void InitializeVariables()
@@ -431,7 +427,8 @@ public class Event : MonoBehaviour
         Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);*/
 
         //Change to next Level
-        if(hohoho == 1)
+        /*
+        if (hohoho == 1)
         {
             DeleteLevel();
             //Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
@@ -445,6 +442,8 @@ public class Event : MonoBehaviour
             //Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
             hohoho = 1;
         }
+        */
+        SoundFXPlayer.Play("flick");
     }
 
     public void OnMoveLeftBtnDown(bool set)
@@ -478,5 +477,6 @@ public class Event : MonoBehaviour
     public void Hintsystem()
     {
         Debug.Log("Hi");
+        SoundFXPlayer.Play("fail");
     }
 }
