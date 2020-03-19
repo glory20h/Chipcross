@@ -1,28 +1,28 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class Event : MonoBehaviour
 {
-    public Transform TileBoard;     //빈 타일 Parent
-    public Transform BlockPieces;   //아직 타일 위에 안 놓아진 퍼즐 조각 Parent
-    public Transform BlockOnBoard;  //타일위에 놓아진 퍼즐 조각 Parent
-    public GameObject Boy;          //파란 불꽃
-    public GameObject Girl;         //분홍 불꽃
+    public AudioMixer audioMixer;   //오디오 믹서
 
-    public Button ResetBtn;         //퍼즐 초기화 버튼
+    public Transform TileBoard;     //빈 타일(퍼즐판)의 Parent
+    public Transform BlockPieces;   //아직 타일 위에 안 놓아진 퍼즐 조각들의 Parent
+    public Transform BlockOnBoard;  //타일위에 놓아진 퍼즐 조각들의 Parent
+    public GameObject Boy;          //파랭이
+    public GameObject Girl;         //분홍이
+
+    public Button ResetBtn;         //퍼즐 초기화 & 파랭이 움직임 리셋 버튼
     public Button GonfasterBtn;     //출발/가속 버튼
 
-    public GameObject OptionMenu; //옵션 panel
+    public GameObject OptionMenu;   //옵션 창
     public static bool GameIsPaused = false; // Game pause
-    public Button OptionExit; // 옵션 나가기
-
-    private AudioSource AudioSrc; //Audio Source
-    private float AudioVolume = 1f;
+    public Button OptionExit;       // 옵션 나가기
 
     Vector2 mousePos;               //마우스의 2차원상 위치
     Transform objToFollowMouse;     //마우스를 따라 다닐 물체(퍼즐 조각)
-    GameObject[] triggeredObjects; //Array stores info on EmptyTiles        //퍼즐 조각의 빈 타일 탐지용
-    Vector3[] PiecePosition;   //Stores initial position of Pieces      //초기 퍼즐 조각 위치 저장
+    GameObject[] triggeredObjects;  //Array stores info on EmptyTiles        //퍼즐 조각의 빈 타일 탐지용
+    Vector3[] PiecePosition;        //Stores initial position of Pieces      //초기 퍼즐 조각 위치 저장
 
     float UIPieceScale = 0.4f;      //UI에서의 퍼즐 조각 크기. 화면/퍼즐에 놓았을 때는 1, UI상에서는 현재 값으로 축소
 
@@ -38,8 +38,6 @@ public class Event : MonoBehaviour
 
     //boolean for Update Function //Update에 쓸 bool 변수
     public bool MovePieceMode;
-    bool BlockPieceMoveLeft;
-    bool BlockPieceMoveRight;
 
     int hohoho; //개발자 버튼용 변수
 
@@ -61,16 +59,12 @@ public class Event : MonoBehaviour
     void InitializeVariables()
     {
         MovePieceMode = true;
-        BlockPieceMoveLeft = false;
-        BlockPieceMoveRight = false;
 
         goNFastBtnState = 1;
         GonfasterBtn.interactable = false;
 
         levelNum = 1;
         levelData = new LevelDatabase();
-
-        //AudioSrc = AudioManager.GetComponent<AudioSource>(); //오디오
     }
 
     void Update()
@@ -87,7 +81,7 @@ public class Event : MonoBehaviour
 
                 if (hit.collider != null)
                 {
-                    //충돌 물체가 퍼즐 조각일 경우
+                    //클릭한 물체가 퍼즐 조각일 경우
                     if (hit.transform.tag == "Tile")
                     {
                         if(GonfasterBtn.interactable)
@@ -103,13 +97,15 @@ public class Event : MonoBehaviour
                         {
                             objToFollowMouse.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 200;
 
-                            //if Tile is on the board
+                            //If Tile is on the board
                             if (objToFollowMouse.IsChildOf(BlockOnBoard))
                             {
                                 objToFollowMouse.GetChild(i).GetChild(0).GetComponent<TileCollideDetection>().overlappedObject.GetComponent<BoxCollider2D>().enabled = true;  //Disable Box Collider of EmptyTile
                                 objToFollowMouse.GetChild(i).GetChild(0).GetComponent<BoxCollider2D>().enabled = true;  //Enable Detector Box Collider
                             }
                         }
+
+                        SoundFXPlayer.Play("pick");
                     }
                 }
             }
@@ -165,6 +161,8 @@ public class Event : MonoBehaviour
                             objToFollowMouse.GetChild(i).GetChild(0).GetComponent<BoxCollider2D>().enabled = false;
                             objToFollowMouse.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 10;
                         }
+
+                        SoundFXPlayer.Play("put");
 
                         CheckIfAllTilesInPlace();
                     }
@@ -340,6 +338,7 @@ public class Event : MonoBehaviour
             MovePieceMode = false;
             goNFastBtnState = 2;
             GonfasterBtn.image.sprite = Resources.Load<Sprite>("Arts/FastForward");
+            SoundFXPlayer.Play("go");
         }
         else if(goNFastBtnState == 2)
         {
@@ -427,7 +426,6 @@ public class Event : MonoBehaviour
         Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);*/
 
         //Change to next Level
-        /*
         if (hohoho == 1)
         {
             DeleteLevel();
@@ -442,41 +440,50 @@ public class Event : MonoBehaviour
             //Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
             hohoho = 1;
         }
-        */
-        SoundFXPlayer.Play("flick");
     }
 
-    public void OnMoveLeftBtnDown(bool set)
+    //옵션 버튼을 눌러 Option창 토글
+    public void ToggleOptionPanel()
     {
-        BlockPieceMoveLeft = set;
+        if(OptionMenu.activeSelf)
+        {
+            OptionMenu.SetActive(false);
+            Time.timeScale = 1f;
+        }
+        else
+        {
+            OptionMenu.SetActive(true);
+            Time.timeScale = 0f;
+        }
     }
 
-    public void OnMoveRightBtnDown(bool set)
-    {
-        BlockPieceMoveRight = set;
-    }
-
-    public void OpenOptionPanel()
-    {
-        OptionMenu.SetActive(true);
-        Time.timeScale = 0f;
-    }
-
+    //옵션 창의 닫기 버튼을 눌러 Option창 닫기
     public void CloseOptionPanel()
     {
         OptionMenu.SetActive(false);
         Time.timeScale = 1f;
     }
 
-    public void SetVolume(float vol)
+    //오디오믹서의 배경음악 볼륨 조절
+    public void SetMusicVolume(float vol)
     {
-        AudioVolume = vol;
-        AudioSrc.volume = AudioVolume;
+        audioMixer.SetFloat("MusicVol", vol);
+    }
+
+    //오디오믹서의 효과음 볼륨 조절
+    public void SetSFXVolume(float vol)
+    {
+        audioMixer.SetFloat("SFXVol", vol);
+    }
+
+    //오디오믹서의 환경음 볼륨 조절
+    public void SetAmbienceVolume(float vol)
+    {
+        audioMixer.SetFloat("AmbienceVol", vol);
     }
 
     public void Hintsystem()
     {
         Debug.Log("Hi");
-        SoundFXPlayer.Play("fail");
     }
 }
