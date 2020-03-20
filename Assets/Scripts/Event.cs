@@ -404,11 +404,6 @@ public class Event : MonoBehaviour
         DeleteLevel();
         LoadLevel();
         SavePiecePosition();
-        /*Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
-        for (int i = 0; i < PieceInitPosition.Length; i++)
-        {
-            Debug.Log(" i = " + i + " : " + PieceInitPosition[i]);
-        }*/
     }
 
     //테스트용 개발자 버튼용
