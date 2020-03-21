@@ -86,7 +86,7 @@ public class MoveBoi : MonoBehaviour
                 }
                 else                    //Finish moving; Reached Girl? Or try try again??
                 {
-                    eventChanger.ResetGoNFasterButton();
+                    eventChanger.ResetGoNFaster();
                     isMoving = false;
                     if (metGirl) //Correct Solution
                     {
@@ -130,7 +130,7 @@ public class MoveBoi : MonoBehaviour
     public void ResetBoyMove()
     {
         //Make the boy stop moving and return to its original position
-        eventChanger.ResetGoNFasterButton();
+        eventChanger.ResetGoNFaster();
         eventChanger.MovePieceMode = true;
         transform.position = boiInitPos;
         isMoving = false;
@@ -289,6 +289,7 @@ public class MoveBoi : MonoBehaviour
 
     public void DevBtn()
     {
-        Debug.Log("isMoving : " + isMoving);
+        float force = 0.5f;
+        GetComponent<Rigidbody2D>().AddForce(new Vector2(0, -1) * force, ForceMode2D.Impulse);
     }
 }
