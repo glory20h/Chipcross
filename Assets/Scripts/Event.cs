@@ -1,30 +1,28 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class Event : MonoBehaviour
 {
-    public GameObject AudioManager;
+    public AudioMixer audioMixer;   //오디오 믹서
 
-    public Transform TileBoard;     //빈 타일 Parent
-    public Transform BlockPieces;   //아직 타일 위에 안 놓아진 퍼즐 조각 Parent
-    public Transform BlockOnBoard;  //타일위에 놓아진 퍼즐 조각 Parent
-    public GameObject Boy;          //파란 불꽃
-    public GameObject Girl;         //분홍 불꽃
+    public Transform TileBoard;     //빈 타일(퍼즐판)의 Parent
+    public Transform BlockPieces;   //아직 타일 위에 안 놓아진 퍼즐 조각들의 Parent
+    public Transform BlockOnBoard;  //타일위에 놓아진 퍼즐 조각들의 Parent
+    public GameObject Boy;          //파랭이
+    public GameObject Girl;         //분홍이
 
-    public Button ResetBtn;         //퍼즐 초기화 버튼
+    public Button ResetBtn;         //퍼즐 초기화 & 파랭이 움직임 리셋 버튼
     public Button GonfasterBtn;     //출발/가속 버튼
 
-    public GameObject OptionMenu; //옵션 panel
+    public GameObject OptionMenu;   //옵션 창
     public static bool GameIsPaused = false; // Game pause
-    public Button OptionExit; // 옵션 나가기
-
-    private AudioSource AudioSrc; //Audio Source
-    private float AudioVolume = 1f;
+    public Button OptionExit;       // 옵션 나가기
 
     Vector2 mousePos;               //마우스의 2차원상 위치
     Transform objToFollowMouse;     //마우스를 따라 다닐 물체(퍼즐 조각)
-    GameObject[] triggeredObjects; //Array stores info on EmptyTiles        //퍼즐 조각의 빈 타일 탐지용
-    Vector3[] PieceInitPosition;   //Stores initial position of Pieces      //초기 퍼즐 조각 위치 저장
+    GameObject[] triggeredObjects;  //Array stores info on EmptyTiles        //퍼즐 조각의 빈 타일 탐지용
+    Vector3[] PiecePosition;        //Stores initial position of Pieces      //초기 퍼즐 조각 위치 저장
 
     float UIPieceScale = 0.4f;      //UI에서의 퍼즐 조각 크기. 화면/퍼즐에 놓았을 때는 1, UI상에서는 현재 값으로 축소
 
@@ -40,8 +38,6 @@ public class Event : MonoBehaviour
 
     //boolean for Update Function //Update에 쓸 bool 변수
     public bool MovePieceMode;
-    bool BlockPieceMoveLeft;
-    bool BlockPieceMoveRight;
 
     int hohoho; //개발자 버튼용 변수
 
@@ -54,7 +50,7 @@ public class Event : MonoBehaviour
         LoadLevel();
 
         //퍼즐 조각 초기 위치 저장
-        SavePieceInitPosition();
+        SavePiecePosition();
 
         //개발자 버튼용
         hohoho = 1;
@@ -63,16 +59,12 @@ public class Event : MonoBehaviour
     void InitializeVariables()
     {
         MovePieceMode = true;
-        BlockPieceMoveLeft = false;
-        BlockPieceMoveRight = false;
 
         goNFastBtnState = 1;
         GonfasterBtn.interactable = false;
 
         levelNum = 1;
         levelData = new LevelDatabase();
-
-        AudioSrc = AudioManager.GetComponent<AudioSource>(); //오디오
     }
 
     void Update()
@@ -89,7 +81,7 @@ public class Event : MonoBehaviour
 
                 if (hit.collider != null)
                 {
-                    //충돌 물체가 퍼즐 조각일 경우
+                    //클릭한 물체가 퍼즐 조각일 경우
                     if (hit.transform.tag == "Tile")
                     {
                         if(GonfasterBtn.interactable)
@@ -105,13 +97,15 @@ public class Event : MonoBehaviour
                         {
                             objToFollowMouse.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 200;
 
-                            //if Tile is on the board
+                            //If Tile is on the board
                             if (objToFollowMouse.IsChildOf(BlockOnBoard))
                             {
                                 objToFollowMouse.GetChild(i).GetChild(0).GetComponent<TileCollideDetection>().overlappedObject.GetComponent<BoxCollider2D>().enabled = true;  //Disable Box Collider of EmptyTile
                                 objToFollowMouse.GetChild(i).GetChild(0).GetComponent<BoxCollider2D>().enabled = true;  //Enable Detector Box Collider
                             }
                         }
+
+                        SoundFXPlayer.Play("pick");
                     }
                 }
             }
@@ -168,36 +162,24 @@ public class Event : MonoBehaviour
                             objToFollowMouse.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 10;
                         }
 
+                        SoundFXPlayer.Play("put");
+
                         CheckIfAllTilesInPlace();
                     }
                     else
                     {
-                        ResetPiecePosition(objToFollowMouse);
+                        ResetPiecePosition(objToFollowMouse, (Mathf.Abs(objToFollowMouse.localPosition.x) >= 5.0f && Mathf.Abs(objToFollowMouse.localPosition.x) < 8.5f && objToFollowMouse.localPosition.y >= -0.4f && objToFollowMouse.localPosition.y < 8.5f));
                     }
                     
                     objToFollowMouse = null;
                 }
             }
         }
-
-        //조각 왼쪽으로 이동 버튼 눌렀을때
-        if(BlockPieceMoveLeft && Time.timeScale != 0f)
-        {
-            BlockPieces.transform.position = Vector3.MoveTowards(BlockPieces.transform.position, new Vector3(9 - (1.5f * levelData.NumberOfPieces), -3.75f, 0), 0.2f);
-        }
-
-        //조각 오른쪽으로 이동 버튼 눌렀을때
-        if (BlockPieceMoveRight && Time.timeScale != 0f)
-        {
-            BlockPieces.transform.position = Vector3.MoveTowards(BlockPieces.transform.position, new Vector3(-(9 - (1.5f * levelData.NumberOfPieces)), -3.75f, 0), 0.2f);
-        }
     }
 
     //게임 레벨 불러오기
     void LoadLevel()
     {
-        Debug.Log("LoadLevel() Start");
-
         GameObject prefab;
         GameObject obj;
         GameObject obj2;
@@ -258,38 +240,12 @@ public class Event : MonoBehaviour
             }
         }
 
-        //Instantiate 'Piece'
-        /*for (int i = 0; i < levelData.NumberOfPieces; i++)
-        {
-            prefab = Resources.Load("Prefabs/Piece") as GameObject;
-            obj = Instantiate(prefab, new Vector3(-3 * ((levelData.NumberOfPieces - 1) / 2f) + 3 * i, 0, 0), Quaternion.identity);           // 3 is the distance between pieces
-            obj.transform.SetParent(BlockPieces, false);
-            obj.GetComponent<VariableProvider>().pieceNum = i;
-
-            typeIndex = 0;
-            pieceHeight = levelData.pieceDatas[i].PieceHeight;
-            pieceWidth = levelData.pieceDatas[i].PieceWidth;
-            for(int j = 0; j < pieceHeight; j++)
-            {
-                for(int k = 0; k < pieceWidth; k++)
-                {
-                    if(levelData.pieceDatas[i].TileType[typeIndex] != 0)
-                    {
-                        prefab = Resources.Load("Prefabs/Tile" + levelData.pieceDatas[i].TileType[typeIndex].ToString()) as GameObject;
-                        obj2 = Instantiate(prefab, new Vector3(-pieceWidth + 1 + 2 * k, pieceHeight - 1 - 2 * j, 0), Quaternion.identity);
-                        obj2.transform.SetParent(obj.transform, false);
-                    }
-                    typeIndex++;
-                }
-            }
-        }*/
-
         //Random Puzzle Piece Position Version
         //PieceInitPosition = new Vector3[levelData.NumberOfPieces];
         for (int i = 0; i < levelData.NumberOfPieces; i++)
         {
             prefab = Resources.Load("Prefabs/Piece") as GameObject;
-            obj = Instantiate(prefab, new Vector3(Random.value < 0.5 ? Random.Range(-7.6f, -5.9f) : Random.Range(5.9f, 7.6f), Random.Range(0, 7.4f)), Quaternion.identity);           // 3 is the distance between pieces
+            obj = Instantiate(prefab, new Vector3(Random.value < 0.5 ? Random.Range(-7.6f, -5.9f) : Random.Range(5.9f, 7.6f), Random.Range(0, 7.4f)), Quaternion.identity);
             obj.transform.SetParent(BlockPieces, false);
             obj.GetComponent<VariableProvider>().pieceNum = i;
 
@@ -311,23 +267,21 @@ public class Event : MonoBehaviour
                 }
             }
         }
-
-        Debug.Log("LoadLevel() Finished");
     }
 
-    void SavePieceInitPosition()
+    void SavePiecePosition()
     {
-        PieceInitPosition = new Vector3[BlockPieces.childCount];
+        PiecePosition = new Vector3[BlockPieces.childCount];
         for (int i = 0; i < BlockPieces.childCount; i++)
         {
-            PieceInitPosition[i] = BlockPieces.GetChild(i).localPosition;
+            PiecePosition[i] = BlockPieces.GetChild(i).localPosition;
         }
     }
 
     //퍼즐 조각들이 모두 타일위에 놓아졌는지 확인
     void CheckIfAllTilesInPlace()
     {
-        if(PieceInitPosition.Length == BlockOnBoard.childCount)
+        if(PiecePosition.Length == BlockOnBoard.childCount)
         {
             GonfasterBtn.interactable = true;
         }
@@ -338,11 +292,20 @@ public class Event : MonoBehaviour
     }
 
     //퍼즐 조각 하나의 위치 초기화
-    void ResetPiecePosition(Transform piece)     //For some reason this works!
+    void ResetPiecePosition(Transform piece, bool movePiecePosition = false)
     {
         piece.SetParent(BlockPieces);
-        piece.localPosition = PieceInitPosition[piece.GetComponent<VariableProvider>().pieceNum];
         piece.localScale = new Vector3(UIPieceScale, UIPieceScale, 1);
+
+        if (movePiecePosition)
+        {
+            PiecePosition[objToFollowMouse.GetComponent<VariableProvider>().pieceNum] = objToFollowMouse.localPosition;
+        }
+        else
+        {
+            piece.localPosition = PiecePosition[piece.GetComponent<VariableProvider>().pieceNum];
+        }
+        
         for (int i = 0; i < piece.childCount; i++)
         {
             piece.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 75 + piece.GetComponent<VariableProvider>().pieceNum;
@@ -352,7 +315,6 @@ public class Event : MonoBehaviour
     //현재 스테이지 요소들 삭제
     void DeleteLevel()
     {
-        Debug.Log("DeleteLevel() Start");
         foreach (Transform child in TileBoard)
         {
             Destroy(child.gameObject);
@@ -365,7 +327,6 @@ public class Event : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        Debug.Log("DeleteLevel() Finished");
     }
 
     //출발/가속 버튼 State 1 -> 누르면 이동 시작, 2 -> 누르면 빨라짐, 3 -> 누르면 다시 원래 속도로 돌아옴
@@ -377,6 +338,7 @@ public class Event : MonoBehaviour
             MovePieceMode = false;
             goNFastBtnState = 2;
             GonfasterBtn.image.sprite = Resources.Load<Sprite>("Arts/FastForward");
+            SoundFXPlayer.Play("go");
         }
         else if(goNFastBtnState == 2)
         {
@@ -441,12 +403,7 @@ public class Event : MonoBehaviour
         ResetBtn.interactable = true;
         DeleteLevel();
         LoadLevel();
-        SavePieceInitPosition();
-        /*Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
-        for (int i = 0; i < PieceInitPosition.Length; i++)
-        {
-            Debug.Log(" i = " + i + " : " + PieceInitPosition[i]);
-        }*/
+        SavePiecePosition();
     }
 
     //테스트용 개발자 버튼용
@@ -464,7 +421,7 @@ public class Event : MonoBehaviour
         Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);*/
 
         //Change to next Level
-        if(hohoho == 1)
+        if (hohoho == 1)
         {
             DeleteLevel();
             //Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
@@ -474,38 +431,50 @@ public class Event : MonoBehaviour
         {
             levelNum++;
             LoadLevel();
-            SavePieceInitPosition();
+            SavePiecePosition();
             //Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
             hohoho = 1;
         }
     }
 
-    public void OnMoveLeftBtnDown(bool set)
+    //옵션 버튼을 눌러 Option창 토글
+    public void ToggleOptionPanel()
     {
-        BlockPieceMoveLeft = set;
+        if(OptionMenu.activeSelf)
+        {
+            OptionMenu.SetActive(false);
+            Time.timeScale = 1f;
+        }
+        else
+        {
+            OptionMenu.SetActive(true);
+            Time.timeScale = 0f;
+        }
     }
 
-    public void OnMoveRightBtnDown(bool set)
-    {
-        BlockPieceMoveRight = set;
-    }
-
-    public void OpenOptionPanel()
-    {
-        OptionMenu.SetActive(true);
-        Time.timeScale = 0f;
-    }
-
+    //옵션 창의 닫기 버튼을 눌러 Option창 닫기
     public void CloseOptionPanel()
     {
         OptionMenu.SetActive(false);
         Time.timeScale = 1f;
     }
 
-    public void SetVolume(float vol)
+    //오디오믹서의 배경음악 볼륨 조절
+    public void SetMusicVolume(float vol)
     {
-        AudioVolume = vol;
-        AudioSrc.volume = AudioVolume;
+        audioMixer.SetFloat("MusicVol", vol);
+    }
+
+    //오디오믹서의 효과음 볼륨 조절
+    public void SetSFXVolume(float vol)
+    {
+        audioMixer.SetFloat("SFXVol", vol);
+    }
+
+    //오디오믹서의 환경음 볼륨 조절
+    public void SetAmbienceVolume(float vol)
+    {
+        audioMixer.SetFloat("AmbienceVol", vol);
     }
 
     public void Hintsystem()
