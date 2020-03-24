@@ -45,10 +45,10 @@ public class Event : MonoBehaviour
     int firstTime = 1;
     public GameObject Tutotiral;
 
-    void Awake()
+    /*void Awake()
     {
         firstTime = PlayerPrefs.GetInt("tutorial");
-    }
+    }*/
 
     void Start()
     {
