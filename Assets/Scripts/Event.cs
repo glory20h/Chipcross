@@ -41,19 +41,38 @@ public class Event : MonoBehaviour
 
     int hohoho; //개발자 버튼용 변수
 
+    //튜토리얼
+    int firstTime = 1;
+    public GameObject Tutotiral;
+
+    void Awake()
+    {
+        firstTime = PlayerPrefs.GetInt("tutorial");
+    }
+
     void Start()
     {
-        //변수 초기화
-        InitializeVariables();
-        
-        //levelData 게임 스테이지 데이터베이스에서 데이터를 불러와서 현재 스테이지 생성
-        LoadLevel();
+        if (firstTime == 1)// 튜토리얼 시작
+        {
+            //PlayerPrefs.SetInt("tutorial", 0);
+            //PlayerPrefs.Save();
+            Tutotiral.SetActive(true);
+        }
+        else// load
+        {
+            stageLoad();
+            //변수 초기화
+            InitializeVariables();
 
-        //퍼즐 조각 초기 위치 저장
-        SavePiecePosition();
+            //levelData 게임 스테이지 데이터베이스에서 데이터를 불러와서 현재 스테이지 생성
+            LoadLevel();
 
-        //개발자 버튼용
-        hohoho = 1;
+            //퍼즐 조각 초기 위치 저장
+            SavePiecePosition();
+
+            //개발자 버튼용
+            hohoho = 1;
+        }
     }
 
     void InitializeVariables()
@@ -477,8 +496,39 @@ public class Event : MonoBehaviour
         audioMixer.SetFloat("AmbienceVol", vol);
     }
 
-    public void Hintsystem()
+    //save
+    void stageSave()
     {
-        Debug.Log("Hi");
+        PlayerPrefs.SetInt("tutorial", 1);
+        PlayerPrefs.Save();
+    }
+
+    //load
+    void stageLoad()
+    {
+        firstTime = PlayerPrefs.GetInt("tutorial");
+    }
+
+    //reset
+    void stageReset()
+    {
+        PlayerPrefs.SetInt("tutorial", 1);
+        PlayerPrefs.Save();
+    }
+
+    public void tutorialOff()
+    {
+        Tutotiral.SetActive(false);
+        //변수 초기화
+        InitializeVariables();
+
+        //levelData 게임 스테이지 데이터베이스에서 데이터를 불러와서 현재 스테이지 생성
+        LoadLevel();
+
+        //퍼즐 조각 초기 위치 저장
+        SavePiecePosition();
+
+        //개발자 버튼용
+        hohoho = 1;
     }
 }
