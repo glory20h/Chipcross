@@ -302,7 +302,7 @@ public class MoveBoi : MonoBehaviour
         {
             if(flickForce >= 1f)
             {
-                flickForce -= Time.deltaTime * 1.5f;
+                flickForce -= Time.deltaTime * 1.2f;
             }
             yield return null;
         }
