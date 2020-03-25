@@ -26,6 +26,8 @@ public class MoveBoi : MonoBehaviour
     bool metGirl;
 
     float fastForwardFactor;
+    float flickForce;
+    IEnumerator addFriction;
 
     char tileType;
     int xdir;
@@ -41,6 +43,7 @@ public class MoveBoi : MonoBehaviour
         isMoving = false;           //..왜 주석 처리 했었더라???
         metGirl = false;
         GoToNextLevelBtn.interactable = false;
+        addFriction = AddFriction();
     }
 
     void Update()
@@ -48,7 +51,7 @@ public class MoveBoi : MonoBehaviour
         if (isMoving)
         {
             //targetPosition(목표 타일의 중심)을 향해서 이동...
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * fastForwardFactor * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * fastForwardFactor * flickForce * Time.deltaTime);
             //목표 지점에 도착
             if(transform.position == targetPosition)
             {
@@ -81,13 +84,22 @@ public class MoveBoi : MonoBehaviour
                         warp = false;
                         warpDone = true;
                     }
+
+                    //사운드 FX 재생
+                    if (tileType != '1')
+                    {
+                        SoundFXPlayer.Play("flick");
+                        flickForce = 2f;
+                    }
+
                     targetPosition = transform.position + new Vector3(xdir * distanceBetweenTiles, ydir * distanceBetweenTiles, 0);
                     isThereNextTile = false;
                 }
                 else                    //Finish moving; Reached Girl? Or try try again??
                 {
-                    eventChanger.ResetGoNFasterButton();
+                    eventChanger.ResetGoNFaster();
                     isMoving = false;
+                    StopCoroutine(addFriction);
                     if (metGirl) //Correct Solution
                     {
                         Debug.Log("Puzzle solved!! Congrats!! :)");
@@ -98,6 +110,7 @@ public class MoveBoi : MonoBehaviour
                     }
                     else //Wrong Solution
                     {
+                        SoundFXPlayer.Play("fail");
                         StartCoroutine(DelayBoyFail(1.5f));
                         Debug.Log("Try try again!");
                     }
@@ -115,11 +128,13 @@ public class MoveBoi : MonoBehaviour
         targetPosition = initTargetPosition;
         GetComponent<BoxCollider2D>().enabled = true;
         isMoving = true;
+        StartCoroutine(addFriction);
+        flickForce = 2f;
     }
 
     public void FastForward()
     {
-        fastForwardFactor = 5f;
+        fastForwardFactor = 3f;
     }
 
     public void BackToNormalSpeed()
@@ -130,10 +145,11 @@ public class MoveBoi : MonoBehaviour
     public void ResetBoyMove()
     {
         //Make the boy stop moving and return to its original position
-        eventChanger.ResetGoNFasterButton();
+        eventChanger.ResetGoNFaster();
         eventChanger.MovePieceMode = true;
         transform.position = boiInitPos;
         isMoving = false;
+        StopCoroutine(addFriction);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -280,6 +296,18 @@ public class MoveBoi : MonoBehaviour
         }
     }
 
+    IEnumerator AddFriction()
+    {
+        while(true)
+        {
+            if(flickForce >= 1f)
+            {
+                flickForce -= Time.deltaTime * 1.2f;
+            }
+            yield return null;
+        }
+    }
+
     IEnumerator DelayBoyFail(float time)
     {
         yield return new WaitForSeconds(time);
@@ -289,6 +317,7 @@ public class MoveBoi : MonoBehaviour
 
     public void DevBtn()
     {
-        Debug.Log("isMoving : " + isMoving);
+        float force = 0.5f;
+        GetComponent<Rigidbody2D>().AddForce(new Vector2(0, -1) * force, ForceMode2D.Impulse);
     }
 }

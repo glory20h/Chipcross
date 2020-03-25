@@ -376,7 +376,7 @@ public class Event : MonoBehaviour
     }
 
     //출발/가속 버튼 State 초기화
-    public void ResetGoNFasterButton()
+    public void ResetGoNFaster()
     {
         goNFastBtnState = 1;
         GonfasterBtn.image.sprite = Resources.Load<Sprite>("Arts/Goooo");
@@ -389,7 +389,7 @@ public class Event : MonoBehaviour
         {
             //Reset the boy moving
             Boy.GetComponent<MoveBoi>().ResetBoyMove();
-            ResetGoNFasterButton();
+            ResetGoNFaster();
         }
         else //During Puzzle Solving Phase
         {
