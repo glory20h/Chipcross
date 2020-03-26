@@ -45,6 +45,8 @@ public class Event_map : MonoBehaviour
     //Temporary Variables (For Testing Purposes) 테스트용 변수들
     int hohoho; //개발자 버튼용 변수
     public bool gobuttononoff=true;
+
+    //checking
     [HideInInspector]
     public string checking;
 
@@ -211,7 +213,6 @@ public class Event_map : MonoBehaviour
         GameObject obj2;
 
         levelData.LoadLevelData(levelNum);
-        checking = levelData.Newmap;
         int typeIndex;
         int pieceHeight;
         int pieceWidth;

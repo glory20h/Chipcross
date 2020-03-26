@@ -164,7 +164,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: ca8b5a1855c99f449becb0007fdad28b, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0
+  m_Volume: 1
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1077,10 +1077,11 @@ MonoBehaviour:
   GoToNextLevelBtn: {fileID: 1168419479}
   GoNFasterButton: {fileID: 682712124}
   ResetButton: {fileID: 711313912}
-  speed: 2
+  speed: 4
   distanceBetweenTiles: 0
   initTargetPosition: {x: 0, y: 0, z: 0}
   isMoving: 0
+  content: 
 --- !u!50 &566818438
 Rigidbody2D:
   serializedVersion: 4
@@ -1879,7 +1880,6 @@ MonoBehaviour:
   GirlPos: 0
   NumberOfPieces: 0
   BoardEmptyTileTypeInfo: 
-  Newmap: 
   timer: {fileID: 1783125464}
   nevergiveup: 
 --- !u!4 &1113007801

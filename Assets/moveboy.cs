@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
-
+using System.IO;
 
 public class moveboy : MonoBehaviour
 {
@@ -37,13 +36,15 @@ public class moveboy : MonoBehaviour
     bool warpDone = false;
 
     //textfile용 변수
+    [HideInInspector]
+    public string content;
 
     void Start()
     {
         //isMoving = false;
         metGirl = false;
         GoToNextLevelBtn.interactable = false;
-        //content = map.GetComponent<MakeNewMap>().nevergiveup;
+        content = map.GetComponent<MakeNewMap>().nevergiveup;
     }
 
     void Update()
@@ -59,7 +60,6 @@ public class moveboy : MonoBehaviour
                     isMoving = false;
                     StartCoroutine(DelayBoyFail(1.5f));
                     Debug.Log("Try try again!");
-
                     eventmap.ChangeLevelAndMoveBoy();
                 }
                 if (isThereNextTile)    //If the Boi is still on the tile
@@ -76,7 +76,7 @@ public class moveboy : MonoBehaviour
                         StartCoroutine(DelayBoyFail(1.5f));
                         Debug.Log("Puzzle solved!! Congrats!! :)");
                         metGirl = false;
-                        CreateText(eventmap.checking);
+                        CreateText();
                         eventmap.ChangeLevelAndMoveBoy();
                         /*GoToNextLevelBtn.interactable = true;
                         GoNFasterButton.interactable = false;
@@ -87,7 +87,6 @@ public class moveboy : MonoBehaviour
                     {
                         StartCoroutine(DelayBoyFail(1.5f));
                         Debug.Log("Try try again!");
-
                         eventmap.ChangeLevelAndMoveBoy();
                     }
                 }
@@ -246,7 +245,7 @@ public class moveboy : MonoBehaviour
         //transform.position = boiInitPos;
     }
 
-    public void CreateText(string content)
+    void CreateText()
     {
         //Path of the file
         string path = Application.dataPath + "/Mapcontent.txt";
@@ -256,8 +255,10 @@ public class moveboy : MonoBehaviour
             File.WriteAllText(path, "start \n\n");
         }
         //Content of the file
+        content = map.GetComponent<MakeNewMap>().nevergiveup;
+        Debug.Log(content);
         //Add some to text to it
-        File.AppendAllText(path, "\n" + content);
+        File.AppendAllText(path, content);
     }
 
 }
