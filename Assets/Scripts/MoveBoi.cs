@@ -100,6 +100,7 @@ public class MoveBoi : MonoBehaviour
                     eventChanger.ResetGoNFaster();
                     isMoving = false;
                     StopCoroutine(addFriction);
+
                     if (metGirl) //Correct Solution
                     {
                         Debug.Log("Puzzle solved!! Congrats!! :)");
