@@ -173,7 +173,7 @@ MonoBehaviour:
   GonfasterBtn: {fileID: 682712124}
   OptionMenu: {fileID: 1473720125}
   OptionExit: {fileID: 737905258}
-  PuzzleSolvedPanel: {fileID: 0}
+  PuzzleSolvedPanel: {fileID: 290660372}
   MovePieceMode: 0
   tutorialPanel: {fileID: 2124971657}
   Tile: {fileID: 1412970940}

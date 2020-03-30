@@ -44,7 +44,6 @@ public class MoveBoi : MonoBehaviour
     {
         isMoving = false;           //..왜 주석 처리 했었더라???
         metGirl = false;
-        GoToNextLevelBtn.interactable = false;
         addFriction = AddFriction();
     }
 
@@ -320,7 +319,7 @@ public class MoveBoi : MonoBehaviour
 
     IEnumerator PuzzleSolved()
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.6f);
         PuzzleSolvedPanel.SetActive(true);
         SoundFXPlayer.Play("positiveVibe");
     }

@@ -436,6 +436,7 @@ public class Event : MonoBehaviour
             LoadLevel();
             SavePiecePosition();
         }
+        PuzzleSolvedPanel.SetActive(false);
     }
 
     //테스트용 개발자 버튼용
