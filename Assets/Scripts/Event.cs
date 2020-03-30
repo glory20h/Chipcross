@@ -19,6 +19,8 @@ public class Event : MonoBehaviour
     public static bool GameIsPaused = false; // Game pause
     public Button OptionExit;       // 옵션 나가기
 
+    public GameObject PuzzleSolvedPanel;     //Puzzle Solved Panel
+
     Vector2 mousePos;               //마우스의 2차원상 위치
     Transform objToFollowMouse;     //마우스를 따라 다닐 물체(퍼즐 조각)
     GameObject[] triggeredObjects;  //Array stores info on EmptyTiles        //퍼즐 조각의 빈 타일 탐지용
@@ -42,7 +44,7 @@ public class Event : MonoBehaviour
     int hohoho; //개발자 버튼용 변수
 
     //튜토리얼
-    int firstTime = 1;
+    int firstTime = 2;
     public GameObject tutorialPanel;
 
     /*void Awake()
@@ -423,6 +425,7 @@ public class Event : MonoBehaviour
         DeleteLevel();
         LoadLevel();
         SavePiecePosition();
+
     }
 
     //테스트용 개발자 버튼용

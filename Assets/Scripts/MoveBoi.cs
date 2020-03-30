@@ -14,6 +14,8 @@ public class MoveBoi : MonoBehaviour
     public Button GoNFasterButton;
     public Button ResetButton;
 
+    public GameObject PuzzleSolvedPanel;
+
     public float speed;
     public float distanceBetweenTiles;
 
@@ -104,7 +106,7 @@ public class MoveBoi : MonoBehaviour
                     if (metGirl) //Correct Solution
                     {
                         Debug.Log("Puzzle solved!! Congrats!! :)");
-                        GoToNextLevelBtn.interactable = true;
+                        StartCoroutine(PuzzleSolved());
                         GoNFasterButton.interactable = false;
                         ResetButton.interactable = false;
                         metGirl = false;
@@ -314,6 +316,13 @@ public class MoveBoi : MonoBehaviour
         yield return new WaitForSeconds(time);
         eventChanger.MovePieceMode = true;
         transform.position = boiInitPos;
+    }
+
+    IEnumerator PuzzleSolved()
+    {
+        yield return new WaitForSeconds(1.0f);
+        PuzzleSolvedPanel.SetActive(true);
+        SoundFXPlayer.Play("positiveVibe");
     }
 
     public void DevBtn()
