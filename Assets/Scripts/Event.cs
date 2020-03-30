@@ -44,6 +44,7 @@ public class Event : MonoBehaviour
     //튜토리얼
     int firstTime = 1;
     public GameObject tutorialPanel;
+    public GameObject Tile;
 
     /*void Awake()
     {
@@ -55,6 +56,7 @@ public class Event : MonoBehaviour
         if (firstTime == 1)// 튜토리얼 시작
         {
             //PlayerPrefs.SetInt("tutorial", 0);
+            PlayerPrefs.SetInt("Piecedata", 5);
             //PlayerPrefs.Save();
             tutorialPanel.SetActive(true);
         }
@@ -421,8 +423,17 @@ public class Event : MonoBehaviour
         MovePieceMode = true;
         ResetBtn.interactable = true;
         DeleteLevel();
-        LoadLevel();
-        SavePiecePosition();
+        levelData.LoadLevelData(levelNum);//For check new tile;
+        if (levelData.tutorialCase)
+        {
+            Tile.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Theme1Tile" + PlayerPrefs.GetInt("Piecedata"));
+            tutorialPanel.SetActive(true);
+        }
+        else
+        {
+            LoadLevel();
+            SavePiecePosition();
+        }
     }
 
     //테스트용 개발자 버튼용
@@ -518,18 +529,27 @@ public class Event : MonoBehaviour
 
     public void tutorialOff()
     {
-        tutorialPanel.SetActive(false);
+        //Debug.Log(PlayerPrefs.GetInt("Piecedata"));
+        if (PlayerPrefs.GetInt("Piecedata") == 5)
+        {
+            tutorialPanel.SetActive(false);
+            //변수 초기화
+            InitializeVariables();
 
-        //변수 초기화
-        InitializeVariables();
+            //levelData 게임 스테이지 데이터베이스에서 데이터를 불러와서 현재 스테이지 생성
+            LoadLevel();
 
-        //levelData 게임 스테이지 데이터베이스에서 데이터를 불러와서 현재 스테이지 생성
-        LoadLevel();
+            //퍼즐 조각 초기 위치 저장
+            SavePiecePosition();
 
-        //퍼즐 조각 초기 위치 저장
-        SavePiecePosition();
-
-        //개발자 버튼용
-        hohoho = 1;
+            //개발자 버튼용
+            hohoho = 1;
+        }
+        else
+        {
+            tutorialPanel.SetActive(false);
+            LoadLevel();
+            SavePiecePosition();
+        }
     }
 }
