@@ -176,6 +176,7 @@ MonoBehaviour:
   PuzzleSolvedPanel: {fileID: 0}
   MovePieceMode: 0
   tutorialPanel: {fileID: 2124971657}
+  Tile: {fileID: 1412970940}
 --- !u!1 &13261064
 GameObject:
   m_ObjectHideFlags: 0
