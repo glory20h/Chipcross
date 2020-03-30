@@ -43,7 +43,7 @@ public class Event : MonoBehaviour
 
     //튜토리얼
     int firstTime = 1;
-    public GameObject Tutotiral;
+    public GameObject tutorialPanel;
 
     /*void Awake()
     {
@@ -56,7 +56,7 @@ public class Event : MonoBehaviour
         {
             //PlayerPrefs.SetInt("tutorial", 0);
             //PlayerPrefs.Save();
-            Tutotiral.SetActive(true);
+            tutorialPanel.SetActive(true);
         }
         else// load
         {
@@ -518,7 +518,8 @@ public class Event : MonoBehaviour
 
     public void tutorialOff()
     {
-        Tutotiral.SetActive(false);
+        tutorialPanel.SetActive(false);
+
         //변수 초기화
         InitializeVariables();
 
