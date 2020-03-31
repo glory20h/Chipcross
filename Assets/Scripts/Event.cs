@@ -53,11 +53,10 @@ public class Event : MonoBehaviour
 
     void Start()
     {
-        if (firstTime == 1)// 튜토리얼 시작
+        if (firstTime == 1 && PlayerPrefs.GetInt("tutorial") == 0)// 튜토리얼 시작, 한번 튜토리얼하면 다시 안나타남
         {
-            //PlayerPrefs.SetInt("tutorial", 0);
-            PlayerPrefs.SetInt("Piecedata", 5);
-            //PlayerPrefs.Save();
+            PlayerPrefs.SetInt("Piecedata" + 1, 1);
+            PlayerPrefs.Save();
             tutorialPanel.SetActive(true);
         }
         else// load
@@ -206,6 +205,7 @@ public class Event : MonoBehaviour
         GameObject obj2;
 
         levelData.LoadLevelData(levelNum);
+        PlayerPrefs.SetInt("LevelDatabase", levelNum);//레벨 저장 일단
         int typeIndex;
         int pieceHeight;
         int pieceWidth;
@@ -527,11 +527,12 @@ public class Event : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    public void tutorialOff()
+    public void tutorialOff()//tutorial on/off -> 버튼
     {
-        //Debug.Log(PlayerPrefs.GetInt("Piecedata"));
-        if (PlayerPrefs.GetInt("Piecedata") == 5)
+        if (PlayerPrefs.GetInt("tutorial") == 0)// 0이면 처음부터
         {
+            PlayerPrefs.SetInt("tutorial", 1);// 1이면 loadlevel 사용
+
             tutorialPanel.SetActive(false);
             //변수 초기화
             InitializeVariables();
@@ -545,11 +546,20 @@ public class Event : MonoBehaviour
             //개발자 버튼용
             hohoho = 1;
         }
-        else
+        else//level불러오는거
         {
             tutorialPanel.SetActive(false);
             LoadLevel();
             SavePiecePosition();
+        }
+    }
+
+    function LoadTutorialPieces(int pieceNum)
+    {
+        switch (pieceNum)
+        {
+            case 1:
+                break;
         }
     }
 }

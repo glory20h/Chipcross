@@ -147,16 +147,45 @@ public class LevelDatabase
         return board;
     }
 
-    void CheckNewPieces(int[] pieceinfo)//pieceinfo = stringinfo
+    void CheckNewPieces(int[] pieceinfo)//pieceinfo = stringinfo -> 바꾸는 형식은 PlayerPrefs.SetInt("Piecedata"+i, 0); -> 0이면 false 1이면 True
     {
-        int piecedata = PlayerPrefs.GetInt("Piecedata");//지금까지 타일
         int i = 0;
         for (; i < pieceinfo.Length; i++)
         {
-            if (pieceinfo[i] > piecedata)//지금까지 나온 타일보다 크면 새로운 타일
+            switch (pieceinfo[i])// 그 타일이 나오면 True 값인 1로 만듬 작동 잘됨 전부 1로 나옴. case1은 빈타일이라 필요 없음
             {
-                tutorialCase = true;
-                PlayerPrefs.SetInt("Piecedata", pieceinfo[i]);
+                case 2:
+                    PlayerPrefs.SetInt("Piecedata" + 2, 1);
+                    tutorialCase = true;
+                    break;
+                case 3:
+                    PlayerPrefs.SetInt("Piecedata" + 3, 1);
+                    tutorialCase = true;
+                    break;
+                case 4:
+                    PlayerPrefs.SetInt("Piecedata" + 4, 1);
+                    tutorialCase = true;
+                    break;
+                case 5:
+                    PlayerPrefs.SetInt("Piecedata" + 5, 1);
+                    tutorialCase = true;
+                    break;
+                case 6:
+                    PlayerPrefs.SetInt("Piecedata" + 6, 1);
+                    tutorialCase = true;
+                    break;
+                case 7:
+                    PlayerPrefs.SetInt("Piecedata" + 7, 1);
+                    tutorialCase = true;
+                    break;
+                case 8:
+                    PlayerPrefs.SetInt("Piecedata" + 8, 1);
+                    tutorialCase = true;
+                    break;
+                case 9:
+                    PlayerPrefs.SetInt("Piecedata" + 9, 1);
+                    tutorialCase = true;
+                    break;
             }
         }
     }
