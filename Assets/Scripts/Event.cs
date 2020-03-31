@@ -554,7 +554,7 @@ public class Event : MonoBehaviour
         }
     }
 
-    function LoadTutorialPieces(int pieceNum)
+    void LoadTutorialPieces(int pieceNum)// for로 돌릴생각이었는데... 흠
     {
         switch (pieceNum)
         {
