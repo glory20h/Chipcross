@@ -538,7 +538,7 @@ public class Event : MonoBehaviour
             InitializeVariables();
 
             //levelData 게임 스테이지 데이터베이스에서 데이터를 불러와서 현재 스테이지 생성
-            LoadLevel();
+            LoadLevel(); //Gonextlevel에서 내가 항상 확인을 하게끔해놨는데 이걸 어케하지
 
             //퍼즐 조각 초기 위치 저장
             SavePiecePosition();
