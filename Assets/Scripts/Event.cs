@@ -424,9 +424,8 @@ public class Event : MonoBehaviour
         ResetBtn.interactable = true;
         DeleteLevel();
         levelData.LoadLevelData(levelNum);//For check new tile;
-        if (levelData.tutorialCase)
+        if (levelData.tutorialCase)// 바꾸어야될듯? -> leveldata에서 CheckNewPieces앞에 false해서 이제 ㄱㅊ
         {
-            Tile.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Theme1Tile" + PlayerPrefs.GetInt("Piecedata"));
             tutorialPanel.SetActive(true);
         }
         else
@@ -551,15 +550,6 @@ public class Event : MonoBehaviour
             tutorialPanel.SetActive(false);
             LoadLevel();
             SavePiecePosition();
-        }
-    }
-
-    void LoadTutorialPieces(int pieceNum)// for로 돌릴생각이었는데... 흠
-    {
-        switch (pieceNum)
-        {
-            case 1:
-                break;
         }
     }
 }

@@ -46,6 +46,7 @@ public class LevelDatabase
     public void ConvertStringToPieceInfo(string s)
     {
         int[] data = ConvertStringToIntArray(s);
+        tutorialCase = false;
         CheckNewPieces(data);
         int d = 0;
         int pieceSize;
@@ -155,35 +156,35 @@ public class LevelDatabase
             switch (pieceinfo[i])// 그 타일이 나오면 True 값인 1로 만듬 작동 잘됨 전부 1로 나옴. case1은 빈타일이라 필요 없음
             {
                 case 2:
-                    PlayerPrefs.SetInt("Piecedata" + 2, 1);
+                    PlayerPrefs.SetInt("Piecedata", 1);
                     tutorialCase = true;
                     break;
                 case 3:
-                    PlayerPrefs.SetInt("Piecedata" + 3, 1);
+                    PlayerPrefs.SetInt("Piecedata", 1);
                     tutorialCase = true;
                     break;
                 case 4:
-                    PlayerPrefs.SetInt("Piecedata" + 4, 1);
+                    PlayerPrefs.SetInt("Piecedata", 1);
                     tutorialCase = true;
                     break;
                 case 5:
-                    PlayerPrefs.SetInt("Piecedata" + 5, 1);
+                    PlayerPrefs.SetInt("Piecedata", 1);
                     tutorialCase = true;
                     break;
                 case 6:
-                    PlayerPrefs.SetInt("Piecedata" + 6, 1);
+                    PlayerPrefs.SetInt("Piecedata", 2);
                     tutorialCase = true;
                     break;
                 case 7:
-                    PlayerPrefs.SetInt("Piecedata" + 7, 1);
+                    PlayerPrefs.SetInt("Piecedata", 2);
                     tutorialCase = true;
                     break;
                 case 8:
-                    PlayerPrefs.SetInt("Piecedata" + 8, 1);
+                    PlayerPrefs.SetInt("Piecedata", 3);
                     tutorialCase = true;
                     break;
                 case 9:
-                    PlayerPrefs.SetInt("Piecedata" + 9, 1);
+                    PlayerPrefs.SetInt("Piecedata", 3);
                     tutorialCase = true;
                     break;
             }
