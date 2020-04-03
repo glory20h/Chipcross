@@ -20,6 +20,7 @@ public class TutorialAnimation : MonoBehaviour
 
     bool tutorial = false;
     int piece = 1;
+    GameObject prefab;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,7 +35,8 @@ public class TutorialAnimation : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, target.position, step);
             //westhide.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Theme1Tile" + PlayerPrefs.GetInt("Piecedata")); 
-            westhide = Resources.Load("Prefabs/Theme1Tile" + 2) as GameObject;
+            westhide = Resources.Load("Prefabs/Tile" + 8) as GameObject; // 이거 개웃기네 여기서는 tile로 바뀌는데 실제로는 안바뀜;;
+            Debug.Log(westhide = Resources.Load("Prefabs/Tile" + 8) as GameObject);
             if (goBack)
             {
                 transform.position = targetPosition;
@@ -46,7 +48,7 @@ public class TutorialAnimation : MonoBehaviour
             switch(piece)
             {
                 case 1:
-                    westhide = Resources.Load("Prefabs/Theme1Tile" + 2) as GameObject;
+                    westhide = Resources.Load("Prefabs/Tile" + 2) as GameObject;
                     break;
                 case 2:
                     break;
