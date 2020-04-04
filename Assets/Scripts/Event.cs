@@ -300,6 +300,7 @@ public class Event : MonoBehaviour
         {
             PiecePosition[i] = BlockPieces.GetChild(i).localPosition;
         }
+        Debug.Log("SavePiecePosition() -> PiecePosition.Length : " + PiecePosition.Length);
     }
 
     //퍼즐 조각들이 모두 타일위에 놓아졌는지 확인
@@ -339,7 +340,22 @@ public class Event : MonoBehaviour
     //현재 스테이지 요소들 삭제
     void DeleteLevel()
     {
-        foreach (Transform child in TileBoard)
+        for (int i = TileBoard.childCount - 1; i >= 0; i--)
+        {
+            Destroy(TileBoard.GetChild(i).gameObject);
+        }
+        Debug.Log("DeleteLevel() ->  TileBoard.childCount : " + TileBoard.childCount);
+        for (int i = BlockPieces.childCount - 1; i >= 0; i--)
+        {
+            Destroy(BlockPieces.GetChild(i).gameObject);
+        }
+        Debug.Log("DeleteLevel() -> BlockPieces.childCount : " + BlockPieces.childCount);
+        for (int i = BlockOnBoard.childCount - 1; i >= 0; i--)
+        {
+            Destroy(BlockOnBoard.GetChild(i).gameObject);
+        }
+        Debug.Log("DeleteLevel() -> BlockOnBoard.childCount : " + BlockOnBoard.childCount);
+        /*foreach (Transform child in TileBoard)
         {
             Destroy(child.gameObject);
         }
@@ -350,7 +366,7 @@ public class Event : MonoBehaviour
         foreach (Transform child in BlockOnBoard)
         {
             Destroy(child.gameObject);
-        }
+        }*/
     }
 
     //출발/가속 버튼 State 1 -> 누르면 이동 시작, 2 -> 누르면 빨라짐, 3 -> 누르면 다시 원래 속도로 돌아옴
@@ -458,14 +474,14 @@ public class Event : MonoBehaviour
     //테스트용 개발자 버튼용
     public void DevBtnAct()  //Go To Level X
     {
-        /*levelNum++;
+        levelNum++;
         DeleteLevel();
         LoadLevel();
-        Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
-        SavePieceInitPosition();
-        for(int i = 0; i < PieceInitPosition.Length; i++)
+        //Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
+        SavePiecePosition();
+        /*for(int i = 0; i < PiecePosition.Length; i++)
         {
-            Debug.Log(" i = " + i + " : " + PieceInitPosition[i]);
+            Debug.Log(" i = " + i + " : " + PiecePosition[i]);
         }
         Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);*/
 
@@ -484,18 +500,6 @@ public class Event : MonoBehaviour
             //Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
             hohoho = 1;
         }*/
-
-        int[] Number = new int[5];
-        Number[0] = 0;
-        Number[1] = 1;
-        Number[2] = 2;
-        Number[3] = 3;
-        Number[4] = 4;
-
-        foreach (int number in Number)
-        {
-            Debug.Log(number);
-        }
     }
 
     //옵션 버튼을 눌러 Option창 토글
