@@ -17,12 +17,15 @@ public class MoveBoi : MonoBehaviour
     public GameObject PuzzleSolvedPanel;
 
     public float speed;
+    [HideInInspector]
     public float distanceBetweenTiles;
 
+    [HideInInspector]
     public Vector3 initTargetPosition;
     Vector3 targetPosition; // 이거 중요함....
     Vector3 boiInitPos;
 
+    [HideInInspector]
     public bool isMoving;
     bool isThereNextTile;
     bool metGirl;

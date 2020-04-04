@@ -39,6 +39,7 @@ public class Event : MonoBehaviour
     float pieceScale;
 
     //boolean for Update Function //Update에 쓸 bool 변수
+    [HideInInspector]
     public bool MovePieceMode;
 
     int hohoho; //개발자 버튼용 변수
@@ -439,6 +440,21 @@ public class Event : MonoBehaviour
         PuzzleSolvedPanel.SetActive(false);
     }
 
+    public void PlayAgain()
+    {
+        MovePieceMode = true;
+        ResetBtn.interactable = true;
+        for (int i = BlockOnBoard.childCount-1; i >= 0; i--)
+        {
+            Debug.Log(i);
+            ResetPiecePosition(BlockOnBoard.GetChild(i));
+        }
+        /////
+        //       Reset Boi
+        /////
+        PuzzleSolvedPanel.SetActive(false);
+    }
+
     //테스트용 개발자 버튼용
     public void DevBtnAct()  //Go To Level X
     {
@@ -454,7 +470,7 @@ public class Event : MonoBehaviour
         Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);*/
 
         //Change to next Level
-        if (hohoho == 1)
+        /*if (hohoho == 1)
         {
             DeleteLevel();
             //Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
@@ -467,6 +483,18 @@ public class Event : MonoBehaviour
             SavePiecePosition();
             //Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
             hohoho = 1;
+        }*/
+
+        int[] Number = new int[5];
+        Number[0] = 0;
+        Number[1] = 1;
+        Number[2] = 2;
+        Number[3] = 3;
+        Number[4] = 4;
+
+        foreach (int number in Number)
+        {
+            Debug.Log(number);
         }
     }
 
