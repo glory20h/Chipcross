@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class Event : MonoBehaviour
 {
@@ -41,8 +41,6 @@ public class Event : MonoBehaviour
     //boolean for Update Function //Update에 쓸 bool 변수
     [HideInInspector]
     public bool MovePieceMode;
-
-    int hohoho; //개발자 버튼용 변수
 
     //튜토리얼
     int firstTime = 2;
@@ -213,9 +211,6 @@ public class Event : MonoBehaviour
         int pieceHeight;
         int pieceWidth;
 
-        //Reset Position of BlockPieces
-        BlockPieces.transform.position = new Vector3(0, -3.75f, 0);
-
         //Add Scaling by scaleSize!
         scaleFactor = 1 - 0.2f * (levelData.scaleSize - 1);
         distanceBetweenTiles = 2 * scaleFactor;
@@ -300,7 +295,6 @@ public class Event : MonoBehaviour
         {
             PiecePosition[i] = BlockPieces.GetChild(i).localPosition;
         }
-        Debug.Log("SavePiecePosition() -> PiecePosition.Length : " + PiecePosition.Length);
     }
 
     //퍼즐 조각들이 모두 타일위에 놓아졌는지 확인
@@ -342,31 +336,36 @@ public class Event : MonoBehaviour
     {
         for (int i = TileBoard.childCount - 1; i >= 0; i--)
         {
-            Destroy(TileBoard.GetChild(i).gameObject);
+            DestroyImmediate(TileBoard.GetChild(i).gameObject);
         }
-        Debug.Log("DeleteLevel() ->  TileBoard.childCount : " + TileBoard.childCount);
+        
         for (int i = BlockPieces.childCount - 1; i >= 0; i--)
         {
-            Destroy(BlockPieces.GetChild(i).gameObject);
+            DestroyImmediate(BlockPieces.GetChild(i).gameObject);
         }
-        Debug.Log("DeleteLevel() -> BlockPieces.childCount : " + BlockPieces.childCount);
+        
         for (int i = BlockOnBoard.childCount - 1; i >= 0; i--)
         {
-            Destroy(BlockOnBoard.GetChild(i).gameObject);
+            DestroyImmediate(BlockOnBoard.GetChild(i).gameObject);
         }
-        Debug.Log("DeleteLevel() -> BlockOnBoard.childCount : " + BlockOnBoard.childCount);
-        /*foreach (Transform child in TileBoard)
+    }
+
+    //보드위 BlockOnBoard 초기화
+    void ResetBoard()
+    {
+        Transform objToReset;
+        for (int i = BlockOnBoard.childCount - 1; i >= 0; i--)
         {
-            Destroy(child.gameObject);
+            objToReset = BlockOnBoard.GetChild(0);
+
+            for (int j = 0; j < objToReset.childCount; j++)
+            {
+                objToReset.GetChild(j).GetChild(0).GetComponent<TileCollideDetection>().overlappedObject.GetComponent<BoxCollider2D>().enabled = true;
+                objToReset.GetChild(j).GetChild(0).GetComponent<BoxCollider2D>().enabled = true;
+            }
+
+            ResetPiecePosition(objToReset);
         }
-        foreach (Transform child in BlockPieces)
-        {
-            Destroy(child.gameObject);
-        }
-        foreach (Transform child in BlockOnBoard)
-        {
-            Destroy(child.gameObject);
-        }*/
     }
 
     //출발/가속 버튼 State 1 -> 누르면 이동 시작, 2 -> 누르면 빨라짐, 3 -> 누르면 다시 원래 속도로 돌아옴
@@ -414,23 +413,7 @@ public class Event : MonoBehaviour
         }
         else //During Puzzle Solving Phase
         {
-            //Reset Position of BlockPieces
-            BlockPieces.transform.position = new Vector3(0, -3.75f, 0);
-
-            Transform objToReset;
-            while (BlockOnBoard.childCount > 0)
-            {
-                objToReset = BlockOnBoard.GetChild(0);
-
-                for (int i = 0; i < objToReset.childCount; i++)
-                {
-                    objToReset.GetChild(i).GetChild(0).GetComponent<TileCollideDetection>().overlappedObject.GetComponent<BoxCollider2D>().enabled = true;
-                    objToReset.GetChild(i).GetChild(0).GetComponent<BoxCollider2D>().enabled = true;
-                }
-
-                ResetPiecePosition(BlockOnBoard.GetChild(0));
-            }
-
+            ResetBoard();
             GonfasterBtn.interactable = false;
         }
     }
@@ -460,46 +443,19 @@ public class Event : MonoBehaviour
     {
         MovePieceMode = true;
         ResetBtn.interactable = true;
-        for (int i = BlockOnBoard.childCount-1; i >= 0; i--)
-        {
-            Debug.Log(i);
-            ResetPiecePosition(BlockOnBoard.GetChild(i));
-        }
-        /////
-        //       Reset Boi
-        /////
+        ResetBoard();
+        Boy.GetComponent<MoveBoi>().ResetBoyPosition();
         PuzzleSolvedPanel.SetActive(false);
     }
 
     //테스트용 개발자 버튼용
     public void DevBtnAct()  //Go To Level X
     {
+        //바로 다음 퍼즐로 ㄱ
         levelNum++;
         DeleteLevel();
         LoadLevel();
-        //Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
         SavePiecePosition();
-        /*for(int i = 0; i < PiecePosition.Length; i++)
-        {
-            Debug.Log(" i = " + i + " : " + PiecePosition[i]);
-        }
-        Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);*/
-
-        //Change to next Level
-        /*if (hohoho == 1)
-        {
-            DeleteLevel();
-            //Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
-            hohoho++;
-        }
-        else
-        {
-            levelNum++;
-            LoadLevel();
-            SavePiecePosition();
-            //Debug.Log("BlockPieces.childCount : " + BlockPieces.childCount);
-            hohoho = 1;
-        }*/
     }
 
     //옵션 버튼을 눌러 Option창 토글

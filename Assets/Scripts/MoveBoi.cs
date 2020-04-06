@@ -152,9 +152,14 @@ public class MoveBoi : MonoBehaviour
         //Make the boy stop moving and return to its original position
         eventChanger.ResetGoNFaster();
         eventChanger.MovePieceMode = true;
-        transform.position = boiInitPos;
+        ResetBoyPosition();
         isMoving = false;
         StopCoroutine(addFriction);
+    }
+
+    public void ResetBoyPosition()
+    {
+        transform.position = boiInitPos;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -325,11 +330,5 @@ public class MoveBoi : MonoBehaviour
         yield return new WaitForSeconds(0.6f);
         PuzzleSolvedPanel.SetActive(true);
         SoundFXPlayer.Play("positiveVibe");
-    }
-
-    public void DevBtn()
-    {
-        float force = 0.5f;
-        GetComponent<Rigidbody2D>().AddForce(new Vector2(0, -1) * force, ForceMode2D.Impulse);
     }
 }
