@@ -72,9 +72,6 @@ public class Event : MonoBehaviour
 
             //퍼즐 조각 초기 위치 저장
             SavePiecePosition();
-
-            //개발자 버튼용
-            hohoho = 1;
         }
     }
 
@@ -532,9 +529,6 @@ public class Event : MonoBehaviour
 
             //퍼즐 조각 초기 위치 저장
             SavePiecePosition();
-
-            //개발자 버튼용
-            hohoho = 1;
         }
         else
         {
