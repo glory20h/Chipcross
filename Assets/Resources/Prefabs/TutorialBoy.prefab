@@ -141,5 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05f2556b638fa2e47a76d9f992f04961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 50
   distanceBetweenTiles: 0
-  speed: 1.9
+  initTargetPosition: {x: 0, y: 0, z: 0}
+  isMoving: 0

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class TutorialAnimation : MonoBehaviour
 {
+    TutorialBoy TutorialBoyMove;
     public Transform TutorialPanel;
     public Transform target;
     Vector3 targetPosition;
@@ -142,6 +143,7 @@ public class TutorialAnimation : MonoBehaviour
                         break;
                 }
             }
+
             //prefab.transform.position = Vector3.MoveTowards(transform.position, prefab1.transform.position, step);
         }
         else if(PlayerPrefs.GetInt("tutorial") == 1 && PlayerPrefs.GetInt("Piecedata") == 2)// 6~7타일인지

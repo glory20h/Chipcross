@@ -5,34 +5,44 @@ using UnityEngine.UI;
 
 public class TutorialBoy : MonoBehaviour
 {
-    bool metGirl = false;
-    Vector3 targetPosition;
+    TutorialAnimation Tutorialscript;
+    public float speed;
+    public float distanceBetweenTiles;
+
+    public Vector3 initTargetPosition;
+    Vector3 targetPosition; // 이거 중요함....
+    Vector3 boiInitPos;
+
+    public bool isMoving;
     bool isThereNextTile;
-    bool warp = false;
-    bool warpDone = false;
+    bool metGirl;
+
+    float fastForwardFactor;
+    float flickForce;
+    IEnumerator addFriction;
+
     char tileType;
     int xdir;
     int ydir;
     int temp;
-    float flickForce;
-    float distanceBetweenTiles =0;
-    float speed = 1.9f;
-    float fastForwardFactor = 1f;
-    public Vector3 initTargetPosition;
-    bool isMoving;
 
-    // Start is called before the first frame update
+    //Warp Tile용 변수
+    bool warp = false;
+    bool warpDone = false;
+
     void Start()
     {
+        isMoving = false;           //..왜 주석 처리 했었더라???
         metGirl = false;
+        addFriction = AddFriction();
         MoveDaBoi();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (isMoving)
         {
+            //targetPosition(목표 타일의 중심)을 향해서 이동...
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * fastForwardFactor * flickForce * Time.deltaTime);
             //목표 지점에 도착
             if (transform.position == targetPosition)
@@ -77,9 +87,49 @@ public class TutorialBoy : MonoBehaviour
                     targetPosition = transform.position + new Vector3(xdir * distanceBetweenTiles, ydir * distanceBetweenTiles, 0);
                     isThereNextTile = false;
                 }
+                else                    //Finish moving; Reached Girl? Or try try again??
+                {
+                    isMoving = false;
+                    StopCoroutine(addFriction);
+
+                    if (metGirl) //Correct Solution
+                    {
+                        metGirl = false;
+                    }
+                    else //Wrong Solution
+                    {
+                        SoundFXPlayer.Play("fail");
+                        StartCoroutine(DelayBoyFail(1.5f));
+                        Debug.Log("Try try again!");
+                    }
+                }
             }
         }
     }
+
+    public void MoveDaBoi()
+    {
+        boiInitPos = transform.position;
+        fastForwardFactor = 1f;
+        xdir = 1;
+        ydir = 0;
+        targetPosition = initTargetPosition;
+        GetComponent<BoxCollider2D>().enabled = true;
+        isMoving = true;
+        StartCoroutine(addFriction);
+        flickForce = 2f;
+    }
+
+    public void FastForward()
+    {
+        fastForwardFactor = 3f;
+    }
+
+    public void BackToNormalSpeed()
+    {
+        fastForwardFactor = 1f;
+    }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -125,23 +175,20 @@ public class TutorialBoy : MonoBehaviour
                         ydir = -temp;
                         break;
                     case '8':
-                        /*
-                        gameObject.transform.position = GameObject.Find("Tile9(Clone)").transform.position;
-                        targetPosition = GameObject.Find("Tile9(Clone)").transform.position;
-                        warpDone = true;
-                        */
                         warp = true;
                         break;
                     case '9':
-                        /*
-                        gameObject.transform.position = GameObject.Find("Tile8(Clone)").transform.position;
-                        targetPosition = GameObject.Find("Tile8(Clone)").transform.position;
-                        warpDone = true;
-                        */
                         warp = true;
                         break;
                 }
             }
+
+            /*if (warpDone && (tileType == '8' || tileType == '9'))
+            {
+                tileType = '1';
+                warpDone = false;
+            }*/
+
         }
         else if (collision.gameObject.name == "Girl")
         {
@@ -151,14 +198,28 @@ public class TutorialBoy : MonoBehaviour
         }
     }
 
-    void MoveDaBoi()
+    IEnumerator AddFriction()
     {
-        isMoving = true;
-        fastForwardFactor = 1f;
-        xdir = 1;
-        ydir = 0;
-        targetPosition = initTargetPosition;
-        flickForce = 2f;
+        while (true)
+        {
+            if (flickForce >= 1f)
+            {
+                flickForce -= Time.deltaTime * 1.2f;
+            }
+            yield return null;
+        }
+    }
+
+    IEnumerator DelayBoyFail(float time)
+    {
+        yield return new WaitForSeconds(time);
+        transform.position = boiInitPos;
+    }
+
+    public void DevBtn()
+    {
+        float force = 0.5f;
+        GetComponent<Rigidbody2D>().AddForce(new Vector2(0, -1) * force, ForceMode2D.Impulse);
     }
 }
 
