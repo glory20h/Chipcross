@@ -45,12 +45,12 @@ public class TutorialAnimation : MonoBehaviour
                 prefab1.transform.localScale = new Vector3(12.5f, 12.5f, 1);
                 prefab1.transform.SetParent(TutorialPanel, false);
 
-                prefab2 = Resources.Load("Prefabs/EmptyTile") as GameObject; 
+                prefab2 = Resources.Load("Prefabs/EmptyTileTutorial") as GameObject; 
                 prefab2 = Instantiate(prefab2, new Vector3(100f, 0, 0), Quaternion.identity);
                 prefab2.transform.localScale = new Vector3(12.5f, 12.5f, 1);
                 prefab2.transform.SetParent(TutorialPanel, false);
 
-                prefab3 = Resources.Load("Prefabs/EmptyTile") as GameObject; 
+                prefab3 = Resources.Load("Prefabs/EmptyTileTutorial") as GameObject; 
                 prefab3 = Instantiate(prefab3, new Vector3(200f, 0, 0), Quaternion.identity);
                 prefab3.transform.localScale = new Vector3(12.5f, 12.5f, 1);
                 prefab3.transform.SetParent(TutorialPanel, false);
