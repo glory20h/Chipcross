@@ -8,7 +8,7 @@ public class TutorialAnimationFixed : MonoBehaviour
     bool goBack = false;
 
     bool Noprefabyet = true;
-    int piece = 1;
+    public int piece = 1;
     public GameObject Westleft;
     public GameObject Westright;
     public GameObject Eastleft;

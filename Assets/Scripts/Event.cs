@@ -53,7 +53,7 @@ public class Event : MonoBehaviour
 
     void Start()
     {
-        PlayerPrefs.SetInt("tutorial",0);
+        PlayerPrefs.SetInt("tutorial",1);//확인중임 없애도 됨. 기본은 0놓고했었음
         if (firstTime == 1 && PlayerPrefs.GetInt("tutorial") == 0)// 튜토리얼 시작, 한번 튜토리얼하면 다시 안나타남
         {
             PlayerPrefs.SetInt("Piecedata" + 1, 1);
