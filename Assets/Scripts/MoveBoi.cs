@@ -330,5 +330,7 @@ public class MoveBoi : MonoBehaviour
         yield return new WaitForSeconds(0.6f);
         PuzzleSolvedPanel.SetActive(true);
         SoundFXPlayer.Play("positiveVibe");
+        yield return new WaitForSeconds(0.5f);
+        StartCoroutine(eventChanger.CoinIncreaseAnimation());
     }
 }

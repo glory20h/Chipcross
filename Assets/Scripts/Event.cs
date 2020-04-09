@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
@@ -15,11 +16,14 @@ public class Event : MonoBehaviour
     public Button ResetBtn;         //퍼즐 초기화 & 파랭이 움직임 리셋 버튼
     public Button GonfasterBtn;     //출발/가속 버튼
 
-    public GameObject OptionMenu;   //옵션 창
+    //옵션 창
+    public GameObject OptionMenu;   
     public static bool GameIsPaused = false; // Game pause
     public Button OptionExit;       // 옵션 나가기
 
-    public GameObject PuzzleSolvedPanel;     //Puzzle Solved Panel
+    //퍼즐 완료 창
+    public GameObject PuzzleSolvedPanel;     
+    public Text coinText;
 
     Vector2 mousePos;               //마우스의 2차원상 위치
     Transform objToFollowMouse;     //마우스를 따라 다닐 물체(퍼즐 조각)
@@ -365,6 +369,10 @@ public class Event : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 아래로 public 함수
+    /// </summary>
+
     //출발/가속 버튼 State 1 -> 누르면 이동 시작, 2 -> 누르면 빨라짐, 3 -> 누르면 다시 원래 속도로 돌아옴
     public void GoNFastForwardClick()
     {
@@ -535,6 +543,23 @@ public class Event : MonoBehaviour
             tutorialPanel.SetActive(false);
             LoadLevel();
             SavePiecePosition();
+        }
+    }
+
+    /// <summary>
+    /// 아래로 IENumerator 함수
+    /// </summary>
+    /// TutorialPanelText 전용 함수로 변경
+    /// TutorialPanelText 전용 함수로 변경 attach to Text element 
+    public IEnumerator CoinIncreaseAnimation(int coin = 100)
+    {
+        int i = 0;
+        while (i < coin + 1)
+        {
+            ///
+            /* 코인 애니메이션 작업 */
+            ///
+            yield return null;
         }
     }
 }
