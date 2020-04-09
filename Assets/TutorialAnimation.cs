@@ -7,7 +7,6 @@ public class TutorialAnimation : MonoBehaviour
 {
     TutorialBoy TutorialBoyMove;
     public Transform TutorialPanel;
-    public Transform target;
     Vector3 targetPosition;
     float speed = 1.0f;
     bool goBack = false;
@@ -22,16 +21,14 @@ public class TutorialAnimation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        targetPosition = transform.position;
     }
 
     // Update is called once per frame
     void Update()//여기는 움직이는 것만 하면 될거 같다. 그러면 image랑 sprite 생성은 어디서 할까? 여기서 하기에는 부담이 있다. 하지만 여기서 안해도 부담이 있다! 답은 노가다군...
     {
         float step = speed * Time.deltaTime;
-        if (PlayerPrefs.GetInt("tutorial") == 1)//튜토리얼 조건 일경우 원래0임 확인하려고 1로만든거
-        {
-            transform.position = Vector3.MoveTowards(transform.position, target.position, step);
+        if (PlayerPrefs.GetInt("tutorial") == 0)//튜토리얼 조건 일경우 원래0임 확인하려고 1로만든거
+        {            
             if (Noprefabyet)
             {
                 gameObject.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/finger");
@@ -63,7 +60,7 @@ public class TutorialAnimation : MonoBehaviour
                 goBack = false;
             }
         }
-        else if(PlayerPrefs.GetInt("tutorial") ==  0/*&& PlayerPrefs.GetInt("Piecedata") == 1*/)// 튜토리얼이 아니라면 2~5번 타일인지 "Piecedata"이게 판단함 타일판단은
+        else if(PlayerPrefs.GetInt("tutorial") ==  1/*&& PlayerPrefs.GetInt("Piecedata") == 1*/)// 튜토리얼이 아니라면 2~5번 타일인지 "Piecedata"이게 판단함 타일판단은
         {
             if (Noprefabyet)// 한번만 생성하면 되기때문에
             {
