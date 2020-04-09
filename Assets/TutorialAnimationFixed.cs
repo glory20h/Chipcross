@@ -21,7 +21,7 @@ public class TutorialAnimationFixed : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -74,11 +74,11 @@ public class TutorialAnimationFixed : MonoBehaviour
                         Noprefabyet = false;
                         break;
                     case 3:// <- 이 타일
-                        Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
-                        Westright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
+                        Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Girl");
+                        Westright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Boy");
                         Eastleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
-                        Eastright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Boy");
-                        North.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Girl");
+                        Eastright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
+                        North.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
                         South.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
                         Center.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Theme1Tile2");
                         finger.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
@@ -86,10 +86,10 @@ public class TutorialAnimationFixed : MonoBehaviour
                         Noprefabyet = false;
                         break;
                     case 4:// 아래쪽 ㅜ 이방향
-                        Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
+                        Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Boy");
                         Westright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
                         Eastleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
-                        Eastright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Boy");
+                        Eastright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
                         North.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
                         South.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Girl");
                         Center.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Theme1Tile4");
