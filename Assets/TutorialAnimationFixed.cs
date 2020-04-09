@@ -5,10 +5,8 @@ using UnityEngine.UI;
 
 public class TutorialAnimationFixed : MonoBehaviour
 {
-    bool goBack = false;
-
-    bool Noprefabyet = true;
-    public int piece = 1;
+    [HideInInspector]
+    public bool Noprefabyet = true;
     public GameObject Westleft;
     public GameObject Westright;
     public GameObject Eastleft;
@@ -17,6 +15,7 @@ public class TutorialAnimationFixed : MonoBehaviour
     public GameObject South;
     public GameObject Center;
     public GameObject finger;
+    public AnimationWestleft Animawl;
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +26,7 @@ public class TutorialAnimationFixed : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (PlayerPrefs.GetInt("tutorial") == 0/*&& PlayerPrefs.GetInt("Piecedata") == 1*/)// 튜토리얼이 아니라면 2~5번 타일인지 "Piecedata"이게 판단함 타일판단은
+        if (PlayerPrefs.GetInt("tutorial") == 0 && PlayerPrefs.GetInt("Piecedata") == 1)// 튜토리얼이 아니라면 2~5번 타일인지 "Piecedata"이게 판단함 타일판단은
         {
             if (Noprefabyet)// 한번만 생성하면 되기때문에
             {
@@ -43,11 +42,11 @@ public class TutorialAnimationFixed : MonoBehaviour
                         Noprefabyet = false;
             }
         }
-        else if (PlayerPrefs.GetInt("tutorial") == 1/*&& PlayerPrefs.GetInt("Piecedata") == 1*/)// 튜토리얼이 아니라면 2~5번 타일인지 "Piecedata"이게 판단함 타일판단은
+        else if (PlayerPrefs.GetInt("tutorial") == 1&& PlayerPrefs.GetInt("Piecedata") == 1)// 튜토리얼이 아니라면 2~5번 타일인지 "Piecedata"이게 판단함 타일판단은
         {
             if (Noprefabyet)// 한번만 생성하면 되기때문에
             {
-                switch (piece)// 이건 다른 스크립트의 콜라이더를 사용할거기때문에  playerprefabs나 public사용해야됨
+                switch (Animawl.piece)// 이건 다른 스크립트의 콜라이더를 사용할거기때문에  playerprefabs나 public사용해야됨
                 {
                     case 1:// -> 이거 타일
                         Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Boy");
@@ -65,8 +64,8 @@ public class TutorialAnimationFixed : MonoBehaviour
                         Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Boy");
                         Westright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
                         Eastleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
-                        Eastright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Girl");
-                        North.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
+                        Eastright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
+                        North.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Girl");
                         South.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
                         Center.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Theme1Tile5");
                         finger.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
@@ -74,8 +73,8 @@ public class TutorialAnimationFixed : MonoBehaviour
                         Noprefabyet = false;
                         break;
                     case 3:// <- 이 타일
-                        Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Girl");
-                        Westright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Boy");
+                        Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Boy");
+                        Westright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Girl");
                         Eastleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
                         Eastright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
                         North.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
@@ -104,7 +103,7 @@ public class TutorialAnimationFixed : MonoBehaviour
         {
             if (Noprefabyet)// 한번만 생성하면 되기때문에
             {
-                switch (piece)
+                switch (Animawl.piece)
                 {
                     case 1: //Tile6 즉 뱅뱅이면 위로
                         Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Boy");
@@ -129,6 +128,29 @@ public class TutorialAnimationFixed : MonoBehaviour
                         finger.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
                         Noprefabyet = false;
                         break;
+                    case 3: //Tile6 즉 뱅뱅이면 위로
+                        Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Boy");
+                        Westright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
+                        Eastleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
+                        Eastright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
+                        North.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Girl");
+                        South.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
+                        Center.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Theme1Tile6");
+                        finger.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
+
+                        Noprefabyet = false;
+                        break;
+                    case 4: //Tile7 즉 뱅뱅이면 아래
+                        Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Boy");
+                        Westright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
+                        Eastleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
+                        Eastright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
+                        North.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
+                        South.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Girl");
+                        Center.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Theme1Tile7");
+                        finger.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
+                        Noprefabyet = false;
+                        break;
                 }
             }
         }
@@ -141,7 +163,7 @@ public class TutorialAnimationFixed : MonoBehaviour
                 Eastleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Theme1Tile9");
                 Eastright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Girl");
                 North.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
-                South.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Girl");
+                South.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
                 Center.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
                 finger.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
 
