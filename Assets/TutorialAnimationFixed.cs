@@ -31,6 +31,22 @@ public class TutorialAnimationFixed : MonoBehaviour
         {
             if (Noprefabyet)// 한번만 생성하면 되기때문에
             {
+                        Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Theme1Tile1");
+                        Westright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Theme1Tile3");
+                        Eastleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Theme1EmptyTile");
+                        Eastright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Theme1EmptyTile");
+                        North.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
+                        South.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
+                        Center.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
+                        finger.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/finger");
+
+                        Noprefabyet = false;
+            }
+        }
+        else if (PlayerPrefs.GetInt("tutorial") == 1/*&& PlayerPrefs.GetInt("Piecedata") == 1*/)// 튜토리얼이 아니라면 2~5번 타일인지 "Piecedata"이게 판단함 타일판단은
+        {
+            if (Noprefabyet)// 한번만 생성하면 되기때문에
+            {
                 switch (piece)// 이건 다른 스크립트의 콜라이더를 사용할거기때문에  playerprefabs나 public사용해야됨
                 {
                     case 1:// -> 이거 타일
