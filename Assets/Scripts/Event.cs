@@ -44,8 +44,6 @@ public class Event : MonoBehaviour
     //튜토리얼
     int firstTime = 1;
     public GameObject tutorialPanel;
-    public GameObject Tile;
-
     /*void Awake()
     {
         firstTime = PlayerPrefs.GetInt("tutorial");
@@ -53,7 +51,7 @@ public class Event : MonoBehaviour
 
     void Start()
     {
-        PlayerPrefs.SetInt("tutorial",2);//확인중임 없애도 됨. 기본은 0놓고했었음
+        PlayerPrefs.SetInt("tutorial",0);//확인중임 없애도 됨. 기본은 0놓고했었음
         if (firstTime == 1 && PlayerPrefs.GetInt("tutorial") == 0)// 튜토리얼 시작, 한번 튜토리얼하면 다시 안나타남
         {
             PlayerPrefs.SetInt("Piecedata" + 1, 1);
@@ -536,11 +534,7 @@ public class Event : MonoBehaviour
             tutorialPanel.SetActive(false);
             //변수 초기화
             InitializeVariables();
-
-            //levelData 게임 스테이지 데이터베이스에서 데이터를 불러와서 현재 스테이지 생성
-            LoadLevel(); //Gonextlevel에서 내가 항상 확인을 하게끔해놨는데 이걸 어케하지
-
-            //퍼즐 조각 초기 위치 저장
+            LoadLevel();
             SavePiecePosition();
 
             //개발자 버튼용

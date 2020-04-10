@@ -9,7 +9,8 @@ public class AnimationWestleft : MonoBehaviour
     public int piece = 1;
     public TutorialAnimationFixed Tutofix;
     bool centercheck = false;
-    bool teleport = false;
+    [HideInInspector]
+    public bool teleport = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -63,13 +64,7 @@ public class AnimationWestleft : MonoBehaviour
         }
         else// teleport
         {
-            if(teleport)
-            {
-                //Eastright으로 move
-                Debug.Log(gameObject.transform.position);
-                Debug.Log(GameObject.Find("Eastleft").transform.position);
-            }
-            else
+            if(teleport==false)
             {
                 anim.SetInteger("Tilenumber", 8);
             }
@@ -112,16 +107,14 @@ public class AnimationWestleft : MonoBehaviour
             if (piece == 5)
                 piece = 1;
         }
-        else if (collision.gameObject.name == "Westright" && teleport==false)
+        if (collision.gameObject.name == "Westright" && teleport == false)
         {
             //순간이동
             teleport = true;
-            anim.SetInteger("Tilenumber", 0);
-            Debug.Log(gameObject.transform.position);
-            Debug.Log(GameObject.Find("Eastleft").transform.position);
-            gameObject.transform.position = GameObject.Find("Eastleft").transform.position;
-            Debug.Log(gameObject.transform.position);
-            Debug.Log(GameObject.Find("Eastleft").transform.position);
+        }
+        else if (collision.gameObject.name == "Eastleft" && teleport)
+        {
+            teleport = false;
         }
     }
 }

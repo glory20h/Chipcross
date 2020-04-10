@@ -175,7 +175,6 @@ MonoBehaviour:
   OptionExit: {fileID: 737905258}
   MovePieceMode: 0
   tutorialPanel: {fileID: 2124971657}
-  Tile: {fileID: 0}
 --- !u!1 &13261064
 GameObject:
   m_ObjectHideFlags: 0
@@ -2922,6 +2921,7 @@ GameObject:
   - component: {fileID: 1337509607}
   - component: {fileID: 1337509609}
   - component: {fileID: 1337509608}
+  - component: {fileID: 1337509610}
   m_Layer: 5
   m_Name: Eastleft
   m_TagString: Untagged
@@ -2985,6 +2985,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1337509606}
   m_CullTransparentMesh: 0
+--- !u!61 &1337509610
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1337509606}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &1367135923
 GameObject:
   m_ObjectHideFlags: 0
@@ -5116,7 +5142,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
 --- !u!1 &2105907735
 GameObject:
@@ -5133,6 +5159,7 @@ GameObject:
   - component: {fileID: 2105907740}
   - component: {fileID: 2105907742}
   - component: {fileID: 2105907741}
+  - component: {fileID: 2105907743}
   m_Layer: 5
   m_Name: Westleft
   m_TagString: Untagged
@@ -5210,6 +5237,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   piece: 1
   Tutofix: {fileID: 576948077}
+  teleport: 0
 --- !u!95 &2105907740
 Animator:
   serializedVersion: 3
@@ -5276,6 +5304,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!223 &2105907743
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2105907735}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 1
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 120
+  m_TargetDisplay: 0
 --- !u!1 &2113729523
 GameObject:
   m_ObjectHideFlags: 0
@@ -5395,7 +5444,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2124971658
 RectTransform:
   m_ObjectHideFlags: 0

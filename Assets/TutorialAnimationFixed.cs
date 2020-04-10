@@ -42,7 +42,7 @@ public class TutorialAnimationFixed : MonoBehaviour
                         Noprefabyet = false;
             }
         }
-        else if (PlayerPrefs.GetInt("tutorial") == 1&& PlayerPrefs.GetInt("Piecedata") == 1)// 튜토리얼이 아니라면 2~5번 타일인지 "Piecedata"이게 판단함 타일판단은
+        else if (PlayerPrefs.GetInt("tutorial") == 1 && PlayerPrefs.GetInt("Piecedata") == 1)// 튜토리얼이 아니라면 2~5번 타일인지 "Piecedata"이게 판단함 타일판단은
         {
             if (Noprefabyet)// 한번만 생성하면 되기때문에
             {
@@ -168,6 +168,14 @@ public class TutorialAnimationFixed : MonoBehaviour
                 finger.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
 
                 Noprefabyet = false;
+            }
+            else if(Animawl.teleport)
+            {
+                Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
+            }
+            else if(Animawl.teleport==false)
+            {
+                Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Boy");
             }
         }
     }
