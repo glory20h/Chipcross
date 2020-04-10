@@ -174,7 +174,6 @@ MonoBehaviour:
   OptionMenu: {fileID: 1473720125}
   OptionExit: {fileID: 737905258}
   PuzzleSolvedPanel: {fileID: 290660372}
-  coinText: {fileID: 0}
   MovePieceMode: 0
   tutorialPanel: {fileID: 2124971657}
   Tile: {fileID: 1412970940}
@@ -1354,6 +1353,7 @@ MonoBehaviour:
   GoNFasterButton: {fileID: 682712124}
   ResetButton: {fileID: 711313912}
   PuzzleSolvedPanel: {fileID: 290660372}
+  coinText: {fileID: 1703925068}
   speed: 2
   distanceBetweenTiles: 0
   initTargetPosition: {x: 0, y: 0, z: 0}
@@ -4404,6 +4404,7 @@ GameObject:
   - component: {fileID: 1703925065}
   - component: {fileID: 1703925067}
   - component: {fileID: 1703925066}
+  - component: {fileID: 1703925068}
   m_Layer: 5
   m_Name: CoinText
   m_TagString: Untagged
@@ -4463,7 +4464,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0000
+  m_Text: 
 --- !u!222 &1703925067
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4472,6 +4473,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1703925064}
   m_CullTransparentMesh: 0
+--- !u!114 &1703925068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1703925064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d468a6894779509408a25dc70e368314, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundFXSource: {fileID: 1690052410}
 --- !u!1 &1817190562
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -22,8 +23,7 @@ public class Event : MonoBehaviour
     public Button OptionExit;       // 옵션 나가기
 
     //퍼즐 완료 창
-    public GameObject PuzzleSolvedPanel;     
-    public Text coinText;
+    public GameObject PuzzleSolvedPanel;
 
     Vector2 mousePos;               //마우스의 2차원상 위치
     Transform objToFollowMouse;     //마우스를 따라 다닐 물체(퍼즐 조각)
@@ -543,23 +543,6 @@ public class Event : MonoBehaviour
             tutorialPanel.SetActive(false);
             LoadLevel();
             SavePiecePosition();
-        }
-    }
-
-    /// <summary>
-    /// 아래로 IENumerator 함수
-    /// </summary>
-    /// TutorialPanelText 전용 함수로 변경
-    /// TutorialPanelText 전용 함수로 변경 attach to Text element 
-    public IEnumerator CoinIncreaseAnimation(int coin = 100)
-    {
-        int i = 0;
-        while (i < coin + 1)
-        {
-            ///
-            /* 코인 애니메이션 작업 */
-            ///
-            yield return null;
         }
     }
 }

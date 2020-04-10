@@ -15,6 +15,7 @@ public class MoveBoi : MonoBehaviour
     public Button ResetButton;
 
     public GameObject PuzzleSolvedPanel;
+    public CoinIncrease coinText;
 
     public float speed;
     [HideInInspector]
@@ -331,6 +332,6 @@ public class MoveBoi : MonoBehaviour
         PuzzleSolvedPanel.SetActive(true);
         SoundFXPlayer.Play("positiveVibe");
         yield return new WaitForSeconds(0.5f);
-        StartCoroutine(eventChanger.CoinIncreaseAnimation());
+        StartCoroutine(coinText.CoinIncreaseAnimation());
     }
 }
