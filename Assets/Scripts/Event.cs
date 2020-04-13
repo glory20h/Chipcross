@@ -24,6 +24,9 @@ public class Event : MonoBehaviour
 
     //퍼즐 완료 창
     public GameObject PuzzleSolvedPanel;
+    public Text coinText;
+    [HideInInspector]
+    public IEnumerator coinIncreaseAnimation;
 
     Vector2 mousePos;               //마우스의 2차원상 위치
     Transform objToFollowMouse;     //마우스를 따라 다닐 물체(퍼즐 조각)
@@ -88,6 +91,8 @@ public class Event : MonoBehaviour
 
         levelNum = 1;
         levelData = new LevelDatabase();
+
+        coinIncreaseAnimation = CoinIncreaseAnimation();
     }
 
     void Update()
@@ -369,6 +374,20 @@ public class Event : MonoBehaviour
         }
     }
 
+    //퍼즐 완료창 코인 또로로로 효과
+    IEnumerator CoinIncreaseAnimation(int coin = 100)
+    {
+        yield return new WaitForSeconds(0.5f);
+        int i = 0;
+        while (i < coin + 1)
+        {
+            coinText.text = i.ToString();
+            CoinFXPlayer.Play();
+            i++;
+            yield return null;
+        }
+    }
+
     /// <summary>
     /// 아래로 public 함수
     /// </summary>
@@ -441,7 +460,10 @@ public class Event : MonoBehaviour
             LoadLevel();
             SavePiecePosition();
         }
+
+        //퍼즐 완료창 종료
         PuzzleSolvedPanel.SetActive(false);
+        StopCoroutine(coinIncreaseAnimation);
     }
 
     public void PlayAgain()
@@ -450,7 +472,10 @@ public class Event : MonoBehaviour
         ResetBtn.interactable = true;
         ResetBoard();
         Boy.GetComponent<MoveBoi>().ResetBoyPosition();
+
+        //퍼즐 완료창 종료
         PuzzleSolvedPanel.SetActive(false);
+        StopCoroutine(coinIncreaseAnimation);
     }
 
     //테스트용 개발자 버튼용

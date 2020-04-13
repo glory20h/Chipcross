@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SoundFXPlayer : MonoBehaviour
 {
-    public static AudioClip flick, win, fail, pick, put, go, positiveVibe, click, coin;
+    public static AudioClip flick, win, fail, pick, put, go, positiveVibe, click;
     static AudioSource audioSrc;
 
     void Start()
@@ -17,7 +17,6 @@ public class SoundFXPlayer : MonoBehaviour
         go = Resources.Load<AudioClip>("Audio/Go_Button");
         positiveVibe = Resources.Load<AudioClip>("Audio/Vibrant_Positive");
         click = Resources.Load<AudioClip>("Audio/Button_Click_1");
-        coin = Resources.Load<AudioClip>("Audio/Quick_Coin");
 
         audioSrc = GetComponent<AudioSource>();
     }
@@ -51,9 +50,6 @@ public class SoundFXPlayer : MonoBehaviour
                 break;
             case "click":
                 audioSrc.PlayOneShot(click);
-                break;
-            case "coin":
-                audioSrc.PlayOneShot(coin);
                 break;
         }
     }
