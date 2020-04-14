@@ -26,19 +26,24 @@ public class AnimationWestleft : MonoBehaviour
         }
      else if(PlayerPrefs.GetInt("tutorial") == 1 && PlayerPrefs.GetInt("Piecedata") == 1)
         {
-            switch(piece)
+            anim.enabled = true;
+            switch (piece)
             {
-                case 1:
+                case 1: 
+                    Tutofix.Noprefabyet = true;
                     anim.SetInteger("Tilenumber", 3);
                     break;
                 case 2:
+                    Tutofix.Noprefabyet = true;
                     anim.SetInteger("Tilenumber", 5);
                     centercheck = false;
                     break;
                 case 3:
+                    Tutofix.Noprefabyet = true;
                     anim.SetInteger("Tilenumber", 2);
                     break;
                 case 4:
+                    Tutofix.Noprefabyet = true;
                     anim.SetInteger("Tilenumber", 7);
                     break;
             }
@@ -49,6 +54,7 @@ public class AnimationWestleft : MonoBehaviour
             switch (piece)
             {
                 case 1:
+                    Tutofix.Noprefabyet = true;
                     anim.SetInteger("Tilenumber", 5);
                     break;
                 case 2:
@@ -66,6 +72,7 @@ public class AnimationWestleft : MonoBehaviour
         {
             if(teleport==false)
             {
+                Tutofix.Noprefabyet = true;
                 anim.SetInteger("Tilenumber", 8);
             }
         }
