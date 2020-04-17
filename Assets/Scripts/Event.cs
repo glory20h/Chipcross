@@ -540,7 +540,6 @@ public class Event : MonoBehaviour
         }
         else if(PlayerPrefs.GetInt("tutorial") == 1 && tutorialDo)
         {
-            Debug.Log(2);
             tutorialPanel.SetActive(false);
             tutorialDo = false;
             //변수 초기화
@@ -552,7 +551,6 @@ public class Event : MonoBehaviour
         }
         else//level불러오는거
         {
-            Debug.Log(3);
             tutorialPanel.SetActive(false);
             LoadLevel();
             SavePiecePosition();

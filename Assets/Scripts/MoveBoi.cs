@@ -61,24 +61,30 @@ public class MoveBoi : MonoBehaviour
                     {
                         if(tileType == '8')
                         {
-                            if(GameObject.Find("Tile9(Clone)"))        //반대편 Warp 출구가 FixedTile 인지 Tile 인지 확인
+                            gameObject.GetComponent<SpriteRenderer>().sprite = (Sprite)Resources.Load("Arts/Nothing", typeof(Sprite));
+                            if (GameObject.Find("Tile9(Clone)"))        //반대편 Warp 출구가 FixedTile 인지 Tile 인지 확인
                             {
                                 gameObject.transform.position = GameObject.Find("Tile9(Clone)").transform.position;
+                                StartCoroutine(Waitsecond());
                             }
                             else
                             {
                                 gameObject.transform.position = GameObject.Find("FixedTile9(Clone)").transform.position;
+                                StartCoroutine(Waitsecond());
                             }
                         }
                         else if (tileType == '9')
                         {
+                            gameObject.GetComponent<SpriteRenderer>().sprite = (Sprite)Resources.Load("Arts/Nothing", typeof(Sprite));
                             if (GameObject.Find("Tile8(Clone)"))       //반대편 Warp 출구가 FixedTile 인지 Tile 인지 확인
                             {
                                 gameObject.transform.position = GameObject.Find("Tile8(Clone)").transform.position;
+                                StartCoroutine(Waitsecond());
                             }
                             else
                             {
                                 gameObject.transform.position = GameObject.Find("FixedTile8(Clone)").transform.position;
+                                StartCoroutine(Waitsecond());
                             }
                         }
                         warp = false;
@@ -320,5 +326,13 @@ public class MoveBoi : MonoBehaviour
     {
         float force = 0.5f;
         GetComponent<Rigidbody2D>().AddForce(new Vector2(0, -1) * force, ForceMode2D.Impulse);
+    }
+
+    IEnumerator Waitsecond()
+    {
+        speed = 0f;
+        yield return new WaitForSeconds(0.3f);
+        gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Boy");
+        speed = 1.9f;
     }
 }
