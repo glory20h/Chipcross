@@ -30,6 +30,7 @@ public class TutorialAnimationFixed : MonoBehaviour
         {
             if (Noprefabyet)// 한번만 생성하면 되기때문에
             {
+                        StartCoroutine(Waitsecond());
                         Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Theme1Tile1");
                         Westright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Theme1Tile3");
                         Eastleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Theme1EmptyTile");
@@ -49,6 +50,7 @@ public class TutorialAnimationFixed : MonoBehaviour
                 switch (Animawl.piece)// 이건 다른 스크립트의 콜라이더를 사용할거기때문에  playerprefabs나 public사용해야됨
                 {
                     case 1:// -> 이거 타일
+                        StartCoroutine(Waitsecond());
                         Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Boy");
                         Westright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
                         Eastleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
@@ -61,6 +63,7 @@ public class TutorialAnimationFixed : MonoBehaviour
                         Noprefabyet = false;
                         break;
                     case 2:// 위쪽 향하는 타일 ㅗ
+                        StartCoroutine(Waitsecond());
                         Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Boy");
                         Westright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
                         Eastleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
@@ -73,6 +76,7 @@ public class TutorialAnimationFixed : MonoBehaviour
                         Noprefabyet = false;
                         break;
                     case 3:// <- 이 타일
+                        StartCoroutine(Waitsecond());
                         Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Boy");
                         Westright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Girl");
                         Eastleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
@@ -85,6 +89,7 @@ public class TutorialAnimationFixed : MonoBehaviour
                         Noprefabyet = false;
                         break;
                     case 4:// 아래쪽 ㅜ 이방향
+                        StartCoroutine(Waitsecond());
                         Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Boy");
                         Westright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
                         Eastleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
@@ -106,6 +111,7 @@ public class TutorialAnimationFixed : MonoBehaviour
                 switch (Animawl.piece)
                 {
                     case 1: //Tile6 즉 뱅뱅이면 위로
+                        StartCoroutine(Waitsecond());
                         Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Boy");
                         Westright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
                         Eastleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
@@ -118,6 +124,7 @@ public class TutorialAnimationFixed : MonoBehaviour
                         Noprefabyet = false;
                         break;
                     case 2: //Tile7 즉 뱅뱅이면 아래
+                        StartCoroutine(Waitsecond());
                         Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Boy");
                         Westright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
                         Eastleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
@@ -129,6 +136,7 @@ public class TutorialAnimationFixed : MonoBehaviour
                         Noprefabyet = false;
                         break;
                     case 3: //Tile6 즉 뱅뱅이면 위로
+                        StartCoroutine(Waitsecond());
                         Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Boy");
                         Westright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
                         Eastleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
@@ -141,6 +149,7 @@ public class TutorialAnimationFixed : MonoBehaviour
                         Noprefabyet = false;
                         break;
                     case 4: //Tile7 즉 뱅뱅이면 아래
+                        StartCoroutine(Waitsecond());
                         Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Boy");
                         Westright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
                         Eastleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
@@ -158,6 +167,7 @@ public class TutorialAnimationFixed : MonoBehaviour
         {
             if (Noprefabyet)
             {
+                StartCoroutine(Waitsecond());
                 Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Boy");
                 Westright.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Theme1Tile8");
                 Eastleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Theme1Tile9");
@@ -171,12 +181,19 @@ public class TutorialAnimationFixed : MonoBehaviour
             }
             else if(Animawl.teleport)
             {
+                StartCoroutine(Waitsecond());
                 Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
             }
             else if(Animawl.teleport==false)
             {
+                StartCoroutine(Waitsecond());
                 Westleft.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Boy");
             }
         }
+    }
+
+    IEnumerator Waitsecond()
+    {
+        yield return new WaitForSeconds(0.3f);
     }
 }
