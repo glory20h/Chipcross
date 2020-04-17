@@ -27,6 +27,7 @@ public class Event : MonoBehaviour
     public Text coinText;
     [HideInInspector]
     public IEnumerator coinIncreaseAnimation;
+    bool coinChangeToggle;
 
     Vector2 mousePos;               //마우스의 2차원상 위치
     Transform objToFollowMouse;     //마우스를 따라 다닐 물체(퍼즐 조각)
@@ -379,7 +380,8 @@ public class Event : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         int i = 0;
-        while (i < coin + 1)
+        coinChangeToggle = true;
+        while (i < coin + 1 && coinChangeToggle)
         {
             coinText.text = i.ToString();
             CoinFXPlayer.Play();
@@ -463,7 +465,7 @@ public class Event : MonoBehaviour
 
         //퍼즐 완료창 종료
         PuzzleSolvedPanel.SetActive(false);
-        StopCoroutine(coinIncreaseAnimation);
+        coinChangeToggle = false;
     }
 
     public void PlayAgain()
@@ -475,7 +477,7 @@ public class Event : MonoBehaviour
 
         //퍼즐 완료창 종료
         PuzzleSolvedPanel.SetActive(false);
-        StopCoroutine(coinIncreaseAnimation);
+        coinChangeToggle = false;
     }
 
     //테스트용 개발자 버튼용
