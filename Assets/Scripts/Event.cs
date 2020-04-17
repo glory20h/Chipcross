@@ -26,8 +26,7 @@ public class Event : MonoBehaviour
     public GameObject PuzzleSolvedPanel;
     public Text coinText;
     [HideInInspector]
-    public IEnumerator coinIncreaseAnimation;
-    bool coinChangeToggle;
+    public bool coinChangeToggle = true;
 
     Vector2 mousePos;               //마우스의 2차원상 위치
     Transform objToFollowMouse;     //마우스를 따라 다닐 물체(퍼즐 조각)
@@ -93,7 +92,6 @@ public class Event : MonoBehaviour
         levelNum = 1;
         levelData = new LevelDatabase();
 
-        coinIncreaseAnimation = CoinIncreaseAnimation();
     }
 
     void Update()
@@ -376,7 +374,7 @@ public class Event : MonoBehaviour
     }
 
     //퍼즐 완료창 코인 또로로로 효과
-    IEnumerator CoinIncreaseAnimation(int coin = 100)
+    public IEnumerator CoinIncreaseAnimation(int coin = 100)
     {
         yield return new WaitForSeconds(0.5f);
         int i = 0;

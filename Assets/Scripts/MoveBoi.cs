@@ -327,9 +327,13 @@ public class MoveBoi : MonoBehaviour
 
     IEnumerator PuzzleSolved()
     {
+        if (eventChanger.coinChangeToggle == false)
+        {
+            StopCoroutine(eventChanger.CoinIncreaseAnimation());
+        }
         yield return new WaitForSeconds(0.6f);
         PuzzleSolvedPanel.SetActive(true);
         SoundFXPlayer.Play("positiveVibe");
-        StartCoroutine(eventChanger.coinIncreaseAnimation);
+        yield return StartCoroutine(eventChanger.CoinIncreaseAnimation(100));
     }
 }
