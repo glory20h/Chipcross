@@ -376,6 +376,7 @@ public class Event : MonoBehaviour
     //퍼즐 완료창 코인 또로로로 효과
     public IEnumerator CoinIncreaseAnimation(int coin = 100)
     {
+        coinText.text = "";
         yield return new WaitForSeconds(0.5f);
         int i = 0;
         coinChangeToggle = true;

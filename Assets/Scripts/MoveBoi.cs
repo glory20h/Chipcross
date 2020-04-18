@@ -96,6 +96,7 @@ public class MoveBoi : MonoBehaviour
                         flickForce = 2f;
                     }
 
+                    //xdir, ydir로 targetPosition 갱신
                     targetPosition = transform.position + new Vector3(xdir * distanceBetweenTiles, ydir * distanceBetweenTiles, 0);
                     isThereNextTile = false;
                 }
@@ -325,6 +326,7 @@ public class MoveBoi : MonoBehaviour
         transform.position = boiInitPos;
     }
 
+    //퍼즐 완료시
     IEnumerator PuzzleSolved()
     {
         if (eventChanger.coinChangeToggle == false)
@@ -334,6 +336,6 @@ public class MoveBoi : MonoBehaviour
         yield return new WaitForSeconds(0.6f);
         PuzzleSolvedPanel.SetActive(true);
         SoundFXPlayer.Play("positiveVibe");
-        yield return StartCoroutine(eventChanger.CoinIncreaseAnimation(100));
+        yield return StartCoroutine(eventChanger.CoinIncreaseAnimation());
     }
 }
