@@ -124,10 +124,15 @@ public class MakeNewMap : MonoBehaviour
                         rangeoftile = 8;
                     }
                 }
-                  
+                 if(BoardHeight == BoyPos && BoardWidth == 1)
+                {
+                    while(tilevalue == 2)
+                    {
+                        tilevalue = Random.Range(1, rangeoftile);
+                    }
+                }
                     Newmap += tilevalue;
                 }
-
         BoardEmptyTileTypeInfo = ConvertStringToIntArray(Newmap); // 이걸 통해 만들어서 확인후에 돌아가는지 확인하고 pieces 나누기로 합시당.
     }
 
