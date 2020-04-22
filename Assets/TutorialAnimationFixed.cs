@@ -16,7 +16,7 @@ public class TutorialAnimationFixed : MonoBehaviour
     public GameObject Center;
     public GameObject finger;
     public AnimationWestleft Animawl;
-
+    Vector3 BoyPosition;
     // Start is called before the first frame update
     void Start()
     {
@@ -176,7 +176,7 @@ public class TutorialAnimationFixed : MonoBehaviour
                 South.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
                 Center.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
                 finger.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/Nothing");
-
+                Animawl.tile8preference = true;
                 Noprefabyet = false;
             }
             else if(Animawl.teleport)

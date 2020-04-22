@@ -11,10 +11,13 @@ public class AnimationWestleft : MonoBehaviour
     bool centercheck = false;
     [HideInInspector]
     public bool teleport = false;
+    [HideInInspector]
+    public bool tile8preference = false;
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
+        teleport = false;
     }
 
     // Update is called once per frame
@@ -58,19 +61,22 @@ public class AnimationWestleft : MonoBehaviour
                     anim.SetInteger("Tilenumber", 5);
                     break;
                 case 2:
+                    Tutofix.Noprefabyet = true;
                     anim.SetInteger("Tilenumber", 7);
                     break;
                 case 3:
+                    Tutofix.Noprefabyet = true;
                     anim.SetInteger("Tilenumber", 5);
                     break;
                 case 4:
+                    Tutofix.Noprefabyet = true;
                     anim.SetInteger("Tilenumber", 7);
                     break;
             }
         }
         else// teleport
         {
-            if(teleport==false)
+            if (teleport==false)
             {
                 Tutofix.Noprefabyet = true;
                 anim.SetInteger("Tilenumber", 8);
@@ -114,12 +120,12 @@ public class AnimationWestleft : MonoBehaviour
             if (piece == 5)
                 piece = 1;
         }
-        if (collision.gameObject.name == "Westright" && teleport == false)
+        if (collision.gameObject.name == "Westright" && teleport == false && tile8preference)
         {
             //순간이동
             teleport = true;
         }
-        else if (collision.gameObject.name == "Eastleft" && teleport)
+        else if (collision.gameObject.name == "Eastleft" && teleport && tile8preference)
         {
             teleport = false;
         }
