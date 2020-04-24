@@ -14,13 +14,18 @@ public class MoveBoi : MonoBehaviour
     public Button GoNFasterButton;
     public Button ResetButton;
 
+    public GameObject PuzzleSolvedPanel;
+
     public float speed;
+    [HideInInspector]
     public float distanceBetweenTiles;
 
+    [HideInInspector]
     public Vector3 initTargetPosition;
     Vector3 targetPosition; // 이거 중요함....
     Vector3 boiInitPos;
 
+    [HideInInspector]
     public bool isMoving;
     bool isThereNextTile;
     bool metGirl;
@@ -42,7 +47,6 @@ public class MoveBoi : MonoBehaviour
     {
         isMoving = false;           //..왜 주석 처리 했었더라???
         metGirl = false;
-        GoToNextLevelBtn.interactable = false;
         addFriction = AddFriction();
     }
 
@@ -98,6 +102,7 @@ public class MoveBoi : MonoBehaviour
                         flickForce = 2f;
                     }
 
+                    //xdir, ydir로 targetPosition 갱신
                     targetPosition = transform.position + new Vector3(xdir * distanceBetweenTiles, ydir * distanceBetweenTiles, 0);
                     isThereNextTile = false;
                 }
@@ -110,7 +115,7 @@ public class MoveBoi : MonoBehaviour
                     if (metGirl) //Correct Solution
                     {
                         Debug.Log("Puzzle solved!! Congrats!! :)");
-                        GoToNextLevelBtn.interactable = true;
+                        StartCoroutine(PuzzleSolved());
                         GoNFasterButton.interactable = false;
                         ResetButton.interactable = false;
                         metGirl = false;
@@ -154,9 +159,14 @@ public class MoveBoi : MonoBehaviour
         //Make the boy stop moving and return to its original position
         eventChanger.ResetGoNFaster();
         eventChanger.MovePieceMode = true;
-        transform.position = boiInitPos;
+        ResetBoyPosition();
         isMoving = false;
         StopCoroutine(addFriction);
+    }
+
+    public void ResetBoyPosition()
+    {
+        transform.position = boiInitPos;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -322,10 +332,17 @@ public class MoveBoi : MonoBehaviour
         transform.position = boiInitPos;
     }
 
-    public void DevBtn()
+    //퍼즐 완료시
+    IEnumerator PuzzleSolved()
     {
-        float force = 0.5f;
-        GetComponent<Rigidbody2D>().AddForce(new Vector2(0, -1) * force, ForceMode2D.Impulse);
+        if (eventChanger.coinChangeToggle == false)
+        {
+            StopCoroutine(eventChanger.CoinIncreaseAnimation());
+        }
+        yield return new WaitForSeconds(0.6f);
+        PuzzleSolvedPanel.SetActive(true);
+        SoundFXPlayer.Play("positiveVibe");
+        yield return StartCoroutine(eventChanger.CoinIncreaseAnimation());
     }
 
     IEnumerator Waitsecond()
