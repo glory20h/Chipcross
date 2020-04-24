@@ -560,8 +560,6 @@ public class Event : MonoBehaviour
             InitializeVariables();
             LoadLevel();
             SavePiecePosition();
-            //개발자 버튼용
-            hohoho = 1;
         }
         else if(PlayerPrefs.GetInt("tutorial") == 1 && tutorialDo)
         {
