@@ -124,9 +124,31 @@ public class MakeNewMap : MonoBehaviour
                         rangeoftile = 8;
                     }
                 }
-                 if(BoardHeight == BoyPos && BoardWidth == 1)
+                //타일 Exception
+                 if(j == 0)//<-
                 {
                     while(tilevalue == 2)
+                    {
+                        tilevalue = Random.Range(1, rangeoftile);
+                    }
+                }
+                 else if(i == 0)
+                {
+                    while (tilevalue == 5)
+                    {
+                        tilevalue = Random.Range(1, rangeoftile);
+                    }
+                }
+                 else if(j == BoardHeight-1)
+                {
+                    while (tilevalue == 4)
+                    {
+                        tilevalue = Random.Range(1, rangeoftile);
+                    }
+                }
+                 else if(j==GirlPos&&i==BoardWidth-1)
+                {
+                    while (tilevalue == 2)
                     {
                         tilevalue = Random.Range(1, rangeoftile);
                     }
