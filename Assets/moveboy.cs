@@ -29,11 +29,13 @@ public class moveboy : MonoBehaviour
 
     float fastForwardFactor;
 
+    char tileType;
     int xdir;
     int ydir;
     int temp;
 
     //Warp Tile용 변수
+    bool warp = false;
     bool warpDone = false;
 
     //textfile용 변수
@@ -62,9 +64,46 @@ public class moveboy : MonoBehaviour
 
                     eventmap.ChangeLevelAndMoveBoy();
                 }
-                if (isThereNextTile)    //If the Boi is still on the tile
+                if (isThereNextTile)     //파랭이가 아직 타일 위에 있는가?
                 {
-                    targetPosition = targetPosition + new Vector3(xdir * distanceBetweenTiles, ydir * distanceBetweenTiles, 0);
+                    if (warp)            //Warp 해야 하는가?
+                    {
+                        if (tileType == '8')
+                        {
+                            gameObject.GetComponent<SpriteRenderer>().sprite = (Sprite)Resources.Load("Arts/Nothing", typeof(Sprite));
+                            if (GameObject.Find("Tile9(Clone)"))        //반대편 Warp 출구가 FixedTile 인지 Tile 인지 확인
+                            {
+                                gameObject.transform.position = GameObject.Find("Tile9(Clone)").transform.position;
+                                StartCoroutine(Waitsecond());
+                            }
+                            else
+                            {
+                                gameObject.transform.position = GameObject.Find("FixedTile9(Clone)").transform.position;
+                                StartCoroutine(Waitsecond());
+                            }
+                        }
+                        else if (tileType == '9')
+                        {
+                            gameObject.GetComponent<SpriteRenderer>().sprite = (Sprite)Resources.Load("Arts/Nothing", typeof(Sprite));
+                            if (GameObject.Find("Tile8(Clone)"))       //반대편 Warp 출구가 FixedTile 인지 Tile 인지 확인
+                            {
+                                gameObject.transform.position = GameObject.Find("Tile8(Clone)").transform.position;
+                                StartCoroutine(Waitsecond());
+                            }
+                            else
+                            {
+                                gameObject.transform.position = GameObject.Find("FixedTile8(Clone)").transform.position;
+                                StartCoroutine(Waitsecond());
+                            }
+                        }
+                        else
+                        {
+                            //일단 내비두기 아직모름
+                        }
+                        warp = false;
+                        warpDone = true;
+                    }
+                    targetPosition = transform.position + new Vector3(xdir * distanceBetweenTiles, ydir * distanceBetweenTiles, 0);
                     isThereNextTile = false;
                 }
                 else                   //Finish moving; Reached Girl? Or try try again??
@@ -127,111 +166,141 @@ public class moveboy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "FixedTile")
-        {
-            isThereNextTile = true;
-            GameObject nextTile = collision.gameObject;
-            int tileType = nextTile.name[9] - '0';
-            if (warpDone && (tileType == 8 || tileType == 9))
-            {
-                tileType = 1;
-                warpDone = false;
-            }
-            switch (tileType)
-            {
-                case 1:
-                    break;
-                case 2:
-                    xdir = -1;
-                    ydir = 0;
-                    break;
-                case 3:
-                    xdir = 1;
-                    ydir = 0;
-                    break;
-                case 4:
-                    xdir = 0;
-                    ydir = -1;
-                    break;
-                case 5:
-                    xdir = 0;
-                    ydir = 1;
-                    break;
-                case 6:
-                    temp = xdir;
-                    xdir = -ydir;
-                    ydir = temp;
-                    break;
-                case 7:
-                    temp = xdir;
-                    xdir = ydir;
-                    ydir = -temp;
-                    break;
-                case 8:
-                    gameObject.transform.position = GameObject.Find("FixedTile9(Clone)").transform.position;
-                    targetPosition = GameObject.Find("FixedTile9(Clone)").transform.position;
-                    warpDone = true;
-                    break;
-                case 9:
-                    gameObject.transform.position = GameObject.Find("FixedTile8(Clone)").transform.position;
-                    targetPosition = GameObject.Find("FixedTile8(Clone)").transform.position;
-                    warpDone = true;
-                    break;
-            }
-        }
         if (collision.tag == "Tile")
         {
-            isThereNextTile = true;
-            GameObject nextTile = collision.gameObject;
-            int tileType = nextTile.name[4] - '0';          //현재 숫자 한자리수 까지밖에 지원안되는데 (9까지) 나중에 두자리수까지 지원되게 고쳐야 됨.
-            if (warpDone && (tileType == 8 || tileType == 9))
+            if (warpDone)           //워프에서 반대편으로 나왔을때 바로 타일 탐지하는것 방지
             {
-                tileType = 1;
                 warpDone = false;
             }
-            switch (tileType)
+            else
             {
-                case 1:
-                    break;
-                case 2:
-                    xdir = -1;
-                    ydir = 0;
-                    break;
-                case 3:
-                    xdir = 1;
-                    ydir = 0;
-                    break;
-                case 4:
-                    xdir = 0;
-                    ydir = -1;
-                    break;
-                case 5:
-                    xdir = 0;
-                    ydir = 1;
-                    break;
-                case 6:
-                    temp = xdir;
-                    xdir = -ydir;
-                    ydir = temp;
-                    break;
-                case 7:
-                    temp = xdir;
-                    xdir = ydir;
-                    ydir = -temp;
-                    break;
-                case 8:
-                    gameObject.transform.position = GameObject.Find("Tile9(Clone)").transform.position;
-                    targetPosition = GameObject.Find("Tile9(Clone)").transform.position;
-                    warpDone = true;
-                    break;
-                case 9:
-                    gameObject.transform.position = GameObject.Find("Tile8(Clone)").transform.position;
-                    targetPosition = GameObject.Find("Tile8(Clone)").transform.position;
-                    warpDone = true;
-                    break;
+                isThereNextTile = true;
+                tileType = collision.gameObject.name[4];
+
+                switch (tileType)
+                {
+                    case '1':
+                        break;
+                    case '2':
+                        xdir = -1;
+                        ydir = 0;
+                        break;
+                    case '3':
+                        xdir = 1;
+                        ydir = 0;
+                        break;
+                    case '4':
+                        xdir = 0;
+                        ydir = -1;
+                        break;
+                    case '5':
+                        xdir = 0;
+                        ydir = 1;
+                        break;
+                    case '6':
+                        temp = xdir;
+                        xdir = -ydir;
+                        ydir = temp;
+                        break;
+                    case '7':
+                        temp = xdir;
+                        xdir = ydir;
+                        ydir = -temp;
+                        break;
+                    case '8':
+                        /*
+                        gameObject.transform.position = GameObject.Find("Tile9(Clone)").transform.position;
+                        targetPosition = GameObject.Find("Tile9(Clone)").transform.position;
+                        warpDone = true;
+                        */
+                        warp = true;
+                        break;
+                    case '9':
+                        /*
+                        gameObject.transform.position = GameObject.Find("Tile8(Clone)").transform.position;
+                        targetPosition = GameObject.Find("Tile8(Clone)").transform.position;
+                        warpDone = true;
+                        */
+                        warp = true;
+                        break;
+                }
             }
+
+            /*if (warpDone && (tileType == '8' || tileType == '9'))
+            {
+                tileType = '1';
+                warpDone = false;
+            }*/
+
         }
-        if (collision.gameObject.name == "Girl")
+        else if (collision.tag == "FixedTile")
+        {
+            if (warpDone)           //워프에서 반대편으로 나왔을때 바로 타일 탐지하는것 방지
+            {
+                warpDone = false;
+            }
+            else
+            {
+                isThereNextTile = true;
+                tileType = collision.gameObject.name[9];
+
+                switch (tileType)
+                {
+                    case '1':
+                        break;
+                    case '2':
+                        xdir = -1;
+                        ydir = 0;
+                        break;
+                    case '3':
+                        xdir = 1;
+                        ydir = 0;
+                        break;
+                    case '4':
+                        xdir = 0;
+                        ydir = -1;
+                        break;
+                    case '5':
+                        xdir = 0;
+                        ydir = 1;
+                        break;
+                    case '6':
+                        temp = xdir;
+                        xdir = -ydir;
+                        ydir = temp;
+                        break;
+                    case '7':
+                        temp = xdir;
+                        xdir = ydir;
+                        ydir = -temp;
+                        break;
+                    case '8':
+                        /*
+                        gameObject.transform.position = GameObject.Find("Tile9(Clone)").transform.position;
+                        targetPosition = GameObject.Find("FixedTile9(Clone)").transform.position;
+                        warpDone = true;
+                        */
+                        warp = true;
+                        break;
+                    case '9':
+                        /*
+                        gameObject.transform.position = GameObject.Find("Tile8(Clone)").transform.position;
+                        targetPosition = GameObject.Find("FixedTile8(Clone)").transform.position;
+                        warpDone = true;
+                        */
+                        warp = true;
+                        break;
+                }
+            }
+
+            /*if (warpDone && (tileType == '8' || tileType == '9'))
+            {
+                tileType = '1';
+                warpDone = false;
+            }*/
+
+        }
+        else if (collision.gameObject.name == "Girl")
         {
             xdir = 0;
             ydir = 0;
@@ -259,5 +328,11 @@ public class moveboy : MonoBehaviour
         //Add some to text to it
         File.AppendAllText(path, "\n" + content);
     }
-
+    public IEnumerator Waitsecond()
+    {
+        speed = 0f;
+        yield return new WaitForSeconds(0.3f);
+        gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Boy");
+        speed = 1.9f;
+    }
 }
