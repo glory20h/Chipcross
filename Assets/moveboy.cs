@@ -70,7 +70,6 @@ public class moveboy : MonoBehaviour
                     {
                         if (tileType == '8')
                         {
-                            gameObject.GetComponent<SpriteRenderer>().sprite = (Sprite)Resources.Load("Arts/Nothing", typeof(Sprite));
                             if (GameObject.Find("Tile9(Clone)"))        //반대편 Warp 출구가 FixedTile 인지 Tile 인지 확인
                             {
                                 gameObject.transform.position = GameObject.Find("Tile9(Clone)").transform.position;
@@ -84,7 +83,6 @@ public class moveboy : MonoBehaviour
                         }
                         else if (tileType == '9')
                         {
-                            gameObject.GetComponent<SpriteRenderer>().sprite = (Sprite)Resources.Load("Arts/Nothing", typeof(Sprite));
                             if (GameObject.Find("Tile8(Clone)"))       //반대편 Warp 출구가 FixedTile 인지 Tile 인지 확인
                             {
                                 gameObject.transform.position = GameObject.Find("Tile8(Clone)").transform.position;
@@ -95,10 +93,6 @@ public class moveboy : MonoBehaviour
                                 gameObject.transform.position = GameObject.Find("FixedTile8(Clone)").transform.position;
                                 StartCoroutine(Waitsecond());
                             }
-                        }
-                        else
-                        {
-                            //일단 내비두기 아직모름
                         }
                         warp = false;
                         warpDone = true;
@@ -332,7 +326,6 @@ public class moveboy : MonoBehaviour
     {
         speed = 0f;
         yield return new WaitForSeconds(0.3f);
-        gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Boy");
         speed = 1.9f;
     }
 }

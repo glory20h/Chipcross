@@ -26,6 +26,9 @@ public class MakeNewMap : MonoBehaviour
     [HideInInspector]
     public string nevergiveup;
     private moveboy boys;
+    string check;
+    int Girlposcheck = 10;
+    int Boyposcheck = 10;
 
     public class PieceData
     {
@@ -177,6 +180,7 @@ public class MakeNewMap : MonoBehaviour
             break;
         }*/
         makeNewlevel();
+        Checkingsame();
     }
 
     string SetDefaultBoard()  //Return Default Board with all standard EmptyTiles
@@ -189,4 +193,18 @@ public class MakeNewMap : MonoBehaviour
         return board;
     }
 
+    void Checkingsame()
+    {
+        if(check == Newmap)
+        {
+            if (GirlPos == Girlposcheck && BoyPos == Boyposcheck)
+                LoadLevelData(0);
+        }
+        else
+        {
+            check = Newmap;
+            Girlposcheck = GirlPos;
+            Boyposcheck = BoyPos;
+        }
+    }
 }
