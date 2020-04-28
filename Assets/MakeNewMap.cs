@@ -29,6 +29,8 @@ public class MakeNewMap : MonoBehaviour
     string check;
     int Girlposcheck = 10;
     int Boyposcheck = 10;
+    int passivemap = 1111;
+    int passivemapcheck = 0;
 
     public class PieceData
     {
@@ -93,7 +95,6 @@ public class MakeNewMap : MonoBehaviour
         else
         {
             Newmap = null;
-            Debug.Log(Newmap);
         }
         BoardWidth = Random.Range(3, 5);
         BoardHeight = Random.Range(3, 5);
@@ -188,7 +189,8 @@ public class MakeNewMap : MonoBehaviour
                 makeNewlevel();
             break;
         }*/
-        makeNewlevel();
+        //makeNewlevel();
+        passivemaker();
         Checkingsame();
     }
 
@@ -219,38 +221,30 @@ public class MakeNewMap : MonoBehaviour
 
     void passivemaker()
     {
+        if (Newmap == null)//이부분 중요했음 ㅋㅋ 기존 맵 Destoryer
+        {
+
+        }
+        else
+        {
+            Newmap = null;
+        }
+
+        if (passivemapcheck == passivemap)
+            passivemap++;
+
         BoardWidth = 2; // 2*2타일같이 여기서 수정함
         BoardHeight = 2;
-
-        //건들지마라
-        int scalesizechanger = 0;
-        scalesizechanger = (BoardWidth + BoardHeight) / 2;
-        switch (BoardHeight)
-        {
-            case 1:
-            case 2:
-            case 3:
-                scaleSize = 1;
-                break;
-            case 4:
-                scaleSize = 2;
-                break;
-            case 5:
-                scaleSize = 3;
-                break;
-        }
+        scaleSize = 1;
 
         //여자애 남자애 포지션
         BoyPos = 0;
         GirlPos = 0;
 
-        int tilevalue = 0;
-        for (int i = 0; i < BoardHeight; i++)
-            for (int j = 0; j < BoardWidth; j++)
-            {
-                tilevalue = 1;
-            }
+        Newmap += passivemap;
 
+        passivemapcheck = passivemap;
+        passivemap++;
         /* 다음에 할거
          Pin = 0000
 print (Pin)

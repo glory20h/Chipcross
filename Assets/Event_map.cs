@@ -211,7 +211,7 @@ public class Event_map : MonoBehaviour
         GameObject obj2;
 
         levelData.LoadLevelData(levelNum);
-        checking = levelData.Newmap;
+        checking = levelData.Newmap + ' ' + levelData.BoyPos + ' ' + levelData.GirlPos;//boy pos랑 girl pos 추가해야됨
         int typeIndex;
         int pieceHeight;
         int pieceWidth;
