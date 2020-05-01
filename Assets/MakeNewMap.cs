@@ -236,12 +236,39 @@ public class MakeNewMap : MonoBehaviour
         BoardWidth = 2; // 2*2타일같이 여기서 수정함
         BoardHeight = 2;
         scaleSize = 1;
-
+        int check = 0;
         //여자애 남자애 포지션
         BoyPos = 0;
         GirlPos = 0;
 
-        Newmap += passivemap;
+        Debug.Log("Bofore : " + passivemap);
+
+        if ((passivemap % 1000)/100 == 0)
+        {
+            passivemap += 100;
+        }
+        if ((passivemap % 100)/10 == 0)
+        {
+            passivemap += 10;
+        }
+        if (passivemap % 10 == 0)
+        {
+            passivemap += 1;
+        }
+        Debug.Log((passivemap / 1000) / 100);
+        if (passivemap / 1000 == 2 || passivemap / 1000 == 6 || passivemap / 1000 == 5)
+            passivemap += 1000;
+        if ((passivemap / 100)%10 == 2 || (passivemap / 100) % 10 == 6 || (passivemap / 100) % 10 == 5)
+            passivemap += 100;
+        if ((passivemap % 100) / 10 == 4 || (passivemap % 100) / 10 == 7)
+            passivemap += 10;
+        if (passivemap % 10 == 4 || passivemap % 10 == 7)
+            passivemap += 1;
+
+        Debug.Log(passivemap);
+        Newmap += passivemap;// 이 증가의 형태를 설명한다!
+        /* 0 0  -> 0 0 -> 0 0 -> 0 1
+           0 0     0 1    1 0    1 1 */
 
         passivemapcheck = passivemap;
         passivemap++;
