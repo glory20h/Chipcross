@@ -29,7 +29,7 @@ public class MakeNewMap : MonoBehaviour
     string check;
     int Girlposcheck = 10;
     int Boyposcheck = 10;
-    int passivemap = 1111;
+    int passivemap = 8191;
     int passivemapcheck = 0;
 
     public class PieceData

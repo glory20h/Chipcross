@@ -326,6 +326,6 @@ public class moveboy : MonoBehaviour
     {
         speed = 0f;
         yield return new WaitForSeconds(0.3f);
-        speed = 1.9f;
+        speed = 5f;
     }
 }
