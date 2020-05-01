@@ -236,7 +236,6 @@ public class MakeNewMap : MonoBehaviour
         BoardWidth = 2; // 2*2타일같이 여기서 수정함
         BoardHeight = 2;
         scaleSize = 1;
-        int check = 0;
         //여자애 남자애 포지션
         BoyPos = 0;
         GirlPos = 0;

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class timestoper : MonoBehaviour
 {
 
-    public float timeLeft = 10f;
+    public float timeLeft = 5f;
     bool timebool = true;
     // Start is called before the first frame update
     void Start()
@@ -29,7 +29,7 @@ public class timestoper : MonoBehaviour
 
     public void last()
     {
-        timeLeft = 10f;
+        timeLeft = 5f;
         timebool = true;
     }
 
