@@ -83,7 +83,7 @@ public class LevelDatabase
                 GirlPos = 1;
                 NumberOfPieces = 3;
                 BoardEmptyTileTypeInfo = ConvertStringToIntArray(SetDefaultBoard());
-                ConvertStringToPieceInfo("211421131241");
+                ConvertStringToPieceInfo(GenerateSlicedPieces());
                 break;
             case 2:
                 scaleSize = 1;
@@ -136,6 +136,15 @@ public class LevelDatabase
                 ConvertStringToPieceInfo("13113224013220112221340215131531121311221141231");
                 break;
         }
+    }
+
+    string GenerateSlicedPieces()
+    {
+        float BoardSize = 25;//BoardWidth * BoardHeight;
+        float difficultyFactor = Random.Range(-1f, 1f); // 난이도 -1 ~ 1 : 나중에 입력값으로 받음
+        int NumberOfPieces = Mathf.RoundToInt(BoardSize * (0.5f + (0.15f * difficultyFactor)));
+        Debug.Log(NumberOfPieces);
+        return "211421131241";
     }
 
     string SetDefaultBoard()  //Return Default Board with all standard EmptyTiles
