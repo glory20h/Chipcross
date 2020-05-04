@@ -31,6 +31,7 @@ public class MakeNewMap : MonoBehaviour
     int Boyposcheck = 10;
     int passivemap = 8191;
     int passivemapcheck = 0;
+    int[,] passivemapmatrix = new int[2, 2];
 
     public class PieceData
     {
@@ -240,31 +241,11 @@ public class MakeNewMap : MonoBehaviour
         BoyPos = 0;
         GirlPos = 0;
 
-        Debug.Log("Bofore : " + passivemap);
-
-        if ((passivemap % 1000)/100 == 0)
-        {
-            passivemap += 100;
-        }
-        if ((passivemap % 100)/10 == 0)
-        {
-            passivemap += 10;
-        }
-        if (passivemap % 10 == 0)
-        {
-            passivemap += 1;
-        }
-        Debug.Log((passivemap / 1000) / 100);
-        if (passivemap / 1000 == 2 || passivemap / 1000 == 6 || passivemap / 1000 == 5)
-            passivemap += 1000;
-        if ((passivemap / 100)%10 == 2 || (passivemap / 100) % 10 == 6 || (passivemap / 100) % 10 == 5)
-            passivemap += 100;
-        if ((passivemap % 100) / 10 == 4 || (passivemap % 100) / 10 == 7)
-            passivemap += 10;
-        if (passivemap % 10 == 4 || passivemap % 10 == 7)
-            passivemap += 1;
+        mapmatrix();
+        passivemap = passivemapmatrix[0, 0] * 1000 + passivemapmatrix[0, 1] * 100 + passivemapmatrix[1, 0] * 10 + passivemapmatrix[1, 1];
 
         Debug.Log(passivemap);
+
         Newmap += passivemap;// 이 증가의 형태를 설명한다!
         /* 0 0  -> 0 0 -> 0 0 -> 0 1
            0 0     0 1    1 0    1 1 */
@@ -279,5 +260,72 @@ while Pin < 10000:
     Pin = Pin + 1
          */
         BoardEmptyTileTypeInfo = ConvertStringToIntArray(Newmap);
+    }
+
+    void mapmatrix()
+    {
+        passivemapmatrix[0, 0] = passivemap / 1000;
+        passivemapmatrix[0, 1] = (passivemap % 1000) / 100;
+        passivemapmatrix[1, 0] = (passivemap % 100) / 10;
+        passivemapmatrix[1, 1] = passivemap % 10;
+
+        int checkmatrixnum8 = 0;
+        //1천대
+        if (passivemapmatrix[0, 0] == 0)
+        {
+            passivemapmatrix[0, 0] += 1;
+        }
+        else if(passivemapmatrix[0, 0] == 8 || passivemapmatrix[0, 0] == 9)
+        {
+            checkmatrixnum8++;
+        }
+        //1백대
+        if (passivemapmatrix[0, 1] == 0)
+        {
+            passivemapmatrix[0, 1] += 1;
+        }
+        else if (passivemapmatrix[0, 1] == 8 || passivemapmatrix[0, 1] == 9)
+        {
+            checkmatrixnum8++;
+        }
+        //10대
+        if (passivemapmatrix[1, 0] == 0)
+        {
+            passivemapmatrix[1, 0] += 1;
+        }
+        else if (passivemapmatrix[1, 0] == 8 || passivemapmatrix[1, 0] == 9)
+        {
+            checkmatrixnum8++;
+        }
+        else if(checkmatrixnum8 == 2)
+        {
+            passivemap++;
+            mapmatrix();
+        }
+        //1대
+        if (passivemapmatrix[1, 1] == 0)
+        {
+            passivemapmatrix[1, 1] += 1;
+        }
+        else if (passivemapmatrix[1, 1] == 8 || passivemapmatrix[0, 0] == 9)
+        {
+            checkmatrixnum8++;
+        }
+        else if (checkmatrixnum8 == 2)
+        {
+            passivemap++;
+            mapmatrix();
+        }
+
+        Debug.Log(checkmatrixnum8);
+
+        if (passivemapmatrix[0, 0] / 1000 == 2 || passivemapmatrix[0, 0] / 1000 == 6 || passivemapmatrix[0, 0] / 1000 == 5)
+            passivemapmatrix[0, 0] += 1;
+        if ((passivemapmatrix[0, 1] / 100) % 10 == 2 || (passivemapmatrix[0, 1] / 100) % 10 == 6 || (passivemapmatrix[0, 1] / 100) % 10 == 5)
+            passivemapmatrix[0, 1] += 1;
+        if ((passivemapmatrix[1, 0] % 100) / 10 == 4 || (passivemapmatrix[1, 0] % 100) / 10 == 7)
+            passivemapmatrix[1, 0] += 1;
+        if (passivemapmatrix[1, 1] % 10 == 4 || passivemapmatrix[1, 1] % 10 == 7)
+            passivemapmatrix[1, 1] += 1;
     }
 }
