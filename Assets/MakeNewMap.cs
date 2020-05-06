@@ -29,7 +29,7 @@ public class MakeNewMap : MonoBehaviour
     string check;
     int Girlposcheck = 10;
     int Boyposcheck = 10;
-    int passivemap = 8191;
+    int passivemap = 8119;
     int passivemapcheck = 0;
     int[,] passivemapmatrix = new int[2, 2];
 
@@ -242,9 +242,8 @@ public class MakeNewMap : MonoBehaviour
         GirlPos = 0;
 
         mapmatrix();
-        passivemap = passivemapmatrix[0, 0] * 1000 + passivemapmatrix[0, 1] * 100 + passivemapmatrix[1, 0] * 10 + passivemapmatrix[1, 1];
 
-        Debug.Log(passivemap);
+        //Debug.Log(passivemap);
 
         Newmap += passivemap;// 이 증가의 형태를 설명한다!
         /* 0 0  -> 0 0 -> 0 0 -> 0 1
@@ -269,55 +268,92 @@ while Pin < 10000:
         passivemapmatrix[1, 0] = (passivemap % 100) / 10;
         passivemapmatrix[1, 1] = passivemap % 10;
 
+
+        /*Debug.Log("00:"+passivemapmatrix[0, 0]);
+        Debug.Log("01:" + passivemapmatrix[0, 1]);
+        Debug.Log("10:" + passivemapmatrix[1, 0]);
+        Debug.Log("11:" + passivemapmatrix[1, 1]);*/
+
         int checkmatrixnum8 = 0;
+        int checkmatrixnum9 = 0;
         //1천대
         if (passivemapmatrix[0, 0] == 0)
         {
             passivemapmatrix[0, 0] += 1;
         }
-        else if(passivemapmatrix[0, 0] == 8 || passivemapmatrix[0, 0] == 9)
+        else if(passivemapmatrix[0, 0] == 8)
         {
             checkmatrixnum8++;
         }
+        else if (passivemapmatrix[0, 0] == 9)
+        {
+            checkmatrixnum9++;
+        }
+
+        //Debug.Log("00:" + passivemapmatrix[0, 0]);
+
         //1백대
         if (passivemapmatrix[0, 1] == 0)
         {
             passivemapmatrix[0, 1] += 1;
         }
-        else if (passivemapmatrix[0, 1] == 8 || passivemapmatrix[0, 1] == 9)
+        else if (passivemapmatrix[0, 1] == 8)
         {
             checkmatrixnum8++;
         }
+        else if (passivemapmatrix[0, 1] == 9)
+        {
+            checkmatrixnum9++;
+        }
+
+        //Debug.Log("01:" + passivemapmatrix[0, 1]);
+
         //10대
         if (passivemapmatrix[1, 0] == 0)
         {
             passivemapmatrix[1, 0] += 1;
         }
-        else if (passivemapmatrix[1, 0] == 8 || passivemapmatrix[1, 0] == 9)
+        else if (passivemapmatrix[1, 0] == 8)
         {
             checkmatrixnum8++;
         }
-        else if(checkmatrixnum8 == 2)
+        else if (passivemapmatrix[1, 0] == 9)
         {
-            passivemap++;
-            mapmatrix();
+            checkmatrixnum9++;
         }
+
+        //Debug.Log("10:" + passivemapmatrix[1, 0]);
+
         //1대
         if (passivemapmatrix[1, 1] == 0)
         {
             passivemapmatrix[1, 1] += 1;
         }
-        else if (passivemapmatrix[1, 1] == 8 || passivemapmatrix[0, 0] == 9)
+        else if (passivemapmatrix[1, 1] == 8)
         {
             checkmatrixnum8++;
         }
-        else if (checkmatrixnum8 == 2)
+        else if (passivemapmatrix[1, 1] == 9)
         {
+            checkmatrixnum9++;
+        }
+
+        //Debug.Log("11:" + passivemapmatrix[1, 1]);
+
+
+        // 확인
+        //Debug.Log("8:"+ checkmatrixnum8);
+        //Debug.Log("9:" + checkmatrixnum9);
+        if ((checkmatrixnum8 == 0 && checkmatrixnum9 == 0) || (checkmatrixnum8 == 1 && checkmatrixnum9==1))
+        {
+            //Debug.Log("ok");
+        }
+        else
+        {
+            //Debug.Log("notok");
             passivemap++;
             mapmatrix();
         }
-
-        Debug.Log(checkmatrixnum8);
 
         if (passivemapmatrix[0, 0] / 1000 == 2 || passivemapmatrix[0, 0] / 1000 == 6 || passivemapmatrix[0, 0] / 1000 == 5)
             passivemapmatrix[0, 0] += 1;
@@ -327,5 +363,8 @@ while Pin < 10000:
             passivemapmatrix[1, 0] += 1;
         if (passivemapmatrix[1, 1] % 10 == 4 || passivemapmatrix[1, 1] % 10 == 7)
             passivemapmatrix[1, 1] += 1;
+
+        passivemap = passivemapmatrix[0, 0] * 1000 + passivemapmatrix[0, 1] * 100 + passivemapmatrix[1, 0] * 10 + passivemapmatrix[1, 1];
+
     }
 }
