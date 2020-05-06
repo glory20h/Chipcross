@@ -140,10 +140,34 @@ public class LevelDatabase
 
     string GenerateSlicedPieces()
     {
-        float BoardSize = 25;//BoardWidth * BoardHeight;
-        float difficultyFactor = Random.Range(-1f, 1f); // 난이도 -1 ~ 1 : 나중에 입력값으로 받음
-        int NumberOfPieces = Mathf.RoundToInt(BoardSize * (0.5f + (0.15f * difficultyFactor)));
-        Debug.Log(NumberOfPieces);
+        int boardSize = 16;//BoardWidth * BoardHeight;
+        float difficultyFactor = Random.Range(-1f, 1f); // 난이도 조절용 -> (-1 ~ 1) -> 나중에 입력값으로 받음
+
+        //생성할 조각 갯수 : BoardSize * (0.35 ~ 0.6) -> ex) boardSize = 16 -> (5.6 ~ 10.4), boardSize = 6 -> (2.1 ~ 3.9), difficultyFactor에 따라 범위 안에서 선택 // 수정 및 조절
+        int NumberOfPieces = Mathf.RoundToInt(boardSize * (0.475f + (0.125f * difficultyFactor)));
+        Debug.Log("NumberOfPieces : " + NumberOfPieces);
+
+        //조각의 최대 크기(최대 타일 갯수) : boardSize = 4 -> 2, boardSize = 16 -> 4 // 수정 및 조절
+        int maxPieceSize = Mathf.FloorToInt(Mathf.Sqrt(boardSize));
+        Debug.Log("MaxPieceSize : " + maxPieceSize);
+
+        //조각들 1차원 Array -> 조각 크기 할당용
+        int[] pieceSizeArray = new int[NumberOfPieces];
+        int remainingPieces = boardSize - NumberOfPieces;
+
+        for(int piecesize = 1; piecesize <= maxPieceSize; piecesize++)
+        {
+            if(piecesize == 1)
+            {
+                for(int i=0; i<NumberOfPieces; i++)
+                {
+                    pieceSizeArray[i] = 1;
+                }
+            }
+            
+        }
+
+        //임시
         return "211421131241";
     }
 

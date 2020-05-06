@@ -7,7 +7,7 @@ public class TutorialAnimation : MonoBehaviour
 {
     TutorialBoy TutorialBoyMove;
     public Transform TutorialPanel;
-    Vector3 targetPosition;
+    //Vector3 targetPosition;
     float speed = 1.0f;
     bool goBack = false;
 
@@ -56,7 +56,7 @@ public class TutorialAnimation : MonoBehaviour
             }
             if (goBack)
             {
-                transform.position = targetPosition;
+                //transform.position = targetPosition;
                 goBack = false;
             }
         }
