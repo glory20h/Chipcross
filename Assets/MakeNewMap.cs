@@ -222,6 +222,8 @@ public class MakeNewMap : MonoBehaviour
 
     void passivemaker()
     {
+        float difficultyFactor = Random.Range(-1, 1);
+
         if (Newmap == null)//이부분 중요했음 ㅋㅋ 기존 맵 Destoryer
         {
 
@@ -354,7 +356,7 @@ while Pin < 10000:
             passivemap++;
             mapmatrix();
         }
-
+        
         if (passivemapmatrix[0, 0] / 1000 == 2 || passivemapmatrix[0, 0] / 1000 == 6 || passivemapmatrix[0, 0] / 1000 == 5)
             passivemapmatrix[0, 0] += 1;
         if ((passivemapmatrix[0, 1] / 100) % 10 == 2 || (passivemapmatrix[0, 1] / 100) % 10 == 6 || (passivemapmatrix[0, 1] / 100) % 10 == 5)
@@ -366,5 +368,13 @@ while Pin < 10000:
 
         passivemap = passivemapmatrix[0, 0] * 1000 + passivemapmatrix[0, 1] * 100 + passivemapmatrix[1, 0] * 10 + passivemapmatrix[1, 1];
 
+        /*
+        if (난이도 >= 0.5)
+        {
+            워프 타일 X
+            6,7번 타일 X
+            공백 타일 갯수 = 난이도 * 0.5f
+        }
+        */
     }
 }
