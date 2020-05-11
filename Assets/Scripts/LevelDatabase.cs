@@ -138,33 +138,50 @@ public class LevelDatabase
         }
     }
 
-    string GenerateSlicedPieces()
+    public string GenerateSlicedPieces()
     {
-        int boardSize = 16;//BoardWidth * BoardHeight;
-        float difficultyFactor = Random.Range(-1f, 1f); // 난이도 조절용 -> (-1 ~ 1) -> 나중에 입력값으로 받음
+        Debug.Log("--------------------------------");
 
-        //생성할 조각 갯수 : BoardSize * (0.35 ~ 0.6) -> ex) boardSize = 16 -> (5.6 ~ 10.4), boardSize = 6 -> (2.1 ~ 3.9), difficultyFactor에 따라 범위 안에서 선택 // 수정 및 조절
-        int NumberOfPieces = Mathf.RoundToInt(boardSize * (0.475f + (0.125f * difficultyFactor)));
-        Debug.Log("NumberOfPieces : " + NumberOfPieces);
+        int boardSize = Random.Range(2, 6) * Random.Range(2, 6);//BoardWidth * BoardHeight;
+        Debug.Log("BoardSize : " + boardSize);
+        float difficultyFactor = Random.Range(-1f, 1f); // 난이도 조절용 -> (-1 ~ 1) -> 나중에 입력값으로 받음
 
         //조각의 최대 크기(최대 타일 갯수) : boardSize = 4 -> 2, boardSize = 16 -> 4 // 수정 및 조절
         int maxPieceSize = Mathf.FloorToInt(Mathf.Sqrt(boardSize));
         Debug.Log("MaxPieceSize : " + maxPieceSize);
 
+        //생성할 조각 갯수 : BoardSize * (0.35 ~ 0.6) -> ex) boardSize = 16 -> (5.6 ~ 10.4), boardSize = 6 -> (2.1 ~ 3.9), difficultyFactor에 따라 범위 안에서 선택 // 수정 및 조절
+        int NumberOfPieces = Mathf.Max(Mathf.RoundToInt(boardSize * (0.475f + (0.125f * difficultyFactor))), boardSize / maxPieceSize);
+        Debug.Log("NumberOfPieces : " + NumberOfPieces);
+
         //조각들 1차원 Array -> 조각 크기 할당용
         int[] pieceSizeArray = new int[NumberOfPieces];
-        int remainingPieces = boardSize - NumberOfPieces;
 
-        for(int piecesize = 1; piecesize <= maxPieceSize; piecesize++)
+        for (int i = 0; i < NumberOfPieces; i++)
         {
-            if(piecesize == 1)
+            pieceSizeArray[i] = 1;
+        }
+
+        int DivCeil(int a, int b) // ex) 8 / 3 = 2.667 -> 3, 6 / 3 = 2
+        {
+            int c = a % b == 0 ? a / b : (a / b) + 1;
+            return c;
+        }
+
+        int remainingPieces = boardSize - NumberOfPieces;
+        for (int piecesize = 2; piecesize <= maxPieceSize; piecesize++)
+        {
+            int allocate = Random.Range(DivCeil(remainingPieces, maxPieceSize - (piecesize - 1)), Mathf.Min(remainingPieces, NumberOfPieces) + 1); //int의 '/'연산 잘 작동하는지 검증 필요, Random.Range difficultyFactor의 영향을 받도록 조정 필요
+            for(int i = 0; i < allocate; i++)
             {
-                for(int i=0; i<NumberOfPieces; i++)
-                {
-                    pieceSizeArray[i] = 1;
-                }
+                pieceSizeArray[i] += 1;
             }
-            
+            remainingPieces -= allocate;
+        }
+
+        for (int i = 0; i< pieceSizeArray.Length; i++)
+        {
+            Debug.Log("Piece " + i + ": " + pieceSizeArray[i]);
         }
 
         //임시

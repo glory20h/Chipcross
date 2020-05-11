@@ -480,10 +480,14 @@ public class Event : MonoBehaviour
     public void DevBtnAct()  //Go To Level X
     {
         //바로 다음 퍼즐로 ㄱ
+        /*
         levelNum++;
         DeleteLevel();
         LoadLevel();
         SavePiecePosition();
+        */
+
+        string s = levelData.GenerateSlicedPieces();
     }
 
     //옵션 버튼을 눌러 Option창 토글
