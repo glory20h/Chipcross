@@ -47,6 +47,8 @@ public class Event_map : MonoBehaviour
     public bool gobuttononoff=true;
     [HideInInspector]
     public string checking;
+    [HideInInspector]
+    public float difficultyfactor;
 
     void Start()
     {
@@ -212,6 +214,7 @@ public class Event_map : MonoBehaviour
 
         levelData.LoadLevelData(levelNum);
         checking = levelData.Newmap;// + ' ' + levelData.BoyPos + ' ' + levelData.GirlPos//boy pos랑 girl pos 추가해야됨
+        difficultyfactor = levelData.difficultyFactor;
         int typeIndex;
         int pieceHeight;
         int pieceWidth;

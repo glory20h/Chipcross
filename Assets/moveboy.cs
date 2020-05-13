@@ -110,6 +110,7 @@ public class moveboy : MonoBehaviour
                         Debug.Log("Puzzle solved!! Congrats!! :)");
                         metGirl = false;
                         CreateText(eventmap.checking);
+                        DifficultyText(eventmap.difficultyfactor);
                         eventmap.ChangeLevelAndMoveBoy();
                         /*GoToNextLevelBtn.interactable = true;
                         GoNFasterButton.interactable = false;
@@ -313,6 +314,19 @@ public class moveboy : MonoBehaviour
     {
         //Path of the file
         string path = Application.dataPath + "/Mapcontent.txt";
+        //Create File if it doesn't exist
+        if (!File.Exists(path))
+        {
+            File.WriteAllText(path, "start \n\n");
+        }
+        //Content of the file
+        //Add some to text to it
+        File.AppendAllText(path, "\n" + content);
+    }
+    public void DifficultyText(float content)
+    {
+        //Path of the file
+        string path = Application.dataPath + "/LevelDifficulty.txt";
         //Create File if it doesn't exist
         if (!File.Exists(path))
         {

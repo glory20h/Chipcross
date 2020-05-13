@@ -32,6 +32,8 @@ public class MakeNewMap : MonoBehaviour
     int passivemap = 8119;
     int passivemapcheck = 0;
     int[,] passivemapmatrix = new int[2, 2];
+    [HideInInspector]
+    public float difficultyFactor = 0;
 
     public class PieceData
     {
@@ -265,6 +267,29 @@ while Pin < 10000:
 
     void mapmatrix()
     {
+        //difficultyFactor가 -1~1 -> size스케일러
+        int sizescaler = 0;
+        sizescaler = (passivemapmatrix.GetLength(0) + passivemapmatrix.GetLength(1))/2;
+        //ez case check
+        switch(sizescaler)
+        {
+            case 1:
+                difficultyFactor = -1;
+                break;
+            case 2:
+                difficultyFactor = -0.7f;
+                break;
+            case 3:
+                difficultyFactor = -0.2f;
+                break;
+            case 4:
+                difficultyFactor = 0.2f;
+                break;
+            case 5:
+                difficultyFactor = 0.7f;
+                break;
+        }
+
         passivemapmatrix[0, 0] = passivemap / 1000;
         passivemapmatrix[0, 1] = (passivemap % 1000) / 100;
         passivemapmatrix[1, 0] = (passivemap % 100) / 10;
@@ -291,6 +316,10 @@ while Pin < 10000:
         {
             checkmatrixnum9++;
         }
+        else if (passivemapmatrix[0, 0] == 6 || passivemapmatrix[0, 0] == 7)
+        {
+            difficultyFactor += 0.1f;
+        }
 
         //Debug.Log("00:" + passivemapmatrix[0, 0]);
 
@@ -306,6 +335,10 @@ while Pin < 10000:
         else if (passivemapmatrix[0, 1] == 9)
         {
             checkmatrixnum9++;
+        }
+        else if (passivemapmatrix[0, 1] == 6 || passivemapmatrix[0, 1] == 7)
+        {
+            difficultyFactor += 0.1f;
         }
 
         //Debug.Log("01:" + passivemapmatrix[0, 1]);
@@ -323,6 +356,10 @@ while Pin < 10000:
         {
             checkmatrixnum9++;
         }
+        else if (passivemapmatrix[1, 0] == 6 || passivemapmatrix[1, 0] == 7)
+        {
+            difficultyFactor += 0.1f;
+        }
 
         //Debug.Log("10:" + passivemapmatrix[1, 0]);
 
@@ -339,6 +376,10 @@ while Pin < 10000:
         {
             checkmatrixnum9++;
         }
+        else if (passivemapmatrix[1, 1] == 6 || passivemapmatrix[1, 1] == 7)
+        {
+            difficultyFactor += 0.1f;
+        }
 
         //Debug.Log("11:" + passivemapmatrix[1, 1]);
 
@@ -348,26 +389,35 @@ while Pin < 10000:
         //Debug.Log("9:" + checkmatrixnum9);
         if ((checkmatrixnum8 == 0 && checkmatrixnum9 == 0) || (checkmatrixnum8 == 1 && checkmatrixnum9==1))
         {
-            //Debug.Log("ok");
+            Debug.Log("ok");
+            difficultyFactor += 0.05f;
         }
         else
         {
-            //Debug.Log("notok");
+            Debug.Log("notok");
             passivemap++;
             mapmatrix();
         }
         
-        if (passivemapmatrix[0, 0] / 1000 == 2 || passivemapmatrix[0, 0] / 1000 == 6 || passivemapmatrix[0, 0] / 1000 == 5)
+        if (passivemapmatrix[0, 0] == 2 || passivemapmatrix[0, 0] == 6 || passivemapmatrix[0, 0] == 5)
             passivemapmatrix[0, 0] += 1;
-        if ((passivemapmatrix[0, 1] / 100) % 10 == 2 || (passivemapmatrix[0, 1] / 100) % 10 == 6 || (passivemapmatrix[0, 1] / 100) % 10 == 5)
+        if (passivemapmatrix[0, 1] == 2 || passivemapmatrix[0, 1] == 6 || passivemapmatrix[0, 1] == 5)
             passivemapmatrix[0, 1] += 1;
-        if ((passivemapmatrix[1, 0] % 100) / 10 == 4 || (passivemapmatrix[1, 0] % 100) / 10 == 7)
+        if (passivemapmatrix[1, 0]== 4 || passivemapmatrix[1, 0] == 7)
             passivemapmatrix[1, 0] += 1;
-        if (passivemapmatrix[1, 1] % 10 == 4 || passivemapmatrix[1, 1] % 10 == 7)
+        if (passivemapmatrix[1, 1] == 4 || passivemapmatrix[1, 1] == 7)
             passivemapmatrix[1, 1] += 1;
 
         passivemap = passivemapmatrix[0, 0] * 1000 + passivemapmatrix[0, 1] * 100 + passivemapmatrix[1, 0] * 10 + passivemapmatrix[1, 1];
 
+        if (difficultyFactor<-1)
+        {
+            difficultyFactor = -1;
+        }
+        else if(difficultyFactor>1)
+        {
+            difficultyFactor = 1;
+        }
         /*
         if (난이도 >= 0.5)
         {
