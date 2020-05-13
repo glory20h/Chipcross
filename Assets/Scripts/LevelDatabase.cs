@@ -162,12 +162,6 @@ public class LevelDatabase
             pieceSizeArray[i] = 1;
         }
 
-        int DivCeil(int a, int b) // ex) 8 / 3 = 2.667 -> 3, 6 / 3 = 2
-        {
-            int c = a % b == 0 ? a / b : (a / b) + 1;
-            return c;
-        }
-
         int remainingPieces = boardSize - NumberOfPieces;
         for (int piecesize = 2; piecesize <= maxPieceSize; piecesize++)
         {
@@ -182,6 +176,14 @@ public class LevelDatabase
         for (int i = 0; i< pieceSizeArray.Length; i++)
         {
             Debug.Log("Piece " + i + ": " + pieceSizeArray[i]);
+        }
+
+
+        //유틸리티
+        int DivCeil(int a, int b) // ex) 8 / 3 = 2.667 -> 3, 6 / 3 = 2
+        {
+            int c = a % b == 0 ? a / b : (a / b) + 1;
+            return c;
         }
 
         //임시
