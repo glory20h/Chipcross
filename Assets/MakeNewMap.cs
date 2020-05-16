@@ -31,9 +31,11 @@ public class MakeNewMap : MonoBehaviour
     int Boyposcheck = 10;
     int passivemap = 8119;
     int passivemapcheck = 0;
-    int[,] passivemapmatrix = new int[2, 2];
+    int[,] passivemapmatrix;
     [HideInInspector]
     public float difficultyFactor = 0;
+    int drow = 0;
+    int dcol = 0;
 
     public class PieceData
     {
@@ -427,4 +429,60 @@ while Pin < 10000:
         }
         */
     }
+
+    void Mapmakingbydfactor(float dfactor)
+    {
+        if(dfactor<-1)
+        {
+            dfactor = -1;
+        }
+        else if(dfactor>1)
+        {
+            dfactor = 1;
+        }
+        //여기까지는 일단 초기 설정
+        //2+2 = 4. -1~?, 2+3=5, 3+3=6, 4+4=8,5+5=10 즉 4~10 7단계 를 21로 나누니까 0.3기준으로 factor 형성
+        int sum = 0;
+        if(dfactor>=-1f || dfactor< -0.7f)//-1,-0.9,0.8
+        {
+            sum = 4;
+        }
+        else if(dfactor >= -0.7f || dfactor < -0.4f)//0.7,0.6,0.5
+        {
+            sum = 5;
+        }
+        else if (dfactor >= -0.4f || dfactor < -0.1f)//0.4,0.3,0.2
+        {
+            sum = 6;
+        }
+        else if (dfactor >= -0.1f || dfactor < 0.2f)//0.1,0.0,0.1
+        {
+            sum = 7;
+        }
+        else if (dfactor >= 0.2f || dfactor < 0.5f)//0.2,0.3,0.4
+        {
+            sum = 8;
+        }
+        else if (dfactor >= 0.5f || dfactor < 0.8f)//0.5,0.6,0.7
+        {
+            sum = 9;
+        }
+        else if (dfactor >= 0.8f || dfactor <= 1f)//0.8,0.9,1.0
+        {
+            sum = 10;
+        }
+
+        //sum 분리하기
+        drow = Random.Range(2, sum);
+        dcol = sum - drow;
+        passivemapmatrix = new int[dcol, drow];//여기까지 dfactor에 따른 틀을 만드는 거고 내부를 어떻게할까...
+
+        //dfactor에 감소가 없는 것 -> row나 col중에서 큰 숫자만큼 타일이 있을 경우 1번인 공백타일 빼고
+        //그 중에서 6,7번은 0.05의 난이도를 올리고, 8,9가 같이 있다면 0.03의 난이도를 올린다.
+        //row =3인데 2~5의 타일이 4개라묜 난이도를 0.02를 올린다
+        int Regulartilenum = 0;
+        int Roationtilenum = 0;
+        int Warptilenum = 0;
+    }
+
 }
