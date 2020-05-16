@@ -140,9 +140,10 @@ public class LevelDatabase
 
     public string GenerateSlicedPieces()
     {
+        Debug.Log(Random.Range(0, 10));
         Debug.Log("--------------------------------");
 
-        int boardSize = Random.Range(2, 6) * Random.Range(2, 6);//BoardWidth * BoardHeight;
+        int boardSize = 3 * 3; //Random.Range(2, 6) * Random.Range(2, 6);//BoardWidth * BoardHeight;
         Debug.Log("BoardSize : " + boardSize);
         float difficultyFactor = Random.Range(-1f, 1f); // 난이도 조절용 -> (-1 ~ 1) -> 나중에 입력값으로 받음
 
@@ -150,7 +151,7 @@ public class LevelDatabase
         int maxPieceSize = Mathf.FloorToInt(Mathf.Sqrt(boardSize));
         Debug.Log("MaxPieceSize : " + maxPieceSize);
 
-        //생성할 조각 갯수 : BoardSize * (0.35 ~ 0.6) -> ex) boardSize = 16 -> (5.6 ~ 10.4), boardSize = 6 -> (2.1 ~ 3.9), difficultyFactor에 따라 범위 안에서 선택 // 수정 및 조절
+        //생성할 조각 갯수 : BoardSize * (0.35 ~ 0.6) -> ex) boardSize = 16 -> (5.6 ~ 10.4)개, boardSize = 6 -> (2.1 ~ 3.9)개, difficultyFactor에 따라 범위 안에서 선택 // 수정 및 조절
         int NumberOfPieces = Mathf.Max(Mathf.RoundToInt(boardSize * (0.475f + (0.125f * difficultyFactor))), boardSize / maxPieceSize);
         Debug.Log("NumberOfPieces : " + NumberOfPieces);
 
@@ -180,7 +181,8 @@ public class LevelDatabase
 
 
         //유틸리티
-        int DivCeil(int a, int b) // ex) 8 / 3 = 2.667 -> 3, 6 / 3 = 2
+        // int 두 개 나누고 소수는 올림 ex) [8 / 3 = 2.667 -> 3 return], [6 / 3 = 2 -> 2 return]
+        int DivCeil(int a, int b) 
         {
             int c = a % b == 0 ? a / b : (a / b) + 1;
             return c;
