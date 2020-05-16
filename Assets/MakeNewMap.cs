@@ -432,7 +432,10 @@ while Pin < 10000:
 
     void Mapmakingbydfactor(float dfactor)
     {
-        if(dfactor<-1)
+        float levelfactor = 0;
+        List<int> tilesaver = new List<int>();
+
+        if (dfactor<-1)
         {
             dfactor = -1;
         }
@@ -443,33 +446,40 @@ while Pin < 10000:
         //여기까지는 일단 초기 설정
         //2+2 = 4. -1~?, 2+3=5, 3+3=6, 4+4=8,5+5=10 즉 4~10 7단계 를 21로 나누니까 0.3기준으로 factor 형성
         int sum = 0;
-        if(dfactor>=-1f || dfactor< -0.7f)//-1,-0.9,0.8
+        if(dfactor>=-1f || dfactor< -0.8f)//-1,-0.9
         {
             sum = 4;
+            levelfactor = -1f;
         }
-        else if(dfactor >= -0.7f || dfactor < -0.4f)//0.7,0.6,0.5
+        else if(dfactor >= -0.8f || dfactor < -0.5f)//0.7,0.6,0.5
         {
             sum = 5;
+            levelfactor = -0.8f;
         }
-        else if (dfactor >= -0.4f || dfactor < -0.1f)//0.4,0.3,0.2
+        else if (dfactor >= -0.5f || dfactor < -0.2f)//0.4,0.3,0.2
         {
             sum = 6;
+            levelfactor = -0.5f;
         }
-        else if (dfactor >= -0.1f || dfactor < 0.2f)//0.1,0.0,0.1
+        else if (dfactor >= -0.2f || dfactor < 0.1f)//0.1,0.0,0.1
         {
             sum = 7;
+            levelfactor = -0.2f;
         }
-        else if (dfactor >= 0.2f || dfactor < 0.5f)//0.2,0.3,0.4
+        else if (dfactor >= 0.1f || dfactor < 0.4f)//0.2,0.3,0.4
         {
             sum = 8;
+            levelfactor = 0.1f;
         }
-        else if (dfactor >= 0.5f || dfactor < 0.8f)//0.5,0.6,0.7
+        else if (dfactor >= 0.4f || dfactor < 0.7f)//0.5,0.6,0.7
         {
             sum = 9;
+            levelfactor = 0.4f;
         }
-        else if (dfactor >= 0.8f || dfactor <= 1f)//0.8,0.9,1.0
+        else if (dfactor >= 0.7f || dfactor <= 1f)//0.8,0.9,1.0
         {
             sum = 10;
+            levelfactor = 0.7f;
         }
 
         //sum 분리하기
@@ -480,9 +490,10 @@ while Pin < 10000:
         //dfactor에 감소가 없는 것 -> row나 col중에서 큰 숫자만큼 타일이 있을 경우 1번인 공백타일 빼고
         //그 중에서 6,7번은 0.05의 난이도를 올리고, 8,9가 같이 있다면 0.03의 난이도를 올린다.
         //row =3인데 2~5의 타일이 4개라묜 난이도를 0.02를 올린다
-        int Regulartilenum = 0;
-        int Roationtilenum = 0;
-        int Warptilenum = 0;
+
+        levelfactor = dfactor - levelfactor; // 남아있는 levelconstruction value
+
+        tilesaver.RemoveRange(0, sum-1);
     }
 
 }
