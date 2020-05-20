@@ -34,8 +34,6 @@ public class MakeNewMap : MonoBehaviour
     int[,] passivemapmatrix;
     [HideInInspector]
     public float difficultyFactor = 0;
-    int drow = 0;
-    int dcol = 0;
 
     public class PieceData
     {
@@ -433,7 +431,6 @@ while Pin < 10000:
     void Mapmakingbydfactor(float dfactor)
     {
         float levelfactor = 0;
-        List<int> tilesaver = new List<int>();
 
         if (dfactor<-1)
         {
@@ -481,11 +478,33 @@ while Pin < 10000:
             sum = 10;
             levelfactor = 0.7f;
         }
-
         //sum 분리하기
-        drow = Random.Range(2, sum);
-        dcol = sum - drow;
-        passivemapmatrix = new int[dcol, drow];//여기까지 dfactor에 따른 틀을 만드는 거고 내부를 어떻게할까...
+        BoardWidth = Random.Range(2, sum);
+        BoardHeight = sum - BoardWidth;
+        passivemapmatrix = new int[BoardHeight, BoardWidth];//여기까지 dfactor에 따른 틀을 만드는 거고 내부를 어떻게할까...
+
+        //Girlpos, Boypos
+        BoyPos = Random.Range(0, BoardHeight - 1);
+        GirlPos = Random.Range(0, BoardHeight - 1);
+
+        //scalesizechanger
+        switch (sum/2)
+        {
+            case 1:
+            case 2:
+            case 3:
+                scaleSize = 1;
+                break;
+            case 4:
+                scaleSize = 2;
+                break;
+            case 5:
+                scaleSize = 3;
+                break;
+        }
+
+        //여기까지가 초기 설정값이다. listoftil 만든다.
+        listoftile = new int[sum];
 
         //dfactor에 감소가 없는 것 -> row나 col중에서 큰 숫자만큼 타일이 있을 경우 1번인 공백타일 빼고
         //그 중에서 6,7번은 0.05의 난이도를 올리고, 8,9가 같이 있다면 0.03의 난이도를 올린다.
@@ -493,7 +512,7 @@ while Pin < 10000:
 
         levelfactor = dfactor - levelfactor; // 남아있는 levelconstruction value
 
-        tilesaver.RemoveRange(0, sum-1);
+        
     }
 
 }
