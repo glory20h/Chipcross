@@ -193,8 +193,10 @@ public class MakeNewMap : MonoBehaviour
             break;
         }*/
         //makeNewlevel();
-        passivemaker();
-        Checkingsame();
+        /*passivemaker();
+        Checkingsame();*/
+
+        Mapmakingbydfactor(-1);
     }
 
     string SetDefaultBoard()  //Return Default Board with all standard EmptyTiles
@@ -431,6 +433,7 @@ while Pin < 10000:
     void Mapmakingbydfactor(float dfactor)
     {
         float levelfactor = 0;
+        var listoftile = new ArrayList();
 
         if (dfactor<-1)
         {
@@ -503,16 +506,55 @@ while Pin < 10000:
                 break;
         }
 
-        //여기까지가 초기 설정값이다. listoftil 만든다.
-        listoftile = new int[sum];
+        int Big = 0;
+        if(BoardWidth > BoardHeight)
+        {
+            Big = BoardWidth;
+        }
+        else
+        {
+            Big = BoardHeight;
+        }
 
+
+        //여기까지가 초기 설정값이다.
+
+        /*2*2 -> boypos height 
+        2*3 -> 차원축소해도 된다 -2*2
+        3*3 -> 3*4이상의차원으로가니까 안되더라고 차원축소가 x*/
         //dfactor에 감소가 없는 것 -> row나 col중에서 큰 숫자만큼 타일이 있을 경우 1번인 공백타일 빼고
         //그 중에서 6,7번은 0.05의 난이도를 올리고, 8,9가 같이 있다면 0.03의 난이도를 올린다.
         //row =3인데 2~5의 타일이 4개라묜 난이도를 0.02를 올린다
 
         levelfactor = dfactor - levelfactor; // 남아있는 levelconstruction value
+        int Tilerange = 5;
+        if(levelfactor>=0.1)
+        {
+            Tilerange = 9;
+        }
+        //listoftil 만든다.
+        //이걸 다시 배정하는것인데 흠
+        //Random으로하지말고 Boy하고 Gril pos의 차이에 따라 우리가 줘야될것은 아래로 가는거랑 옆으로 가는거
+        if(GirlPos>BoyPos)
+        {
+            listoftile.Add(3);
+            listoftile.Add(5);
+            Big = Big - 2;
+        }
+        else if(GirlPos < BoyPos)
+        {
+            listoftile.Add(3);
+            listoftile.Add(4);
+            Big = Big - 2;
+        }
 
-        
+        //남은 Big
+        for (int i = 0; i < Big; i++)
+        {
+            listoftile.Add(Random.Range(2, 9));
+        }
+
+        listoftile.Clear();
     }
 
 }
