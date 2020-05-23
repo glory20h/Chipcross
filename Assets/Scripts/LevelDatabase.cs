@@ -140,10 +140,11 @@ public class LevelDatabase
 
     public string GenerateSlicedPieces()
     {
-        Debug.Log(Random.Range(0, 10));
         Debug.Log("--------------------------------");
 
-        int boardSize = 3 * 3; //Random.Range(2, 6) * Random.Range(2, 6);//BoardWidth * BoardHeight;
+        int BoardWidth = Random.Range(2, 6);
+        int BoardHeight = Random.Range(2, 6);
+        int boardSize = BoardWidth * BoardHeight;
         Debug.Log("BoardSize : " + boardSize);
         float difficultyFactor = Random.Range(-1f, 1f); // 난이도 조절용 -> (-1 ~ 1) -> 나중에 입력값으로 받음
 
@@ -163,7 +164,9 @@ public class LevelDatabase
             pieceSizeArray[i] = 1;
         }
 
-        int remainingPieces = boardSize - NumberOfPieces;
+        //각 조각 갯수 할당 1번째 방법 ex) [boardSize : 9, NumberOfPieces : 5] -> [3,2,2,1,1]
+        /*
+        int remainingPieces = boardSize - NumberOfPieces; //boardSize piece중 할당하고 난 나머지
         for (int piecesize = 2; piecesize <= maxPieceSize; piecesize++)
         {
             int allocate = Random.Range(DivCeil(remainingPieces, maxPieceSize - (piecesize - 1)), Mathf.Min(remainingPieces, NumberOfPieces) + 1); //int의 '/'연산 잘 작동하는지 검증 필요, Random.Range difficultyFactor의 영향을 받도록 조정 필요
@@ -174,18 +177,52 @@ public class LevelDatabase
             remainingPieces -= allocate;
         }
 
-        for (int i = 0; i< pieceSizeArray.Length; i++)
-        {
-            Debug.Log("Piece " + i + ": " + pieceSizeArray[i]);
-        }
-
-
         //유틸리티
         // int 두 개 나누고 소수는 올림 ex) [8 / 3 = 2.667 -> 3 return], [6 / 3 = 2 -> 2 return]
         int DivCeil(int a, int b) 
         {
             int c = a % b == 0 ? a / b : (a / b) + 1;
             return c;
+        }
+        */
+
+        //각 조각 갯수 할당 2번째 방법 ex) [boardSize : 9, NumberOfPieces : 5] -> [2,2,1,3,1]
+        int remainingPieces = boardSize - NumberOfPieces;
+        int randomIndex;
+        while(remainingPieces != 0) //[1,1,1,1,1]로 시작해서 Random으로 나오는 index의 값에 1씩 더함
+        {
+            randomIndex = Random.Range(0, NumberOfPieces);
+            if(pieceSizeArray[randomIndex] != maxPieceSize) //maxPieceSize 넘어가는 것 방지
+            {
+                pieceSizeArray[randomIndex] += 1;
+            }
+            else
+            {
+                for(int i=0; i<NumberOfPieces; i++)
+                {
+                    if(pieceSizeArray[i] != maxPieceSize)
+                    {
+                        pieceSizeArray[i] += 1;
+                        break;
+                    }
+                }
+            }
+            remainingPieces--;
+        }
+
+        //조각 자르기
+        bool[,] isBoardSelected = new bool[BoardHeight,BoardWidth]; //2차원 배열
+        int pieceWidth;
+        int pieceHeight;
+        int firstTileX;
+        int firstTileY;
+
+        for()
+
+        //TEST
+        for (int i = 0; i< pieceSizeArray.Length; i++)
+        {
+            Debug.Log("Piece " + i + ": " + pieceSizeArray[i]);
         }
 
         //임시
