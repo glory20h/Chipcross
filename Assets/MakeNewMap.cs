@@ -192,11 +192,11 @@ public class MakeNewMap : MonoBehaviour
                 makeNewlevel();
             break;
         }*/
-        //makeNewlevel();
-        /*passivemaker();
-        Checkingsame();*/
+        makeNewlevel();
+        passivemaker();
+        //Checkingsame();
 
-        Mapmakingbydfactor(-1);
+        //Mapmakingbydfactor(-1);
     }
 
     string SetDefaultBoard()  //Return Default Board with all standard EmptyTiles
@@ -270,26 +270,42 @@ while Pin < 10000:
     void mapmatrix()
     {
         //difficultyFactor가 -1~1 -> size스케일러
+        int Big = 0;
         int sizescaler = 0;
-        sizescaler = (passivemapmatrix.GetLength(0) + passivemapmatrix.GetLength(1))/2;
+        sizescaler = (passivemapmatrix.GetLength(0) + passivemapmatrix.GetLength(1));
         //ez case check
         switch(sizescaler)
         {
-            case 1:
+            case 4:
                 difficultyFactor = -1;
                 break;
-            case 2:
-                difficultyFactor = -0.7f;
+            case 5:
+                difficultyFactor = -0.8f;
                 break;
-            case 3:
+            case 6:
+                difficultyFactor = -0.5f;
+                break;
+            case 7:
                 difficultyFactor = -0.2f;
                 break;
-            case 4:
-                difficultyFactor = 0.2f;
+            case 8:
+                difficultyFactor = 0.1f;
                 break;
-            case 5:
+            case 9:
+                difficultyFactor = 0.4f;
+                break;
+            case 10:
                 difficultyFactor = 0.7f;
                 break;
+        }
+
+        if (BoardWidth > BoardHeight)
+        {
+            Big = BoardWidth;
+        }
+        else
+        {
+            Big = BoardHeight;
         }
 
         passivemapmatrix[0, 0] = passivemap / 1000;
@@ -412,6 +428,28 @@ while Pin < 10000:
 
         passivemap = passivemapmatrix[0, 0] * 1000 + passivemapmatrix[0, 1] * 100 + passivemapmatrix[1, 0] * 10 + passivemapmatrix[1, 1];
 
+        int k = 0;
+        for (int i = 0; i < BoardHeight; i++)
+        {
+            for (int j = 0; j < BoardWidth; j++)
+            {
+                if (passivemapmatrix[i, j] == 1)
+                    k++;
+            }
+        }
+
+        if(k==Big)
+        {
+            for (int i = 0; i < BoardHeight; i++)
+            {
+                for (int j = 0; j < BoardWidth; j++)
+                {
+                    if (passivemapmatrix[i, j] == 6 || passivemapmatrix[i, j] == 7)
+                        difficultyFactor = difficultyFactor + 0.06f;
+                }
+            }
+        }
+
         if (difficultyFactor<-1)
         {
             difficultyFactor = -1;
@@ -433,7 +471,7 @@ while Pin < 10000:
     void Mapmakingbydfactor(float dfactor)
     {
         float levelfactor = 0;
-        var listoftile = new ArrayList();
+        var listoftile = new List<int>();
 
         if (dfactor<-1)
         {
@@ -525,6 +563,8 @@ while Pin < 10000:
         //dfactor에 감소가 없는 것 -> row나 col중에서 큰 숫자만큼 타일이 있을 경우 1번인 공백타일 빼고
         //그 중에서 6,7번은 0.05의 난이도를 올리고, 8,9가 같이 있다면 0.03의 난이도를 올린다.
         //row =3인데 2~5의 타일이 4개라묜 난이도를 0.02를 올린다
+        //반대로 8,9 타일이 오려면 levelfactor가 0.06남아있고 Big도 2개가 남아있어야만 나오는거면 별로자너
+        //결국 추가가 먼저냐 아니면 대체가 먼저냐 이건데
 
         levelfactor = dfactor - levelfactor; // 남아있는 levelconstruction value
         int Tilerange = 5;
@@ -547,13 +587,43 @@ while Pin < 10000:
             listoftile.Add(4);
             Big = Big - 2;
         }
-
-        //남은 Big
-        for (int i = 0; i < Big; i++)
+        else//같을때는 어떻게 할건데?
         {
-            listoftile.Add(Random.Range(2, 9));
+            listoftile.Add(Random.Range(2, 5));
+            listoftile.Add(Random.Range(2, 5));
+            Big = Big - 2;
         }
 
+        //그냥 levelfactor에 따라 나눠 버리는게 좋지 않냐?
+        //마지막 factor빼고는 전부 0.3이하거든?
+        //Big으로 남은 타일 갯수도 생각해야되는것인가 흠
+        // levelfactor의 갯수들 8,9를 만들거면 최소 0.06필요
+        // 6,7 대체의 경우는 0.05, 추가의경우는 1개당 0.07필요하다
+
+        int k = 0;
+
+        while (levelfactor>0)
+        {
+            if(Big>0)// 대체를 먼저하는게 좋을까 아니면 추가를 먼저하는게 좋을까? 당연히 대체를 먼저하는게 이득이지
+            {
+                k = Random.Range(1, 3);
+            }
+            else//Big == 0
+            {
+
+            }
+        }
+
+        k = 0;
+        
+        for(int i=0;i< BoardHeight;i++)
+        {
+            for (int j = 0; j < BoardWidth; j++)
+            {
+                passivemapmatrix[i, j] = listoftile[k];
+                k++;
+            }
+        }
         listoftile.Clear();
     }
 
