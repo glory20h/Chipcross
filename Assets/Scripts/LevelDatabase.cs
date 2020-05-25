@@ -142,11 +142,27 @@ public class LevelDatabase
     {
         Debug.Log("--------------------------------");
 
+        //입력값
         int BoardWidth = Random.Range(2, 6);
         int BoardHeight = Random.Range(2, 6);
         int boardSize = BoardWidth * BoardHeight;
         Debug.Log("BoardSize : " + boardSize);
         float difficultyFactor = Random.Range(-1f, 1f); // 난이도 조절용 -> (-1 ~ 1) -> 나중에 입력값으로 받음
+
+        //[임시] Board 입력값
+        string BoardLog = "";
+        int[,] BoardInfo = new int[BoardHeight, BoardWidth];
+        int tile;
+        for(int i=0; i<BoardHeight; i++)
+        {
+            for(int j=0; j<BoardWidth; j++)
+            {
+                tile = Random.Range(0, 8);
+                BoardInfo[i, j] = tile;
+                BoardLog += tile;
+            }
+        }
+        Debug.Log(BoardLog);
 
         //조각의 최대 크기(최대 타일 갯수) : boardSize = 4 -> 2, boardSize = 16 -> 4 // 수정 및 조절
         int maxPieceSize = Mathf.FloorToInt(Mathf.Sqrt(boardSize));
@@ -216,8 +232,14 @@ public class LevelDatabase
         int pieceHeight;
         int firstTileX;
         int firstTileY;
+        int remainingTiles;
+        string pieceInfo = "";
 
-        for()
+        for (int i=0; i<NumberOfPieces; i++) //각 조각 from pieceSizeArray
+        {
+            remainingTiles = pieceSizeArray[i];
+
+        }
 
         //TEST
         for (int i = 0; i< pieceSizeArray.Length; i++)
