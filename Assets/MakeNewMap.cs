@@ -29,7 +29,7 @@ public class MakeNewMap : MonoBehaviour
     string check;
     int Girlposcheck = 10;
     int Boyposcheck = 10;
-    int passivemap = 8119;
+    int passivemap = 2111;
     int passivemapcheck = 0;
     int[,] passivemapmatrix;
     [HideInInspector]
@@ -192,7 +192,7 @@ public class MakeNewMap : MonoBehaviour
                 makeNewlevel();
             break;
         }*/
-        makeNewlevel();
+        //makeNewlevel();
         passivemaker();
         //Checkingsame();
 
@@ -243,10 +243,12 @@ public class MakeNewMap : MonoBehaviour
         BoardWidth = 2; // 2*2타일같이 여기서 수정함
         BoardHeight = 2;
         scaleSize = 1;
+        passivemapmatrix = new int[BoardHeight, BoardWidth];
         //여자애 남자애 포지션
         BoyPos = 0;
         GirlPos = 0;
 
+        //여기서 결정을 다 함.
         mapmatrix();
 
         //Debug.Log(passivemap);
@@ -271,33 +273,12 @@ while Pin < 10000:
     {
         //difficultyFactor가 -1~1 -> size스케일러
         int Big = 0;
-        int sizescaler = 0;
-        sizescaler = (passivemapmatrix.GetLength(0) + passivemapmatrix.GetLength(1));
+        //int sizescaler = 0;
+        //sizescaler = (passivemapmatrix.GetLength(0) + passivemapmatrix.GetLength(1));
         //ez case check
-        switch(sizescaler)
-        {
-            case 4:
-                difficultyFactor = -1;
-                break;
-            case 5:
-                difficultyFactor = -0.8f;
-                break;
-            case 6:
-                difficultyFactor = -0.5f;
-                break;
-            case 7:
-                difficultyFactor = -0.2f;
-                break;
-            case 8:
-                difficultyFactor = 0.1f;
-                break;
-            case 9:
-                difficultyFactor = 0.4f;
-                break;
-            case 10:
-                difficultyFactor = 0.7f;
-                break;
-        }
+
+        //difficultyFactor는 각 파일에서 -1~1까지 하면된다.
+        difficultyFactor = -1;
 
         if (BoardWidth > BoardHeight)
         {
@@ -334,10 +315,6 @@ while Pin < 10000:
         {
             checkmatrixnum9++;
         }
-        else if (passivemapmatrix[0, 0] == 6 || passivemapmatrix[0, 0] == 7)
-        {
-            difficultyFactor += 0.1f;
-        }
 
         //Debug.Log("00:" + passivemapmatrix[0, 0]);
 
@@ -353,10 +330,6 @@ while Pin < 10000:
         else if (passivemapmatrix[0, 1] == 9)
         {
             checkmatrixnum9++;
-        }
-        else if (passivemapmatrix[0, 1] == 6 || passivemapmatrix[0, 1] == 7)
-        {
-            difficultyFactor += 0.1f;
         }
 
         //Debug.Log("01:" + passivemapmatrix[0, 1]);
@@ -374,10 +347,6 @@ while Pin < 10000:
         {
             checkmatrixnum9++;
         }
-        else if (passivemapmatrix[1, 0] == 6 || passivemapmatrix[1, 0] == 7)
-        {
-            difficultyFactor += 0.1f;
-        }
 
         //Debug.Log("10:" + passivemapmatrix[1, 0]);
 
@@ -394,10 +363,6 @@ while Pin < 10000:
         {
             checkmatrixnum9++;
         }
-        else if (passivemapmatrix[1, 1] == 6 || passivemapmatrix[1, 1] == 7)
-        {
-            difficultyFactor += 0.1f;
-        }
 
         //Debug.Log("11:" + passivemapmatrix[1, 1]);
 
@@ -408,7 +373,6 @@ while Pin < 10000:
         if ((checkmatrixnum8 == 0 && checkmatrixnum9 == 0) || (checkmatrixnum8 == 1 && checkmatrixnum9==1))
         {
             Debug.Log("ok");
-            difficultyFactor += 0.05f;
         }
         else
         {
@@ -428,28 +392,76 @@ while Pin < 10000:
 
         passivemap = passivemapmatrix[0, 0] * 1000 + passivemapmatrix[0, 1] * 100 + passivemapmatrix[1, 0] * 10 + passivemapmatrix[1, 1];
 
-        int k = 0;
+
+        //difficulty factor 다 확인해야될듯?
+        int k = 0; //타일 갯수 확인
         for (int i = 0; i < BoardHeight; i++)
         {
             for (int j = 0; j < BoardWidth; j++)
             {
-                if (passivemapmatrix[i, j] == 1)
+                if (passivemapmatrix[i, j] > 1)
                     k++;
             }
         }
-
-        if(k==Big)
+        // 타일 갯수랑 기본 타일 갯수랑 확인하기
+        int DifTilenum = 0;
+        DifTilenum = k - Big;
+        if(DifTilenum < 0) // tile갯수가 너무 적음
         {
-            for (int i = 0; i < BoardHeight; i++)
+            passivemap++;
+            mapmatrix();
+        }
+        else if(DifTilenum == 0) // 최소난이도
+        {
+            difficultyFactor = -1;
+        }
+        else // 더 많은거니까
+        {
+            difficultyFactor = -1 + 0.5f * DifTilenum; // -0.5 , 0.0
+        }
+
+        int Tile2to5 = 0;
+        int Tile6to7 = 0;
+        int Tile8to9 = 0;
+        for (int i = 0; i < BoardHeight; i++)
+        {
+            for (int j = 0; j < BoardWidth; j++)
             {
-                for (int j = 0; j < BoardWidth; j++)
+                if (passivemapmatrix[i, j] >=2 || passivemapmatrix[i, j] <= 5)
                 {
-                    if (passivemapmatrix[i, j] == 6 || passivemapmatrix[i, j] == 7)
-                        difficultyFactor = difficultyFactor + 0.06f;
+                    Tile2to5++;
+                }
+                else if (passivemapmatrix[i, j] == 6 || passivemapmatrix[i, j] == 7)
+                {
+                    Tile6to7++;
+                }
+                else if (passivemapmatrix[i, j] == 8 || passivemapmatrix[i, j] == 9)
+                {
+                    Tile8to9++;
                 }
             }
         }
-
+        //2~5,6~7,8~9에 대한 부분 확인인데 여기서부터
+        if(Tile8to9 == 2 || Tile8to9==0)
+        {
+            //ok
+        }
+        else
+        {
+            passivemap++;
+            mapmatrix();
+        }
+        //
+        if(DifTilenum == 0)
+        {
+            difficultyFactor = difficultyFactor + Tile8to9 * 0.2f + Tile6to7 * 0.3f;
+        }
+        else
+        {
+            difficultyFactor = difficultyFactor + Tile8to9 * 0.2f + Tile6to7 * 0.3f + Tile2to5 * 0.1f;
+        }
+        //연산을 해보면 2 *  x + 2*y = 1
+        // x+y=1/2 2x = 0.4, 2y = 0.6
         if (difficultyFactor<-1)
         {
             difficultyFactor = -1;
@@ -467,164 +479,4 @@ while Pin < 10000:
         }
         */
     }
-
-    void Mapmakingbydfactor(float dfactor)
-    {
-        float levelfactor = 0;
-        var listoftile = new List<int>();
-
-        if (dfactor<-1)
-        {
-            dfactor = -1;
-        }
-        else if(dfactor>1)
-        {
-            dfactor = 1;
-        }
-        //여기까지는 일단 초기 설정
-        //2+2 = 4. -1~?, 2+3=5, 3+3=6, 4+4=8,5+5=10 즉 4~10 7단계 를 21로 나누니까 0.3기준으로 factor 형성
-        int sum = 0;
-        if(dfactor>=-1f || dfactor< -0.8f)//-1,-0.9
-        {
-            sum = 4;
-            levelfactor = -1f;
-        }
-        else if(dfactor >= -0.8f || dfactor < -0.5f)//0.7,0.6,0.5
-        {
-            sum = 5;
-            levelfactor = -0.8f;
-        }
-        else if (dfactor >= -0.5f || dfactor < -0.2f)//0.4,0.3,0.2
-        {
-            sum = 6;
-            levelfactor = -0.5f;
-        }
-        else if (dfactor >= -0.2f || dfactor < 0.1f)//0.1,0.0,0.1
-        {
-            sum = 7;
-            levelfactor = -0.2f;
-        }
-        else if (dfactor >= 0.1f || dfactor < 0.4f)//0.2,0.3,0.4
-        {
-            sum = 8;
-            levelfactor = 0.1f;
-        }
-        else if (dfactor >= 0.4f || dfactor < 0.7f)//0.5,0.6,0.7
-        {
-            sum = 9;
-            levelfactor = 0.4f;
-        }
-        else if (dfactor >= 0.7f || dfactor <= 1f)//0.8,0.9,1.0
-        {
-            sum = 10;
-            levelfactor = 0.7f;
-        }
-        //sum 분리하기
-        BoardWidth = Random.Range(2, sum);
-        BoardHeight = sum - BoardWidth;
-        passivemapmatrix = new int[BoardHeight, BoardWidth];//여기까지 dfactor에 따른 틀을 만드는 거고 내부를 어떻게할까...
-
-        //Girlpos, Boypos
-        BoyPos = Random.Range(0, BoardHeight - 1);
-        GirlPos = Random.Range(0, BoardHeight - 1);
-
-        //scalesizechanger
-        switch (sum/2)
-        {
-            case 1:
-            case 2:
-            case 3:
-                scaleSize = 1;
-                break;
-            case 4:
-                scaleSize = 2;
-                break;
-            case 5:
-                scaleSize = 3;
-                break;
-        }
-
-        int Big = 0;
-        if(BoardWidth > BoardHeight)
-        {
-            Big = BoardWidth;
-        }
-        else
-        {
-            Big = BoardHeight;
-        }
-
-
-        //여기까지가 초기 설정값이다.
-
-        /*2*2 -> boypos height 
-        2*3 -> 차원축소해도 된다 -2*2
-        3*3 -> 3*4이상의차원으로가니까 안되더라고 차원축소가 x*/
-        //dfactor에 감소가 없는 것 -> row나 col중에서 큰 숫자만큼 타일이 있을 경우 1번인 공백타일 빼고
-        //그 중에서 6,7번은 0.05의 난이도를 올리고, 8,9가 같이 있다면 0.03의 난이도를 올린다.
-        //row =3인데 2~5의 타일이 4개라묜 난이도를 0.02를 올린다
-        //반대로 8,9 타일이 오려면 levelfactor가 0.06남아있고 Big도 2개가 남아있어야만 나오는거면 별로자너
-        //결국 추가가 먼저냐 아니면 대체가 먼저냐 이건데
-
-        levelfactor = dfactor - levelfactor; // 남아있는 levelconstruction value
-        int Tilerange = 5;
-        if(levelfactor>=0.1)
-        {
-            Tilerange = 9;
-        }
-        //listoftil 만든다.
-        //이걸 다시 배정하는것인데 흠
-        //Random으로하지말고 Boy하고 Gril pos의 차이에 따라 우리가 줘야될것은 아래로 가는거랑 옆으로 가는거
-        if(GirlPos>BoyPos)
-        {
-            listoftile.Add(3);
-            listoftile.Add(5);
-            Big = Big - 2;
-        }
-        else if(GirlPos < BoyPos)
-        {
-            listoftile.Add(3);
-            listoftile.Add(4);
-            Big = Big - 2;
-        }
-        else//같을때는 어떻게 할건데?
-        {
-            listoftile.Add(Random.Range(2, 5));
-            listoftile.Add(Random.Range(2, 5));
-            Big = Big - 2;
-        }
-
-        //그냥 levelfactor에 따라 나눠 버리는게 좋지 않냐?
-        //마지막 factor빼고는 전부 0.3이하거든?
-        //Big으로 남은 타일 갯수도 생각해야되는것인가 흠
-        // levelfactor의 갯수들 8,9를 만들거면 최소 0.06필요
-        // 6,7 대체의 경우는 0.05, 추가의경우는 1개당 0.07필요하다
-
-        int k = 0;
-
-        while (levelfactor>0)
-        {
-            if(Big>0)// 대체를 먼저하는게 좋을까 아니면 추가를 먼저하는게 좋을까? 당연히 대체를 먼저하는게 이득이지
-            {
-                k = Random.Range(1, 3);
-            }
-            else//Big == 0
-            {
-
-            }
-        }
-
-        k = 0;
-        
-        for(int i=0;i< BoardHeight;i++)
-        {
-            for (int j = 0; j < BoardWidth; j++)
-            {
-                passivemapmatrix[i, j] = listoftile[k];
-                k++;
-            }
-        }
-        listoftile.Clear();
-    }
-
 }
