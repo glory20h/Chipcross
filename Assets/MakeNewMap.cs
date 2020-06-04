@@ -29,7 +29,7 @@ public class MakeNewMap : MonoBehaviour
     string check;
     int Girlposcheck = 10;
     int Boyposcheck = 10;
-    int passivemap = 2111;
+    int passivemap = 1111;
     int passivemapcheck = 0;
     int[,] passivemapmatrix;
     [HideInInspector]
@@ -227,7 +227,8 @@ public class MakeNewMap : MonoBehaviour
     void passivemaker()
     {
         float difficultyFactor = Random.Range(-1, 1);
-
+        if(passivemap == 10000)
+            Application.Quit();
         if (Newmap == null)//이부분 중요했음 ㅋㅋ 기존 맵 Destoryer
         {
 
@@ -372,19 +373,19 @@ while Pin < 10000:
         //Debug.Log("9:" + checkmatrixnum9);
         if ((checkmatrixnum8 == 0 && checkmatrixnum9 == 0) || (checkmatrixnum8 == 1 && checkmatrixnum9==1))
         {
-            Debug.Log("ok");
+            //Debug.Log("ok");
         }
         else
         {
-            Debug.Log("notok");
+            //Debug.Log("notok");
             passivemap++;
             mapmatrix();
         }
         
-        if (passivemapmatrix[0, 0] == 2 || passivemapmatrix[0, 0] == 6 || passivemapmatrix[0, 0] == 5)
-            passivemapmatrix[0, 0] += 1;
-        if (passivemapmatrix[0, 1] == 2 || passivemapmatrix[0, 1] == 6 || passivemapmatrix[0, 1] == 5)
-            passivemapmatrix[0, 1] += 1;
+        if (passivemapmatrix[BoyPos, 0] == 2 || passivemapmatrix[BoyPos, 0] == 6 || passivemapmatrix[BoyPos, 0] == 5)
+            passivemapmatrix[BoyPos, 0] += 1;
+        if (passivemapmatrix[GirlPos, 1] == 2 || passivemapmatrix[GirlPos, 1] == 6 || passivemapmatrix[GirlPos, 1] == 5)
+            passivemapmatrix[GirlPos, 1] += 1;
         if (passivemapmatrix[1, 0]== 4 || passivemapmatrix[1, 0] == 7)
             passivemapmatrix[1, 0] += 1;
         if (passivemapmatrix[1, 1] == 4 || passivemapmatrix[1, 1] == 7)
@@ -417,7 +418,7 @@ while Pin < 10000:
         }
         else // 더 많은거니까
         {
-            difficultyFactor = -1 + 0.5f * DifTilenum; // -0.5 , 0.0
+            difficultyFactor = -1 + 0.01f * DifTilenum; // -0.5 , 0.0
         }
 
         int Tile2to5 = 0;
@@ -454,14 +455,14 @@ while Pin < 10000:
         //
         if(DifTilenum == 0)
         {
-            difficultyFactor = difficultyFactor + Tile8to9 * 0.2f + Tile6to7 * 0.3f;
+            difficultyFactor = difficultyFactor + Tile8to9 * 0.04f + Tile6to7 * 0.06f;
         }
         else
         {
-            difficultyFactor = difficultyFactor + Tile8to9 * 0.2f + Tile6to7 * 0.3f + Tile2to5 * 0.1f;
+            difficultyFactor = difficultyFactor + Tile8to9 * 0.04f + Tile6to7 * 0.05f + Tile2to5 * 0.02f;
         }
-        //연산을 해보면 2 *  x + 2*y = 1
-        // x+y=1/2 2x = 0.4, 2y = 0.6
+        //연산을 해보면 2 *  x + 2*y = 0.2
+        // x+y=1/2 2x = 0.08, 2y = 0.12
         if (difficultyFactor<-1)
         {
             difficultyFactor = -1;

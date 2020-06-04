@@ -132,7 +132,7 @@ public class moveboy : MonoBehaviour
     public void MoveDaBoi()
     {
         boiInitPos = transform.position;
-        fastForwardFactor = 1f;
+        fastForwardFactor = 4f;
         xdir = 1;
         ydir = 0;
         targetPosition = initTargetPosition;
