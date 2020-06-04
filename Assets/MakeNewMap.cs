@@ -227,7 +227,7 @@ public class MakeNewMap : MonoBehaviour
     void passivemaker()
     {
         float difficultyFactor = Random.Range(-1, 1);
-        if(passivemap == 10000)
+        if(passivemap >= 10000)
             Application.Quit();
         if (Newmap == null)//이부분 중요했음 ㅋㅋ 기존 맵 Destoryer
         {
