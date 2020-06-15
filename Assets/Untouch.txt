@@ -1,0 +1,12 @@
+2*2
+difficultyFactor = difficultyFactor + Tile8to9 * 0.04f + Tile6to7 * 0.05f + Tile2to5 * 0.03f;
+->difficultyFactor = difficultyFactor + Tile8to9 * 0.02f + Tile6to7 * 0.025f + Tile2to5 * 0.02f;
+2*3, 3*2
+difficultyFactor = difficultyFactor + Tile8to9 * 0.03f + Tile6to7 * 0.04f;
+difficultyFactor = difficultyFactor + Tile8to9 * 0.035f + Tile6to7 * 0.045f + Tile2to5 * 0.03f;
+0.3-0.03=0.27 0.27/6 0.09
+
+5*5
+0.01*20+0.05*20=1.2
+2-0.2=1.8/20
+0.09
