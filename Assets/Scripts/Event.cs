@@ -487,7 +487,7 @@ public class Event : MonoBehaviour
         SavePiecePosition();
         */
 
-        string s = levelData.GenerateSlicedPieces();
+        //string s = levelData.GenerateSlicedPieces();
     }
 
     //옵션 버튼을 눌러 Option창 토글
@@ -580,4 +580,5 @@ public class Event : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
     }
+
 }

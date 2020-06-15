@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public class LevelDatabase
@@ -14,6 +16,7 @@ public class LevelDatabase
     public PieceData[] pieceDatas;
     [HideInInspector]
     public bool tutorialCase = false;
+    float dfac = 0;
 
     public class PieceData
     {
@@ -73,7 +76,7 @@ public class LevelDatabase
 
     public void LoadLevelData(int num)
     {
-        switch (num)
+        /*switch (num)
         {
             case 1:
                 scaleSize = 1;
@@ -135,10 +138,39 @@ public class LevelDatabase
                 BoardEmptyTileTypeInfo = ConvertStringToIntArray("1111111111116111111111111");
                 ConvertStringToPieceInfo("13113224013220112221340215131531121311221141231");
                 break;
+        }*/
+        dfac = -1;
+        string s = readfactor(dfac);
+        char sp = ',';
+        string [] temp = s.Split(sp);
+        int [] t = new int [temp.Length];
+        for(int i=0; i< temp.Length; i++)
+        {
+            t[i] = int.Parse(temp[i]);
         }
+        Debug.Log(t[0]);
+        Debug.Log(t[1]);
+        Debug.Log(t[2]);
+        Debug.Log(t[3]);
+        Debug.Log(t[4]);
+        Debug.Log(t[5]);
+        //GenerateSlicedPieces(s);
     }
 
-    public string GenerateSlicedPieces()
+    string readfactor(float dfactor)
+    {
+        string path = Application.dataPath + "/"+ dfactor + ".txt";
+        if (!File.Exists(path))
+        {
+            Debug.Log("error");
+        }
+        string testdata;
+        testdata = File.ReadLines(path).Skip(2).First();
+        Debug.Log(testdata);
+        return testdata;
+    }
+
+    public string GenerateSlicedPieces(string s)
     {
         Debug.Log("--------------------------------");
 
@@ -150,7 +182,7 @@ public class LevelDatabase
         float difficultyFactor = Random.Range(-1f, 1f); // 난이도 조절용 -> (-1 ~ 1) -> 나중에 입력값으로 받음
 
         //[임시] Board 입력값
-        string BoardLog = "";
+        string BoardLog = s;
         int[,] BoardInfo = new int[BoardHeight, BoardWidth];
         int tile;
         for(int i=0; i<BoardHeight; i++)
