@@ -16,7 +16,8 @@ public class LevelDatabase
     public PieceData[] pieceDatas;
     [HideInInspector]
     public bool tutorialCase = false;
-    float dfac = 0;
+    [HideInInspector]
+    public float dfac = 0;
 
     public class PieceData
     {
@@ -76,7 +77,7 @@ public class LevelDatabase
 
     public void LoadLevelData(int num)
     {
-        /*switch (num)
+        switch (num)
         {
             case 1:
                 scaleSize = 1;
@@ -86,7 +87,7 @@ public class LevelDatabase
                 GirlPos = 1;
                 NumberOfPieces = 3;
                 BoardEmptyTileTypeInfo = ConvertStringToIntArray(SetDefaultBoard());
-                ConvertStringToPieceInfo(GenerateSlicedPieces());
+                ConvertStringToPieceInfo("211421131241");
                 break;
             case 2:
                 scaleSize = 1;
@@ -138,26 +139,10 @@ public class LevelDatabase
                 BoardEmptyTileTypeInfo = ConvertStringToIntArray("1111111111116111111111111");
                 ConvertStringToPieceInfo("13113224013220112221340215131531121311221141231");
                 break;
-        }*/
-        dfac = -1;
-        string s = readfactor(dfac);
-        char sp = ',';
-        string [] temp = s.Split(sp);
-        int [] t = new int [temp.Length];
-        for(int i=0; i< temp.Length; i++)
-        {
-            t[i] = int.Parse(temp[i]);
         }
-        Debug.Log(t[0]);
-        Debug.Log(t[1]);
-        Debug.Log(t[2]);
-        Debug.Log(t[3]);
-        Debug.Log(t[4]);
-        Debug.Log(t[5]);
-        //GenerateSlicedPieces(s);
     }
 
-    string readfactor(float dfactor)
+    public string readfactor(float dfactor)
     {
         string path = Application.dataPath + "/"+ dfactor + ".txt";
         if (!File.Exists(path))
@@ -172,14 +157,30 @@ public class LevelDatabase
 
     public string GenerateSlicedPieces(string s)
     {
+        char sp = ',';
+        string[] temp = s.Split(sp);
+        int[] t = new int[temp.Length];
+        for (int i = 0; i < temp.Length; i++)
+        {
+            t[i] = int.Parse(temp[i]);
+        }
+        //Debug.Log(t[0]); // scaleSize
+        //Debug.Log(t[1]); // BoardWidth
+        //Debug.Log(t[2]); // BoardHeight
+        //Debug.Log(t[3]); // BoyPos
+        //Debug.Log(t[4]); // GirlPos
+        //Debug.Log(t[5]); // ConvertStringToPieceInfo
         Debug.Log("--------------------------------");
 
         //입력값
-        int BoardWidth = Random.Range(2, 6);
-        int BoardHeight = Random.Range(2, 6);
+        scaleSize = t[0];
+        BoardWidth = t[1];
+        BoardHeight = t[2];
         int boardSize = BoardWidth * BoardHeight;
         Debug.Log("BoardSize : " + boardSize);
-        float difficultyFactor = Random.Range(-1f, 1f); // 난이도 조절용 -> (-1 ~ 1) -> 나중에 입력값으로 받음
+        BoyPos = t[3];
+        GirlPos = t[4];
+        float difficultyFactor = dfac; // 난이도 조절용 -> (-1 ~ 1) -> 나중에 입력값으로 받음
 
         //[임시] Board 입력값
         string BoardLog = s;
@@ -258,7 +259,7 @@ public class LevelDatabase
             remainingPieces--;
         }
 
-        //조각 자르기
+        //조각 자르기 이제 시작임
         bool[,] isBoardSelected = new bool[BoardHeight,BoardWidth]; //2차원 배열
         int pieceWidth;
         int pieceHeight;

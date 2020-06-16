@@ -486,8 +486,9 @@ public class Event : MonoBehaviour
         LoadLevel();
         SavePiecePosition();
         */
-
-        //string s = levelData.GenerateSlicedPieces();
+        levelData.dfac = -1;
+        string s = levelData.readfactor(levelData.dfac);
+        levelData.GenerateSlicedPieces(s);
     }
 
     //옵션 버튼을 눌러 Option창 토글
