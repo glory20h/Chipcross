@@ -157,10 +157,10 @@ public class LevelDatabase
 
     public string GenerateSlicedPieces(string s)
     {
-        char sp = ',';
+        char sp = ' ';
         string[] temp = s.Split(sp);
-        int[] t = new int[temp.Length];
-        for (int i = 0; i < temp.Length; i++)
+        int[] t = new int[5];
+        for (int i = 0; i < temp.Length-1; i++)//마지막꺼는 너무커서 패스
         {
             t[i] = int.Parse(temp[i]);
         }
@@ -183,18 +183,7 @@ public class LevelDatabase
         float difficultyFactor = dfac; // 난이도 조절용 -> (-1 ~ 1) -> 나중에 입력값으로 받음
 
         //[임시] Board 입력값
-        string BoardLog = s;
-        int[,] BoardInfo = new int[BoardHeight, BoardWidth];
-        int tile;
-        for(int i=0; i<BoardHeight; i++)
-        {
-            for(int j=0; j<BoardWidth; j++)
-            {
-                tile = Random.Range(0, 8);
-                BoardInfo[i, j] = tile;
-                BoardLog += tile;
-            }
-        }
+        string BoardLog = temp[5];
         Debug.Log(BoardLog);
 
         //조각의 최대 크기(최대 타일 갯수) : boardSize = 4 -> 2, boardSize = 16 -> 4 // 수정 및 조절
@@ -260,28 +249,123 @@ public class LevelDatabase
         }
 
         //조각 자르기 이제 시작임
-        bool[,] isBoardSelected = new bool[BoardHeight,BoardWidth]; //2차원 배열
+        bool[,] isBoardSelected = new bool[BoardHeight,BoardWidth]; //2차원 배열, 기본적으로 false
         int pieceWidth;
         int pieceHeight;
-        int firstTileX;
-        int firstTileY;
-        int remainingTiles;
+        int firstTileX = 0;
+        int firstTileY = 0;
+        int remainingTiles = 0;
         string pieceInfo = "";
-
+        //이게 데이터를 받아온거임;; 왜 밑에있는게 있지???
+        char[,] convert2d = new char[BoardHeight, BoardWidth];
+        remainingTiles = 0;
+        for (int i =0; i< BoardHeight; i++)
+        {
+            for (int j = 0; j < BoardWidth; j++)
+            {
+                convert2d[i, j] = BoardLog[remainingTiles];
+                remainingTiles++;
+            }
+        }
+        /*Debug.Log(remainingTiles);
+        Debug.Log(convert2d[0, 0]);
+        Debug.Log(convert2d[4, 4]);*/
+        //Debug.Log(isBoardSelected[4, 4]);
+        remainingTiles = 0;
         for (int i=0; i<NumberOfPieces; i++) //각 조각 from pieceSizeArray
         {
-            remainingTiles = pieceSizeArray[i];
+            remainingTiles = pieceSizeArray[i];//현재 채워야될 조각갯수
+            bool InandOut;
+            //11, 21,12, 3개4개:31,22,13, 5,6개 
+            //height을 먼저 정해가지거 random으로 이걸로 만들어서 그에 해당하는것을 빼오는 형식으로하면 완벽
+            //5-1-1=3 1의위치에 있으니까 1개 더빼서 3개로 마추면 4의 위치까지로 고정됨
+            if (remainingTiles <= BoardHeight - firstTileX - 1)
+            {
+                pieceHeight = Random.Range(1, remainingTiles);
+            }
+            else
+            {
+                pieceHeight = Random.Range(1, BoardHeight - firstTileX - 1);
+            }
+            pieceWidth = remainingTiles - pieceHeight + 1;
+            int fillingTiles = pieceHeight * pieceWidth- remainingTiles;//부족한거의 갯수를 해서 빈공간이 0이되면 걍 무조건 true
+            int fullupTiles = 0; //방지용
+            //2*3-4=2
 
+            //Debug.Log("pieceHeight " + pieceHeight);
+            //Debug.Log("pieceWidth " + pieceWidth);
+
+            pieceInfo += pieceHeight.ToString() + pieceWidth.ToString();
+            //Debug.Log("pieceInfo " + pieceInfo);
+            //223105이면 ㄱ자인데 이건 3이란 말이야... 이걸 어떻게 만들지..
+            //데이터를 집어 넣는데 어떤 모양으로 집어 넣느냐가 중요하다고 나는 생각한다.
+            //맨처음에는 그걸 내리면 나오면 하다가 같아지면 그냥 쭉하는거로 바구면 되지 않을까 싶은데?
+            for (int j= firstTileX; j< pieceHeight + firstTileX; j++)
+            {
+                for (int k = firstTileY; k < pieceWidth + firstTileY; k++)
+                {
+                    /*if (isBoardSelected[j, k] == true || fullupTiles== remainingTiles)//여기가 오류가 난당...
+                    {
+                        firstTileY++;
+                        k++;
+                    }*/
+
+                    if(fillingTiles == 0)
+                    {
+                        InandOut = true;
+                    }
+                    else
+                    {
+                        InandOut = (Random.Range(0, 2) == 1);
+                    }
+
+                    if (InandOut)
+                    {
+                        pieceInfo += convert2d[j,k].ToString();
+                        //Debug.Log("pieceInfo in forloop " + pieceInfo);
+                        isBoardSelected[j, k] = true;
+                        fullupTiles++;
+                    }
+                    else
+                    {
+                        pieceInfo += 0.ToString();
+                        fillingTiles--;
+                    }
+
+                }
+            }
+            //여기서 firstTileX=Height, firstTileY=Width이부분을 업데이트 시켜야된다
+            //내가 생각하는것은 먼저 height를 늘리면서 업데이트하고 그다음에 Width에 대해서 업데이트를 진행하는 방향임
+            //0->2->
+            /*
+             *pieceHeight = Random.Range(1, remainingTiles); 2가나와 0+2=2
+             *pieceWidth = remainingTiles - pieceHeight + 1;
+             */
+            //다음위치가 와야되니까4+1
+            firstTileX = pieceHeight + firstTileX;
+            //여기서부터 서치해야됨...
+            if (firstTileX == 5)
+            {
+                //여기가 서치
+                firstTileY++;
+            }
+            else
+            {
+                firstTileY++;
+            }
+            
         }
 
+
+
         //TEST
-        for (int i = 0; i< pieceSizeArray.Length; i++)
+        for (int i = 0; i< pieceSizeArray.Length; i++)//들어가있는 갯수들이  pieceSizeArray = [2,2,1,3,1]꼴을 뛴다
         {
             Debug.Log("Piece " + i + ": " + pieceSizeArray[i]);
         }
-
+        Debug.Log(pieceInfo);
         //임시
-        return "211421131241";
+        return pieceInfo;
     }
 
     string SetDefaultBoard()  //Return Default Board with all standard EmptyTiles
