@@ -486,8 +486,10 @@ public class Event : MonoBehaviour
         LoadLevel();
         SavePiecePosition();
         */
+
+        //GenerateSlicedPieces 테스트용 실행코드
         levelData.dfac = -1;
-        string s = levelData.readfactor(levelData.dfac);
+        string s = levelData.ReadFileByFactor(levelData.dfac);
         levelData.GenerateSlicedPieces(s);
     }
 
