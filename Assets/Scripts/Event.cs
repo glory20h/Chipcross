@@ -260,6 +260,7 @@ public class Event : MonoBehaviour
             }
         }
 
+        //Instantiate 'Piece' & 'Tile'
         //Random Puzzle Piece Position Version
         //PieceInitPosition = new Vector3[levelData.NumberOfPieces];
         for (int i = 0; i < levelData.NumberOfPieces; i++)

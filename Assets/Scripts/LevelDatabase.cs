@@ -13,7 +13,8 @@ public class LevelDatabase
     public int GirlPos;
     public int NumberOfPieces;
     public int[] BoardEmptyTileTypeInfo;
-    public PieceData[] pieceDatas;
+    //public PieceData[] pieceDatas; //Temp -> Migrating from Array to List for dynamic allocation
+    public List<PieceData> pieceDatas;
     [HideInInspector]
     public bool tutorialCase = false;
     [HideInInspector]
@@ -23,7 +24,8 @@ public class LevelDatabase
     {
         public int PieceWidth;
         public int PieceHeight;
-        public int[] TileType;
+        //public int[] TileType; //Array -> List migration
+        public List<int> TileType; //Array -> List migration
         public Vector3 solutionLoc; //solutions for hint here
     }
 
@@ -58,13 +60,14 @@ public class LevelDatabase
     {
         int[] data = ConvertStringToIntArray(s);
         tutorialCase = false;
-        CheckNewPieces(data);
         int d = 0;
         int pieceSize;
-        pieceDatas = new PieceData[NumberOfPieces];
+        //pieceDatas = new PieceData[NumberOfPieces]; //Array -> List migration
+        pieceDatas = new List<PieceData>(); //Array -> List migration
         for (int i = 0; i < NumberOfPieces; i++) //piece index
         {
-            pieceDatas[i] = new PieceData();
+            //pieceDatas[i] = new PieceData(); //Array -> List migration
+            pieceDatas.Add(new PieceData()); //Array -> List migration
             pieceSize = 1;
 
             pieceDatas[i].PieceWidth = data[d];
@@ -73,10 +76,12 @@ public class LevelDatabase
             pieceDatas[i].PieceHeight = data[d];
             pieceSize *= data[d];
             d++;
-            pieceDatas[i].TileType = new int[pieceSize];
+            //pieceDatas[i].TileType = new int[pieceSize]; //Array -> List migration
+            pieceDatas[i].TileType = new List<int>();
             for (int j = 0; j < pieceSize; j++)
             {
-                pieceDatas[i].TileType[j] = data[d];
+                pieceDatas[i].TileType.Add(data[d]); //Array -> List migration
+                //pieceDatas[i].TileType[j] = data[d]; //Array -> List migration
                 d++;
             }
         }
@@ -163,11 +168,12 @@ public class LevelDatabase
 
     public void GenerateSlicedPieces(string s)
     {
-        //Process map string input
+        /////////////////Process map string input//////////////////
+        //Input string s Processing
         char sp = ' ';
         string[] temp = s.Split(sp);
         int[] t = new int[5];
-        for (int i = 0; i < temp.Length-1; i++)//마지막꺼는 너무커서 패스
+        for (int i = 0; i < temp.Length - 1; i++)//마지막꺼는 너무커서 패스
         {
             t[i] = int.Parse(temp[i]);
         }
@@ -178,29 +184,35 @@ public class LevelDatabase
         BoyPos = t[3];
         GirlPos = t[4];
         string BoardInput = temp[5]; //Board 입력받아오는값
-        Debug.Log("BoardInput : " + BoardInput);
+        /////////////////Process map string input//////////////////
 
+        /////////////////VARIABLES//////////////////
+        //퍼즐판 크기 = 가로 길이 * 세로 길이
         int boardSize = BoardWidth * BoardHeight;
-        //Debug.Log("BoardSize : " + boardSize);
 
         //float difficultyFactor = dfac; // 난이도 조절용 -> (-1 ~ 1) -> 나중에 입력값으로 받음
         float difficultyFactor = Random.Range(-1f, 1f); //임시 Random 값
 
         //조각의 최대 크기(최대 타일 갯수) : boardSize = 4 -> 2, boardSize = 16 -> 4 // 수정 및 조절 필요
         int maxPieceSize = Mathf.FloorToInt(Mathf.Sqrt(boardSize));
-        //Debug.Log("MaxPieceSize : " + maxPieceSize);
 
         //생성할 조각 갯수 : BoardSize * (0.35 ~ 0.6) -> ex) boardSize = 16 -> (5.6 ~ 10.4)개, boardSize = 6 -> (2.1 ~ 3.9)개, difficultyFactor에 따라 범위 안에서 선택 // 수정 및 조절 필요
-        int NumberOfPieces = Mathf.Max(Mathf.RoundToInt(boardSize * (0.475f + (0.125f * difficultyFactor))), boardSize / maxPieceSize);
-        //Debug.Log("NumberOfPieces : " + NumberOfPieces);
+        NumberOfPieces = Mathf.Max(Mathf.RoundToInt(boardSize * (0.475f + (0.125f * difficultyFactor))), boardSize / maxPieceSize);
 
         //조각들 1차원 Array -> 조각 크기 할당용
         int[] pieceSizeArray = new int[NumberOfPieces];
-
-        for (int i = 0; i < NumberOfPieces; i++)
+        for (int i = 0; i < NumberOfPieces; i++) // Array 할당/초기화
         {
             pieceSizeArray[i] = 1;
         }
+        /////////////////VARIABLES//////////////////
+
+        ///TEST : Print Variables
+        //Debug.Log("BoardSize : " + boardSize);
+        //Debug.Log("MaxPieceSize : " + maxPieceSize);
+        //Debug.Log("NumberOfPieces : " + NumberOfPieces);
+        //Debug.Log("BoardInput : " + BoardInput);
+        ///TEST : Print Variables
 
         ////////각 조각 갯수 할당 1번째 방법 ex) [boardSize : 9, NumberOfPieces : 5] -> [3,2,2,1,1]
         /*
@@ -225,7 +237,8 @@ public class LevelDatabase
         */
         ////////각 조각 갯수 할당 1번째 방법
 
-        ////////각 조각 갯수 할당 2번째 방법 ex) [boardSize : 9, NumberOfPieces : 5] -> [2,2,1,3,1]
+        ///////////각 조각 갯수 할당 2번째 방법/////////////
+        // ex) [boardSize : 9, NumberOfPieces : 5] -> [2,2,1,3,1]
         int remainingPieces = boardSize - NumberOfPieces;
         int randomIndex;
         while(remainingPieces != 0) //[1,1,1,1,1]로 시작해서 Random으로 나오는 index의 값에 1씩 더함
@@ -248,46 +261,74 @@ public class LevelDatabase
             }
             remainingPieces--;
         }
-        ////////각 조각 갯수 할당 2번째 방법
+        ///////////각 조각 갯수 할당 2번째 방법/////////////
 
-        //조각을 자름
-        SliceBoard(BoardInput, pieceSizeArray);
-
-        //TESTING
+        ///TEST : pieceSizeArray
         for (int i = 0; i < pieceSizeArray.Length; i++)//들어가있는 갯수들이 pieceSizeArray = [2,2,1,3,1]꼴을 뛴다
         {
             Debug.Log("Piece " + i + ": " + pieceSizeArray[i]);
         }
+        ///TEST : pieceSizeArray
+
+        //조각 잘라서 pieceDatas에 할당
+        SliceBoard(BoardInput, pieceSizeArray);
     }
 
+    //조각 자르기 시작
     void SliceBoard(string Board, int[] pieceSizeArray)
     {
-        //조각 자르기 시작
-        //bool[,] isBoardSelected = new bool[BoardHeight,BoardWidth]; //2차원 배열, 기본적으로 false
-        int pieceWidth;
-        int pieceHeight;
+        /////////////////VARIABLES//////////////////
+        int pieceWidth = 1;
+        int pieceHeight = 1;
         //int firstTileX = 0;
         //int firstTileY = 0;
-        int remainingTiles;
+        int remainingTiles = 0;
+        int index; //범용성 Index
+        /////////////////VARIABLES//////////////////
 
         //데이터 받아오기
         LoadedMapTile[,] LoadedMap = new LoadedMapTile[BoardHeight, BoardWidth];
-        int index = 0; //Temporary Index
-        Debug.Log(LoadedMap[0, 0].isBoardSelected);
-        /*
+        index = 0; 
+        //LoadedMap Array로 Input Map 정보 할당
         for (int i = 0; i < BoardHeight; i++) 
         {
             for (int j = 0; j < BoardWidth; j++)
             {
-                LoadedMap[i, j].LoadedTileCode = Board[index] - '0';
-                Debug.Log(LoadedMap[i, j].LoadedTileCode);
+                LoadedMap[i, j] = new LoadedMapTile
+                {
+                    LoadedTileCode = Board[index] - '0'
+                };
                 index++;
             }
         }
-        */
+
+        //조각 자르기
+        //PieceSizeArray Iteration
+        index = 0;
+        remainingTiles = pieceSizeArray[index];
+        //Board Iteration
+        for (int i = 0; i < BoardWidth; i++)
+        {
+            for (int j = 0; j < BoardHeight; j++)
+            {
+                //여기가 할당되지 않은 타일일때
+                if (!LoadedMap[i, j].isBoardSelected)
+                {
+                    //할당할 remainingTiles = 0 이면 pieceSizeArray에서 다음 pieceSize 가져오기 // + 다음 Piece 생성?
+                    if (remainingTiles == 0)
+                    {
+                        index++;
+                    }
+
+                    ///
+                    // PieceDatas & PieceData 할당
+                    /// 
+                }
+            }
+        }
     }
 
-    string SetDefaultBoard()  //Return Default Board with all standard EmptyTiles
+    string SetDefaultBoard() //Return Default Board with all standard EmptyTiles
     {
         string board = "";
         for(int i = 0; i < BoardHeight*BoardWidth; i++)
@@ -295,72 +336,5 @@ public class LevelDatabase
             board += "1";
         }
         return board;
-    }
-
-    void CheckNewPieces(int[] pieceinfo)//pieceinfo = stringinfo -> 바꾸는 형식은 PlayerPrefs.SetInt("Piecedata"+i, 0); -> 0이면 false 1이면 True
-    {
-        int i = 0;
-        for (; i < pieceinfo.Length; i++)
-        {
-            switch (pieceinfo[i])// 그 타일이 나오면 True 값인 1로 만듬 작동 잘됨 전부 1로 나옴. case1은 빈타일이라 필요 없음
-            {
-                case 2:
-                    if (PlayerPrefs.GetInt("Piecedata") < 2)
-                    {
-                        PlayerPrefs.SetInt("Piecedata", 1);
-                        tutorialCase = true;
-                    }
-                    break;
-                case 3:
-                    if (PlayerPrefs.GetInt("Piecedata") < 2)
-                    {
-                        PlayerPrefs.SetInt("Piecedata", 1);
-                        tutorialCase = true;
-                    }
-                    break;
-                case 4:
-                    if (PlayerPrefs.GetInt("Piecedata") < 2)
-                    {
-                        PlayerPrefs.SetInt("Piecedata", 1);
-                        tutorialCase = true;
-                    }
-                    break;
-                case 5:
-                    if (PlayerPrefs.GetInt("Piecedata") < 2)
-                    {
-                        PlayerPrefs.SetInt("Piecedata", 1);
-                        tutorialCase = true;
-                    }
-                    break;
-                case 6:
-                    if (PlayerPrefs.GetInt("Piecedata") < 3)
-                    {
-                        PlayerPrefs.SetInt("Piecedata", 2);
-                        tutorialCase = true;
-                    }
-                    break;
-                case 7:
-                    if (PlayerPrefs.GetInt("Piecedata") < 3)
-                    {
-                        PlayerPrefs.SetInt("Piecedata", 2);
-                        tutorialCase = true;
-                    }
-                    break;
-                case 8:
-                    if (PlayerPrefs.GetInt("Piecedata") < 4)
-                    {
-                        PlayerPrefs.SetInt("Piecedata", 3);
-                        tutorialCase = true;
-                    }
-                    break;
-                case 9:
-                    if (PlayerPrefs.GetInt("Piecedata") < 4)
-                    {
-                        PlayerPrefs.SetInt("Piecedata", 3);
-                        tutorialCase = true;
-                    }
-                    break;
-            }
-        }
     }
 }
