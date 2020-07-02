@@ -168,7 +168,7 @@ public class LevelDatabase
 
     public void GenerateSlicedPieces(string s)
     {
-        /////////////////Process map string input//////////////////
+        /////////////////PROCESS MAP STRING INPUT//////////////////
         //Input string s Processing
         char sp = ' ';
         string[] temp = s.Split(sp);
@@ -184,7 +184,7 @@ public class LevelDatabase
         BoyPos = t[3];
         GirlPos = t[4];
         string BoardInput = temp[5]; //Board 입력받아오는값
-        /////////////////Process map string input//////////////////
+        /////////////////PROCESS MAP STRING INPUT//////////////////
 
         /////////////////VARIABLES//////////////////
         //퍼즐판 크기 = 가로 길이 * 세로 길이
@@ -278,11 +278,14 @@ public class LevelDatabase
     void SliceBoard(string Board, int[] pieceSizeArray)
     {
         /////////////////VARIABLES//////////////////
-        int pieceWidth = 1;
-        int pieceHeight = 1;
+        int pieceWidth;
+        int pieceHeight;
         //int firstTileX = 0;
         //int firstTileY = 0;
         int remainingTiles = 0;
+        int cur_X; //X position of current tile
+        int cur_Y; //Y position of current tile
+        List<int[]> ValidTiles;
         int index; //범용성 Index
         /////////////////VARIABLES//////////////////
 
@@ -303,9 +306,17 @@ public class LevelDatabase
         }
 
         //조각 자르기
-        //PieceSizeArray Iteration
-        index = 0;
+        ///INIT///
+        index = 0; //PieceSizeArray Iteration
+        pieceWidth = 1;
+        pieceHeight = 1;
         remainingTiles = pieceSizeArray[index];
+        pieceDatas = new List<PieceData>();
+        pieceDatas.Add(new PieceData());
+        Debug.Log(pieceDatas.Count - 1); //Expect to return 0 //pieceDatas.Count - 1 -> Return Last one?
+        pieceDatas[pieceDatas.Count - 1].TileType = new List<int>();
+        ///INIT///
+
         //Board Iteration
         for (int i = 0; i < BoardWidth; i++)
         {
@@ -314,15 +325,59 @@ public class LevelDatabase
                 //여기가 할당되지 않은 타일일때
                 if (!LoadedMap[i, j].isBoardSelected)
                 {
-                    //할당할 remainingTiles = 0 이면 pieceSizeArray에서 다음 pieceSize 가져오기 // + 다음 Piece 생성?
-                    if (remainingTiles == 0)
+                    //PieceDatas & PieceData 할당
+                    //Piece에 첫번째 타일 할당
+                    pieceDatas[pieceDatas.Count - 1].TileType.Add(LoadedMap[i, j].LoadedTileCode);
+                    LoadedMap[i, j].isBoardSelected = true;
+                    cur_X = j;
+                    cur_Y = i;
+                    ValidTiles = new List<int[]>();
+
+                    while(remainingTiles != 0)
                     {
-                        index++;
+                        ///Check All Valid Tiles
+                        //Check North
+                        if(cur_Y != 0) //Checking tile not out of bounds of Board
+                        {
+                            if(!LoadedMap[cur_Y - 1, cur_X].isBoardSelected) //Checking if north tile is already selected
+                            {
+                                ValidTiles.Add(new int[] { cur_Y - 1, cur_X }); //Add North Tile to ValidTiles
+                            }
+                        }
+                        //Check South
+                        if(cur_Y + 1 != BoardHeight)
+                        {
+                            if (!LoadedMap[cur_Y + 1, cur_X].isBoardSelected) //Checking if south tile is already selected
+                            {
+                                ValidTiles.Add(new int[] { cur_Y + 1, cur_X }); //Add South Tile to ValidTiles
+                            }
+                        }
+                        //Check West
+                        if(cur_X != 0)
+                        {
+                            if (!LoadedMap[cur_Y, cur_X - 1].isBoardSelected) //Checking if west tile is already selected
+                            {
+                                ValidTiles.Add(new int[] { cur_Y, cur_X - 1 }); //Add West Tile to ValidTiles
+                            }
+                        }
+                        //Check East
+                        if (cur_X + 1 != BoardWidth)
+                        {
+                            if (!LoadedMap[cur_Y, cur_X + 1].isBoardSelected) //Checking if east tile is already selected
+                            {
+                                ValidTiles.Add(new int[] { cur_Y, cur_X + 1 }); //Add East Tile to ValidTiles
+                            }
+                        }
+
+                        ///Select and Add a random Tile from Validtiles
+                        //If there are no Tiles left to add
+
                     }
 
-                    ///
-                    // PieceDatas & PieceData 할당
-                    /// 
+                    /*if (remainingTiles == 0)
+                    {
+                        index++;
+                    }*/
                 }
             }
         }
