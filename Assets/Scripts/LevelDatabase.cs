@@ -308,7 +308,7 @@ public class LevelDatabase
         //조각 자르기
         ///INIT///
         index = 0; //PieceSizeArray Iteration
-        pieceWidth = 1;
+        pieceWidth = 1; //How to update these??
         pieceHeight = 1;
         remainingTiles = pieceSizeArray[index];
         pieceDatas = new List<PieceData>();
@@ -335,7 +335,7 @@ public class LevelDatabase
 
                     while(remainingTiles != 0)
                     {
-                        ///Check All Valid Tiles
+                        ///Check 동서남북 & Update ValidTiles
                         //Check North
                         if(cur_Y != 0) //Checking tile not out of bounds of Board
                         {
@@ -371,6 +371,14 @@ public class LevelDatabase
 
                         ///Select and Add a random Tile from Validtiles
                         //If there are no Tiles left to add
+                        if(ValidTiles.Count == 0)
+                        {
+                            //Make & Get new PIeceData
+                        }
+                        else
+                        {
+                            
+                        }
 
                     }
 
