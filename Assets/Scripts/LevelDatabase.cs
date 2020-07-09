@@ -286,6 +286,7 @@ public class LevelDatabase
         int cur_X; //X position of current tile
         int cur_Y; //Y position of current tile
         List<int[]> ValidTiles;
+        List<int[]> AddedTiles;
         int index; //범용성 Index
         /////////////////VARIABLES//////////////////
 
@@ -308,8 +309,6 @@ public class LevelDatabase
         //조각 자르기
         ///INIT///
         index = 0; //PieceSizeArray Iteration
-        pieceWidth = 1; //How to update these??
-        pieceHeight = 1;
         remainingTiles = pieceSizeArray[index];
         pieceDatas = new List<PieceData>();
         pieceDatas.Add(new PieceData());
@@ -325,15 +324,21 @@ public class LevelDatabase
                 //여기가 할당되지 않은 타일일때
                 if (!LoadedMap[i, j].isBoardSelected)
                 {
+                    //INIT as new piece start
+                    ValidTiles = new List<int[]>();
+                    AddedTiles = new List<int[]>();
+
                     //PieceDatas & PieceData 할당
-                    //Piece에 첫번째 타일 할당
-                    pieceDatas[pieceDatas.Count - 1].TileType.Add(LoadedMap[i, j].LoadedTileCode);
-                    LoadedMap[i, j].isBoardSelected = true;
+                    //Piece에 첫번째 시작 타일 할당
+                    AddedTiles.Add(new int[] { i, j });
+                    pieceWidth = 1;
+                    pieceHeight = 1;
                     cur_X = j;
                     cur_Y = i;
-                    ValidTiles = new List<int[]>();
+                    remainingTiles--;
+                    LoadedMap[i, j].isBoardSelected = true;
 
-                    while(remainingTiles != 0)
+                    while (remainingTiles != 0)
                     {
                         ///Check 동서남북 & Update ValidTiles
                         //Check North
@@ -375,17 +380,17 @@ public class LevelDatabase
                         {
                             //Make & Get new PIeceData
                         }
-                        else
+                        else //Select a random tile from VaildTiles and add it to AddedTiles
                         {
-                            
+                            int random = Random.Range(0, ValidTiles.Count - 1);
+                            AddedTiles.Add(ValidTiles[random]);
+                            ValidTiles.RemoveAt(random); 
                         }
-
                     }
 
-                    /*if (remainingTiles == 0)
-                    {
-                        index++;
-                    }*/
+                    //Need AddedTiles to TileType format conversion 
+                    //pieceDatas[pieceDatas.Count - 1].TileType.Add(LoadedMap[i, j].LoadedTileCode);
+
                 }
             }
         }
