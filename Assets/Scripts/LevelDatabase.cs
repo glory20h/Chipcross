@@ -272,26 +272,26 @@ public class LevelDatabase
 
         //조각 잘라서 pieceDatas에 할당
         SliceBoard(BoardInput, pieceSizeArray);
+
+        //Update Number of Pieces
+        NumberOfPieces = pieceDatas.Count;
     }
 
-    //조각 자르기 시작
+    //조각 잘라서 pieceDatas에 할당
     void SliceBoard(string Board, int[] pieceSizeArray)
     {
         /////////////////VARIABLES//////////////////
-        int pieceWidth;
-        int pieceHeight;
-        //int firstTileX = 0;
-        //int firstTileY = 0;
         int remainingTiles = 0;
         int cur_X; //X position of current tile
         int cur_Y; //Y position of current tile
-        int piece_start_X; //Top-Left Position of Piece
+        int piece_start_X; //Top-Left [Y,X] Position of Piece
         int piece_start_Y;
-        int piece_end_X; //Bottom-Right Position of Piece
+        int piece_end_X; //Bottom-Right [Y,X] Position of Piece
         int piece_end_Y;
         List<int[]> ValidTiles;
         List<int[]> AddedTiles;
         int index; //범용성 Index
+        bool noTilesLeftToAdd; //boolean handler for flow control when there is no ValidTile to add
         /////////////////VARIABLES//////////////////
 
         //데이터 받아오기
@@ -312,12 +312,16 @@ public class LevelDatabase
 
         //조각 자르기
         ///INIT///
-        index = 0; //PieceSizeArray Iteration
-        remainingTiles = pieceSizeArray[index];
         pieceDatas = new List<PieceData>();
+        /*
         pieceDatas.Add(new PieceData());
         Debug.Log(pieceDatas.Count - 1); //Expect to return 0 //pieceDatas.Count - 1 -> Return Last one?
         pieceDatas[pieceDatas.Count - 1].TileType = new List<int>();
+        */
+
+        index = 0; //PieceSizeArray Iteration
+        remainingTiles = pieceSizeArray[index];
+        noTilesLeftToAdd = false; //The default value of noTilesLeftToAdd is false
         ///INIT///
 
         //Board Iteration
@@ -329,14 +333,14 @@ public class LevelDatabase
                 if (!LoadedMap[i, j].isBoardSelected)
                 {
                     //INIT as new piece start
+                    pieceDatas.Add(new PieceData());
+                    pieceDatas[pieceDatas.Count - 1].TileType = new List<int>(); // [pieceDatas.Count - 1] -> Last one Added
                     ValidTiles = new List<int[]>();
                     AddedTiles = new List<int[]>();
 
                     //PieceDatas & PieceData 할당
                     //Piece에 첫번째 시작 타일 할당
                     AddedTiles.Add(new int[] { i, j });
-                    pieceWidth = 1;
-                    pieceHeight = 1;
                     cur_X = j;
                     cur_Y = i;
                     piece_start_X = j;
@@ -346,7 +350,7 @@ public class LevelDatabase
                     remainingTiles--;
                     LoadedMap[i, j].isBoardSelected = true;
 
-                    while (remainingTiles != 0)
+                    while (remainingTiles != 0 && !noTilesLeftToAdd)
                     {
                         ///Check 동서남북 & Update ValidTiles
                         //Check North
@@ -387,37 +391,74 @@ public class LevelDatabase
                         if(ValidTiles.Count == 0)
                         {
                             //End this piece
-                            //Increase NumberofPieces
-                            //Make & Get new PIeceData
+                            noTilesLeftToAdd = true;
                         }
                         else //Select a random tile from VaildTiles and add it to AddedTiles
                         {
                             int random = Random.Range(0, ValidTiles.Count - 1);
+                            int add_X = ValidTiles[random][1];
+                            int add_Y = ValidTiles[random][0];
+
                             AddedTiles.Add(ValidTiles[random]);
-                            //Update piece_start_X, piece_start_Y, piece_end_X, piece_end_Y
-                            if(ValidTiles[random][1] < piece_start_X)
+                            LoadedMap[add_Y, add_X].isBoardSelected = true;
+
+                            //Update cur_X, cur_Y
+                            cur_X = ValidTiles[random][1];
+                            cur_Y = ValidTiles[random][0];
+
+                            //Update piece_start_X, piece_start_Y, piece_end_X, piece_end_Y, everytime a new tile is added from ValidTiles
+                            if(add_X < piece_start_X)
                             {
-                                piece_start_X = ValidTiles[random][1];
+                                piece_start_X = add_X;
                             }
-                            if(ValidTiles[random][0] < piece_start_Y)
+                            if(add_Y < piece_start_Y)
                             {
-                                piece_start_Y = ValidTiles[random][0];
+                                piece_start_Y = add_Y;
                             }
-                            if (ValidTiles[random][1] > piece_end_X)
+                            if (add_X > piece_end_X)
                             {
-                                piece_end_X = ValidTiles[random][1];
+                                piece_end_X = add_X;
                             }
-                            if (ValidTiles[random][0] > piece_end_Y)
+                            if (add_Y > piece_end_Y)
                             {
-                                piece_end_Y = ValidTiles[random][0];
+                                piece_end_Y = add_Y;
                             }
+
                             ValidTiles.RemoveAt(random);
+                            remainingTiles--;
                         }
                     }
 
-                    //Need AddedTiles to TileType format conversion 
-                    //pieceDatas[pieceDatas.Count - 1].TileType.Add(LoadedMap[i, j].LoadedTileCode);
+                    //Convert AddedTiles -> PieceData.TileType format
+                    pieceDatas[pieceDatas.Count - 1].PieceWidth = piece_end_X - piece_start_X + 1;
+                    pieceDatas[pieceDatas.Count - 1].PieceHeight = piece_end_Y - piece_start_Y + 1;
 
+                    //Iterate through the piece and sort out if tile exists or not
+                    /*  [3]
+                        [1][3] --> 3013  */
+                    //[m,k]
+                    for (int k = piece_start_X; k < piece_end_X + 1; k++)
+                    {
+                        for(int m = piece_start_Y; m < piece_end_Y + 1; m++)
+                        {
+                            if(AddedTiles.Contains(new int[] { m, k })) //Might be buggy
+                            {
+                                pieceDatas[pieceDatas.Count - 1].TileType.Add(LoadedMap[m, k].LoadedTileCode);
+                            }
+                            else
+                            {
+                                pieceDatas[pieceDatas.Count - 1].TileType.Add(0);
+                            }
+                        }
+                    }
+
+                    if (!noTilesLeftToAdd)
+                    {
+                        //Increase index, get next remainingTiles
+                        index++;
+                        Debug.Log("index : " + i);
+                        remainingTiles = pieceSizeArray[index];
+                    }
                 }
             }
         }
@@ -431,5 +472,23 @@ public class LevelDatabase
             board += "1";
         }
         return board;
+    }
+
+    public void PieceCutterModuleTEST()
+    {
+        BoardWidth = 3;
+        BoardHeight = 3;
+        SliceBoard("141534313", new int[] { 2, 2, 1, 3, 1 });
+        string TileTypeCode = "";
+        for(int i = 0; i < pieceDatas.Count; i++)
+        {
+            Debug.Log("Piece " + i + 1 + " : ");
+            for(int j = 0; j < pieceDatas[i].TileType.Count; j++)
+            {
+                TileTypeCode = TileTypeCode + pieceDatas[i].TileType[j].ToString();
+            }
+            Debug.Log("PieceWidth : " + pieceDatas[i].PieceWidth + ", PieceHeight : " + pieceDatas[i].PieceHeight + ", TileTypeCode : " + TileTypeCode);
+            TileTypeCode = "";
+        }
     }
 }

@@ -489,9 +489,12 @@ public class Event : MonoBehaviour
         */
 
         //GenerateSlicedPieces 테스트용 실행코드
+        /*
         levelData.dfac = -1;
         string s = levelData.ReadFileByFactor(levelData.dfac);
         levelData.GenerateSlicedPieces(s);
+        */
+        levelData.PieceCutterModuleTEST();
     }
 
     //옵션 버튼을 눌러 Option창 토글
