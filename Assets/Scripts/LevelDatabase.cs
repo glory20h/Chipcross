@@ -285,6 +285,10 @@ public class LevelDatabase
         int remainingTiles = 0;
         int cur_X; //X position of current tile
         int cur_Y; //Y position of current tile
+        int piece_start_X; //Top-Left Position of Piece
+        int piece_start_Y;
+        int piece_end_X; //Bottom-Right Position of Piece
+        int piece_end_Y;
         List<int[]> ValidTiles;
         List<int[]> AddedTiles;
         int index; //범용성 Index
@@ -335,6 +339,10 @@ public class LevelDatabase
                     pieceHeight = 1;
                     cur_X = j;
                     cur_Y = i;
+                    piece_start_X = j;
+                    piece_start_Y = i;
+                    piece_end_X = j;
+                    piece_end_Y = i;
                     remainingTiles--;
                     LoadedMap[i, j].isBoardSelected = true;
 
@@ -378,13 +386,32 @@ public class LevelDatabase
                         //If there are no Tiles left to add
                         if(ValidTiles.Count == 0)
                         {
+                            //End this piece
+                            //Increase NumberofPieces
                             //Make & Get new PIeceData
                         }
                         else //Select a random tile from VaildTiles and add it to AddedTiles
                         {
                             int random = Random.Range(0, ValidTiles.Count - 1);
                             AddedTiles.Add(ValidTiles[random]);
-                            ValidTiles.RemoveAt(random); 
+                            //Update piece_start_X, piece_start_Y, piece_end_X, piece_end_Y
+                            if(ValidTiles[random][1] < piece_start_X)
+                            {
+                                piece_start_X = ValidTiles[random][1];
+                            }
+                            if(ValidTiles[random][0] < piece_start_Y)
+                            {
+                                piece_start_Y = ValidTiles[random][0];
+                            }
+                            if (ValidTiles[random][1] > piece_end_X)
+                            {
+                                piece_end_X = ValidTiles[random][1];
+                            }
+                            if (ValidTiles[random][0] > piece_end_Y)
+                            {
+                                piece_end_Y = ValidTiles[random][0];
+                            }
+                            ValidTiles.RemoveAt(random);
                         }
                     }
 
