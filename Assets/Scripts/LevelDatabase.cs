@@ -91,6 +91,8 @@ public class LevelDatabase
     {
         switch (num)
         {
+            case 0:
+                break;
             case 1:
                 scaleSize = 1;
                 BoardWidth = 3;
@@ -154,6 +156,7 @@ public class LevelDatabase
         }
     }
 
+    //txt파일에서 불러와서 string으로 return
     public string ReadFileByFactor(float dfactor)
     {
         string path = Application.dataPath + "/"+ dfactor + ".txt";
@@ -161,7 +164,9 @@ public class LevelDatabase
         {
             Debug.Log("error");
         }
-        string testdata = File.ReadLines(path).Skip(3).First();
+        int random = Random.Range(1, 10000);
+        string testdata = File.ReadLines(path).Skip(random).First();
+        Debug.Log("Read Line " + random);
         //Debug.Log(testdata);
         return testdata;
     }
@@ -169,22 +174,23 @@ public class LevelDatabase
     public void GenerateSlicedPieces(string s) //s : mapdata
     {
         /////////////////PROCESS MAP STRING INPUT//////////////////
+        
         //Input string s Processing
-        char sp = ' ';
-        string[] temp = s.Split(sp);
-        int[] t = new int[5];
-        for (int i = 0; i < temp.Length - 1; i++)//마지막꺼는 너무커서 패스
-        {
-            t[i] = int.Parse(temp[i]);
-        }
-        //입력값
-        scaleSize = t[0];
-        BoardWidth = t[1];
-        BoardHeight = t[2];
-        BoyPos = t[3];
-        GirlPos = t[4];
-        string BoardInput = temp[5]; //Board 입력받아오는값
+        scaleSize = s[0] - '0';
+        BoardWidth = s[1] - '0';
+        BoardHeight = s[2] - '0';
+        BoyPos = s[3] - '0';
+        GirlPos = s[4] - '0';
+        string BoardInput = s.Substring(5); //Board 입력받아오는값
+
         /////////////////PROCESS MAP STRING INPUT//////////////////
+
+        Debug.Log("scaleSize : " + scaleSize);
+        Debug.Log("BoardWidth : " + BoardWidth);
+        Debug.Log("BoardHeight : " + BoardHeight);
+        Debug.Log("BoyPos : " + BoyPos);
+        Debug.Log("GirlPos : " + GirlPos);
+        Debug.Log("BoardInput : " + BoardInput);
 
         /////////////////VARIABLES//////////////////
         //퍼즐판 크기 = 가로 길이 * 세로 길이
@@ -263,18 +269,23 @@ public class LevelDatabase
         }
         ///////////각 조각 갯수 할당 2번째 방법/////////////
 
-        ///TEST : pieceSizeArray
+        ///TEST : Print pieceSizeArray
+        /*
         for (int i = 0; i < pieceSizeArray.Length; i++)//들어가있는 갯수들이 pieceSizeArray = [2,2,1,3,1]꼴을 뛴다
         {
-            Debug.Log("Piece " + i + ": " + pieceSizeArray[i]);
+            Debug.Log("Piece " + i + ": " + pieceSizeArray[i] + " [pieceSizeArray]");
         }
-        ///TEST : pieceSizeArray
+        */
+        ///TEST : Print pieceSizeArray
 
         //조각 잘라서 pieceDatas에 할당
         SliceBoard(BoardInput, pieceSizeArray);
 
         //Update Number of Pieces
         NumberOfPieces = pieceDatas.Count;
+
+        //TEMP!!!!!! -> 나중에 EmptyTile 조정할 수 있는 방향으로 추가해야함(함수 새로 추가)
+        BoardEmptyTileTypeInfo = ConvertStringToIntArray(SetDefaultBoard());
     }
 
     //조각 잘라서 pieceDatas에 할당
