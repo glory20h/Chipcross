@@ -10,6 +10,7 @@ public class Event : MonoBehaviour
 
     public Transform TileBoard;     //빈 타일(퍼즐판)의 Parent
     public Transform BlockPieces;   //아직 타일 위에 안 놓아진 퍼즐 조각들의 Parent
+    public Transform HintPieces;    //힌트 조각들이 들어갈 Parent
     public Transform BlockOnBoard;  //타일위에 놓아진 퍼즐 조각들의 Parent
     public GameObject Boy;          //파랭이
     public GameObject Girl;         //분홍이
@@ -46,8 +47,7 @@ public class Event : MonoBehaviour
     float pieceScale;
 
     //boolean for Update Function //Update에 쓸 bool 변수
-    [HideInInspector]
-    public bool MovePieceMode;
+    [HideInInspector] public bool MovePieceMode;
 
     //튜토리얼
     int firstTime = 2;
@@ -101,7 +101,7 @@ public class Event : MonoBehaviour
                 if (hit.collider != null)
                 {
                     //클릭한 물체가 퍼즐 조각일 경우
-                    if (hit.transform.tag == "Tile")
+                    if (hit.transform.tag == "Tile" && hit.transform.parent != HintPieces)      //힌트 조각들은 클릭하거나 움직이지 못함
                     {
                         if(GonfasterBtn.interactable)
                         {
@@ -176,8 +176,8 @@ public class Event : MonoBehaviour
                         //Disable Corresponding EmptyTile BoxCollider2D & Detectors
                         for (int i = 0; i < objToFollowMouse.childCount; i++)
                         {
-                            triggeredObjects[i].GetComponent<BoxCollider2D>().enabled = false;
-                            objToFollowMouse.GetChild(i).GetChild(0).GetComponent<BoxCollider2D>().enabled = false;
+                            triggeredObjects[i].GetComponent<BoxCollider2D>().enabled = false;                          //Disable EmptyTile's BoxCollider
+                            objToFollowMouse.GetChild(i).GetChild(0).GetComponent<BoxCollider2D>().enabled = false;     //Disable Detector's BoxCollider
                             objToFollowMouse.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 10;
                         }
 
@@ -187,7 +187,7 @@ public class Event : MonoBehaviour
                     }
                     else
                     {
-                        ResetPiecePosition(objToFollowMouse, (Mathf.Abs(objToFollowMouse.localPosition.x) >= 5.0f && Mathf.Abs(objToFollowMouse.localPosition.x) < 8.5f && objToFollowMouse.localPosition.y >= -0.4f && objToFollowMouse.localPosition.y < 8.5f));
+                        ResetPiecePosition(objToFollowMouse, Mathf.Abs(objToFollowMouse.localPosition.x) >= 5.0f && Mathf.Abs(objToFollowMouse.localPosition.x) < 8.5f && objToFollowMouse.localPosition.y >= -0.4f && objToFollowMouse.localPosition.y < 8.5f);
                     }
 
                     objToFollowMouse = null;
@@ -269,6 +269,7 @@ public class Event : MonoBehaviour
             obj = Instantiate(prefab, new Vector3(Random.value < 0.5 ? Random.Range(-7.6f, -5.9f) : Random.Range(5.9f, 7.6f), Random.Range(0, 7.4f)), Quaternion.identity);
             obj.transform.SetParent(BlockPieces, false);
             obj.GetComponent<VariableProvider>().pieceNum = i;
+            obj.GetComponent<VariableProvider>().solutionLoc = levelData.pieceDatas[i].solutionLoc;
 
             typeIndex = 0;
             pieceHeight = levelData.pieceDatas[i].PieceHeight;
@@ -304,7 +305,7 @@ public class Event : MonoBehaviour
     //퍼즐 조각들이 모두 타일위에 놓아졌는지 확인
     void CheckIfAllTilesInPlace()
     {
-        if(PiecePosition.Length == BlockOnBoard.childCount)
+        if(PiecePosition.Length == BlockOnBoard.childCount + HintPieces.childCount)
         {
             GonfasterBtn.interactable = true;
         }
@@ -372,25 +373,7 @@ public class Event : MonoBehaviour
         }
     }
 
-    //퍼즐 완료창 코인 또로로로 효과
-    public IEnumerator CoinIncreaseAnimation(int coin = 100)
-    {
-        coinText.text = "";
-        yield return new WaitForSeconds(0.5f);
-        int i = 0;
-        coinChangeToggle = true;
-        while (i < coin + 1 && coinChangeToggle)
-        {
-            coinText.text = i.ToString();
-            CoinFXPlayer.Play();
-            i++;
-            yield return null;
-        }
-    }
-
-    /// <summary>
-    /// 아래로 public 함수
-    /// </summary>
+    //////////////////////////////////////////////// 아래로 public 함수들 ////////////////////////////////////////////////
 
     //출발/가속 버튼 State 1 -> 누르면 이동 시작, 2 -> 누르면 빨라짐, 3 -> 누르면 다시 원래 속도로 돌아옴
     public void GoNFastForwardClick()
@@ -477,6 +460,35 @@ public class Event : MonoBehaviour
         coinChangeToggle = false;
     }
 
+    public void HintButtonClick()
+    {
+        ResetBoard();
+        int random = Random.Range(0, BlockPieces.childCount);
+        Transform hintPiece = BlockPieces.GetChild(random).transform;
+        Vector3 solutionLoc = BlockPieces.GetChild(random).GetComponent<VariableProvider>().solutionLoc;
+        Debug.Log("solutionLoc : " + solutionLoc);
+
+        //Place piece on the board
+        hintPiece.SetParent(HintPieces, true);
+        hintPiece.localPosition = solutionLoc * distanceBetweenTiles;
+        hintPiece.localScale = new Vector3(pieceScale, pieceScale, 1);
+
+        //Disable Corresponding EmptyTile BoxCollider2D & Detectors
+        //For each tile in piece
+        for (int i = 0; i < hintPiece.childCount; i++)
+        {
+            hintPiece.GetChild(i).GetChild(0).GetComponent<TileCollideDetection>().overlappedObject.GetComponent<BoxCollider2D>().enabled = false;
+            //triggeredObjects[i].GetComponent<BoxCollider2D>().enabled = false;
+            hintPiece.GetChild(i).GetChild(0).GetComponent<BoxCollider2D>().enabled = false;
+            hintPiece.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 10;
+        }
+
+        SoundFXPlayer.Play("put"); //ADD MORE SOUNDS??
+        SavePiecePosition();
+        CheckIfAllTilesInPlace();
+        /////////////////////////////////////////////////////////////
+    }
+
     //테스트용 개발자 버튼용
     public void DevBtnAct()  //Go To Level X
     {
@@ -511,6 +523,22 @@ public class Event : MonoBehaviour
         {
             OptionMenu.SetActive(true);
             Time.timeScale = 0f;
+        }
+    }
+
+    //퍼즐 완료창 코인 또로로로 효과
+    public IEnumerator CoinIncreaseAnimation(int coin = 100)
+    {
+        coinText.text = "";
+        yield return new WaitForSeconds(0.5f);
+        int i = 0;
+        coinChangeToggle = true;
+        while (i < coin + 1 && coinChangeToggle)
+        {
+            coinText.text = i.ToString();
+            CoinFXPlayer.Play();
+            i++;
+            yield return null;
         }
     }
 
@@ -585,6 +613,7 @@ public class Event : MonoBehaviour
             SavePiecePosition();
         }
     }
+
     IEnumerator Waitsecond()
     {
         yield return new WaitForSeconds(0.3f);

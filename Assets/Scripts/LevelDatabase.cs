@@ -15,10 +15,9 @@ public class LevelDatabase
     public int[] BoardEmptyTileTypeInfo;
     //public PieceData[] pieceDatas; //Temp -> Migrating from Array to List for dynamic allocation
     public List<PieceData> pieceDatas;
-    [HideInInspector]
-    public bool tutorialCase = false;
-    [HideInInspector]
-    public float dfac = 0;
+
+    [HideInInspector] public bool tutorialCase = false;
+    [HideInInspector] public float dfac = 0;
 
     public class PieceData
     {
@@ -26,7 +25,7 @@ public class LevelDatabase
         public int PieceHeight;
         //public int[] TileType; //Array -> List migration
         public List<int> TileType; //Array -> List migration
-        public Vector3 solutionLoc; //solutions for hint here
+        public Vector3 solutionLoc; //solution for hint
     }
 
     class LoadedMapTile //need public?
@@ -185,13 +184,6 @@ public class LevelDatabase
 
         /////////////////PROCESS MAP STRING INPUT//////////////////
 
-        Debug.Log("scaleSize : " + scaleSize);
-        Debug.Log("BoardWidth : " + BoardWidth);
-        Debug.Log("BoardHeight : " + BoardHeight);
-        Debug.Log("BoyPos : " + BoyPos);
-        Debug.Log("GirlPos : " + GirlPos);
-        Debug.Log("BoardInput : " + BoardInput);
-
         /////////////////VARIABLES//////////////////
         //퍼즐판 크기 = 가로 길이 * 세로 길이
         int boardSize = BoardWidth * BoardHeight;
@@ -299,13 +291,15 @@ public class LevelDatabase
         int piece_start_Y;
         int piece_end_X; //Bottom-Right [Y,X] Position of Piece
         int piece_end_Y;
-        List<int[]> ValidTiles;
-        List<int[]> AddedTiles;
+        List<Vector2Int> ValidTiles;
+        List<Vector2Int> AddedTiles;
         int index; //범용성 Index
         bool noTilesLeftToAdd; //boolean handler for flow control when there is no ValidTile to add
+        Vector2 boardCenter; //For Adding Location for Hints
+        Vector2 pieceCenter; //For Adding Location for Hints
         /////////////////VARIABLES//////////////////
 
-        //데이터 받아오기
+        /////////////////데이터 받아오기/////////////////
         LoadedMapTile[,] LoadedMap = new LoadedMapTile[BoardHeight, BoardWidth];
         index = 0; 
         //LoadedMap Array로 Input Map 정보 할당
@@ -320,18 +314,15 @@ public class LevelDatabase
                 index++;
             }
         }
+        /////////////////데이터 받아오기/////////////////
 
-        //조각 자르기
+        //////////////////////////////////////////////////////////////////////////////////조각 자르기//////////////////////////////////////////////////////////////////////////////////
         ///INIT///
         pieceDatas = new List<PieceData>();
-        /*
-        pieceDatas.Add(new PieceData());
-        Debug.Log(pieceDatas.Count - 1); //Expect to return 0 //pieceDatas.Count - 1 -> Return Last one?
-        pieceDatas[pieceDatas.Count - 1].TileType = new List<int>();
-        */
-
         index = 0; //PieceSizeArray Iteration
         noTilesLeftToAdd = false; //The default value of noTilesLeftToAdd is false
+
+        boardCenter = new Vector2((float)BoardHeight / 2, (float)BoardWidth / 2);
         ///INIT///
 
         //Board Iteration
@@ -345,14 +336,14 @@ public class LevelDatabase
                     //INIT as new piece start
                     pieceDatas.Add(new PieceData());
                     pieceDatas[pieceDatas.Count - 1].TileType = new List<int>(); // [pieceDatas.Count - 1] -> Last one Added
-                    ValidTiles = new List<int[]>();
-                    AddedTiles = new List<int[]>();
+                    ValidTiles = new List<Vector2Int>();
+                    AddedTiles = new List<Vector2Int>();
                     remainingTiles = pieceSizeArray[index];
                     noTilesLeftToAdd = false;
 
                     //PieceDatas & PieceData 할당
                     //Piece에 첫번째 시작 타일 할당
-                    AddedTiles.Add(new int[] { i, j });
+                    AddedTiles.Add(new Vector2Int(j, i));
                     cur_X = j;
                     cur_Y = i;
                     piece_start_X = j;
@@ -370,7 +361,7 @@ public class LevelDatabase
                         {
                             if(!LoadedMap[cur_Y - 1, cur_X].isBoardSelected) //Checking if north tile is already selected
                             {
-                                ValidTiles.Add(new int[] { cur_Y - 1, cur_X }); //Add North Tile to ValidTiles
+                                ValidTiles.Add(new Vector2Int(cur_X, cur_Y - 1)); //Add North Tile to ValidTiles
                             }
                         }
                         //Check South
@@ -378,7 +369,7 @@ public class LevelDatabase
                         {
                             if (!LoadedMap[cur_Y + 1, cur_X].isBoardSelected) //Checking if south tile is already selected
                             {
-                                ValidTiles.Add(new int[] { cur_Y + 1, cur_X }); //Add South Tile to ValidTiles
+                                ValidTiles.Add(new Vector2Int(cur_X, cur_Y + 1)); //Add South Tile to ValidTiles
                             }
                         }
                         //Check West
@@ -386,7 +377,7 @@ public class LevelDatabase
                         {
                             if (!LoadedMap[cur_Y, cur_X - 1].isBoardSelected) //Checking if west tile is already selected
                             {
-                                ValidTiles.Add(new int[] { cur_Y, cur_X - 1 }); //Add West Tile to ValidTiles
+                                ValidTiles.Add(new Vector2Int(cur_X - 1, cur_Y)); //Add West Tile to ValidTiles
                             }
                         }
                         //Check East
@@ -394,7 +385,7 @@ public class LevelDatabase
                         {
                             if (!LoadedMap[cur_Y, cur_X + 1].isBoardSelected) //Checking if east tile is already selected
                             {
-                                ValidTiles.Add(new int[] { cur_Y, cur_X + 1 }); //Add East Tile to ValidTiles
+                                ValidTiles.Add(new Vector2Int(cur_X + 1, cur_Y)); //Add East Tile to ValidTiles
                             }
                         }
 
@@ -408,15 +399,15 @@ public class LevelDatabase
                         else //Select a random tile from VaildTiles and add it to AddedTiles
                         {
                             int random = Random.Range(0, ValidTiles.Count);
-                            int add_X = ValidTiles[random][1];
-                            int add_Y = ValidTiles[random][0];
+                            int add_X = ValidTiles[random][0];
+                            int add_Y = ValidTiles[random][1]; //순서바꿈
 
                             AddedTiles.Add(ValidTiles[random]);
                             LoadedMap[add_Y, add_X].isBoardSelected = true;
 
                             //Update cur_X, cur_Y
-                            cur_X = ValidTiles[random][1];
-                            cur_Y = ValidTiles[random][0];
+                            cur_X = ValidTiles[random][0];
+                            cur_Y = ValidTiles[random][1]; //순서바꿈
 
                             //Update piece_start_X, piece_start_Y, piece_end_X, piece_end_Y, everytime a new tile is added from ValidTiles
                             if(add_X < piece_start_X)
@@ -464,6 +455,10 @@ public class LevelDatabase
                         }
                     }
 
+                    //Add Solution Location Vector for the Hint System
+                    pieceCenter = new Vector2((float) (piece_end_X + piece_start_X) / 2 + 0.5f, (float) (piece_end_Y + piece_start_Y) / 2 + 0.5f); //(float) 실험
+                    pieceDatas[pieceDatas.Count - 1].solutionLoc = pieceCenter - boardCenter;
+
                     //Update remainingTiles as next element from pieceSizeArray
                     if (!noTilesLeftToAdd) //If noTilesLeftToAdd = false
                     {
@@ -473,6 +468,7 @@ public class LevelDatabase
                 }
             }
         }
+        //////////////////////////////////////////////////////////////////////////////////조각 자르기//////////////////////////////////////////////////////////////////////////////////
     }
 
     string SetDefaultBoard() //Return Default Board with all standard EmptyTiles
@@ -485,11 +481,11 @@ public class LevelDatabase
         return board;
     }
 
-    bool ContainsTile(List<int[]> AddedTiles, int m, int k)
+    bool ContainsTile(List<Vector2Int> AddedTiles, int m, int k)
     {
         for(int i = 0; i < AddedTiles.Count; i++)
         {
-            if(AddedTiles[i][0] == m && AddedTiles[i][1] == k)
+            if(AddedTiles[i][1] == m && AddedTiles[i][0] == k)
             {
                 return true;
             }
