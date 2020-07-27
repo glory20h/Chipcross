@@ -101,7 +101,7 @@ public class Event : MonoBehaviour
                 if (hit.collider != null)
                 {
                     //클릭한 물체가 퍼즐 조각일 경우
-                    if (hit.transform.tag == "Tile" && hit.transform.parent != HintPieces)      //힌트 조각들은 클릭하거나 움직이지 못함
+                    if (hit.transform.tag == "Tile")      //힌트 조각들은 클릭하거나 움직이지 못함
                     {
                         if(GonfasterBtn.interactable)
                         {
@@ -300,12 +300,13 @@ public class Event : MonoBehaviour
         {
             PiecePosition[i] = BlockPieces.GetChild(i).localPosition;
         }
+        Debug.Log("PiecePosition Length : " + PiecePosition.Length);
     }
 
     //퍼즐 조각들이 모두 타일위에 놓아졌는지 확인
     void CheckIfAllTilesInPlace()
     {
-        if(PiecePosition.Length == BlockOnBoard.childCount + HintPieces.childCount)
+        if(PiecePosition.Length == BlockOnBoard.childCount)
         {
             GonfasterBtn.interactable = true;
         }
@@ -352,6 +353,11 @@ public class Event : MonoBehaviour
         for (int i = BlockOnBoard.childCount - 1; i >= 0; i--)
         {
             DestroyImmediate(BlockOnBoard.GetChild(i).gameObject);
+        }
+
+        for (int i = HintPieces.childCount - 1; i >= 0; i--)
+        {
+            DestroyImmediate(HintPieces.GetChild(i).gameObject);
         }
     }
 
@@ -463,30 +469,44 @@ public class Event : MonoBehaviour
     public void HintButtonClick()
     {
         ResetBoard();
-        int random = Random.Range(0, BlockPieces.childCount);
-        Transform hintPiece = BlockPieces.GetChild(random).transform;
-        Vector3 solutionLoc = BlockPieces.GetChild(random).GetComponent<VariableProvider>().solutionLoc;
-        Debug.Log("solutionLoc : " + solutionLoc);
-
-        //Place piece on the board
-        hintPiece.SetParent(HintPieces, true);
-        hintPiece.localPosition = solutionLoc * distanceBetweenTiles;
-        hintPiece.localScale = new Vector3(pieceScale, pieceScale, 1);
-
-        //Disable Corresponding EmptyTile BoxCollider2D & Detectors
-        //For each tile in piece
-        for (int i = 0; i < hintPiece.childCount; i++)
+        if(BlockPieces.childCount != 0)
         {
-            hintPiece.GetChild(i).GetChild(0).GetComponent<TileCollideDetection>().overlappedObject.GetComponent<BoxCollider2D>().enabled = false;
-            //triggeredObjects[i].GetComponent<BoxCollider2D>().enabled = false;
-            hintPiece.GetChild(i).GetChild(0).GetComponent<BoxCollider2D>().enabled = false;
-            hintPiece.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 10;
+            int random = Random.Range(0, BlockPieces.childCount);
+            Transform hintPiece = BlockPieces.GetChild(random).transform;
+            Vector3 solutionLoc = BlockPieces.GetChild(random).GetComponent<VariableProvider>().solutionLoc;
+
+            //Place piece on the board
+            hintPiece.SetParent(HintPieces, true);
+            hintPiece.localPosition = solutionLoc * distanceBetweenTiles;
+            hintPiece.localScale = new Vector3(pieceScale, pieceScale, 1);
+
+            //Might need to change the mechanism of this
+            StartCoroutine(SetColliders(hintPiece));
+
+            SoundFXPlayer.Play("put"); //ADD MORE SOUNDS??
+            SavePiecePosition();
+            if (BlockPieces.childCount == 0)
+            {
+                GonfasterBtn.interactable = true;
+            }
+            /////////////////////////////////////////////////////////////
         }
 
-        SoundFXPlayer.Play("put"); //ADD MORE SOUNDS??
-        SavePiecePosition();
-        CheckIfAllTilesInPlace();
-        /////////////////////////////////////////////////////////////
+        //바로 하면 Collider인식이 안되서 Delay를 줌
+        IEnumerator SetColliders(Transform hintPiece)
+        {
+            yield return new WaitForSeconds(0.05f);
+
+            //Disable Corresponding EmptyTile BoxCollider2D & Detectors
+            //For each tile in piece
+            for (int i = 0; i < hintPiece.childCount; i++)
+            {
+                hintPiece.GetChild(i).GetChild(0).GetComponent<TileCollideDetection>().overlappedObject.GetComponent<BoxCollider2D>().enabled = false; //Turn Off EmptyTile Collider
+                hintPiece.GetChild(i).GetChild(0).GetComponent<BoxCollider2D>().enabled = false;
+                hintPiece.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 10;
+                hintPiece.GetChild(i).gameObject.tag = "Hint";
+            }
+        }
     }
 
     //테스트용 개발자 버튼용
@@ -504,6 +524,7 @@ public class Event : MonoBehaviour
         levelNum = 0;
         levelData.dfac = -1;
         string s = levelData.ReadFileByFactor(levelData.dfac);
+        //string s = "13302141534313";
         levelData.GenerateSlicedPieces(s);
         DeleteLevel();
         LoadLevel();

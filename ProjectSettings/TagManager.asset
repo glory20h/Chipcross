@@ -10,7 +10,7 @@ TagManager:
   - Tile
   - FixedTile
   - Nothing
-  - PieceHolder
+  - Hint
   layers:
   - Default
   - TransparentFX

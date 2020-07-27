@@ -171,7 +171,7 @@ public class MoveBoi : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Tile")
+        if (collision.tag == "Tile" || collision.tag == "Hint")
         {
             if (warpDone)           //워프에서 반대편으로 나왔을때 바로 타일 탐지하는것 방지
             {

@@ -456,8 +456,9 @@ public class LevelDatabase
                     }
 
                     //Add Solution Location Vector for the Hint System
-                    pieceCenter = new Vector2((float) (piece_end_X + piece_start_X) / 2 + 0.5f, (float) (piece_end_Y + piece_start_Y) / 2 + 0.5f); //(float) 실험
-                    pieceDatas[pieceDatas.Count - 1].solutionLoc = pieceCenter - boardCenter;
+                    pieceCenter = new Vector2(((float) (piece_start_X + piece_end_X)) / 2 + 0.5f, ((float) (piece_start_Y + piece_end_Y)) / 2 + 0.5f); //(float) 실험
+                    pieceDatas[pieceDatas.Count - 1].solutionLoc = (pieceCenter - boardCenter) * new Vector2(1, -1); //FlipY
+                    //Debug.Log("Piece " + (pieceDatas.Count - 1) + " solutionLoc : " + (pieceCenter - boardCenter));
 
                     //Update remainingTiles as next element from pieceSizeArray
                     if (!noTilesLeftToAdd) //If noTilesLeftToAdd = false
