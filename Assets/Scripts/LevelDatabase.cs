@@ -158,13 +158,16 @@ public class LevelDatabase
     //txt파일에서 불러와서 string으로 return
     public string ReadFileByFactor(float dfactor)
     {
-        string path = Application.dataPath + "/"+ dfactor + ".txt";
-        if (!File.Exists(path))
-        {
-            Debug.Log("error");
-        }
+        TextAsset sourcefile = Resources.Load<TextAsset>(dfactor.ToString());
+        StringReader sr = new StringReader(sourcefile.text);
+        //string path = Application.persistentDataPath + "/Assets/Resources/" + dfactor + ".txt";
+        //Debug.Log(Application.persistentDataPath);
         int random = Random.Range(1, 10000);
-        string testdata = File.ReadLines(path).Skip(random).First();
+        string testdata = "";
+        for (int i = 0; i < random; i++)
+        {
+            testdata = sr.ReadLine();
+        }
         Debug.Log("Read Line " + random);
         //Debug.Log(testdata);
         return testdata;
