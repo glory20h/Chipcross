@@ -164,29 +164,15 @@ public class LevelDatabase
     {
         TextAsset sourcefile = Resources.Load<TextAsset>(dfactor.ToString());
         StringReader sr = new StringReader(sourcefile.text);
-        //string path = Application.persistentDataPath + "/Assets/Resources/" + dfactor + ".txt";
+        string path = Application.streamingAssetsPath + dfactor + ".txt";
         //Debug.Log(Application.persistentDataPath);
         int random = Random.Range(1, 10000);
-        #if UNITY_EDITOR
-        bool existFolder = AssetDatabase.IsValidFolder("Assets/-1.txt");
-        #endif
-        if (existFolder)
-        {
-            Debug.Log("error");
-            #if UNITY_EDITOR   
-            string guid = AssetDatabase.CreateFolder("Assets", "My Folder");
-            #endif
-            random = -1;
-        }
-        else
-        {
-            random = Random.Range(1, 10000);
-        }
         string testdata = "";
         for (int i = 0; i < random; i++)
         {
             testdata = sr.ReadLine();
         }
+        //testdata = File.ReadLines(path).Skip(random).First();
         Debug.Log("Read Line " + random);
         //Debug.Log(testdata);
         return testdata;
