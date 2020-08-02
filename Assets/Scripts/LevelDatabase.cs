@@ -164,7 +164,6 @@ public class LevelDatabase
     {
         TextAsset sourcefile = Resources.Load<TextAsset>(dfactor.ToString());
         StringReader sr = new StringReader(sourcefile.text);
-        string path = Application.streamingAssetsPath + dfactor + ".txt";
         //Debug.Log(Application.persistentDataPath);
         int random = Random.Range(1, 10000);
         string testdata = "";
@@ -172,10 +171,27 @@ public class LevelDatabase
         {
             testdata = sr.ReadLine();
         }
-        //testdata = File.ReadLines(path).Skip(random).First();
+        #if UNITY_EDITOR
+        testdata = File.ReadLines(AssetDatabase.GetAssetPath(sourcefile)).Skip(random).First();
+        #endif
         Debug.Log("Read Line " + random);
         //Debug.Log(testdata);
         return testdata;
+    }
+
+    IEnumerator loadStreamingAsset(string fileName)
+    {
+        string filePath = System.IO.Path.Combine(Application.streamingAssetsPath, fileName);
+
+        string result;
+        if (filePath.Contains("://") || filePath.Contains(":///"))
+        {
+            WWW www = new WWW(filePath);
+            yield return www;
+            result = www.text;
+        }
+        else
+            result = System.IO.File.ReadAllText(filePath);
     }
 
     public void GenerateSlicedPieces(string s) //s : mapdata

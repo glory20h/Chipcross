@@ -62,7 +62,7 @@ public class Event : MonoBehaviour
     {
         PlayerPrefs.SetInt("tutorial",0);//확인중임 없애도 됨. 기본은 0놓고했었음
         PlayerPrefs.SetInt("Piecedata", 1);
-
+        
         //stageLoad();
         //변수 초기화
         InitializeVariables();
