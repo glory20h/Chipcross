@@ -299,6 +299,7 @@ public class Event : MonoBehaviour
         for (int i = 0; i < BlockPieces.childCount; i++)
         {
             PiecePosition[i] = BlockPieces.GetChild(i).localPosition;
+            BlockPieces.GetChild(i).GetComponent<VariableProvider>().pieceNum = i;
         }
         Debug.Log("PiecePosition Length : " + PiecePosition.Length);
     }
