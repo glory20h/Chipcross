@@ -459,7 +459,11 @@ public class Event : MonoBehaviour
     {
         MovePieceMode = true;
         ResetBtn.interactable = true;
-        ResetBoard();
+        /* ResetBoard */
+        DeleteLevel();
+        LoadLevel();
+        SavePiecePosition();
+        /* ResetBoard */
         Boy.GetComponent<MoveBoi>().ResetBoyPosition();
 
         //퍼즐 완료창 종료
