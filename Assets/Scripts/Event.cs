@@ -62,7 +62,6 @@ public class Event : MonoBehaviour
     {
         PlayerPrefs.SetInt("tutorial",0);//확인중임 없애도 됨. 기본은 0놓고했었음
         PlayerPrefs.SetInt("Piecedata", 1);
-
         //stageLoad();
         //변수 초기화
         InitializeVariables();
@@ -439,6 +438,8 @@ public class Event : MonoBehaviour
         MovePieceMode = true;
         ResetBtn.interactable = true;
         DeleteLevel();
+        levelData.dfac += 0.01f;
+        Debug.Log("in Gonext : " + levelData.dfac);
         levelData.LoadLevelData(levelNum);//For check new tile;
         if (levelData.tutorialCase)// 바꾸어야될듯? -> leveldata에서 CheckNewPieces앞에 false해서 이제 ㄱㅊ
         {

@@ -17,7 +17,7 @@ public class LevelDatabase
     public List<PieceData> pieceDatas;
 
     [HideInInspector] public bool tutorialCase = false;
-    [HideInInspector] public float dfac = 0;
+    [HideInInspector] public float dfac = -1;
 
     public class PieceData
     {
@@ -88,7 +88,7 @@ public class LevelDatabase
 
     public void LoadLevelData(int num)
     {
-        switch (num)
+        /*switch (num)
         {
             case 0:
                 break;
@@ -152,22 +152,25 @@ public class LevelDatabase
                 BoardEmptyTileTypeInfo = ConvertStringToIntArray("1111111111116111111111111");
                 ConvertStringToPieceInfo("13113224013220112221340215131531121311221141231");
                 break;
-        }
+        }*/
+        Debug.Log(dfac);
+        string s = ReadFileByFactor(dfac);
+        GenerateSlicedPieces(s);
     }
 
     //txt파일에서 불러와서 string으로 return
     public string ReadFileByFactor(float dfactor)
     {
-        TextAsset sourcefile = Resources.Load<TextAsset>(dfactor.ToString());
+        TextAsset sourcefile = Resources.Load<TextAsset>(dfactor.ToString("N2"));
         StringReader sr = new StringReader(sourcefile.text);
-        //string path = Application.persistentDataPath + "/Assets/Resources/" + dfactor + ".txt";
-        //Debug.Log(Application.persistentDataPath);
-        int random = Random.Range(1, 10000);
+        int random = Random.Range(0, 150);
         string testdata = "";
         for (int i = 0; i < random; i++)
         {
             testdata = sr.ReadLine();
         }
+        //string path = Application.persistentDataPath + "/Assets/Resources/" + dfactor + ".txt";
+        //Debug.Log(Application.persistentDataPath);
         Debug.Log("Read Line " + random);
         //Debug.Log(testdata);
         return testdata;
