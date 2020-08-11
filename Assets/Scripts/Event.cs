@@ -520,6 +520,7 @@ public class Event : MonoBehaviour
         SavePiecePosition();
         */
 
+        /*
         //GenerateSlicedPieces 테스트용 실행코드
         levelNum = 0;
         levelData.dfac = -1;
@@ -529,7 +530,12 @@ public class Event : MonoBehaviour
         DeleteLevel();
         LoadLevel();
         SavePiecePosition();
-        //levelData.PieceCutterModuleTEST();
+        */
+
+        //GenerateLevel 테스트용 실행코드
+        float dfactor = Random.Range(-1f, 1f);
+        Debug.Log("Difficulty Factor : " + dfactor);
+        levelData.GenerateLevel(dfactor);
     }
 
     //옵션 버튼을 눌러 Option창 토글

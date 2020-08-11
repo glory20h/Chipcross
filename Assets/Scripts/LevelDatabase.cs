@@ -16,6 +16,9 @@ public class LevelDatabase
     //public PieceData[] pieceDatas; //Temp -> Migrating from Array to List for dynamic allocation
     public List<PieceData> pieceDatas;
 
+    //Variables for GenerateLevel & GenerateSlicedPieces
+    MapTile[,] LevelMap;
+
     [HideInInspector] public bool tutorialCase = false;
     [HideInInspector] public float dfac = 0;
 
@@ -28,9 +31,9 @@ public class LevelDatabase
         public Vector3 solutionLoc; //solution for hint
     }
 
-    class LoadedMapTile //need public?
+    class MapTile //need public?
     {
-        public int LoadedTileCode;
+        public int TileCode;
         public bool isBoardSelected = false;
     }
 
@@ -170,10 +173,155 @@ public class LevelDatabase
         return testdata;
     }
 
-    public void GenerateSlicedPieces(string s) //s : mapdata
+    public void GenerateLevel(float dfactor)
     {
-        /////////////////PROCESS MAP STRING INPUT//////////////////
+        ////////////////////////////////////////////VARIABLES////////////////////////////////////////////
         
+        BoardWidth = Random.Range(1, 6);                        //Needs to be changed so that it will be affected by difficulty factor
+        BoardHeight = Random.Range(1, 6);                       //Needs to be changed so that it will be affected by difficulty factor
+        scaleSize = Mathf.Max(BoardWidth, BoardHeight) - 2;
+        BoyPos = Random.Range(0, BoardHeight);
+        
+        int boy_X = -1;                                         //Current X position of Boi
+        int boy_Y = BoyPos;                                     //Current Y position of Boi
+        int boy_dir = 3;                                        //Current moving direction of Boi; 2:left, 3:right, 4:down, 5:up
+        Stack PathStack = new Stack();                          //Stack of Tiles forming path
+        int prevTile = 3;                                       //Previous Tile generated
+        int nextTile;                                           //Next Tile to be generated
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //(BoardWidth = 2, BoardHeight = 5) -> Valid??
+
+        ///////////////////////////////////////////////INIT//////////////////////////////////////////////
+
+        LevelMap = new MapTile[BoardHeight, BoardWidth];
+        //INIT LevelMap
+        for (int i = 0; i < BoardHeight; i++)
+        {
+            for (int j = 0; j < BoardWidth; j++)
+            {
+                LevelMap[i, j] = new MapTile();
+            }
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+
+        ///////////////////////////////////////////////UTIL//////////////////////////////////////////////
+
+        //Generate random Tile by difficulty factor
+        int RandTile()
+        {
+            //Currently only has tiles from 1 to 5 -> Need to add 6 and 7
+            //Needs to be changed so that it will be affected by difficulty factor
+            
+            float w1 = 50f;
+            float w2 = prevTile == 3 ? 0f : 12.5f;
+            float w3 = prevTile == 2 ? 0f : 12.5f;
+            float w4 = prevTile == 5 ? 0f : 12.5f;
+            float w5 = prevTile == 4 ? 0f : 12.5f;
+            float total = w1 + w2 + w3 + w4 + w5;
+
+            float rand = Random.Range(0, total);
+            if(rand < w1)
+            {
+                return 1;
+            }
+            else if(rand < w1 + w2)
+            {
+                return 2;
+            }
+            else if(rand < w1 + w2 + w3)
+            {
+                return 3;
+            }
+            else if(rand < w1 + w2 + w3 + w4)
+            {
+                return 4;
+            }
+            else
+            {
+                return 5;
+            }
+        }
+
+        //Move boi to next tile
+        void MoveBoi()
+        {
+            if (boy_dir == 2)
+            {
+                boy_X--;    //Move Left
+            }
+            else if (boy_dir == 3)
+            {
+                boy_X++;    //Move Right
+            }
+            else if (boy_dir == 4)
+            {
+                boy_Y--;    //Move Down
+            }
+            else if (boy_dir == 5)
+            {
+                boy_Y++;    //Move Up
+            }
+        }
+
+        //Change Boi's direction by Tilecode
+        void ChangeDir()
+        {
+            //Need to Add Tile 6 and 7
+            switch(LevelMap[boy_Y, boy_X].TileCode)
+            {
+                case 2:
+                    boy_dir = 2;
+                    return;
+                case 3:
+                    boy_dir = 3;
+                    return;
+                case 4:
+                    boy_dir = 4;
+                    return;
+                case 5:
+                    boy_dir = 5;
+                    return;
+                default:        //case 1
+                    return;
+            }
+        }
+
+        ///////////////////////////////////////////////UTIL//////////////////////////////////////////////
+
+        /* Create Valid Path */
+
+        MoveBoi();
+
+        //Create First Tile
+        nextTile = RandTile();
+        prevTile = nextTile;
+        LevelMap[boy_Y, boy_X].TileCode = nextTile;
+        PathStack.Push(new Vector2Int(boy_Y, 0));
+
+        //Move boi to next tile
+        
+        ChangeDir();
+
+        //Determine next tile location
+
+        /* Fill Rest of Board */
+
+        /* Warp Tiles Replacement if Required */
+
+        /*REQUIREMENTS:
+         *GirlPos must be set
+         *LevelMap must be full
+         *Set up difficultyFactor -> dfactor
+         */
+    }
+
+    public void GenerateSlicedPieces(float dfactor) //s : mapdata
+    {
+        /*
+        /////////////////PROCESS MAP STRING INPUT//////////////////
         //Input string s Processing
         scaleSize = s[0] - '0';
         BoardWidth = s[1] - '0';
@@ -181,8 +329,8 @@ public class LevelDatabase
         BoyPos = s[3] - '0';
         GirlPos = s[4] - '0';
         string BoardInput = s.Substring(5); //Board 입력받아오는값
-
         /////////////////PROCESS MAP STRING INPUT//////////////////
+        */
 
         /////////////////VARIABLES//////////////////
         //퍼즐판 크기 = 가로 길이 * 세로 길이
@@ -271,7 +419,7 @@ public class LevelDatabase
         ///TEST : Print pieceSizeArray
 
         //조각 잘라서 pieceDatas에 할당
-        SliceBoard(BoardInput, pieceSizeArray);
+        SliceBoard(pieceSizeArray);
 
         //Update Number of Pieces
         NumberOfPieces = pieceDatas.Count;
@@ -281,7 +429,7 @@ public class LevelDatabase
     }
 
     //조각 잘라서 pieceDatas에 할당
-    void SliceBoard(string Board, int[] pieceSizeArray)
+    void SliceBoard(int[] pieceSizeArray)
     {
         /////////////////VARIABLES//////////////////
         int remainingTiles = 0;
@@ -299,15 +447,15 @@ public class LevelDatabase
         Vector2 pieceCenter; //For Adding Location for Hints
         /////////////////VARIABLES//////////////////
 
+        /*
         /////////////////데이터 받아오기/////////////////
-        LoadedMapTile[,] LoadedMap = new LoadedMapTile[BoardHeight, BoardWidth];
         index = 0; 
         //LoadedMap Array로 Input Map 정보 할당
         for (int i = 0; i < BoardHeight; i++) 
         {
             for (int j = 0; j < BoardWidth; j++)
             {
-                LoadedMap[i, j] = new LoadedMapTile
+                LevelMap[i, j] = new LoadedMapTile
                 {
                     LoadedTileCode = Board[index] - '0'
                 };
@@ -315,23 +463,24 @@ public class LevelDatabase
             }
         }
         /////////////////데이터 받아오기/////////////////
+        */
 
-        //////////////////////////////////////////////////////////////////////////////////조각 자르기//////////////////////////////////////////////////////////////////////////////////
-        ///INIT///
+        //////////////////////////////////INIT//////////////////////////////////
         pieceDatas = new List<PieceData>();
         index = 0; //PieceSizeArray Iteration
         noTilesLeftToAdd = false; //The default value of noTilesLeftToAdd is false
 
         boardCenter = new Vector2((float)BoardHeight / 2, (float)BoardWidth / 2);
-        ///INIT///
+        ////////////////////////////////////////////////////////////////////////
 
+        //////////////////////////////////////////////////////////////////////////////////조각 자르기//////////////////////////////////////////////////////////////////////////////////
         //Board Iteration
         for (int i = 0; i < BoardHeight; i++)
         {
             for (int j = 0; j < BoardWidth; j++)
             {
                 //여기가 할당되지 않은 타일일때
-                if (!LoadedMap[i, j].isBoardSelected)
+                if (!LevelMap[i, j].isBoardSelected)
                 {
                     //INIT as new piece start
                     pieceDatas.Add(new PieceData());
@@ -351,7 +500,7 @@ public class LevelDatabase
                     piece_end_X = j;
                     piece_end_Y = i;
                     remainingTiles--;
-                    LoadedMap[i, j].isBoardSelected = true;
+                    LevelMap[i, j].isBoardSelected = true;
 
                     while (remainingTiles != 0 && !noTilesLeftToAdd)
                     {
@@ -359,7 +508,7 @@ public class LevelDatabase
                         //Check North
                         if(cur_Y != 0) //Checking tile not out of bounds of Board
                         {
-                            if(!LoadedMap[cur_Y - 1, cur_X].isBoardSelected) //Checking if north tile is already selected
+                            if(!LevelMap[cur_Y - 1, cur_X].isBoardSelected) //Checking if north tile is already selected
                             {
                                 ValidTiles.Add(new Vector2Int(cur_X, cur_Y - 1)); //Add North Tile to ValidTiles
                             }
@@ -367,7 +516,7 @@ public class LevelDatabase
                         //Check South
                         if(cur_Y + 1 != BoardHeight) //Checking tile not out of bounds of Board
                         {
-                            if (!LoadedMap[cur_Y + 1, cur_X].isBoardSelected) //Checking if south tile is already selected
+                            if (!LevelMap[cur_Y + 1, cur_X].isBoardSelected) //Checking if south tile is already selected
                             {
                                 ValidTiles.Add(new Vector2Int(cur_X, cur_Y + 1)); //Add South Tile to ValidTiles
                             }
@@ -375,7 +524,7 @@ public class LevelDatabase
                         //Check West
                         if(cur_X != 0) //Checking tile not out of bounds of Board
                         {
-                            if (!LoadedMap[cur_Y, cur_X - 1].isBoardSelected) //Checking if west tile is already selected
+                            if (!LevelMap[cur_Y, cur_X - 1].isBoardSelected) //Checking if west tile is already selected
                             {
                                 ValidTiles.Add(new Vector2Int(cur_X - 1, cur_Y)); //Add West Tile to ValidTiles
                             }
@@ -383,7 +532,7 @@ public class LevelDatabase
                         //Check East
                         if (cur_X + 1 != BoardWidth) //Checking tile not out of bounds of Board
                         {
-                            if (!LoadedMap[cur_Y, cur_X + 1].isBoardSelected) //Checking if east tile is already selected
+                            if (!LevelMap[cur_Y, cur_X + 1].isBoardSelected) //Checking if east tile is already selected
                             {
                                 ValidTiles.Add(new Vector2Int(cur_X + 1, cur_Y)); //Add East Tile to ValidTiles
                             }
@@ -403,7 +552,7 @@ public class LevelDatabase
                             int add_Y = ValidTiles[random][1]; //순서바꿈
 
                             AddedTiles.Add(ValidTiles[random]);
-                            LoadedMap[add_Y, add_X].isBoardSelected = true;
+                            LevelMap[add_Y, add_X].isBoardSelected = true;
 
                             //Update cur_X, cur_Y
                             cur_X = ValidTiles[random][0];
@@ -446,7 +595,7 @@ public class LevelDatabase
                         {
                             if (ContainsTile(AddedTiles, m, k)) //Might be buggy
                             {
-                                pieceDatas[pieceDatas.Count - 1].TileType.Add(LoadedMap[m, k].LoadedTileCode);
+                                pieceDatas[pieceDatas.Count - 1].TileType.Add(LevelMap[m, k].TileCode);
                             }
                             else
                             {
@@ -492,32 +641,5 @@ public class LevelDatabase
             }
         }
         return false;
-    }
-
-    public void PieceCutterModuleTEST()
-    {
-        //TEST CASE 1
-        /*
-        BoardWidth = 3;
-        BoardHeight = 2;
-        SliceBoard("144131", new int[] { 2, 2, 2 });
-        */
-
-        //TEST CASE 2
-        BoardWidth = 3;
-        BoardHeight = 3;
-        SliceBoard("141534313", new int[] { 2, 2, 1, 3, 1 });
-
-        string TileTypeCode = "";
-        for(int i = 0; i < pieceDatas.Count; i++)
-        {
-            Debug.Log("Piece " + (i + 1) + " : ");
-            for(int j = 0; j < pieceDatas[i].TileType.Count; j++)
-            {
-                TileTypeCode = TileTypeCode + pieceDatas[i].TileType[j].ToString();
-            }
-            Debug.Log("PieceWidth : " + pieceDatas[i].PieceWidth + ", PieceHeight : " + pieceDatas[i].PieceHeight + ", TileTypeCode : " + TileTypeCode);
-            TileTypeCode = "";
-        }
     }
 }
