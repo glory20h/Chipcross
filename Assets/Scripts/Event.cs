@@ -101,7 +101,7 @@ public class Event : MonoBehaviour
                 if (hit.collider != null)
                 {
                     //클릭한 물체가 퍼즐 조각일 경우
-                    if (hit.transform.tag == "Tile")      //힌트 조각들은 클릭하거나 움직이지 못함
+                    if (hit.transform.tag == "Tile")
                     {
                         if(GonfasterBtn.interactable)
                         {
@@ -435,6 +435,7 @@ public class Event : MonoBehaviour
     //다음 스테이지 불러오기
     public void GoToNextLevel()
     {
+        /* //OLD
         levelNum++;
         MovePieceMode = true;
         ResetBtn.interactable = true;
@@ -449,6 +450,16 @@ public class Event : MonoBehaviour
             LoadLevel();
             SavePiecePosition();
         }
+        */
+
+        levelNum = 0;
+        levelData.dfac = -1;
+        string s = levelData.ReadFileByFactor(levelData.dfac);
+        levelData.GenerateSlicedPieces(s);
+        DeleteLevel();
+        LoadLevel();
+        SavePiecePosition();
+        MovePieceMode = true;
 
         //퍼즐 완료창 종료
         PuzzleSolvedPanel.SetActive(false);

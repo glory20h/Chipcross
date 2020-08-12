@@ -325,7 +325,7 @@ public class LevelDatabase
         index = 0; //PieceSizeArray Iteration
         noTilesLeftToAdd = false; //The default value of noTilesLeftToAdd is false
 
-        boardCenter = new Vector2((float)BoardHeight / 2, (float)BoardWidth / 2);
+        boardCenter = new Vector2((float)BoardWidth / 2, (float)BoardHeight / 2);
         ///INIT///
 
         //Board Iteration
