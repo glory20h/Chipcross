@@ -176,6 +176,113 @@ public class LevelDatabase
         return testdata;
     }
 
+    void Automap(float mapfactor, int detailfator)
+    {
+        int changerMap = Random.Range(0,2); //0,1만나옴
+        if(mapfactor < -0.9f)//2*2
+        {
+            BoardHeight = 2;
+            BoardWidth = 2;
+        }
+        else if (mapfactor < -0.8f)//2*3
+        {
+            if(changerMap == 0)
+            {
+                BoardHeight = 2;
+                BoardWidth = 3;
+            }
+            else
+            {
+                BoardHeight = 3;
+                BoardWidth = 2;
+            }
+        }
+        else if (mapfactor < -0.6f)//2*4
+        {
+            if (changerMap == 0)
+            {
+                BoardHeight = 2;
+                BoardWidth = 4;
+            }
+            else
+            {
+                BoardHeight = 4;
+                BoardWidth = 2;
+            }
+        }
+        else if (mapfactor < -0.4f)//2*5
+        {
+            if (changerMap == 0)
+            {
+                BoardHeight = 2;
+                BoardWidth = 5;
+            }
+            else
+            {
+                BoardHeight = 5;
+                BoardWidth = 2;
+            }
+        }
+        else if (mapfactor < -0.15f)//3*3
+        {
+            BoardHeight = 3;
+            BoardWidth = 3;
+        }
+        else if (mapfactor < 0.1f)//3*4
+        {
+            if (changerMap == 0)
+            {
+                BoardHeight = 3;
+                BoardWidth = 4;
+            }
+            else
+            {
+                BoardHeight = 4;
+                BoardWidth = 3;
+            }
+        }
+        else if (mapfactor < 0.35f)//3*5
+        {
+            if (changerMap == 0)
+            {
+                BoardHeight = 3;
+                BoardWidth = 5;
+            }
+            else
+            {
+                BoardHeight = 5;
+                BoardWidth = 3;
+            }
+        }
+        else if (mapfactor < 0.6f)//4*4
+        {
+            BoardHeight = 4;
+            BoardWidth = 4;
+        }
+        else if (mapfactor < 0.9f)//4*5
+        {
+            if (changerMap == 0)
+            {
+                BoardHeight = 4;
+                BoardWidth = 5;
+            }
+            else
+            {
+                BoardHeight = 5;
+                BoardWidth = 4;
+            }
+        }
+        else if (mapfactor >= 0.9f)//5*5
+        {
+            BoardHeight = 5;
+            BoardWidth = 5;
+        }
+        //들어갈 자리만들기
+        int [,] mapContent = new int [BoardHeight+2, BoardWidth+2];//+2하는 이유는 혹시모를 pos형식 또는 내부 loop를 통한 검토일지도 모르기 때문이다.
+
+
+    }
+
     public void GenerateSlicedPieces(string s) //s : mapdata
     {
         /////////////////PROCESS MAP STRING INPUT//////////////////
