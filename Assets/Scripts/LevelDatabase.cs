@@ -179,7 +179,12 @@ public class LevelDatabase
     void Automap(float mapfactor, int detailfator)
     {
         int changerMap = Random.Range(0,2); //0,1만나옴
-        if(mapfactor < -0.9f)//2*2
+        int tileNumber = 0;
+        int tile25Num = 0;
+        int tile67Num = 0;
+        int tile89Num = 0;
+
+        if (mapfactor < -0.9f)//2*2
         {
             BoardHeight = 2;
             BoardWidth = 2;
@@ -280,6 +285,23 @@ public class LevelDatabase
         //들어갈 자리만들기
         int [,] mapContent = new int [BoardHeight+2, BoardWidth+2];//+2하는 이유는 혹시모를 pos형식 또는 내부 loop를 통한 검토일지도 모르기 때문이다.
 
+        BoyPos = Random.Range(0, BoardHeight);
+        GirlPos = Random.Range(0, BoardHeight);// 이것을 detailfator로 정할까 싶긴한데
+        tileNumber = (BoardHeight + BoardWidth) / 2;
+        while (detailfator > 0)
+        {
+            if(detailfator >= 5)
+            {
+                //타일 갯수 추가
+                tileNumber += 1;
+            }
+            
+            if(detailfator >= 3)
+            {
+
+            }
+        }
+        //알고리즘...전에 detailfator를 통해 정하고 하자
 
     }
 
