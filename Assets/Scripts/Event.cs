@@ -513,12 +513,10 @@ public class Event : MonoBehaviour
     public void DevBtnAct()  //Go To Level X
     {
         //바로 다음 퍼즐로 ㄱ
-        /*
         levelNum++;
         DeleteLevel();
         LoadLevel();
         SavePiecePosition();
-        */
 
         /*
         //GenerateSlicedPieces 테스트용 실행코드
@@ -533,9 +531,11 @@ public class Event : MonoBehaviour
         */
 
         //GenerateLevel 테스트용 실행코드
+        /*
         float dfactor = Random.Range(-1f, 1f);
         Debug.Log("Difficulty Factor : " + dfactor);
         levelData.GenerateLevel(dfactor);
+        */
     }
 
     //옵션 버튼을 눌러 Option창 토글

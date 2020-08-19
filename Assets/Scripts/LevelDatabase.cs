@@ -181,6 +181,7 @@ public class LevelDatabase
         BoardHeight = Random.Range(1, 6);                       //Needs to be changed so that it will be affected by difficulty factor
         scaleSize = Mathf.Max(BoardWidth, BoardHeight) - 2;
         BoyPos = Random.Range(0, BoardHeight);
+        //GirlPos = Random.Range(0, BoardHeight);               //GirlPos is to be determined by the algorithm
         
         int boy_X = -1;                                         //Current X position of Boi
         int boy_Y = BoyPos;                                     //Current Y position of Boi
@@ -205,7 +206,37 @@ public class LevelDatabase
             }
         }
 
-        /////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////INIT/////////////////////////////////////////////
+
+        //Until Boi meets Girl
+        while(!(boy_X == BoardWidth))
+        {
+            
+        }
+        /* Create Valid Path */
+
+        MoveBoi();
+
+        //Create First Tile
+        nextTile = RandTile();
+        prevTile = nextTile;
+        LevelMap[boy_Y, boy_X].TileCode = nextTile;
+        PathStack.Push(new Vector2Int(boy_Y, boy_X));
+
+        //Move boi to next tile
+        
+        ChangeDir();
+
+        //Determine next tile location
+
+        /* Fill Rest of Board */
+
+        /* Warp Tiles Replacement if Required */
+
+        /*ADDITIONAL REQUIREMENTS:
+         *LevelMap must be full
+         *Set up difficultyFactor -> dfactor
+         */
 
         ///////////////////////////////////////////////UTIL//////////////////////////////////////////////
 
@@ -214,7 +245,7 @@ public class LevelDatabase
         {
             //Currently only has tiles from 1 to 5 -> Need to add 6 and 7
             //Needs to be changed so that it will be affected by difficulty factor
-            
+
             float w1 = 50f;
             float w2 = prevTile == 3 ? 0f : 12.5f;
             float w3 = prevTile == 2 ? 0f : 12.5f;
@@ -223,19 +254,19 @@ public class LevelDatabase
             float total = w1 + w2 + w3 + w4 + w5;
 
             float rand = Random.Range(0, total);
-            if(rand < w1)
+            if (rand < w1)
             {
                 return 1;
             }
-            else if(rand < w1 + w2)
+            else if (rand < w1 + w2)
             {
                 return 2;
             }
-            else if(rand < w1 + w2 + w3)
+            else if (rand < w1 + w2 + w3)
             {
                 return 3;
             }
-            else if(rand < w1 + w2 + w3 + w4)
+            else if (rand < w1 + w2 + w3 + w4)
             {
                 return 4;
             }
@@ -270,7 +301,7 @@ public class LevelDatabase
         void ChangeDir()
         {
             //Need to Add Tile 6 and 7
-            switch(LevelMap[boy_Y, boy_X].TileCode)
+            switch (LevelMap[boy_Y, boy_X].TileCode)
             {
                 case 2:
                     boy_dir = 2;
@@ -290,32 +321,6 @@ public class LevelDatabase
         }
 
         ///////////////////////////////////////////////UTIL//////////////////////////////////////////////
-
-        /* Create Valid Path */
-
-        MoveBoi();
-
-        //Create First Tile
-        nextTile = RandTile();
-        prevTile = nextTile;
-        LevelMap[boy_Y, boy_X].TileCode = nextTile;
-        PathStack.Push(new Vector2Int(boy_Y, 0));
-
-        //Move boi to next tile
-        
-        ChangeDir();
-
-        //Determine next tile location
-
-        /* Fill Rest of Board */
-
-        /* Warp Tiles Replacement if Required */
-
-        /*REQUIREMENTS:
-         *GirlPos must be set
-         *LevelMap must be full
-         *Set up difficultyFactor -> dfactor
-         */
     }
 
     public void GenerateSlicedPieces(float dfactor) //s : mapdata
@@ -470,7 +475,7 @@ public class LevelDatabase
         index = 0; //PieceSizeArray Iteration
         noTilesLeftToAdd = false; //The default value of noTilesLeftToAdd is false
 
-        boardCenter = new Vector2((float)BoardHeight / 2, (float)BoardWidth / 2);
+        boardCenter = new Vector2((float)BoardWidth / 2, (float)BoardHeight / 2);
         ////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////////////조각 자르기//////////////////////////////////////////////////////////////////////////////////
