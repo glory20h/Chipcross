@@ -53,10 +53,9 @@ public class Event : MonoBehaviour
     int firstTime = 2;
     public GameObject tutorialPanel;
     bool tutorialDo = true;
-    /*void Awake()
-    {
-        firstTime = PlayerPrefs.GetInt("tutorial");
-    }*/
+
+    //For DfactorTest branch
+    public Text DfactorText;
 
     void Start()
     {
@@ -204,6 +203,7 @@ public class Event : MonoBehaviour
         GameObject obj2;
 
         levelData.LoadLevelData(levelNum);
+        DfactorText.text = levelData.ReadFileByLine("LevelDifficulty", levelNum);
         PlayerPrefs.SetInt("LevelDatabase", levelNum);//레벨 저장 일단
         int typeIndex;
         int pieceHeight;
@@ -435,7 +435,7 @@ public class Event : MonoBehaviour
     //다음 스테이지 불러오기
     public void GoToNextLevel()
     {
-        /* //OLD
+        //OLD
         levelNum++;
         MovePieceMode = true;
         ResetBtn.interactable = true;
@@ -450,8 +450,8 @@ public class Event : MonoBehaviour
             LoadLevel();
             SavePiecePosition();
         }
-        */
 
+        /*
         levelNum = 0;
         levelData.dfac = -1;
         string s = levelData.ReadFileByFactor(levelData.dfac);
@@ -460,6 +460,7 @@ public class Event : MonoBehaviour
         LoadLevel();
         SavePiecePosition();
         MovePieceMode = true;
+        */
 
         //퍼즐 완료창 종료
         PuzzleSolvedPanel.SetActive(false);
@@ -529,14 +530,14 @@ public class Event : MonoBehaviour
     public void DevBtnAct()  //Go To Level X
     {
         //바로 다음 퍼즐로 ㄱ
-        /*
         levelNum++;
         DeleteLevel();
         LoadLevel();
         SavePiecePosition();
-        */
+        //Change Text Display For difficultyfactor
 
         //GenerateSlicedPieces 테스트용 실행코드
+        /*
         levelNum = 0;
         levelData.dfac = -1;
         string s = levelData.ReadFileByFactor(levelData.dfac);
@@ -545,6 +546,7 @@ public class Event : MonoBehaviour
         DeleteLevel();
         LoadLevel();
         SavePiecePosition();
+        */
         //levelData.PieceCutterModuleTEST();
     }
 

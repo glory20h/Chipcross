@@ -88,6 +88,7 @@ public class LevelDatabase
 
     public void LoadLevelData(int num)
     {
+        /*
         switch (num)
         {
             case 0:
@@ -153,6 +154,16 @@ public class LevelDatabase
                 ConvertStringToPieceInfo("13113224013220112221340215131531121311221141231");
                 break;
         }
+        */
+        TextAsset sourcefile = Resources.Load<TextAsset>("ex");
+        StringReader sr = new StringReader(sourcefile.text);
+        string content = "";
+        for (int i = 0; i < num; i++)
+        {
+            content = sr.ReadLine();
+        }
+        Debug.Log("Read Line " + num);
+        GenerateSlicedPieces(content);
     }
 
     //txt파일에서 불러와서 string으로 return
@@ -171,6 +182,19 @@ public class LevelDatabase
         Debug.Log("Read Line " + random);
         //Debug.Log(testdata);
         return testdata;
+    }
+
+    public string ReadFileByLine(string filename, int line)
+    {
+        TextAsset sourcefile = Resources.Load<TextAsset>(filename);
+        StringReader sr = new StringReader(sourcefile.text);
+        string content = "";
+        for (int i = 0; i < line; i++)
+        {
+            content = sr.ReadLine();
+        }
+        Debug.Log("Read Line " + line);
+        return content;
     }
 
     public void GenerateSlicedPieces(string s) //s : mapdata
