@@ -216,13 +216,14 @@ public class LevelDatabase
         int boardSize = BoardWidth * BoardHeight;
 
         //float difficultyFactor = dfac; // 난이도 조절용 -> (-1 ~ 1) -> 나중에 입력값으로 받음
-        float difficultyFactor = Random.Range(-1f, 1f); //임시 Random 값
+        //float difficultyFactor = Random.Range(-1f, 1f); //임시 Random 값
+        float difficultyFactor = -1f;
 
         //조각의 최대 크기(최대 타일 갯수) : boardSize = 4 -> 2, boardSize = 16 -> 4 // 수정 및 조절 필요
         int maxPieceSize = Mathf.FloorToInt(Mathf.Sqrt(boardSize));
 
         //생성할 조각 갯수 : BoardSize * (0.35 ~ 0.6) -> ex) boardSize = 16 -> (5.6 ~ 10.4)개, boardSize = 6 -> (2.1 ~ 3.9)개, difficultyFactor에 따라 범위 안에서 선택 // 수정 및 조절 필요
-        NumberOfPieces = Mathf.Max(Mathf.RoundToInt(boardSize * (0.475f + (0.125f * difficultyFactor))), boardSize / maxPieceSize);
+        NumberOfPieces = Mathf.Max(Mathf.RoundToInt(boardSize * (0.35f + (0.125f * difficultyFactor))), boardSize / maxPieceSize);
 
         //조각들 1차원 Array -> 조각 크기 할당용
         int[] pieceSizeArray = new int[NumberOfPieces];
