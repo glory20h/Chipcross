@@ -301,7 +301,6 @@ public class Event : MonoBehaviour
             PiecePosition[i] = BlockPieces.GetChild(i).localPosition;
             BlockPieces.GetChild(i).GetComponent<VariableProvider>().pieceNum = i;
         }
-        Debug.Log("PiecePosition Length : " + PiecePosition.Length);
     }
 
     //퍼즐 조각들이 모두 타일위에 놓아졌는지 확인
@@ -548,6 +547,22 @@ public class Event : MonoBehaviour
         SavePiecePosition();
         */
         //levelData.PieceCutterModuleTEST();
+    }
+
+    public void DevBtnAct2()  //Go To Level +10
+    {
+        levelNum = levelNum + 10;
+        DeleteLevel();
+        LoadLevel();
+        SavePiecePosition();
+    }
+
+    public void DevBtnAct3()  //Go To Level +100
+    {
+        levelNum = levelNum + 100;
+        DeleteLevel();
+        LoadLevel();
+        SavePiecePosition();
     }
 
     //옵션 버튼을 눌러 Option창 토글

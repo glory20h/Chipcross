@@ -193,7 +193,6 @@ public class LevelDatabase
         {
             content = sr.ReadLine();
         }
-        Debug.Log("Read Line " + line);
         return content;
     }
 
