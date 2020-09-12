@@ -6,6 +6,8 @@ public class Ratingsystem : MonoBehaviour
 {
     //[HideInInspector]
     public float time = 0f;
+    //[HideInInspector]
+    public bool timeStop = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,6 +17,7 @@ public class Ratingsystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        time += Time.deltaTime;
+        if(!timeStop)
+            time += Time.deltaTime;
     }
 }

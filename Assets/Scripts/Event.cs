@@ -39,7 +39,8 @@ public class Event : MonoBehaviour
     int goNFastBtnState;            //1 -> Move Boy!, 2 -> Make Boy Faster!, 3 -> Make Boy back to normal speed     출발/가속 버튼용 변수
 
     //Variables for Level Loading
-    LevelDatabase levelData;
+    [HideInInspector]
+    public LevelDatabase levelData;
     int levelNum;
     float scaleFactor;
     float distanceBetweenTiles;
@@ -53,6 +54,12 @@ public class Event : MonoBehaviour
     int firstTime = 2;
     public GameObject tutorialPanel;
     bool tutorialDo = true;
+
+    //레이팅 시스템
+    [HideInInspector] public int usingHint = 0;
+    public Ratingsystem rateValue;
+    [HideInInspector] public int uisngTouch = 0;
+    [HideInInspector] public int usingRestart = 0;
     /*void Awake()
     {
         firstTime = PlayerPrefs.GetInt("tutorial");
@@ -122,7 +129,6 @@ public class Event : MonoBehaviour
                                 objToFollowMouse.GetChild(i).GetChild(0).GetComponent<BoxCollider2D>().enabled = true;  //Enable Detector Box Collider
                             }
                         }
-
                         SoundFXPlayer.Play("pick");
                     }
                 }
@@ -136,6 +142,8 @@ public class Event : MonoBehaviour
                 {
                     objToFollowMouse.position = new Vector3(mousePos.x, mousePos.y, 0);
                 }
+                uisngTouch++;
+                rateValue.timeStop = false;
             }
 
             if (Input.GetMouseButtonUp(0))
@@ -207,7 +215,12 @@ public class Event : MonoBehaviour
         int typeIndex;
         int pieceHeight;
         int pieceWidth;
-
+        //레이팅시스템값들 초기화
+        usingHint = 0;
+        uisngTouch = 0;
+        usingRestart = 0;
+        rateValue.time = 0f;
+        rateValue.timeStop = false;
         //Reset Position of BlockPieces
         BlockPieces.transform.position = new Vector3(0, -3.75f, 0);
 
@@ -365,6 +378,7 @@ public class Event : MonoBehaviour
     void ResetBoard()
     {
         Transform objToReset;
+        usingRestart++;
         for (int i = BlockOnBoard.childCount - 1; i >= 0; i--)
         {
             objToReset = BlockOnBoard.GetChild(0);
@@ -386,6 +400,7 @@ public class Event : MonoBehaviour
     {
         if (goNFastBtnState == 1)
         {
+            rateValue.timeStop = true;
             Boy.GetComponent<MoveBoi>().MoveDaBoi();
             MovePieceMode = false;
             goNFastBtnState = 2;
@@ -395,6 +410,7 @@ public class Event : MonoBehaviour
         else if(goNFastBtnState == 2)
         {
             //Boy FastForward
+            rateValue.timeStop = true;
             Boy.GetComponent<MoveBoi>().FastForward();
             goNFastBtnState = 3;
             GonfasterBtn.image.sprite = Resources.Load<Sprite>("Arts/NormalSpeed");
@@ -402,6 +418,7 @@ public class Event : MonoBehaviour
         else
         {
             //Boy Back to normal speed
+            rateValue.timeStop = true;
             Boy.GetComponent<MoveBoi>().BackToNormalSpeed();
             goNFastBtnState = 2;
             GonfasterBtn.image.sprite = Resources.Load<Sprite>("Arts/FastForward");
@@ -423,11 +440,13 @@ public class Event : MonoBehaviour
             //Reset the boy moving
             Boy.GetComponent<MoveBoi>().ResetBoyMove();
             ResetGoNFaster();
+            rateValue.timeStop = false;
         }
         else //During Puzzle Solving Phase
         {
             ResetBoard();
             GonfasterBtn.interactable = false;
+            rateValue.timeStop = false;
         }
     }
 
@@ -478,6 +497,7 @@ public class Event : MonoBehaviour
         if(BlockPieces.childCount != 0)
         {
             int random = Random.Range(0, BlockPieces.childCount);
+            usingHint++;
             Transform hintPiece = BlockPieces.GetChild(random).transform;
             Vector3 solutionLoc = BlockPieces.GetChild(random).GetComponent<VariableProvider>().solutionLoc;
 

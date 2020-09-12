@@ -43,6 +43,8 @@ public class MoveBoi : MonoBehaviour
     bool warp = false;
     bool warpDone = false;
 
+    //레이팅 시스템
+
     void Start()
     {
         isMoving = false;           //..왜 주석 처리 했었더라???
@@ -119,6 +121,7 @@ public class MoveBoi : MonoBehaviour
                         GoNFasterButton.interactable = false;
                         ResetButton.interactable = false;
                         metGirl = false;
+                        Ratingsys();
                     }
                     else //Wrong Solution
                     {
@@ -351,5 +354,14 @@ public class MoveBoi : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Boy");
         speed = 1.9f;
+    }
+
+    void Ratingsys()
+    {
+        LevelDatabase levelDatabase;
+        float rate = 0f;
+        rate = 0.06f * (eventChanger.usingHint*12 - eventChanger.levelData.BoardHeight * eventChanger.levelData.BoardWidth);//3*4가 마지노선이니까 5*5는 최종보스니까 2개까지 쓰게하자고
+        rate += eventChanger.rateValue.time;
+        Debug.Log(eventChanger.rateValue.time);
     }
 }

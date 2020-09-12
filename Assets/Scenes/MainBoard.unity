@@ -179,6 +179,8 @@ MonoBehaviour:
   coinChangeToggle: 1
   MovePieceMode: 0
   tutorialPanel: {fileID: 2124971657}
+  usingHint: 0
+  rateValue: {fileID: 357653644}
 --- !u!1 &13261064
 GameObject:
   m_ObjectHideFlags: 0
@@ -1139,6 +1141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   time: 0
+  timeStop: 0
 --- !u!1 &358250126
 GameObject:
   m_ObjectHideFlags: 0
@@ -1746,6 +1749,7 @@ MonoBehaviour:
   distanceBetweenTiles: 0
   initTargetPosition: {x: 0, y: 0, z: 0}
   isMoving: 0
+  rate: {fileID: 357653644}
 --- !u!50 &566818438
 Rigidbody2D:
   serializedVersion: 4
@@ -2322,7 +2326,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 165, y: 100}
+  m_AnchoredPosition: {x: 155, y: 100}
   m_SizeDelta: {x: 57.7, y: 37.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &737905258
