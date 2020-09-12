@@ -80,9 +80,8 @@ public class Event : MonoBehaviour
         goNFastBtnState = 1;
         GonfasterBtn.interactable = false;
 
-        levelNum = 1;
+        levelNum = 1087;
         levelData = new LevelDatabase();
-
     }
 
     void Update()

@@ -218,11 +218,13 @@ public class LevelDatabase
         //float difficultyFactor = Random.Range(-1f, 1f); //임시 Random 값
 
         //조각의 최대 크기(최대 타일 갯수) : boardSize = 4 -> 2, boardSize = 16 -> 4 // 수정 및 조절 필요
-        int maxPieceSize = Mathf.FloorToInt(Mathf.Sqrt(boardSize));
-        //int maxPieceSize = Mathf.FloorToInt(Mathf.Max(BoardWidth, BoardHeight) * 0.75f);
+        //int maxPieceSize = Mathf.FloorToInt(Mathf.Sqrt(boardSize));
+        int maxPieceSize = 6; //실험용
 
         //생성할 조각 갯수 : BoardSize * (0.35 ~ 0.6) -> ex) boardSize = 16 -> (5.6 ~ 10.4)개, boardSize = 6 -> (2.1 ~ 3.9)개, difficultyFactor에 따라 범위 안에서 선택 // 수정 및 조절 필요
-        NumberOfPieces = Mathf.Max(Mathf.RoundToInt(boardSize * 0.4f), boardSize / maxPieceSize);
+        //NumberOfPieces = Mathf.Max(Mathf.RoundToInt(boardSize * 0.4f), boardSize / maxPieceSize);
+        NumberOfPieces = Random.Range(5, 8); //실험용
+        //NumberOfPieces = 4;
 
         //조각들 1차원 Array -> 조각 크기 할당용
         int[] pieceSizeArray = new int[NumberOfPieces];
@@ -264,6 +266,7 @@ public class LevelDatabase
 
         ///////////각 조각 갯수 할당 2번째 방법/////////////
         // ex) [boardSize : 9, NumberOfPieces : 5] -> [2,2,1,3,1]
+        /*
         int remainingPieces = boardSize - NumberOfPieces;
         int randomIndex;
         while(remainingPieces != 0) //[1,1,1,1,1]로 시작해서 Random으로 나오는 index의 값에 1씩 더함
@@ -286,6 +289,9 @@ public class LevelDatabase
             }
             remainingPieces--;
         }
+        */
+        //실험용
+        pieceSizeArray = new int[] { 5, 2, 4, 2, 3 };
         ///////////각 조각 갯수 할당 2번째 방법/////////////
 
         ///TEST : Print pieceSizeArray
@@ -366,7 +372,19 @@ public class LevelDatabase
                     pieceDatas[pieceDatas.Count - 1].TileType = new List<int>(); // [pieceDatas.Count - 1] -> Last one Added
                     ValidTiles = new List<Vector2Int>();
                     AddedTiles = new List<Vector2Int>();
-                    remainingTiles = pieceSizeArray[index];
+
+                    //Previous Code
+                    //remainingTiles = pieceSizeArray[index];
+                    /////////////////////////////FIXBUG///////////////////////////////////
+                    if(index == pieceSizeArray.Length)
+                    {
+                        //PRINT CURRENT TILES INFO
+                    }
+                    else
+                    {
+                        remainingTiles = pieceSizeArray[index];
+                    }
+                    /////////////////////////////FIXBUG///////////////////////////////////
                     noTilesLeftToAdd = false;
 
                     //PieceDatas & PieceData 할당
