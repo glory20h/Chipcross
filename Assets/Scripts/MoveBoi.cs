@@ -44,6 +44,7 @@ public class MoveBoi : MonoBehaviour
     bool warpDone = false;
 
     //레이팅 시스템
+    Ratingsystem rateValue;
 
     void Start()
     {
@@ -333,6 +334,7 @@ public class MoveBoi : MonoBehaviour
         yield return new WaitForSeconds(time);
         eventChanger.MovePieceMode = true;
         transform.position = boiInitPos;
+        rateValue.timeStop = false;
     }
 
     //퍼즐 완료시

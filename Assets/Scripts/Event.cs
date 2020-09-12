@@ -143,7 +143,7 @@ public class Event : MonoBehaviour
                     objToFollowMouse.position = new Vector3(mousePos.x, mousePos.y, 0);
                 }
                 uisngTouch++;
-                rateValue.timeStop = false;
+                
             }
 
             if (Input.GetMouseButtonUp(0))
