@@ -20,4 +20,9 @@ public class Ratingsystem : MonoBehaviour
         if(!timeStop)
             time += Time.deltaTime;
     }
+
+    public void StopTime()
+    {
+        bool timeStop = true;
+    }
 }

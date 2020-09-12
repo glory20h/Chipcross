@@ -44,7 +44,6 @@ public class MoveBoi : MonoBehaviour
     bool warpDone = false;
 
     //레이팅 시스템
-    Ratingsystem rateValue;
 
     void Start()
     {
@@ -334,7 +333,7 @@ public class MoveBoi : MonoBehaviour
         yield return new WaitForSeconds(time);
         eventChanger.MovePieceMode = true;
         transform.position = boiInitPos;
-        rateValue.timeStop = false;
+        eventChanger.timeStop = false;
     }
 
     //퍼즐 완료시
@@ -363,7 +362,7 @@ public class MoveBoi : MonoBehaviour
         LevelDatabase levelDatabase;
         float rate = 0f;
         rate = 0.06f * (eventChanger.usingHint*12 - eventChanger.levelData.BoardHeight * eventChanger.levelData.BoardWidth);//3*4가 마지노선이니까 5*5는 최종보스니까 2개까지 쓰게하자고
-        rate += eventChanger.rateValue.time;
-        Debug.Log(eventChanger.rateValue.time);
+        rate += eventChanger.time;
+        Debug.Log(eventChanger.time);
     }
 }

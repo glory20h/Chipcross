@@ -57,9 +57,10 @@ public class Event : MonoBehaviour
 
     //레이팅 시스템
     [HideInInspector] public int usingHint = 0;
-    public Ratingsystem rateValue;
     [HideInInspector] public int uisngTouch = 0;
     [HideInInspector] public int usingRestart = 0;
+    public float time = 0f;
+    public bool timeStop = false;
     /*void Awake()
     {
         firstTime = PlayerPrefs.GetInt("tutorial");
@@ -94,6 +95,8 @@ public class Event : MonoBehaviour
 
     void Update()
     {
+        if (!timeStop)
+            time += Time.deltaTime;
         //퍼즐조각 움직임 enable/disable
         if (MovePieceMode && Time.timeScale != 0f)
         {
@@ -219,8 +222,8 @@ public class Event : MonoBehaviour
         usingHint = 0;
         uisngTouch = 0;
         usingRestart = 0;
-        rateValue.time = 0f;
-        rateValue.timeStop = false;
+        time = 0f;
+        timeStop = false;
         //Reset Position of BlockPieces
         BlockPieces.transform.position = new Vector3(0, -3.75f, 0);
 
@@ -400,7 +403,7 @@ public class Event : MonoBehaviour
     {
         if (goNFastBtnState == 1)
         {
-            rateValue.timeStop = true;
+            timeStop = true;
             Boy.GetComponent<MoveBoi>().MoveDaBoi();
             MovePieceMode = false;
             goNFastBtnState = 2;
@@ -410,7 +413,7 @@ public class Event : MonoBehaviour
         else if(goNFastBtnState == 2)
         {
             //Boy FastForward
-            rateValue.timeStop = true;
+            timeStop = true;
             Boy.GetComponent<MoveBoi>().FastForward();
             goNFastBtnState = 3;
             GonfasterBtn.image.sprite = Resources.Load<Sprite>("Arts/NormalSpeed");
@@ -418,7 +421,7 @@ public class Event : MonoBehaviour
         else
         {
             //Boy Back to normal speed
-            rateValue.timeStop = true;
+            timeStop = true;
             Boy.GetComponent<MoveBoi>().BackToNormalSpeed();
             goNFastBtnState = 2;
             GonfasterBtn.image.sprite = Resources.Load<Sprite>("Arts/FastForward");
@@ -440,13 +443,13 @@ public class Event : MonoBehaviour
             //Reset the boy moving
             Boy.GetComponent<MoveBoi>().ResetBoyMove();
             ResetGoNFaster();
-            rateValue.timeStop = false;
+            timeStop = false;
         }
         else //During Puzzle Solving Phase
         {
             ResetBoard();
             GonfasterBtn.interactable = false;
-            rateValue.timeStop = false;
+            timeStop = false;
         }
     }
 
