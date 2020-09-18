@@ -57,6 +57,16 @@ public class Event : MonoBehaviour
     //For DfactorTest branch
     public Text DfactorText;
 
+    //For Timer
+    [HideInInspector] public int usingHint = 0;
+    [HideInInspector] public int uisngTouch = 0;
+    [HideInInspector] public int usingRestart = 0;
+    public float time = 0f;
+    public bool timeStop = false;
+    public Text UsingHint;
+    public Text UisngTouch;
+    public Text UsingRestart;
+
     void Start()
     {
         PlayerPrefs.SetInt("tutorial",0);//확인중임 없애도 됨. 기본은 0놓고했었음
@@ -86,6 +96,8 @@ public class Event : MonoBehaviour
 
     void Update()
     {
+        if (!timeStop)
+            time += Time.deltaTime;
         //퍼즐조각 움직임 enable/disable
         if (MovePieceMode && Time.timeScale != 0f)
         {
@@ -187,7 +199,7 @@ public class Event : MonoBehaviour
                     {
                         ResetPiecePosition(objToFollowMouse, Mathf.Abs(objToFollowMouse.localPosition.x) >= 5.0f && Mathf.Abs(objToFollowMouse.localPosition.x) < 8.5f && objToFollowMouse.localPosition.y >= -0.4f && objToFollowMouse.localPosition.y < 8.5f);
                     }
-
+                    uisngTouch++;
                     objToFollowMouse = null;
                 }
             }
@@ -208,6 +220,11 @@ public class Event : MonoBehaviour
         int pieceHeight;
         int pieceWidth;
 
+        usingHint = 0;
+        uisngTouch = 0;
+        usingRestart = 0;
+        time = 0f;
+        timeStop = false;
         //Reset Position of BlockPieces
         BlockPieces.transform.position = new Vector3(0, -3.75f, 0);
 
@@ -385,6 +402,7 @@ public class Event : MonoBehaviour
     {
         if (goNFastBtnState == 1)
         {
+            timeStop = true;
             Boy.GetComponent<MoveBoi>().MoveDaBoi();
             MovePieceMode = false;
             goNFastBtnState = 2;
@@ -393,6 +411,7 @@ public class Event : MonoBehaviour
         }
         else if(goNFastBtnState == 2)
         {
+            timeStop = true;
             //Boy FastForward
             Boy.GetComponent<MoveBoi>().FastForward();
             goNFastBtnState = 3;
@@ -400,6 +419,7 @@ public class Event : MonoBehaviour
         }
         else
         {
+            timeStop = true;
             //Boy Back to normal speed
             Boy.GetComponent<MoveBoi>().BackToNormalSpeed();
             goNFastBtnState = 2;
@@ -422,12 +442,15 @@ public class Event : MonoBehaviour
             //Reset the boy moving
             Boy.GetComponent<MoveBoi>().ResetBoyMove();
             ResetGoNFaster();
+            timeStop = false;
         }
         else //During Puzzle Solving Phase
         {
             ResetBoard();
             GonfasterBtn.interactable = false;
+            timeStop = false;
         }
+        usingRestart++;
     }
 
     //다음 스테이지 불러오기
@@ -484,7 +507,8 @@ public class Event : MonoBehaviour
     public void HintButtonClick()
     {
         ResetBoard();
-        if(BlockPieces.childCount != 0)
+        usingHint++;
+        if (BlockPieces.childCount != 0)
         {
             int random = Random.Range(0, BlockPieces.childCount);
             Transform hintPiece = BlockPieces.GetChild(random).transform;

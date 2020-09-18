@@ -330,6 +330,7 @@ public class MoveBoi : MonoBehaviour
         yield return new WaitForSeconds(time);
         eventChanger.MovePieceMode = true;
         transform.position = boiInitPos;
+        eventChanger.timeStop = false;
     }
 
     //퍼즐 완료시
@@ -340,6 +341,12 @@ public class MoveBoi : MonoBehaviour
             StopCoroutine(eventChanger.CoinIncreaseAnimation());
         }
         yield return new WaitForSeconds(0.6f);
+        eventChanger.UsingHint.text = "";
+        eventChanger.UisngTouch.text = "";
+        eventChanger.UsingRestart.text = "";
+        eventChanger.UsingHint.text = "UsingHint:" + eventChanger.usingHint.ToString();
+        eventChanger.UisngTouch.text = "UisngTouch:" + eventChanger.uisngTouch.ToString();
+        eventChanger.UsingRestart.text = "UsingRestart: " + eventChanger.usingRestart.ToString();
         PuzzleSolvedPanel.SetActive(true);
         SoundFXPlayer.Play("positiveVibe");
         yield return StartCoroutine(eventChanger.CoinIncreaseAnimation());
@@ -351,5 +358,13 @@ public class MoveBoi : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Boy");
         speed = 1.9f;
+    }
+
+    void Ratingsys()
+    {
+        float rate = 0f;
+        //rate = 0.06f * (eventChanger.usingHint * 12 - eventChanger.levelData.BoardHeight * eventChanger.levelData.BoardWidth);//3*4가 마지노선이니까 5*5는 최종보스니까 2개까지 쓰게하자고
+        //rate += eventChanger.rateValue.time;
+        //Debug.Log(eventChanger.rateValue.time);
     }
 }
