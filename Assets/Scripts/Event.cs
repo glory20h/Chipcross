@@ -90,7 +90,7 @@ public class Event : MonoBehaviour
         goNFastBtnState = 1;
         GonfasterBtn.interactable = false;
 
-        levelNum = 1087;
+        levelNum = 1;
         levelData = new LevelDatabase();
     }
 
