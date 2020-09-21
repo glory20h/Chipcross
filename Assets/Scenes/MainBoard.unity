@@ -188,6 +188,7 @@ MonoBehaviour:
   UsingHint: {fileID: 1918675156}
   UisngTouch: {fileID: 168716194}
   UsingRestart: {fileID: 1657016700}
+  background: {fileID: 1033967733}
 --- !u!1 &13261064
 GameObject:
   m_ObjectHideFlags: 0

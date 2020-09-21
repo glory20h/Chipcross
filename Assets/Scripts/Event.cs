@@ -66,6 +66,8 @@ public class Event : MonoBehaviour
     public Text UsingHint;
     public Text UisngTouch;
     public Text UsingRestart;
+    int Dfac;
+    public GameObject background;
 
     void Start()
     {
@@ -215,6 +217,7 @@ public class Event : MonoBehaviour
 
         levelData.LoadLevelData(levelNum);
         DfactorText.text = levelData.ReadFileByLine("LevelDifficulty", levelNum);
+        Dfac = int.Parse(levelData.ReadFileByLine("LevelDifficulty", levelNum));
         PlayerPrefs.SetInt("LevelDatabase", levelNum);//레벨 저장 일단
         int typeIndex;
         int pieceHeight;
@@ -234,6 +237,15 @@ public class Event : MonoBehaviour
         emptyTileScale = 0.25f * scaleFactor;
         pieceScale = 1 * scaleFactor;
 
+        //Load map by levelfactor
+        if(Dfac < -0.55)//level factor < -0.55인데 여기서는 어쩔수 없이 갯수로
+            background.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/11");
+        else if(Dfac < 0)
+            background.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/22");
+        else if (Dfac < 0.6)
+            background.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/33");
+        else
+            background.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/44");
         //Instantiate 'EmptyTile'
         typeIndex = 0;
         for (int i = 0; i < levelData.BoardHeight; i++)
