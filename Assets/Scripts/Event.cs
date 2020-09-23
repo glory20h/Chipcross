@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
+using UnityEngine.Advertisements;
 
 public class Event : MonoBehaviour
 {
@@ -520,6 +521,10 @@ public class Event : MonoBehaviour
     {
         ResetBoard();
         usingHint++;
+        if(Advertisement.IsReady())
+        {
+            Advertisement.Show("video");
+        }
         if (BlockPieces.childCount != 0)
         {
             int random = Random.Range(0, BlockPieces.childCount);
