@@ -60,7 +60,7 @@ public class Event : MonoBehaviour
 
     //For Timer
     [HideInInspector] public int usingHint = 0;
-    [HideInInspector] public int uisngTouch = 0;
+    [HideInInspector] public int usingTouch = 0;
     [HideInInspector] public int usingRestart = 0;
     public float time = 0f;
     public bool timeStop = false;
@@ -202,7 +202,7 @@ public class Event : MonoBehaviour
                     {
                         ResetPiecePosition(objToFollowMouse, Mathf.Abs(objToFollowMouse.localPosition.x) >= 5.0f && Mathf.Abs(objToFollowMouse.localPosition.x) < 8.5f && objToFollowMouse.localPosition.y >= -0.4f && objToFollowMouse.localPosition.y < 8.5f);
                     }
-                    uisngTouch++;
+                    usingTouch++;
                     objToFollowMouse = null;
                 }
             }
@@ -225,7 +225,7 @@ public class Event : MonoBehaviour
         int pieceWidth;
 
         usingHint = 0;
-        uisngTouch = 0;
+        usingTouch = 0;
         usingRestart = 0;
         time = 0f;
         timeStop = false;

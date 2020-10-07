@@ -345,7 +345,7 @@ public class MoveBoi : MonoBehaviour
         eventChanger.UisngTouch.text = "";
         eventChanger.UsingRestart.text = "";
         eventChanger.UsingHint.text = "UsingHint:" + eventChanger.usingHint.ToString();
-        eventChanger.UisngTouch.text = "UisngTouch:" + eventChanger.uisngTouch.ToString();
+        eventChanger.UisngTouch.text = "UisngTouch:" + eventChanger.usingTouch.ToString();
         eventChanger.UsingRestart.text = "UsingRestart: " + eventChanger.usingRestart.ToString();
         PuzzleSolvedPanel.SetActive(true);
         SoundFXPlayer.Play("positiveVibe");

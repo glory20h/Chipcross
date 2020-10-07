@@ -214,17 +214,56 @@ public class LevelDatabase
         //퍼즐판 크기 = 가로 길이 * 세로 길이
         int boardSize = BoardWidth * BoardHeight;
 
-        //float difficultyFactor = dfac; // 난이도 조절용 -> (-1 ~ 1) -> 나중에 입력값으로 받음
-        //float difficultyFactor = Random.Range(-1f, 1f); //임시 Random 값
+        //float difficultyFactor = Random.Range(-1f, 1f); // 난이도 조절용
 
-        //조각의 최대 크기(최대 타일 갯수) : boardSize = 4 -> 2, boardSize = 16 -> 4 // 수정 및 조절 필요
-        //int maxPieceSize = Mathf.FloorToInt(Mathf.Sqrt(boardSize));
-        int maxPieceSize = 6; //실험용
+        int maxPieceSize;       //조각의 최대 크기(최대 타일 갯수)
 
-        //생성할 조각 갯수 : BoardSize * (0.35 ~ 0.6) -> ex) boardSize = 16 -> (5.6 ~ 10.4)개, boardSize = 6 -> (2.1 ~ 3.9)개, difficultyFactor에 따라 범위 안에서 선택 // 수정 및 조절 필요
-        //NumberOfPieces = Mathf.Max(Mathf.RoundToInt(boardSize * 0.4f), boardSize / maxPieceSize);
-        NumberOfPieces = Random.Range(5, 8); //실험용
-        //NumberOfPieces = 4;
+        // 수정 및 조절 필요
+        switch (boardSize)
+        {
+            case 4:
+                maxPieceSize = 2;
+                NumberOfPieces = Random.Range(2, 4);
+                break;
+            case 6:
+                maxPieceSize = 3;
+                NumberOfPieces = Random.Range(2, 5);
+                break;
+            case 8:
+                maxPieceSize = 3;
+                NumberOfPieces = Random.Range(3, 6);
+                break;
+            case 9:
+            case 10:
+                maxPieceSize = 4;
+                NumberOfPieces = Random.Range(3, 5);
+                break;
+            case 12:
+                maxPieceSize = 5;
+                NumberOfPieces = Random.Range(4, 7);
+                break;
+            case 15:
+                maxPieceSize = 5;
+                NumberOfPieces = Random.Range(4, 7);
+                break;
+            case 16:
+                maxPieceSize = 6;
+                NumberOfPieces = Random.Range(4, 8);
+                break;
+            case 20:
+                maxPieceSize = 6;
+                NumberOfPieces = Random.Range(5, 9);
+                break;
+            case 25:
+                maxPieceSize = 6;
+                NumberOfPieces = Random.Range(6, 10);
+                break;
+            default:
+                Debug.LogError("Something wrong with the switch statement!");
+                maxPieceSize = 6;
+                NumberOfPieces = Random.Range(6, 10);
+                break;
+        }
 
         //조각들 1차원 Array -> 조각 크기 할당용
         int[] pieceSizeArray = new int[NumberOfPieces];
