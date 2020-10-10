@@ -330,7 +330,7 @@ public class LevelDatabase
         }
         */
         //실험용
-        pieceSizeArray = new int[] { 5, 2, 4, 2, 3 };
+        //pieceSizeArray = new int[] { 5, 2, 4, 2, 3 };
         ///////////각 조각 갯수 할당 2번째 방법/////////////
 
         ///TEST : Print pieceSizeArray
