@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: leesetworks
+  companyName: Chipcross
   productName: chipcross
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -159,7 +159,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.leesetworks.chipcross
+    Android: com.Chipcross.Chipcross
     Standalone: com.Company.ProductName
   buildNumber: {}
   AndroidBundleVersionCode: 1
@@ -255,8 +255,8 @@ PlayerSettings:
   AndroidTargetArchitectures: 1
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: C:/Users/fight/Desktop/chipcross.keystore
-  AndroidKeyaliasName: Select...
+  AndroidKeystoreName: '{dedicated}: user.keystore'
+  AndroidKeyaliasName: set
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 0
   AndroidIsGame: 1
@@ -707,9 +707,9 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 6
-  cloudProjectId: 831d1f99-4ab8-43c6-99fe-a325acadc111
+  cloudProjectId: bc71afa8-4069-4e95-9964-3b829155900c
   framebufferDepthMemorylessMode: 0
-  projectName: chipcross
+  projectName: chipcross (1)
   organizationId: leesetworks
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
