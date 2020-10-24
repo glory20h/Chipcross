@@ -27,6 +27,7 @@ public class Event : MonoBehaviour
     //퍼즐 완료 창
     public GameObject PuzzleSolvedPanel;
     public Text coinText;
+    public Text timeText;
     [HideInInspector]
     public bool coinChangeToggle = true;
 
@@ -63,7 +64,7 @@ public class Event : MonoBehaviour
     [HideInInspector] public int usingTouch = 0;
     [HideInInspector] public int usingRestart = 0;
     public float time = 0f;
-    public bool timeStop = false;
+    public bool timeCount;
     public Text UsingHint;
     public Text UisngTouch;
     public Text UsingRestart;
@@ -95,12 +96,17 @@ public class Event : MonoBehaviour
 
         levelNum = 1;
         levelData = new LevelDatabase();
+
+        timeCount = false;
     }
 
     void Update()
     {
-        if (!timeStop)
+        if (timeCount)
+        {
             time += Time.deltaTime;
+        }
+            
         //퍼즐조각 움직임 enable/disable
         if (MovePieceMode && Time.timeScale != 0f)
         {
@@ -228,7 +234,7 @@ public class Event : MonoBehaviour
         usingTouch = 0;
         usingRestart = 0;
         time = 0f;
-        timeStop = false;
+        timeCount = true;
         //Reset Position of BlockPieces
         BlockPieces.transform.position = new Vector3(0, -3.75f, 0);
 
@@ -414,9 +420,9 @@ public class Event : MonoBehaviour
     //출발/가속 버튼 State 1 -> 누르면 이동 시작, 2 -> 누르면 빨라짐, 3 -> 누르면 다시 원래 속도로 돌아옴
     public void GoNFastForwardClick()
     {
+        timeCount = false;
         if (goNFastBtnState == 1)
         {
-            timeStop = true;
             Boy.GetComponent<MoveBoi>().MoveDaBoi();
             MovePieceMode = false;
             goNFastBtnState = 2;
@@ -425,7 +431,6 @@ public class Event : MonoBehaviour
         }
         else if(goNFastBtnState == 2)
         {
-            timeStop = true;
             //Boy FastForward
             Boy.GetComponent<MoveBoi>().FastForward();
             goNFastBtnState = 3;
@@ -433,7 +438,6 @@ public class Event : MonoBehaviour
         }
         else
         {
-            timeStop = true;
             //Boy Back to normal speed
             Boy.GetComponent<MoveBoi>().BackToNormalSpeed();
             goNFastBtnState = 2;
@@ -456,15 +460,15 @@ public class Event : MonoBehaviour
             //Reset the boy moving
             Boy.GetComponent<MoveBoi>().ResetBoyMove();
             ResetGoNFaster();
-            timeStop = false;
         }
         else //During Puzzle Solving Phase
         {
             ResetBoard();
             GonfasterBtn.interactable = false;
-            timeStop = false;
         }
+
         usingRestart++;
+        timeCount = true;
     }
 
     //다음 스테이지 불러오기
@@ -624,6 +628,7 @@ public class Event : MonoBehaviour
     //퍼즐 완료창 코인 또로로로 효과
     public IEnumerator CoinIncreaseAnimation(int coin = 100)
     {
+        /*
         coinText.text = "";
         yield return new WaitForSeconds(0.5f);
         int i = 0;
@@ -635,6 +640,35 @@ public class Event : MonoBehaviour
             i++;
             yield return null;
         }
+        */
+
+        int time_ = (int)time;
+        if(time_ < 60)
+        {
+            timeText.text = "00 : 00 : " + convFormat(time_);
+        }
+        else if(time_ < 3600)
+        {
+            timeText.text = "00 : " + convFormat(time_ / 60) + " : " + convFormat(time_ % 60);
+        }
+        else
+        {
+            timeText.text = convFormat(time_ / 3600) + " : " + convFormat(time_ / 60) + " : " + convFormat(time_ % 60);
+        }
+
+        string convFormat(int time)
+        {
+            if(time < 10)
+            {
+                return "0" + time;
+            }
+            else
+            {
+                return time.ToString();
+            }
+        }
+        
+        yield return null;
     }
 
     //옵션 창의 닫기 버튼을 눌러 Option창 닫기

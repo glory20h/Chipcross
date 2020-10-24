@@ -330,7 +330,7 @@ public class MoveBoi : MonoBehaviour
         yield return new WaitForSeconds(time);
         eventChanger.MovePieceMode = true;
         transform.position = boiInitPos;
-        eventChanger.timeStop = false;
+        eventChanger.timeCount = false;
     }
 
     //퍼즐 완료시
