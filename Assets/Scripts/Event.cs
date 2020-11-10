@@ -66,7 +66,7 @@ public class Event : MonoBehaviour
     public float time = 0f;
     public bool timeCount;
     public Text UsingHint;
-    public Text UisngTouch;
+    public Text UsingTouch;
     public Text UsingRestart;
     float Dfac;
     public GameObject background;
@@ -464,7 +464,7 @@ public class Event : MonoBehaviour
         else //During Puzzle Solving Phase
         {
             ResetBoard();
-            GonfasterBtn.interactable = false;
+            CheckIfAllTilesInPlace();
         }
 
         usingRestart++;

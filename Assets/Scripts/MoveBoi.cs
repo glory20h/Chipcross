@@ -342,10 +342,10 @@ public class MoveBoi : MonoBehaviour
         }
         yield return new WaitForSeconds(0.6f);
         eventChanger.UsingHint.text = "";
-        eventChanger.UisngTouch.text = "";
+        eventChanger.UsingTouch.text = "";
         eventChanger.UsingRestart.text = "";
         eventChanger.UsingHint.text = "UsingHint:" + eventChanger.usingHint.ToString();
-        eventChanger.UisngTouch.text = "UisngTouch:" + eventChanger.usingTouch.ToString();
+        eventChanger.UsingTouch.text = "UsingTouch:" + eventChanger.usingTouch.ToString();
         eventChanger.UsingRestart.text = "UsingRestart: " + eventChanger.usingRestart.ToString();
         PuzzleSolvedPanel.SetActive(true);
         SoundFXPlayer.Play("positiveVibe");
