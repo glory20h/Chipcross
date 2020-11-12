@@ -63,34 +63,34 @@ public class MoveBoi : MonoBehaviour
                 {
                     if(warp)            //Warp 해야 하는가?
                     {
-                        if(tileType == '8')
+                        Sprite boySprite = gameObject.GetComponent<SpriteRenderer>().sprite;
+                        gameObject.GetComponent<SpriteRenderer>().sprite = (Sprite)Resources.Load("Arts/Nothing", typeof(Sprite));
+
+                        if (tileType == '8')
                         {
-                            gameObject.GetComponent<SpriteRenderer>().sprite = (Sprite)Resources.Load("Arts/Nothing", typeof(Sprite));
                             if (GameObject.Find("Tile9(Clone)"))        //반대편 Warp 출구가 FixedTile 인지 Tile 인지 확인
                             {
                                 gameObject.transform.position = GameObject.Find("Tile9(Clone)").transform.position;
-                                StartCoroutine(Waitsecond());
                             }
                             else
                             {
                                 gameObject.transform.position = GameObject.Find("FixedTile9(Clone)").transform.position;
-                                StartCoroutine(Waitsecond());
                             }
                         }
                         else if (tileType == '9')
                         {
-                            gameObject.GetComponent<SpriteRenderer>().sprite = (Sprite)Resources.Load("Arts/Nothing", typeof(Sprite));
                             if (GameObject.Find("Tile8(Clone)"))       //반대편 Warp 출구가 FixedTile 인지 Tile 인지 확인
                             {
                                 gameObject.transform.position = GameObject.Find("Tile8(Clone)").transform.position;
-                                StartCoroutine(Waitsecond());
                             }
                             else
                             {
                                 gameObject.transform.position = GameObject.Find("FixedTile8(Clone)").transform.position;
-                                StartCoroutine(Waitsecond());
                             }
                         }
+
+                        StartCoroutine(Waitsecond(boySprite));
+
                         warp = false;
                         warpDone = true;
                     }
@@ -134,6 +134,7 @@ public class MoveBoi : MonoBehaviour
     public void MoveDaBoi()
     {
         boiInitPos = transform.position;
+        isThereNextTile = true;
         fastForwardFactor = 1f;
         xdir = 1;
         ydir = 0;
@@ -352,14 +353,15 @@ public class MoveBoi : MonoBehaviour
         yield return StartCoroutine(eventChanger.CoinIncreaseAnimation());
     }
 
-    IEnumerator Waitsecond()
+    IEnumerator Waitsecond(Sprite boySprite)
     {
         speed = 0f;
         yield return new WaitForSeconds(0.3f);
-        gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Boy");
+        gameObject.GetComponent<SpriteRenderer>().sprite = boySprite;
         speed = 1.9f;
     }
 
+    /*
     void Ratingsys()
     {
         float rate = 0f;
@@ -367,4 +369,5 @@ public class MoveBoi : MonoBehaviour
         //rate += eventChanger.rateValue.time;
         //Debug.Log(eventChanger.rateValue.time);
     }
+    */
 }
