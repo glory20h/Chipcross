@@ -337,20 +337,26 @@ public class MoveBoi : MonoBehaviour
     //퍼즐 완료시
     IEnumerator PuzzleSolved()
     {
+        /* This part is related to CoinAnimation -> Disabled for now
         if (eventChanger.coinChangeToggle == false)
         {
             StopCoroutine(eventChanger.CoinIncreaseAnimation());
         }
+        */
         yield return new WaitForSeconds(0.6f);
+        /*
         eventChanger.UsingHint.text = "";
         eventChanger.UsingTouch.text = "";
         eventChanger.UsingRestart.text = "";
         eventChanger.UsingHint.text = "UsingHint:" + eventChanger.usingHint.ToString();
         eventChanger.UsingTouch.text = "UsingTouch:" + eventChanger.usingTouch.ToString();
         eventChanger.UsingRestart.text = "UsingRestart: " + eventChanger.usingRestart.ToString();
+        */
+        eventChanger.DisplayPlayData();
+        eventChanger.DisplayTime();
         PuzzleSolvedPanel.SetActive(true);
         SoundFXPlayer.Play("positiveVibe");
-        yield return StartCoroutine(eventChanger.CoinIncreaseAnimation());
+        //yield return StartCoroutine(eventChanger.CoinIncreaseAnimation()); //This part is related to CoinAnimation -> Disabled for now
     }
 
     IEnumerator Waitsecond(Sprite boySprite)
