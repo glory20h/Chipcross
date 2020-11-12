@@ -7,104 +7,110 @@ using UnityEngine.Advertisements;
 
 public class Event : MonoBehaviour
 {
-    public AudioMixer audioMixer;   //오디오 믹서
+    public AudioMixer audioMixer;                   //오디오 믹서
 
-    public Transform TileBoard;     //빈 타일(퍼즐판)의 Parent
-    public Transform BlockPieces;   //아직 타일 위에 안 놓아진 퍼즐 조각들의 Parent
-    public Transform HintPieces;    //힌트 조각들이 들어갈 Parent
-    public Transform BlockOnBoard;  //타일위에 놓아진 퍼즐 조각들의 Parent
-    public GameObject Boy;          //파랭이
-    public GameObject Girl;         //분홍이
+    public Transform TileBoard;                     //빈 타일(퍼즐판)의 Parent
+    public Transform BlockPieces;                   //아직 타일 위에 안 놓아진 퍼즐 조각들의 Parent
+    public Transform HintPieces;                    //힌트 조각들이 들어갈 Parent
+    public Transform BlockOnBoard;                  //타일위에 놓아진 퍼즐 조각들의 Parent
+    public GameObject Boy;                          //파랭이
+    public GameObject Girl;                         //분홍이
 
-    public Button ResetBtn;         //퍼즐 초기화 & 파랭이 움직임 리셋 버튼
-    public Button GonfasterBtn;     //출발/가속 버튼
+    public Button ResetBtn;                         //퍼즐 초기화 & 파랭이 움직임 리셋 버튼
+    public Button GonfasterBtn;                     //출발/가속 버튼
 
-    //옵션 창
+    ///옵션 창 관련
     public GameObject OptionMenu;
-    public static bool GameIsPaused = false; // Game pause
-    public Button OptionExit;       // 옵션 나가기
+    public static bool GameIsPaused = false;        // Game pause
+    public Button OptionExit;                       // 옵션 나가기
+    ///옵션 창 관련
 
-    //퍼즐 완료 창
+    ///퍼즐 완료 창 관련
     public GameObject PuzzleSolvedPanel;
     public Text coinText;
     public Text timeText;
-    [HideInInspector]
-    public bool coinChangeToggle = true;
+    [HideInInspector] public bool coinChangeToggle = true;
+    ///퍼즐 완료 창 관련
 
-    Vector2 mousePos;               //마우스의 2차원상 위치
-    Transform objToFollowMouse;     //마우스를 따라 다닐 물체(퍼즐 조각)
-    GameObject[] triggeredObjects;  //Array stores info on EmptyTiles        //퍼즐 조각의 빈 타일 탐지용
-    Vector3[] PiecePosition;        //Stores initial position of Pieces      //초기 퍼즐 조각 위치 저장
+    ///튜토리얼 창 관련
+    public GameObject tutorialPanel;
+    int firstTime = 2;
+    bool tutorialDo = true;
+    ///튜토리얼 창 관련
 
-    float UIPieceScale = 0.4f;      //UI에서의 퍼즐 조각 크기. 화면/퍼즐에 놓았을 때는 1, UI상에서는 현재 값으로 축소
+    Vector2 mousePos;                               //마우스의 2차원상 위치
+    Transform objToFollowMouse;                     //마우스를 따라 다닐 물체(퍼즐 조각)
+    GameObject[] triggeredObjects;                  //Array stores info on EmptyTiles        //퍼즐 조각의 빈 타일 탐지용
+    Vector3[] PiecePosition;                        //Stores initial position of Pieces      //초기 퍼즐 조각 위치 저장
 
-    int goNFastBtnState;            //1 -> Move Boy!, 2 -> Make Boy Faster!, 3 -> Make Boy back to normal speed     출발/가속 버튼용 변수
+    float UIPieceScale = 0.4f;                      //UI에서의 퍼즐 조각 크기. 화면/퍼즐에 놓았을 때는 1, UI상에서는 현재 값으로 축소
+    int goNFastBtnState;                            //1 -> Move Boy!, 2 -> Make Boy Faster!, 3 -> Make Boy back to normal speed     출발/가속 버튼용 변수
+    public GameObject backGround;                   //Player의 DifficultyFactor에 따라
+    [HideInInspector] public bool MovePieceMode;    //boolean for Update Function //Update에 쓸 bool 변수
 
-    //Variables for Level Loading
+    /// Variables for Level Loading
     LevelDatabase levelData;
     int levelNum;
     float scaleFactor;
     float distanceBetweenTiles;
     float emptyTileScale;
     float pieceScale;
+    /// Variables for Level Loading
 
-    //boolean for Update Function //Update에 쓸 bool 변수
-    [HideInInspector] public bool MovePieceMode;
-
-    //튜토리얼
-    int firstTime = 2;
-    public GameObject tutorialPanel;
-    bool tutorialDo = true;
-
-    //For DfactorTest branch
+    /// For DevTools Elements
+    public Text PlayerDFactorText;
     public Text DfactorText;
+    float Dfac;
 
-    //For Timer
+    public Text UsingHint;
+    public Text UsingTouch;
+    public Text UsingRestart;
     [HideInInspector] public int usingHint = 0;
     [HideInInspector] public int usingTouch = 0;
     [HideInInspector] public int usingRestart = 0;
-    public float time = 0f;
+    /// For DevTools Elements
+
+    /// For Timer
+    public float elapsedTime = 0f;
     public bool timeCount;
-    public Text UsingHint;
-    public Text UisngTouch;
-    public Text UsingRestart;
-    float Dfac;
-    public GameObject background;
+    /// For Timer
 
     void Start()
     {
-        PlayerPrefs.SetInt("tutorial",0);//확인중임 없애도 됨. 기본은 0놓고했었음
-        PlayerPrefs.SetInt("Piecedata", 1);
-
-        //stageLoad();
-        //변수 초기화
-        InitializeVariables();
+        //변수, PlayerPrefs 초기화
+        Initialize();
 
         //levelData 게임 스테이지 데이터베이스에서 데이터를 불러와서 현재 스테이지 생성
         LoadLevel();
 
         //퍼즐 조각 초기 위치 저장
         SavePiecePosition();
+
+        //stageLoad();
     }
 
-    void InitializeVariables()
+    void Initialize()
     {
         MovePieceMode = true;
 
         goNFastBtnState = 1;
         GonfasterBtn.interactable = false;
 
-        levelNum = 1;
+        levelNum = 1;                                        //MANUALLY SET STARTING LEVEL NUMBER BY CHANGING THIS VALUE
         levelData = new LevelDatabase();
 
         timeCount = false;
+
+        //PlayerPrefs.SetInt("tutorial",0);//확인중임 없애도 됨. 기본은 0놓고했었음
+        PlayerPrefs.SetInt("Piecedata", 1);
+        PlayerPrefs.SetFloat("PlayerDFactor", -1f);             //MANUALLY SET STARTING PLAYER'S DIFFICULTYFACTOR BY CHANGING THIS VALUE
     }
 
     void Update()
     {
         if (timeCount)
         {
-            time += Time.deltaTime;
+            elapsedTime += Time.deltaTime;
         }
             
         //퍼즐조각 움직임 enable/disable
@@ -224,6 +230,7 @@ public class Event : MonoBehaviour
 
         levelData.LoadLevelData(levelNum);
         DfactorText.text = levelData.ReadFileByLine("LevelDifficulty", levelNum);
+        PlayerDFactorText.text = PlayerPrefs.GetFloat("PlayerDFactor").ToString();
         Dfac = float.Parse(DfactorText.text);
         PlayerPrefs.SetInt("LevelDatabase", levelNum);//레벨 저장 일단
         int typeIndex;
@@ -233,8 +240,9 @@ public class Event : MonoBehaviour
         usingHint = 0;
         usingTouch = 0;
         usingRestart = 0;
-        time = 0f;
+        elapsedTime = 0f;
         timeCount = true;
+
         //Reset Position of BlockPieces
         BlockPieces.transform.position = new Vector3(0, -3.75f, 0);
 
@@ -245,14 +253,14 @@ public class Event : MonoBehaviour
         pieceScale = 1 * scaleFactor;
 
         //Load map by levelfactor
-        if(Dfac < -0.55f)//level factor < -0.55인데 여기서는 어쩔수 없이 갯수로
-            background.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/11");
+        if(Dfac < -0.55f) //level factor < -0.55인데 여기서는 어쩔수 없이 갯수로
+            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/11");
         else if(Dfac < 0f)
-            background.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/22");
+            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/22");
         else if (Dfac < 0.6f)
-            background.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/33");
+            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/33");
         else
-            background.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/44");
+            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/44");
 
         //Instantiate 'EmptyTile'
         typeIndex = 0;
@@ -326,7 +334,7 @@ public class Event : MonoBehaviour
             }
         }
 
-        StartCoroutine(Waitsecond());
+        //StartCoroutine(Waitsecond());
     }
 
     void SavePiecePosition()
@@ -464,7 +472,7 @@ public class Event : MonoBehaviour
         else //During Puzzle Solving Phase
         {
             ResetBoard();
-            GonfasterBtn.interactable = false;
+            CheckIfAllTilesInPlace();
         }
 
         usingRestart++;
@@ -510,11 +518,13 @@ public class Event : MonoBehaviour
     {
         MovePieceMode = true;
         ResetBtn.interactable = true;
+
         /* ResetBoard */
         DeleteLevel();
         LoadLevel();
         SavePiecePosition();
         /* ResetBoard */
+
         Boy.GetComponent<MoveBoi>().ResetBoyPosition();
 
         //퍼즐 완료창 종료
@@ -594,7 +604,8 @@ public class Event : MonoBehaviour
         //levelData.PieceCutterModuleTEST();
     }
 
-    public void DevBtnAct2()  //Go To Level +10
+    //Go To Level +10
+    public void DevBtnAct2()
     {
         levelNum = levelNum + 10;
         DeleteLevel();
@@ -602,7 +613,8 @@ public class Event : MonoBehaviour
         SavePiecePosition();
     }
 
-    public void DevBtnAct3()  //Go To Level +100
+    //Go To Level +100
+    public void DevBtnAct3()
     {
         levelNum = levelNum + 100;
         DeleteLevel();
@@ -625,10 +637,16 @@ public class Event : MonoBehaviour
         }
     }
 
+    //옵션 창의 닫기 버튼을 눌러 Option창 닫기
+    public void CloseOptionPanel()
+    {
+        OptionMenu.SetActive(false);
+        Time.timeScale = 1f;
+    }
+
     //퍼즐 완료창 코인 또로로로 효과
     public IEnumerator CoinIncreaseAnimation(int coin = 100)
     {
-        /*
         coinText.text = "";
         yield return new WaitForSeconds(0.5f);
         int i = 0;
@@ -640,14 +658,25 @@ public class Event : MonoBehaviour
             i++;
             yield return null;
         }
-        */
+    }
 
-        int time_ = (int)time;
-        if(time_ < 60)
+    //DevTools Display에 Hint, Touch, Restart 뜨게 함
+    public void DisplayPlayData()
+    {
+        UsingHint.text = "Hint : " + usingHint.ToString();
+        UsingTouch.text = "Touch : " + usingTouch.ToString();
+        UsingRestart.text = "Restart : " + usingRestart.ToString();
+    }
+
+    //PuzzleSolved 창에 문제 푼 시간 뜨게 함
+    public void DisplayTime()
+    {
+        int time_ = (int)elapsedTime;
+        if (time_ < 60)
         {
             timeText.text = "00 : 00 : " + convFormat(time_);
         }
-        else if(time_ < 3600)
+        else if (time_ < 3600)
         {
             timeText.text = "00 : " + convFormat(time_ / 60) + " : " + convFormat(time_ % 60);
         }
@@ -658,7 +687,7 @@ public class Event : MonoBehaviour
 
         string convFormat(int time)
         {
-            if(time < 10)
+            if (time < 10)
             {
                 return "0" + time;
             }
@@ -667,15 +696,6 @@ public class Event : MonoBehaviour
                 return time.ToString();
             }
         }
-        
-        yield return null;
-    }
-
-    //옵션 창의 닫기 버튼을 눌러 Option창 닫기
-    public void CloseOptionPanel()
-    {
-        OptionMenu.SetActive(false);
-        Time.timeScale = 1f;
     }
 
     //오디오믹서의 배경음악 볼륨 조절
@@ -722,7 +742,7 @@ public class Event : MonoBehaviour
         {
             PlayerPrefs.SetInt("tutorial", 1);// 1이면 loadlevel 사용
             tutorialPanel.SetActive(false);
-            InitializeVariables();
+            Initialize();
             LoadLevel();
             SavePiecePosition();
         }
@@ -731,7 +751,7 @@ public class Event : MonoBehaviour
             tutorialPanel.SetActive(false);
             tutorialDo = false;
             //변수 초기화
-            InitializeVariables();
+            Initialize();
             LoadLevel();
             SavePiecePosition();
         }
