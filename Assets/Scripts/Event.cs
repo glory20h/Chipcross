@@ -96,7 +96,7 @@ public class Event : MonoBehaviour
         goNFastBtnState = 1;
         GonfasterBtn.interactable = false;
 
-        levelNum = 2501;                                        //MANUALLY SET STARTING LEVEL NUMBER BY CHANGING THIS VALUE
+        levelNum = 1;                                        //MANUALLY SET STARTING LEVEL NUMBER BY CHANGING THIS VALUE
         levelData = new LevelDatabase();
 
         timeCount = false;
