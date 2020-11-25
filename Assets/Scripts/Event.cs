@@ -96,7 +96,7 @@ public class Event : MonoBehaviour
         goNFastBtnState = 1;
         GonfasterBtn.interactable = false;
 
-        levelNum = 1;                                        //MANUALLY SET STARTING LEVEL NUMBER BY CHANGING THIS VALUE
+        levelNum = 2501;                                        //MANUALLY SET STARTING LEVEL NUMBER BY CHANGING THIS VALUE
         levelData = new LevelDatabase();
 
         timeCount = false;
@@ -150,6 +150,7 @@ public class Event : MonoBehaviour
                         }
 
                         SoundFXPlayer.Play("pick");
+                        timeCount = true;
                     }
                 }
             }
@@ -212,7 +213,7 @@ public class Event : MonoBehaviour
                     }
                     else
                     {
-                        ResetPiecePosition(objToFollowMouse, Mathf.Abs(objToFollowMouse.localPosition.x) >= 5.0f && Mathf.Abs(objToFollowMouse.localPosition.x) < 8.5f && objToFollowMouse.localPosition.y >= -0.4f && objToFollowMouse.localPosition.y < 8.5f);
+                        ResetPiecePosition(objToFollowMouse, Mathf.Abs(objToFollowMouse.localPosition.x) >= 5.0f && Mathf.Abs(objToFollowMouse.localPosition.x) < 8.5f && objToFollowMouse.localPosition.y >= -0.4f && objToFollowMouse.localPosition.y < 6.7f);
                     }
                     usingTouch++;
                     objToFollowMouse = null;
@@ -241,7 +242,7 @@ public class Event : MonoBehaviour
         usingTouch = 0;
         usingRestart = 0;
         elapsedTime = 0f;
-        timeCount = true;
+        timeCount = false;
 
         //Reset Position of BlockPieces
         BlockPieces.transform.position = new Vector3(0, -3.75f, 0);
@@ -310,7 +311,7 @@ public class Event : MonoBehaviour
         for (int i = 0; i < levelData.NumberOfPieces; i++)
         {
             prefab = Resources.Load("Prefabs/Piece") as GameObject;
-            obj = Instantiate(prefab, new Vector3(Random.value < 0.5 ? Random.Range(-7.6f, -5.9f) : Random.Range(5.9f, 7.6f), Random.Range(0, 7.4f)), Quaternion.identity);
+            obj = Instantiate(prefab, new Vector3(Random.value < 0.5 ? Random.Range(-7.6f, -5.9f) : Random.Range(5.9f, 7.6f), Random.Range(0, 6.7f)), Quaternion.identity);
             obj.transform.SetParent(BlockPieces, false);
             obj.GetComponent<VariableProvider>().pieceNum = i;
             obj.GetComponent<VariableProvider>().solutionLoc = levelData.pieceDatas[i].solutionLoc;
