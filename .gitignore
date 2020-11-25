@@ -66,6 +66,7 @@ crashlytics-build.properties
 /Assets/EntityCache/Resources.meta
 /ProjectSettings/GvhProjectSettings.xml
 /ProjectSettings/UnityConnectSettings.asset
+/ProjectSettings/ProjectSettings.asset
 /ProjectSettings/XRSettings.asset
 /ProjectSettings/BurstAotSettings_iOS.json
 /ProjectSettings/BurstAotSettings_StandaloneWindows.json
