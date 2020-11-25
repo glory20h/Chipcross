@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: -107981364, guid: 0b4dfedb4dda84ac38c7eb6a553ef819, type: 3}
   m_Name: UDP Settings
   m_EditorClassIdentifier: 
-  UnityProjectID: bc71afa8-4069-4e95-9964-3b829155900c
-  UnityClientID: ZArOLqZqGHDg94cF8lqRKg
-  UnityClientKey: pPSafkvJoIOz3wYupo7bw3mXig0yrAh018U-z9nt64w
-  UnityClientRSAPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArLm6S6h3bbYjpNXBCkME3/fJ5FcBDgJJahEUYQU5NNVw+67osp90g20ihaxckaxx71CqXbSYK7vA0BzUR9ftLaeGt9YicS6gdzz+zVUbdR4RVFhlbUJ5BPkmfagmnJUcfq5A5AHVTbCmt6CVyZJrRjFAMGIG24X/ka0eiwgQR8ZfdyzJ4q5YqWhhQq82RKQQ6ui7GhKiIscieH5ubt/kT6cv6bJThIJoORQgEUcmRVfrjjKSn7BllFcU5d2lDaSpmypicza9X2yrnJazRFYyE5OYY86Myb0fTnyowaLIObNq2ZjgxONsE+09rD0KUIhkcKBjMZN1TZz75sDby+P57QIDAQAB
-  AppName: c715d9d7-b208-470c-b5c1-036a9e41f106
-  AppSlug: 0e2fc3b3-7752-4d59-8537-f2d59c9f24b2
-  AppItemId: 5fab7d3b7af0a9001f49a2f4
+  UnityProjectID: 625770ae-eb35-41fe-a41b-8af2e895fe2e
+  UnityClientID: LqAzy3DsQImxPudcwbLc0Q
+  UnityClientKey: 8A4KaWmMdR9kxmSfNMSJcTxIL1a4OJnUF3E4vXeYFU8
+  UnityClientRSAPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnjyEAssC+pczu6xexQ7icIXvcFH5cLEZEbWCRIX9BViaemrC/GOtRR7TezuTXfdvuh38RX4ddmuXGEnOYGttC+YTEy/1HdKGi6s4DJbb9/rOfiEE2TvttVZKaYq0zgnj4ttaGWtW+NuLttin7qJdYDL8UVeyaTi0RRdyXPQ0CR/rOw1osWvyKb7LUDoM2P7efu0UUoOVocjr97XpyZl/vILYvVCG7EdZfuoNXWsBUhV/ypWN38RhuFa4o4iXAbf82cjQOI7JroKATNKraA4NBk/8Lx+21DfmDrrQde1qgICNVmaHu3RYkoAiFJgxdYobkVTyrTncH3YVKhg6hqqYkQIDAQAB
+  AppName: Chipcross
+  AppSlug: eee94e59-c92a-4581-9dc9-6337da5abd9e
+  AppItemId: 5fa628fa61cdd20020f91599
   Permission: 

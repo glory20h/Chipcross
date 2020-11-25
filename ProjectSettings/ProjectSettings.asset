@@ -707,10 +707,10 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 6
-  cloudProjectId: bc71afa8-4069-4e95-9964-3b829155900c
+  cloudProjectId: 625770ae-eb35-41fe-a41b-8af2e895fe2e
   framebufferDepthMemorylessMode: 0
-  projectName: chipcross (1)
-  organizationId: leesetworks
+  projectName: chipcross
+  organizationId: fightzuzak_unity
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
