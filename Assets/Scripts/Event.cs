@@ -18,6 +18,7 @@ public class Event : MonoBehaviour
 
     public Button ResetBtn;                         //퍼즐 초기화 & 파랭이 움직임 리셋 버튼
     public Button GonfasterBtn;                     //출발/가속 버튼
+    public Button hintBtn;                          //힌트 버튼
 
     ///옵션 창 관련
     public GameObject OptionMenu;
@@ -71,8 +72,8 @@ public class Event : MonoBehaviour
     /// For DevTools Elements
 
     /// For Timer
-    public float elapsedTime = 0f;
-    public bool timeCount;
+    [HideInInspector] public float elapsedTime = 0f;
+    [HideInInspector] public bool timeCount;
     /// For Timer
 
     void Start()
@@ -487,6 +488,8 @@ public class Event : MonoBehaviour
         levelNum++;
         MovePieceMode = true;
         ResetBtn.interactable = true;
+        hintBtn.interactable = true;
+
         DeleteLevel();
         levelData.LoadLevelData(levelNum);//For check new tile;
         if (levelData.tutorialCase)// 바꾸어야될듯? -> leveldata에서 CheckNewPieces앞에 false해서 이제 ㄱㅊ
@@ -519,6 +522,7 @@ public class Event : MonoBehaviour
     {
         MovePieceMode = true;
         ResetBtn.interactable = true;
+        hintBtn.interactable = true;
 
         /* ResetBoard */
         DeleteLevel();
@@ -737,9 +741,9 @@ public class Event : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    public void tutorialOff()//tutorial on/off -> 버튼
+    public void tutorialOff() //tutorial on/off -> 버튼
     {
-        if (PlayerPrefs.GetInt("tutorial") == 0)// 0이면 처음부터
+        if (PlayerPrefs.GetInt("tutorial") == 0) // 0이면 처음부터
         {
             PlayerPrefs.SetInt("tutorial", 1);// 1이면 loadlevel 사용
             tutorialPanel.SetActive(false);
