@@ -270,7 +270,7 @@ public class Event : MonoBehaviour
         {
             for (int j = 0; j < levelData.BoardWidth; j++)
             {
-                //Get prefab information from array                                                             //May Need for Optimization in the future
+                //Get prefab information from array
                 if (levelData.BoardEmptyTileTypeInfo[typeIndex] == 1)
                 {
                     prefab = Resources.Load("Prefabs/EmptyTile") as GameObject;
