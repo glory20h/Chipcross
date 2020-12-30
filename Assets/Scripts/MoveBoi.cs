@@ -375,19 +375,19 @@ public class MoveBoi : MonoBehaviour
         if(level.BoardHeight * level.BoardWidth < 9)//Hint max: 0
         {
             rate = 0.05f * (-eventChanger.usingHint); //Hint 사용여부
-            rate += 0.05f * (level.BoardHeight * level.BoardWidth * 30 - eventChanger.elapsedTime)/ level.BoardHeight * level.BoardWidth * 30;//0.5min
+            rate += 0.03f * (level.BoardHeight * level.BoardWidth * 30 - eventChanger.elapsedTime)/ level.BoardHeight * level.BoardWidth * 30;//0.5min
             rate += 0.01f*(level.BoardHeight * level.BoardWidth*0.9f - eventChanger.usingTouch + eventChanger.usingRestart);
         }
-        else if(level.BoardHeight * level.BoardWidth < 15)//Hint max: 1
+        else if(level.BoardHeight * level.BoardWidth < 16)//Hint max: 1
         {
             rate = 0.05f * (1 - eventChanger.usingHint); //Hint 사용여부
-            rate += 0.05f * (level.BoardHeight * level.BoardWidth * 60 * 0.8f - eventChanger.elapsedTime)/ level.BoardHeight * level.BoardWidth * 60 * 0.8f;//1min * 0.8
+            rate += 0.03f * (level.BoardHeight * level.BoardWidth * 60 * 0.8f - eventChanger.elapsedTime)/ level.BoardHeight * level.BoardWidth * 60 * 0.8f;//1min * 0.8
             rate += 0.01f * (level.BoardHeight * level.BoardWidth * 2.5f - eventChanger.usingTouch + eventChanger.usingRestart);
         }
         else//Hint max: 2
         {
             rate = 0.05f * (2 - eventChanger.usingHint); //Hint 사용여부
-            rate += 0.05f * (level.BoardHeight * level.BoardWidth * 60 - eventChanger.elapsedTime)/ level.BoardHeight * level.BoardWidth * 60;//1min
+            rate += 0.03f * (level.BoardHeight * level.BoardWidth * 60 - eventChanger.elapsedTime)/ level.BoardHeight * level.BoardWidth * 60;//1min
             rate += 0.01f * (level.BoardHeight * level.BoardWidth * 3f - eventChanger.usingTouch + eventChanger.usingRestart);
         }
         //rate = 0.06f * (eventChanger.usingHint * 12 - level.BoardHeight * level.BoardWidth);//3*4가 마지노선이니까 5*5는 최종보스니까 2개까지 쓰게하자고
