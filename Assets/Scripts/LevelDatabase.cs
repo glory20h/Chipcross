@@ -280,7 +280,8 @@ public class LevelDatabase
         //Debug.Log("BoardInput : " + BoardInput);
         ///TEST : Print Variables
 
-        ////////각 조각 갯수 할당 1번째 방법 ex) [boardSize : 9, NumberOfPieces : 5] -> [3,2,2,1,1]
+        /////////// 각 조각 갯수 할당 1번째 방법 /////////////
+        // ex) [boardSize : 9, NumberOfPieces : 5] -> [3,2,2,1,1]
         /*
         int remainingPieces = boardSize - NumberOfPieces; //boardSize piece중 할당하고 난 나머지
         for (int piecesize = 2; piecesize <= maxPieceSize; piecesize++)
@@ -301,9 +302,9 @@ public class LevelDatabase
             return c;
         }
         */
-        ////////각 조각 갯수 할당 1번째 방법
+        /////////// 각 조각 갯수 할당 1번째 방법 /////////////
 
-        ///////////각 조각 갯수 할당 2번째 방법/////////////
+        /////////// 각 조각 갯수 할당 2번째 방법 /////////////
         // ex) [boardSize : 9, NumberOfPieces : 5] -> [2,2,1,3,1]
         int remainingPieces = boardSize - NumberOfPieces;
         int randomIndex;
@@ -327,11 +328,10 @@ public class LevelDatabase
             }
             remainingPieces--;
         }
-        //실험용
-        //pieceSizeArray = new int[] { 5, 2, 4, 2, 3 };
-        ///////////각 조각 갯수 할당 2번째 방법/////////////
+        /////////// 각 조각 갯수 할당 2번째 방법 /////////////
 
         ///TEST : Print pieceSizeArray
+        /*
         string print = "[" + pieceSizeArray[0];
         for (int i = 1; i < pieceSizeArray.Length; i++)//들어가있는 갯수들이 pieceSizeArray = [2,2,1,3,1]꼴을 뛴다
         {
@@ -339,6 +339,7 @@ public class LevelDatabase
         }
         print = print + "]";
         Debug.Log("pieceSizeArray : " + print);
+        */
         ///TEST : Print pieceSizeArray
 
         //조각 잘라서 pieceDatas에 할당
