@@ -541,10 +541,10 @@ public class Event : MonoBehaviour
     {
         ResetBoard();
         usingHint++;
-        if(Advertisement.IsReady())
+        /*if(Advertisement.IsReady())
         {
             Advertisement.Show("video");
-        }
+        }*/ //hint activation
         if (BlockPieces.childCount != 0)
         {
             int random = Random.Range(0, BlockPieces.childCount);
