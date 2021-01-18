@@ -230,7 +230,12 @@ public class Event : MonoBehaviour
         GameObject obj;
         GameObject obj2;
 
+        //OLD one using int levelNum
         levelData.LoadLevelData(levelNum);
+
+        //NEW one using PlayerDFactor
+        //levelData.LoadLevelData();
+
         DfactorText.text = levelData.ReadFileByLine("LevelDifficulty", levelNum);
         PlayerDFactorText.text = PlayerPrefs.GetFloat("PlayerDFactor").ToString();
         Dfac = float.Parse(DfactorText.text);
@@ -625,6 +630,40 @@ public class Event : MonoBehaviour
         DeleteLevel();
         LoadLevel();
         SavePiecePosition();
+    }
+
+    public void DevDFactorIncrease()
+    {
+        float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
+
+        if(playerDFactor >= 0.75f)
+        {
+            playerDFactor = 1f;
+        }
+        else
+        {
+            playerDFactor += 0.25f;
+        }
+
+        PlayerPrefs.SetFloat("PlayerDFactor", playerDFactor);
+        PlayerDFactorText.text = playerDFactor.ToString();
+    }
+
+    public void DevDFactorDecrease()
+    {
+        float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
+
+        if (playerDFactor <= -0.75f)
+        {
+            playerDFactor = -1f;
+        }
+        else
+        {
+            playerDFactor -= 0.25f;
+        }
+
+        PlayerPrefs.SetFloat("PlayerDFactor", playerDFactor);
+        PlayerDFactorText.text = playerDFactor.ToString();
     }
 
     //옵션 버튼을 눌러 Option창 토글

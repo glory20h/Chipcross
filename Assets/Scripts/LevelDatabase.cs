@@ -166,6 +166,24 @@ public class LevelDatabase
         GenerateSlicedPieces(content);
     }
 
+    //Load Level using PlayerDFactor
+    public void LoadLevelData()
+    {
+        float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
+
+        /*
+        TextAsset sourcefile = Resources.Load<TextAsset>("ex_55");
+        StringReader sr = new StringReader(sourcefile.text);
+        string content = "";
+        for (int i = 0; i < num; i++)
+        {
+            content = sr.ReadLine();
+        }
+        Debug.Log("Read Line " + num);
+        GenerateSlicedPieces(content);
+        */
+    }
+
     //txt파일에서 불러와서 string으로 return
     public string ReadFileByFactor(float dfactor)
     {
