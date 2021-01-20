@@ -167,21 +167,40 @@ public class LevelDatabase
     }
 
     //Load Level using PlayerDFactor
-    public void LoadLevelData()
+    public int LoadLevelData()
     {
         float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
 
-        /*
-        TextAsset sourcefile = Resources.Load<TextAsset>("ex_55");
+        TextAsset sourcefile = Resources.Load<TextAsset>("MapData");
         StringReader sr = new StringReader(sourcefile.text);
         string content = "";
-        for (int i = 0; i < num; i++)
+        int randomFac;
+        int linenum;
+        int diffIndex;
+        float mapDFactor;
+
+        if(playerDFactor >= 1f)
+        {
+            randomFac = Random.Range(0, 135);
+        }
+        else
+        {
+            randomFac = Random.Range(0, 54);
+        }
+
+        diffIndex = Mathf.FloorToInt((playerDFactor + 1) / 0.01f);
+        linenum = diffIndex * 54 + randomFac;
+        mapDFactor = -1 + diffIndex * 0.01f;
+
+        //num is # of reading line
+        for (int i = 0; i < linenum; i++)
         {
             content = sr.ReadLine();
         }
-        Debug.Log("Read Line " + num);
+        Debug.Log("Read Line " + linenum);
         GenerateSlicedPieces(content);
-        */
+
+        return linenum;
     }
 
     //txt파일에서 불러와서 string으로 return
