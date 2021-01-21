@@ -61,7 +61,7 @@ public class Event : MonoBehaviour
     /// For DevTools Elements
     public Text PlayerDFactorText;
     public Text DfactorText;
-    float Dfac;
+    float levelDFactor;
 
     public Text UsingHint;
     public Text UsingTouch;
@@ -238,7 +238,7 @@ public class Event : MonoBehaviour
 
         DfactorText.text = levelData.ReadFileByLine("LevelDifficulty", lineNum);
         PlayerDFactorText.text = PlayerPrefs.GetFloat("PlayerDFactor").ToString();
-        Dfac = float.Parse(DfactorText.text);
+        levelDFactor = float.Parse(DfactorText.text);
         PlayerPrefs.SetInt("LevelDatabase", levelNum);//레벨 저장 일단
         int typeIndex;
         int pieceHeight;
@@ -260,11 +260,11 @@ public class Event : MonoBehaviour
         pieceScale = 1 * scaleFactor;
 
         //Load map by levelfactor
-        if(Dfac < -0.55f) //level factor < -0.55인데 여기서는 어쩔수 없이 갯수로
+        if(levelDFactor < -0.55f) //level factor < -0.55인데 여기서는 어쩔수 없이 갯수로
             backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/11");
-        else if(Dfac < 0f)
+        else if(levelDFactor < 0f)
             backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/22");
-        else if (Dfac < 0.6f)
+        else if (levelDFactor < 0.6f)
             backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/33");
         else
             backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/44");
@@ -746,6 +746,15 @@ public class Event : MonoBehaviour
                 return time.ToString();
             }
         }
+    }
+
+    public void Ratingsys()
+    {
+        //NEED TO IMPLEMENT TO RATE ONLY WHEN IT IS FIRST TIME SOLVING
+
+        //rate change standard: trial and error
+        float rate = 0f;
+        rate = 0.06f * (usingHint * 12 - levelData.BoardHeight * levelData.BoardWidth);//3*4가 마지노선이니까 5*5는 최종보스니까 2개까지 쓰게하자고
     }
 
     //오디오믹서의 배경음악 볼륨 조절
