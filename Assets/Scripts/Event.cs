@@ -636,13 +636,13 @@ public class Event : MonoBehaviour
     {
         float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
 
-        if(playerDFactor >= 0.75f)
+        if(playerDFactor >= 0.9f)
         {
             playerDFactor = 1f;
         }
         else
         {
-            playerDFactor += 0.25f;
+            playerDFactor += 0.01f;
         }
 
         PlayerPrefs.SetFloat("PlayerDFactor", playerDFactor);
@@ -656,13 +656,13 @@ public class Event : MonoBehaviour
     {
         float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
 
-        if (playerDFactor <= -0.75f)
+        if (playerDFactor <= -0.9f)
         {
             playerDFactor = -1f;
         }
         else
         {
-            playerDFactor -= 0.25f;
+            playerDFactor -= 0.01f;
         }
 
         PlayerPrefs.SetFloat("PlayerDFactor", playerDFactor);
