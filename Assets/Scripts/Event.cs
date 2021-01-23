@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
-using UnityEngine.Advertisements;
+//using UnityEngine.Advertisements;
+using GoogleMobileAds.Api;
+using System;
 
 public class Event : MonoBehaviour
 {
@@ -74,6 +76,15 @@ public class Event : MonoBehaviour
     public float elapsedTime = 0f;
     public bool timeCount;
     /// For Timer
+    /// 
+    private string rewardID = "ca-app-pub-5723541742432012~2554634700";
+    // 실제 광고 ID
+    private string rewardTestID = "ca-app-pub-3940256099942544/5224354917";
+    // 테스트 광고 ID, 지금은 테스트를 사용
+
+    private RewardedAd rewardedAd;
+
+    private bool rewarded = false;
 
     void Start()
     {
@@ -87,6 +98,14 @@ public class Event : MonoBehaviour
         SavePiecePosition();
 
         //stageLoad();
+        rewardedAd = new RewardedAd(rewardTestID);
+        AdRequest request = new AdRequest.Builder().Build();
+        rewardedAd.LoadAd(request); // 광고 로드
+
+        rewardedAd.OnUserEarnedReward += HandleUserEarnedReward;
+        // 사용자가 광고를 끝까지 시청했을 때
+        rewardedAd.OnAdClosed += HandleRewardedAdClosed;
+        // 사용자가 광고를 중간에 닫았을 때
     }
 
     void Initialize()
@@ -112,7 +131,12 @@ public class Event : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
         }
-            
+        if (rewarded)
+        {
+            Debug.Log("Get reward");
+            rewarded = false;
+        }
+
         //퍼즐조각 움직임 enable/disable
         if (MovePieceMode && Time.timeScale != 0f)
         {
@@ -311,7 +335,7 @@ public class Event : MonoBehaviour
         for (int i = 0; i < levelData.NumberOfPieces; i++)
         {
             prefab = Resources.Load("Prefabs/Piece") as GameObject;
-            obj = Instantiate(prefab, new Vector3(Random.value < 0.5 ? Random.Range(-7.6f, -5.9f) : Random.Range(5.9f, 7.6f), Random.Range(0, 6.8f)), Quaternion.identity);
+            obj = Instantiate(prefab, new Vector3(UnityEngine.Random.value < 0.5 ? UnityEngine.Random.Range(-7.6f, -5.9f) : UnityEngine.Random.Range(5.9f, 7.6f), UnityEngine.Random.Range(0, 6.8f)), Quaternion.identity);
             obj.transform.SetParent(BlockPieces, false);
             obj.GetComponent<VariableProvider>().pieceNum = i;
             obj.GetComponent<VariableProvider>().solutionLoc = levelData.pieceDatas[i].solutionLoc;
@@ -537,13 +561,17 @@ public class Event : MonoBehaviour
     {
         ResetBoard();
         usingHint++;
-        if(Advertisement.IsReady())
+        /*if(Advertisement.IsReady())
         {
             Advertisement.Show("video");
+        }*/
+        if (rewardedAd.IsLoaded()) // 광고가 로드 되었을 때
+        {
+            rewardedAd.Show(); // 광고 보여주기
         }
         if (BlockPieces.childCount != 0)
         {
-            int random = Random.Range(0, BlockPieces.childCount);
+            int random = UnityEngine.Random.Range(0, BlockPieces.childCount);
             Transform hintPiece = BlockPieces.GetChild(random).transform;
             Vector3 solutionLoc = BlockPieces.GetChild(random).GetComponent<VariableProvider>().solutionLoc;
 
@@ -763,7 +791,26 @@ public class Event : MonoBehaviour
             SavePiecePosition();
         }
     }
+    public void CreateAndLoadRewardedAd() // 광고 다시 로드하는 함수
+    {
+        rewardedAd = new RewardedAd(rewardTestID);
 
+        rewardedAd.OnUserEarnedReward += HandleUserEarnedReward;
+        rewardedAd.OnAdClosed += HandleRewardedAdClosed;
+
+        AdRequest request = new AdRequest.Builder().Build();
+        rewardedAd.LoadAd(request);
+    }
+
+    public void HandleRewardedAdClosed(object sender, EventArgs args)
+    {  // 사용자가 광고를 닫았을 때
+        CreateAndLoadRewardedAd();  // 광고 다시 로드
+    }
+
+    private void HandleUserEarnedReward(object sender, Reward e)
+    {  // 광고를 다 봤을 때
+        rewarded = true; // 변수 true
+    }
     IEnumerator Waitsecond()
     {
         yield return new WaitForSeconds(0.3f);
