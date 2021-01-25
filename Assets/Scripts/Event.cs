@@ -71,6 +71,11 @@ public class Event : MonoBehaviour
     [HideInInspector] public int usingRestart = 0;
     /// For DevTools Elements
 
+    /// For DFactor Rate Change
+    bool applyRating;
+    float DFactorDiff;
+    /// For DFactor Rate Change
+
     /// For Timer
     [HideInInspector] public float elapsedTime = 0f;
     [HideInInspector] public bool timeCount;
@@ -99,6 +104,8 @@ public class Event : MonoBehaviour
 
         levelNum = 1;                                        //MANUALLY SET STARTING LEVEL NUMBER BY CHANGING THIS VALUE
         levelData = new LevelDatabase();
+
+        applyRating = true;
 
         timeCount = false;
 
@@ -230,16 +237,20 @@ public class Event : MonoBehaviour
         GameObject obj;
         GameObject obj2;
 
-        //OLD one using int levelNum
+        //OLD : using int levelNum
         //levelData.LoadLevelData(levelNum);
 
-        //NEW one using PlayerDFactor
-        int lineNum = levelData.LoadLevelData();
+        //NEW : using PlayerDFactor
+        //int lineNum = levelData.LoadLevelData();
+        float levelDFactor = levelData.LoadLevelData();
 
-        DfactorText.text = levelData.ReadFileByLine("LevelDifficulty", lineNum);
-        PlayerDFactorText.text = PlayerPrefs.GetFloat("PlayerDFactor").ToString();
-        levelDFactor = float.Parse(DfactorText.text);
-        PlayerPrefs.SetInt("LevelDatabase", levelNum);//레벨 저장 일단
+        //DfactorText.text = levelData.ReadFileByLine("LevelDifficulty", lineNum);
+        //levelDFactor = float.Parse(DfactorText.text);
+        float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
+        PlayerDFactorText.text = playerDFactor.ToString();
+
+        DFactorDiff = levelDFactor - playerDFactor;
+
         int typeIndex;
         int pieceHeight;
         int pieceWidth;
@@ -490,6 +501,7 @@ public class Event : MonoBehaviour
     public void GoToNextLevel()
     {
         //OLD
+        /*
         levelNum++;
         MovePieceMode = true;
         ResetBtn.interactable = true;
@@ -506,6 +518,26 @@ public class Event : MonoBehaviour
             LoadLevel();
             SavePiecePosition();
         }
+        */
+
+        //NEW
+        MovePieceMode = true;
+        ResetBtn.interactable = true;
+        hintBtn.interactable = true;
+
+        DeleteLevel();
+        levelData.LoadLevelData();//For check new tile;
+        if (levelData.tutorialCase)// 바꾸어야될듯? -> leveldata에서 CheckNewPieces앞에 false해서 이제 ㄱㅊ
+        {
+            tutorialPanel.SetActive(true);
+        }
+        else
+        {
+            LoadLevel();
+            SavePiecePosition();
+        }
+
+        applyRating = true;
 
         /*
         levelNum = 0;
@@ -536,6 +568,8 @@ public class Event : MonoBehaviour
         /* ResetBoard */
 
         Boy.GetComponent<MoveBoi>().ResetBoyPosition();
+
+        applyRating = false;
 
         //퍼즐 완료창 종료
         PuzzleSolvedPanel.SetActive(false);
@@ -748,13 +782,14 @@ public class Event : MonoBehaviour
         }
     }
 
-    public void Ratingsys()
+    public void ChangeRating()
     {
-        //NEED TO IMPLEMENT TO RATE ONLY WHEN IT IS FIRST TIME SOLVING
-
-        //rate change standard: trial and error
-        float rate = 0f;
-        rate = 0.06f * (usingHint * 12 - levelData.BoardHeight * levelData.BoardWidth);//3*4가 마지노선이니까 5*5는 최종보스니까 2개까지 쓰게하자고
+        // RATE ONLY WHEN IT IS FIRST TIME SOLVING
+        if (applyRating)
+        {
+            float rate = 0.01f; //Starting Rate
+            rate = 0.06f * (usingHint * 12 - levelData.BoardHeight * levelData.BoardWidth);//3*4가 마지노선이니까 5*5는 최종보스니까 2개까지 쓰게하자고
+        }
     }
 
     //오디오믹서의 배경음악 볼륨 조절

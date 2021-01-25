@@ -189,6 +189,7 @@ public class LevelDatabase
         }
 
         diffIndex = Mathf.FloorToInt((playerDFactor + 1) / 0.01f);
+        Debug.Log(diffIndex);
         linenum = diffIndex * 54 + randomFac;
         mapDFactor = -1 + diffIndex * 0.01f;
 
