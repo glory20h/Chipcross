@@ -167,7 +167,7 @@ public class LevelDatabase
     }
 
     //Load Level using PlayerDFactor
-    public int LoadLevelData()
+    public float LoadLevelData()
     {
         float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
 
@@ -188,7 +188,9 @@ public class LevelDatabase
             randomFac = Random.Range(0, 54);
         }
 
-        diffIndex = Mathf.FloorToInt((playerDFactor + 1) / 0.01f);
+        Debug.Log(playerDFactor);
+        Debug.Log((playerDFactor + 1.0001f) / 0.01f);
+        diffIndex = Mathf.FloorToInt((playerDFactor + 1.0001f) / 0.01f);
         Debug.Log(diffIndex);
         linenum = diffIndex * 54 + randomFac;
         mapDFactor = -1 + diffIndex * 0.01f;
@@ -201,7 +203,7 @@ public class LevelDatabase
         Debug.Log("Read Line " + linenum);
         GenerateSlicedPieces(content);
 
-        return linenum;
+        return mapDFactor;
     }
 
     //txt파일에서 불러와서 string으로 return

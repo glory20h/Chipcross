@@ -248,6 +248,7 @@ public class Event : MonoBehaviour
         //levelDFactor = float.Parse(DfactorText.text);
         float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
         PlayerDFactorText.text = playerDFactor.ToString();
+        DfactorText.text = levelDFactor.ToString();
 
         DFactorDiff = levelDFactor - playerDFactor;
 
@@ -782,13 +783,25 @@ public class Event : MonoBehaviour
         }
     }
 
+    //플레이어의 PlayerDFactor 변경
     public void ChangeRating()
     {
         // RATE ONLY WHEN IT IS FIRST TIME SOLVING
         if (applyRating)
         {
             float rate = 0.01f; //Starting Rate
-            rate = 0.06f * (usingHint * 12 - levelData.BoardHeight * levelData.BoardWidth);//3*4가 마지노선이니까 5*5는 최종보스니까 2개까지 쓰게하자고
+
+            /*
+            rate = 0.06f * (usingHint * 12 - levelData.BoardHeight * levelData.BoardWidth); //3*4가 마지노선이니까 5*5는 최종보스니까 2개까지 쓰게하자고
+            rate += DFactorDiff / 2;
+            */
+
+            //TEMP RANDOM
+            //rate = Random.Range(-0.005f, 0.01f);
+
+            float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
+            playerDFactor += rate;
+            PlayerPrefs.SetFloat("PlayerDFactor", playerDFactor);
         }
     }
 
