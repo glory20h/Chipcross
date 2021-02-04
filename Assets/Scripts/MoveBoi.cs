@@ -112,7 +112,7 @@ public class MoveBoi : MonoBehaviour
 
                     if (metGirl) //Correct Solution
                     {
-                        Debug.Log("Puzzle solved!! Congrats!! :)");
+                        //Debug.Log("Puzzle solved!! Congrats!! :)");
                         StartCoroutine(PuzzleSolved());
                         GoNFasterButton.interactable = false;
                         ResetButton.interactable = false;
@@ -123,7 +123,7 @@ public class MoveBoi : MonoBehaviour
                     {
                         SoundFXPlayer.Play("fail");
                         StartCoroutine(DelayBoyFail(1.5f));
-                        Debug.Log("Try try again!");
+                        //Debug.Log("Try try again!");
                     }
                 }
             }

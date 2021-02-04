@@ -39,6 +39,10 @@ public class Event : MonoBehaviour
     bool tutorialDo = true;
     ///튜토리얼 창 관련
 
+    ///Dev Tools 관련
+    public GameObject DevTools;
+    ///Dev Tools 관련
+
     Vector2 mousePos;                               //마우스의 2차원상 위치
     Transform objToFollowMouse;                     //마우스를 따라 다닐 물체(퍼즐 조각)
     GameObject[] triggeredObjects;                  //Array stores info on EmptyTiles        //퍼즐 조각의 빈 타일 탐지용
@@ -61,14 +65,11 @@ public class Event : MonoBehaviour
     /// For DevTools Elements
     public Text PlayerDFactorText;
     public Text DfactorText;
-    float levelDFactor;
 
-    public Text UsingHint;
-    public Text UsingTouch;
-    public Text UsingRestart;
-    [HideInInspector] public int usingHint = 0;
-    [HideInInspector] public int usingTouch = 0;
-    [HideInInspector] public int usingRestart = 0;
+    public Text UsedHintText;
+    public Text UsedTouchText;
+    [HideInInspector] public int HintUsed = 0;
+    [HideInInspector] public int TouchUsed = 0;
     /// For DevTools Elements
 
     /// For DFactor Rate Change
@@ -111,7 +112,9 @@ public class Event : MonoBehaviour
 
         //PlayerPrefs.SetInt("tutorial",0);//확인중임 없애도 됨. 기본은 0놓고했었음
         PlayerPrefs.SetInt("Piecedata", 1);
-        PlayerPrefs.SetFloat("PlayerDFactor", -1f);             //MANUALLY SET STARTING PLAYER'S DIFFICULTYFACTOR BY CHANGING THIS VALUE
+
+        //MANUALLY SET STARTING PLAYER'S DIFFICULTYFACTOR BY CHANGING THIS VALUE
+        //PlayerPrefs.SetFloat("PlayerDFactor", -1f);
     }
 
     void Update()
@@ -223,7 +226,7 @@ public class Event : MonoBehaviour
                     {
                         ResetPiecePosition(objToFollowMouse, Mathf.Abs(objToFollowMouse.localPosition.x) >= 5.0f && Mathf.Abs(objToFollowMouse.localPosition.x) < 8.5f && objToFollowMouse.localPosition.y >= -0.4f && objToFollowMouse.localPosition.y < 6.8f);
                     }
-                    usingTouch++;
+                    TouchUsed++;
                     objToFollowMouse = null;
                 }
             }
@@ -247,8 +250,8 @@ public class Event : MonoBehaviour
         //DfactorText.text = levelData.ReadFileByLine("LevelDifficulty", lineNum);
         //levelDFactor = float.Parse(DfactorText.text);
         float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
-        PlayerDFactorText.text = playerDFactor.ToString();
-        DfactorText.text = levelDFactor.ToString();
+        PlayerDFactorText.text = "Player: " + playerDFactor.ToString();
+        DfactorText.text = "Level: " + levelDFactor.ToString();
 
         DFactorDiff = levelDFactor - playerDFactor;
 
@@ -256,9 +259,8 @@ public class Event : MonoBehaviour
         int pieceHeight;
         int pieceWidth;
 
-        usingHint = 0;
-        usingTouch = 0;
-        usingRestart = 0;
+        HintUsed = 0;
+        TouchUsed = 0;
         elapsedTime = 0f;
         timeCount = false;
 
@@ -493,8 +495,7 @@ public class Event : MonoBehaviour
             ResetBoard();
             CheckIfAllTilesInPlace();
         }
-
-        usingRestart++;
+        
         timeCount = true;
     }
 
@@ -580,7 +581,7 @@ public class Event : MonoBehaviour
     public void HintButtonClick()
     {
         ResetBoard();
-        usingHint++;
+        HintUsed++;
         /*if(Advertisement.IsReady())
         {
             Advertisement.Show("video");
@@ -671,7 +672,7 @@ public class Event : MonoBehaviour
     {
         float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
 
-        if(playerDFactor >= 0.9f)
+        if(playerDFactor >= 0.99f)
         {
             playerDFactor = 1f;
         }
@@ -681,7 +682,7 @@ public class Event : MonoBehaviour
         }
 
         PlayerPrefs.SetFloat("PlayerDFactor", playerDFactor);
-        PlayerDFactorText.text = playerDFactor.ToString();
+        PlayerDFactorText.text = "Player: " + playerDFactor.ToString();
         DeleteLevel();
         LoadLevel();
         SavePiecePosition();
@@ -691,7 +692,7 @@ public class Event : MonoBehaviour
     {
         float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
 
-        if (playerDFactor <= -0.9f)
+        if (playerDFactor <= -0.99f)
         {
             playerDFactor = -1f;
         }
@@ -701,7 +702,7 @@ public class Event : MonoBehaviour
         }
 
         PlayerPrefs.SetFloat("PlayerDFactor", playerDFactor);
-        PlayerDFactorText.text = playerDFactor.ToString();
+        PlayerDFactorText.text = "Player: " + playerDFactor.ToString();
         DeleteLevel();
         LoadLevel();
         SavePiecePosition();
@@ -729,6 +730,19 @@ public class Event : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+    //Dev Tools Toggle
+    public void ToggleDevTools()
+    {
+        if (DevTools.activeSelf)
+        {
+            DevTools.SetActive(false);
+        }
+        else
+        {
+            DevTools.SetActive(true);
+        }
+    }
+
     //퍼즐 완료창 코인 또로로로 효과
     public IEnumerator CoinIncreaseAnimation(int coin = 100)
     {
@@ -748,15 +762,14 @@ public class Event : MonoBehaviour
     //DevTools Display에 Hint, Touch, Restart 뜨게 함
     public void DisplayPlayData()
     {
-        UsingHint.text = "Hint : " + usingHint.ToString();
-        UsingTouch.text = "Touch : " + usingTouch.ToString();
-        UsingRestart.text = "Restart : " + usingRestart.ToString();
+        UsedHintText.text = "Hint : " + HintUsed.ToString();
+        UsedTouchText.text = "Touch : " + TouchUsed.ToString();
     }
 
     //PuzzleSolved 창에 문제 푼 시간 뜨게 함
     public void DisplayTime()
     {
-        int time_ = (int)elapsedTime;
+        int time_ = (int) elapsedTime;
         if (time_ < 60)
         {
             timeText.text = "00 : 00 : " + convFormat(time_);
@@ -790,17 +803,74 @@ public class Event : MonoBehaviour
         if (applyRating)
         {
             float rate = 0.01f; //Starting Rate
+            
+            int boardSize = levelData.BoardWidth * levelData.BoardHeight;
+            int numOfPieces = levelData.NumberOfPieces;
+            float hintChange;
+            float touchChange;
+            float timeChange;
 
-            /*
-            rate = 0.06f * (usingHint * 12 - levelData.BoardHeight * levelData.BoardWidth); //3*4가 마지노선이니까 5*5는 최종보스니까 2개까지 쓰게하자고
+            //HINT
+            if (boardSize < 17)
+            {
+                if (HintUsed < 3)
+                {
+                    hintChange = HintUsed * 0.005f;
+                }
+                else
+                {
+                    hintChange = 0.015f;
+                }
+            }
+            else
+            {
+                if (HintUsed < 4)
+                {
+                    hintChange = HintUsed * 0.004f;
+                }
+                else
+                {
+                    hintChange = 0.015f;
+                }
+                
+            }
+            rate -= hintChange;
+            Debug.Log("Hint Change : " + hintChange);
+
+            //TOUCH
+            touchChange = (TouchUsed - numOfPieces) * (-0.005f / (4 * numOfPieces));
+            rate -= touchChange;
+            Debug.Log("Touch Change : " + touchChange);
+            
+            //TIME
+            int timeUsed = (int) elapsedTime;
+            if (timeUsed <= 200)
+            {
+                timeChange = timeUsed * 0.00001f;
+            }
+            else if (timeUsed <= 300)
+            {
+                timeChange = 0.002f + (timeUsed - 200) * 0.000005f;
+            }
+            else
+            {
+                timeChange = 0.0025f;
+            }
+            Debug.Log("Time Change : " + timeChange);
+
+            //Adaptation by DFactor
             rate += DFactorDiff / 2;
-            */
+            Debug.Log("Diff Change : " + DFactorDiff / 2);
 
-            //TEMP RANDOM
+            //CHANGE RATE WITH RANDOM VALUE
             //rate = Random.Range(-0.005f, 0.01f);
+
+            Debug.Log("Rate Change : " + rate);
 
             float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
             playerDFactor += rate;
+            if(playerDFactor <= -1f) playerDFactor = -1f;
+            if(playerDFactor >= 1f) playerDFactor = 1f;
             PlayerPrefs.SetFloat("PlayerDFactor", playerDFactor);
         }
     }

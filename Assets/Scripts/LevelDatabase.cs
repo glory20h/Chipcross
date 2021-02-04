@@ -181,17 +181,14 @@ public class LevelDatabase
 
         if(playerDFactor >= 1f)
         {
-            randomFac = Random.Range(0, 135);
+            randomFac = Random.Range(1, 136);
         }
         else
         {
-            randomFac = Random.Range(0, 54);
+            randomFac = Random.Range(1, 55);
         }
 
-        Debug.Log(playerDFactor);
-        Debug.Log((playerDFactor + 1.0001f) / 0.01f);
         diffIndex = Mathf.FloorToInt((playerDFactor + 1.0001f) / 0.01f);
-        Debug.Log(diffIndex);
         linenum = diffIndex * 54 + randomFac;
         mapDFactor = -1 + diffIndex * 0.01f;
 
@@ -200,7 +197,7 @@ public class LevelDatabase
         {
             content = sr.ReadLine();
         }
-        Debug.Log("Read Line " + linenum);
+        //Debug.Log("Read Line " + linenum);
         GenerateSlicedPieces(content);
 
         return mapDFactor;
