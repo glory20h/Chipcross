@@ -167,6 +167,7 @@ public class MoveBoi : MonoBehaviour
     public void ResetBoyPosition()
     {
         transform.position = boiInitPos;
+        //NEED something more???
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

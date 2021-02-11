@@ -75,6 +75,7 @@ public class Event : MonoBehaviour
     /// For DFactor Rate Change
     bool applyRating;
     float DFactorDiff;
+    float levelDFactor;
     /// For DFactor Rate Change
 
     /// For Timer
@@ -234,7 +235,7 @@ public class Event : MonoBehaviour
     }
 
     //게임 레벨 불러오기
-    void LoadLevel()
+    void LoadLevel(bool playAgain = false)
     {
         GameObject prefab;
         GameObject obj;
@@ -245,7 +246,10 @@ public class Event : MonoBehaviour
 
         //NEW : using PlayerDFactor
         //int lineNum = levelData.LoadLevelData();
-        float levelDFactor = levelData.LoadLevelData();
+        if (!playAgain)
+        {
+            levelDFactor = levelData.LoadLevelData();
+        }
 
         //DfactorText.text = levelData.ReadFileByLine("LevelDifficulty", lineNum);
         //levelDFactor = float.Parse(DfactorText.text);
@@ -275,9 +279,9 @@ public class Event : MonoBehaviour
 
         //Load map by levelfactor
         if(levelDFactor < -0.55f) //level factor < -0.55인데 여기서는 어쩔수 없이 갯수로
-            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/11");
+            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/22");   //22 & 11 잠시 한번 바꿔봄
         else if(levelDFactor < 0f)
-            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/22");
+            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/11");
         else if (levelDFactor < 0.6f)
             backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/33");
         else
@@ -565,7 +569,7 @@ public class Event : MonoBehaviour
 
         /* ResetBoard */
         DeleteLevel();
-        LoadLevel();
+        LoadLevel(true);
         SavePiecePosition();
         /* ResetBoard */
 
@@ -835,12 +839,10 @@ public class Event : MonoBehaviour
                 
             }
             rate -= hintChange;
-            Debug.Log("Hint Change : " + hintChange);
 
             //TOUCH
             touchChange = (TouchUsed - numOfPieces) * (-0.005f / (4 * numOfPieces));
             rate -= touchChange;
-            Debug.Log("Touch Change : " + touchChange);
             
             //TIME
             int timeUsed = (int) elapsedTime;
@@ -856,16 +858,21 @@ public class Event : MonoBehaviour
             {
                 timeChange = 0.0025f;
             }
-            Debug.Log("Time Change : " + timeChange);
 
             //Adaptation by DFactor
             rate += DFactorDiff / 2;
-            Debug.Log("Diff Change : " + DFactorDiff / 2);
 
             //CHANGE RATE WITH RANDOM VALUE
             //rate = Random.Range(-0.005f, 0.01f);
 
+            //DISPLAY RATE CHANGE INFO
+            /*
+            Debug.Log("Hint Change : " + hintChange);
+            Debug.Log("Touch Change : " + touchChange);
+            Debug.Log("Time Change : " + timeChange);
+            Debug.Log("Diff Change : " + DFactorDiff / 2);
             Debug.Log("Rate Change : " + rate);
+            */
 
             float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
             playerDFactor += rate;

@@ -293,12 +293,12 @@ public class LevelDatabase
                 break;
             case 25:
                 maxPieceSize = 6;
-                NumberOfPieces = Random.Range(6, 10);
+                NumberOfPieces = Random.Range(8, 12);
                 break;
             default:
                 Debug.LogError("Something wrong with the switch statement!");
                 maxPieceSize = 6;
-                NumberOfPieces = Random.Range(6, 10);
+                NumberOfPieces = Random.Range(8, 12);
                 break;
         }
 
