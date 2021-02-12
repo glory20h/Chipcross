@@ -197,7 +197,7 @@ public class LevelDatabase
         {
             content = sr.ReadLine();
         }
-        //Debug.Log("Read Line " + linenum);
+        Debug.Log("Read Line " + linenum);
         GenerateSlicedPieces(content);
 
         return mapDFactor;
@@ -255,33 +255,46 @@ public class LevelDatabase
 
         int maxPieceSize;       //조각의 최대 크기(최대 타일 갯수)
 
-        // 수정 및 조절 필요
+        // Update maxPieceSize, NumberOfPieces, scaleSize by boardSize
         switch (boardSize)
         {
             case 4:
                 maxPieceSize = 2;
                 NumberOfPieces = Random.Range(2, 4);
+                scaleSize = 1;
                 break;
             case 6:
                 maxPieceSize = 3;
                 NumberOfPieces = Random.Range(2, 5);
+                scaleSize = 1;
                 break;
             case 8:
                 maxPieceSize = 3;
                 NumberOfPieces = Random.Range(3, 6);
+                if (BoardWidth == 4) scaleSize = 1;
+                else scaleSize = 2;
                 break;
             case 9:
+                maxPieceSize = 4;
+                NumberOfPieces = Random.Range(3, 5);
+                scaleSize = 1;
+                break;
             case 10:
                 maxPieceSize = 4;
                 NumberOfPieces = Random.Range(3, 5);
+                if (BoardWidth == 5) scaleSize = 2;
+                else scaleSize = 3;
                 break;
             case 12:
                 maxPieceSize = 5;
                 NumberOfPieces = Random.Range(4, 7);
+                scaleSize = 2;
                 break;
             case 15:
                 maxPieceSize = 5;
                 NumberOfPieces = Random.Range(4, 7);
+                if (BoardWidth == 5) scaleSize = 2;
+                else scaleSize = 3;
                 break;
             case 16:
                 maxPieceSize = 6;
