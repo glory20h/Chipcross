@@ -16,6 +16,11 @@ public class LevelDatabase
     //public PieceData[] pieceDatas; //Temp -> Migrating from Array to List for dynamic allocation
     public List<PieceData> pieceDatas;
 
+    public float piecePlaceXMax = 8.5f;
+    public float piecePlaceXMin = 5.0f;
+    public float piecePlaceYMax = 6.8f;
+    public float piecePlaceYMin = -0.4f;
+
     [HideInInspector] public bool tutorialCase = false;
     [HideInInspector] public float dfac = 0;
 
@@ -255,13 +260,17 @@ public class LevelDatabase
 
         int maxPieceSize;       //조각의 최대 크기(최대 타일 갯수)
 
-        // Update maxPieceSize, NumberOfPieces, scaleSize by boardSize
+        // Update maxPieceSize, NumberOfPieces, scaleSize, piecePlaceRange by boardSize
         switch (boardSize)
         {
             case 4:
                 maxPieceSize = 2;
                 NumberOfPieces = Random.Range(2, 4);
                 scaleSize = 1;
+                piecePlaceXMax = 8.5f;
+                piecePlaceXMin = 5.0f;
+                piecePlaceYMax = 6.8f;
+                piecePlaceYMin = -0.4f;
                 break;
             case 6:
                 maxPieceSize = 3;

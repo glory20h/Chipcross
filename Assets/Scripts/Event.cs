@@ -68,6 +68,7 @@ public class Event : MonoBehaviour
 
     public Text UsedHintText;
     public Text UsedTouchText;
+    public Text LogDisplayText;
     [HideInInspector] public int HintUsed = 0;
     [HideInInspector] public int TouchUsed = 0;
     /// For DevTools Elements
@@ -225,7 +226,7 @@ public class Event : MonoBehaviour
                     }
                     else
                     {
-                        ResetPiecePosition(objToFollowMouse, Mathf.Abs(objToFollowMouse.localPosition.x) >= 5.0f && Mathf.Abs(objToFollowMouse.localPosition.x) < 8.5f && objToFollowMouse.localPosition.y >= -0.4f && objToFollowMouse.localPosition.y < 6.8f);
+                        ResetPiecePosition(objToFollowMouse, Mathf.Abs(objToFollowMouse.localPosition.x) >= levelData.piecePlaceXMin && Mathf.Abs(objToFollowMouse.localPosition.x) < levelData.piecePlaceXMax && objToFollowMouse.localPosition.y >= levelData.piecePlaceYMin && objToFollowMouse.localPosition.y < levelData.piecePlaceYMax);
                     }
                     TouchUsed++;
                     objToFollowMouse = null;
@@ -279,9 +280,9 @@ public class Event : MonoBehaviour
 
         //Load map by levelfactor
         if(levelDFactor < -0.55f) //level factor < -0.55인데 여기서는 어쩔수 없이 갯수로
-            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/22");   //22 & 11 잠시 한번 바꿔봄
-        else if(levelDFactor < 0f)
             backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/11");
+        else if(levelDFactor < 0f)
+            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/22");
         else if (levelDFactor < 0.6f)
             backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/33");
         else
@@ -319,6 +320,12 @@ public class Event : MonoBehaviour
                     Boy.GetComponent<MoveBoi>().distanceBetweenTiles = distanceBetweenTiles;
                     Boy.transform.localScale = new Vector3(emptyTileScale, emptyTileScale, 1);
                 }
+                else
+                {
+                    //Error #1
+                    LogDisplayText.text = "Error #1";
+                    Debug.LogError("Error : Set Boy Position");
+                }
 
                 if (i == levelData.GirlPos && j == levelData.BoardWidth - 1)
                 {
@@ -335,7 +342,7 @@ public class Event : MonoBehaviour
         for (int i = 0; i < levelData.NumberOfPieces; i++)
         {
             prefab = Resources.Load("Prefabs/Piece") as GameObject;
-            obj = Instantiate(prefab, new Vector3(Random.value < 0.5 ? Random.Range(-7.6f, -5.9f) : Random.Range(5.9f, 7.6f), Random.Range(0, 6.8f)), Quaternion.identity);
+            obj = Instantiate(prefab, new Vector3(Random.value < 0.5 ? Random.Range(-(levelData.piecePlaceXMax - 0.9f), -(levelData.piecePlaceXMin + 0.9f)) : Random.Range(levelData.piecePlaceXMin + 0.9f, levelData.piecePlaceXMax - 0.9f), Random.Range(levelData.piecePlaceYMin + 0.4f, levelData.piecePlaceYMax)), Quaternion.identity);
             obj.transform.SetParent(BlockPieces, false);
             obj.GetComponent<VariableProvider>().pieceNum = i;
             obj.GetComponent<VariableProvider>().solutionLoc = levelData.pieceDatas[i].solutionLoc;
