@@ -320,11 +320,14 @@ public class Event : MonoBehaviour
                     Boy.GetComponent<MoveBoi>().distanceBetweenTiles = distanceBetweenTiles;
                     Boy.transform.localScale = new Vector3(emptyTileScale, emptyTileScale, 1);
                 }
-                else
+                else if(j == 0)
                 {
                     //Error #1
-                    LogDisplayText.text = "Error #1";
-                    Debug.LogError("Error : Set Boy Position");
+                    if (i >= levelData.BoyPos - 0.5 && i <= levelData.BoyPos + 0.5)
+                    {
+                        LogDisplayText.text = "Error #1";
+                        Debug.LogError("Error : Set Boy Position");
+                    }
                 }
 
                 if (i == levelData.GirlPos && j == levelData.BoardWidth - 1)
