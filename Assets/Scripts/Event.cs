@@ -75,7 +75,6 @@ public class Event : MonoBehaviour
 
     /// For DFactor Rate Change
     bool applyRating;
-    float DFactorDiff;
     float levelDFactor;
     /// For DFactor Rate Change
 
@@ -258,7 +257,7 @@ public class Event : MonoBehaviour
         PlayerDFactorText.text = "Player: " + playerDFactor.ToString();
         DfactorText.text = "Level: " + levelDFactor.ToString();
 
-        DFactorDiff = levelDFactor - playerDFactor;
+        
 
         int typeIndex;
         int pieceHeight;
@@ -345,7 +344,7 @@ public class Event : MonoBehaviour
         for (int i = 0; i < levelData.NumberOfPieces; i++)
         {
             prefab = Resources.Load("Prefabs/Piece") as GameObject;
-            obj = Instantiate(prefab, new Vector3(Random.value < 0.5 ? Random.Range(-(levelData.piecePlaceXMax - 0.9f), -(levelData.piecePlaceXMin + 0.9f)) : Random.Range(levelData.piecePlaceXMin + 0.9f, levelData.piecePlaceXMax - 0.9f), Random.Range(levelData.piecePlaceYMin + 0.4f, levelData.piecePlaceYMax)), Quaternion.identity);
+            obj = Instantiate(prefab, new Vector3(Random.value < 0.5 ? Random.Range(-(levelData.piecePlaceXMax - 0.5f), -(levelData.piecePlaceXMin + 0.5f)) : Random.Range(levelData.piecePlaceXMin + 0.5f, levelData.piecePlaceXMax - 0.5f), Random.Range(levelData.piecePlaceYMin + 0.4f, levelData.piecePlaceYMax)), Quaternion.identity);
             obj.transform.SetParent(BlockPieces, false);
             obj.GetComponent<VariableProvider>().pieceNum = i;
             obj.GetComponent<VariableProvider>().solutionLoc = levelData.pieceDatas[i].solutionLoc;
@@ -816,7 +815,8 @@ public class Event : MonoBehaviour
         // RATE ONLY WHEN IT IS FIRST TIME SOLVING
         if (applyRating)
         {
-            float rate = 0.01f; //Starting Rate
+            //Base Starting Rate
+            float rate = 0.01f;
             
             int boardSize = levelData.BoardWidth * levelData.BoardHeight;
             int numOfPieces = levelData.NumberOfPieces;
@@ -870,7 +870,19 @@ public class Event : MonoBehaviour
             }
 
             //Adaptation by DFactor
-            rate += DFactorDiff / 2;
+            rate += levelData.DFactorDiff / 4;
+
+            //Lower Level Rate Change Bonus
+            if (boardSize < 9 && rate > 0)
+            {
+                rate = rate * 2;
+            }
+
+            //Higher Level Rate Change Decrease
+            if (boardSize == 25 && rate > 0)
+            {
+                rate = rate * 0.75f;
+            }
 
             //CHANGE RATE WITH RANDOM VALUE
             //rate = Random.Range(-0.005f, 0.01f);
@@ -881,8 +893,8 @@ public class Event : MonoBehaviour
             Debug.Log("Touch Change : " + touchChange);
             Debug.Log("Time Change : " + timeChange);
             Debug.Log("Diff Change : " + DFactorDiff / 2);
-            */
             Debug.Log("Rate Change : " + rate);
+            */
 
             float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
             playerDFactor += rate;

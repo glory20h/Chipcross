@@ -6,29 +6,29 @@ using UnityEngine;
 
 public class LevelDatabase
 {
-    public int scaleSize;
-    public int BoardWidth;
-    public int BoardHeight;
-    public int BoyPos;
-    public int GirlPos;
-    public int NumberOfPieces;
-    public int[] BoardEmptyTileTypeInfo;
-    //public PieceData[] pieceDatas; //Temp -> Migrating from Array to List for dynamic allocation
-    public List<PieceData> pieceDatas;
+    [HideInInspector] public int scaleSize;
+    [HideInInspector] public int BoardWidth;
+    [HideInInspector] public int BoardHeight;
+    [HideInInspector] public int BoyPos;
+    [HideInInspector] public int GirlPos;
+    [HideInInspector] public int NumberOfPieces;
+    [HideInInspector] public int[] BoardEmptyTileTypeInfo;
+    [HideInInspector] public List<PieceData> pieceDatas;
 
-    public float piecePlaceXMax = 8.5f;
-    public float piecePlaceXMin = 5.0f;
-    public float piecePlaceYMax = 6.8f;
-    public float piecePlaceYMin = -0.4f;
+    [HideInInspector] public float piecePlaceXMax = 8.5f;
+    [HideInInspector] public float piecePlaceXMin = 4.6f;
+    [HideInInspector] public float piecePlaceYMax = 6.8f;
+    [HideInInspector] public float piecePlaceYMin = -0.4f;
 
     [HideInInspector] public bool tutorialCase = false;
     [HideInInspector] public float dfac = 0;
+
+    [HideInInspector] public float DFactorDiff;
 
     public class PieceData
     {
         public int PieceWidth;
         public int PieceHeight;
-        //public int[] TileType; //Array -> List migration
         public List<int> TileType; //Array -> List migration
         public Vector3 solutionLoc; //solution for hint
     }
@@ -202,7 +202,10 @@ public class LevelDatabase
         {
             content = sr.ReadLine();
         }
-        Debug.Log("Read Line " + linenum);
+        //Debug.Log("Read Line " + linenum);
+
+        DFactorDiff = mapDFactor - playerDFactor;
+
         GenerateSlicedPieces(content);
 
         return mapDFactor;
@@ -213,8 +216,7 @@ public class LevelDatabase
     {
         TextAsset sourcefile = Resources.Load<TextAsset>(dfactor.ToString());
         StringReader sr = new StringReader(sourcefile.text);
-        //string path = Application.persistentDataPath + "/Assets/Resources/" + dfactor + ".txt";
-        //Debug.Log(Application.persistentDataPath);
+
         int random = Random.Range(1, 10000);
         string testdata = "";
         for (int i = 0; i < random; i++)
@@ -267,37 +269,67 @@ public class LevelDatabase
                 maxPieceSize = 2;
                 NumberOfPieces = Random.Range(2, 4);
                 scaleSize = 1;
-                piecePlaceXMax = 8.5f;
-                piecePlaceXMin = 5.0f;
-                piecePlaceYMax = 6.8f;
-                piecePlaceYMin = -0.4f;
+                piecePlaceXMin = 4.6f;
                 break;
             case 6:
                 maxPieceSize = 3;
                 NumberOfPieces = Random.Range(2, 5);
                 scaleSize = 1;
+                if (BoardWidth == 3)
+                {
+                    piecePlaceXMin = 5.8f;
+                }
+                else
+                {
+                    piecePlaceXMin = 4.6f;
+                }
                 break;
             case 8:
                 maxPieceSize = 3;
                 NumberOfPieces = Random.Range(3, 6);
-                if (BoardWidth == 4) scaleSize = 1;
-                else scaleSize = 2;
+                if (BoardWidth == 4)
+                {
+                    scaleSize = 1;
+                    piecePlaceXMin = 6.5f;
+                }
+                else
+                {
+                    scaleSize = 2;
+                    piecePlaceXMin = 3.7f;
+                }
                 break;
             case 9:
                 maxPieceSize = 4;
-                NumberOfPieces = Random.Range(3, 5);
+                NumberOfPieces = Random.Range(3, 6);
                 scaleSize = 1;
+                piecePlaceXMin = 5.7f;
                 break;
             case 10:
                 maxPieceSize = 4;
-                NumberOfPieces = Random.Range(3, 5);
-                if (BoardWidth == 5) scaleSize = 2;
-                else scaleSize = 3;
+                NumberOfPieces = Random.Range(4, 6);
+                if (BoardWidth == 5)
+                {
+                    scaleSize = 2;
+                    piecePlaceXMin = 6.1f;
+                }
+                else
+                {
+                    scaleSize = 3;
+                    piecePlaceXMin = 3.1f;
+                }
                 break;
             case 12:
                 maxPieceSize = 5;
                 NumberOfPieces = Random.Range(4, 7);
                 scaleSize = 2;
+                if (BoardWidth == 4)
+                {
+                    piecePlaceXMin = 6.1f;
+                }
+                else
+                {
+                    piecePlaceXMin = 5.0f;
+                }
                 break;
             case 15:
                 maxPieceSize = 5;
@@ -339,31 +371,7 @@ public class LevelDatabase
         //Debug.Log("BoardInput : " + BoardInput);
         ///TEST : Print Variables
 
-        /////////// 각 조각 갯수 할당 1번째 방법 /////////////
-        // ex) [boardSize : 9, NumberOfPieces : 5] -> [3,2,2,1,1]
-        /*
-        int remainingPieces = boardSize - NumberOfPieces; //boardSize piece중 할당하고 난 나머지
-        for (int piecesize = 2; piecesize <= maxPieceSize; piecesize++)
-        {
-            int allocate = Random.Range(DivCeil(remainingPieces, maxPieceSize - (piecesize - 1)), Mathf.Min(remainingPieces, NumberOfPieces) + 1); //int의 '/'연산 잘 작동하는지 검증 필요, Random.Range difficultyFactor의 영향을 받도록 조정 필요
-            for(int i = 0; i < allocate; i++)
-            {
-                pieceSizeArray[i] += 1;
-            }
-            remainingPieces -= allocate;
-        }
-
-        //유틸리티
-        // int 두 개 나누고 소수는 올림 ex) [8 / 3 = 2.667 -> 3 return], [6 / 3 = 2 -> 2 return]
-        int DivCeil(int a, int b) 
-        {
-            int c = a % b == 0 ? a / b : (a / b) + 1;
-            return c;
-        }
-        */
-        /////////// 각 조각 갯수 할당 1번째 방법 /////////////
-
-        /////////// 각 조각 갯수 할당 2번째 방법 /////////////
+        ///////////// 각 조각 갯수 할당 /////////////
         // ex) [boardSize : 9, NumberOfPieces : 5] -> [2,2,1,3,1]
         int remainingPieces = boardSize - NumberOfPieces;
         int randomIndex;
@@ -376,7 +384,7 @@ public class LevelDatabase
             }
             else
             {
-                for(int i=0; i<NumberOfPieces; i++)
+                for(int i = 0; i < NumberOfPieces; i++)
                 {
                     if(pieceSizeArray[i] != maxPieceSize)
                     {
@@ -387,7 +395,7 @@ public class LevelDatabase
             }
             remainingPieces--;
         }
-        /////////// 각 조각 갯수 할당 2번째 방법 /////////////
+        ///////////// 각 조각 갯수 할당 /////////////
 
         ///TEST : Print pieceSizeArray
         /*
@@ -448,13 +456,12 @@ public class LevelDatabase
         /////////////////데이터 받아오기/////////////////
 
         //////////////////////////////////////////////////////////////////////////////////조각 자르기//////////////////////////////////////////////////////////////////////////////////
-        ///INIT///
+
         pieceDatas = new List<PieceData>();
         index = 0; //PieceSizeArray Iteration
         noTilesLeftToAdd = false; //The default value of noTilesLeftToAdd is false
 
         boardCenter = new Vector2((float)BoardWidth / 2, (float)BoardHeight / 2);
-        ///INIT///
 
         //Board Iteration
         for (int i = 0; i < BoardHeight; i++)
@@ -613,6 +620,11 @@ public class LevelDatabase
             }
         }
         //////////////////////////////////////////////////////////////////////////////////조각 자르기//////////////////////////////////////////////////////////////////////////////////
+    }
+
+    int GenerateRandomNumberOfPieces(int a, int b)
+    {
+        return 0;
     }
 
     string SetDefaultBoard() //Return Default Board with all standard EmptyTiles
