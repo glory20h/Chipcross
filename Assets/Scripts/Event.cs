@@ -118,11 +118,15 @@ public class Event : MonoBehaviour
         //PlayerPrefs.SetFloat("PlayerDFactor", -1f);
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (timeCount)
         {
             elapsedTime += Time.deltaTime;
+        }
+        else
+        {
+            LogDisplayText.text = "Error timeCount";
         }
             
         //퍼즐조각 움직임 enable/disable
@@ -158,6 +162,10 @@ public class Event : MonoBehaviour
                             {
                                 objToFollowMouse.GetChild(i).GetChild(0).GetComponent<TileCollideDetection>().overlappedObject.GetComponent<BoxCollider2D>().enabled = true;  //Disable Box Collider of EmptyTile
                                 objToFollowMouse.GetChild(i).GetChild(0).GetComponent<BoxCollider2D>().enabled = true;  //Enable Detector Box Collider
+                            }
+                            else
+                            {
+                                LogDisplayText.text = "Error If Tile is on the board";
                             }
                         }
 
@@ -226,6 +234,7 @@ public class Event : MonoBehaviour
                     else
                     {
                         ResetPiecePosition(objToFollowMouse, Mathf.Abs(objToFollowMouse.localPosition.x) >= levelData.piecePlaceXMin && Mathf.Abs(objToFollowMouse.localPosition.x) < levelData.piecePlaceXMax && objToFollowMouse.localPosition.y >= levelData.piecePlaceYMin && objToFollowMouse.localPosition.y < levelData.piecePlaceYMax);
+                        LogDisplayText.text = "Error isPiecePlaceable == False";
                     }
                     TouchUsed++;
                     objToFollowMouse = null;
