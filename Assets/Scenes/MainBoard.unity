@@ -130,6 +130,7 @@ GameObject:
   m_Component:
   - component: {fileID: 10895952}
   - component: {fileID: 10895953}
+  - component: {fileID: 10895954}
   m_Layer: 0
   m_Name: EventChanger
   m_TagString: EventChanger
@@ -192,6 +193,18 @@ MonoBehaviour:
   TouchUsed: 0
   elapsedTime: 0
   timeCount: 0
+--- !u!114 &10895954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10895951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2efb7cef8a98ca438a296f05c536d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &13261064
 GameObject:
   m_ObjectHideFlags: 0
