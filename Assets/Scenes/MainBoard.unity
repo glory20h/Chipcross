@@ -130,7 +130,6 @@ GameObject:
   m_Component:
   - component: {fileID: 10895952}
   - component: {fileID: 10895953}
-  - component: {fileID: 10895954}
   m_Layer: 0
   m_Name: EventChanger
   m_TagString: EventChanger
@@ -193,18 +192,6 @@ MonoBehaviour:
   TouchUsed: 0
   elapsedTime: 0
   timeCount: 0
---- !u!114 &10895954
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 10895951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2efb7cef8a98ca438a296f05c536d2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &13261064
 GameObject:
   m_ObjectHideFlags: 0
@@ -1821,8 +1808,6 @@ GameObject:
   - component: {fileID: 566818439}
   - component: {fileID: 566818438}
   - component: {fileID: 566818437}
-  - component: {fileID: 566818441}
-  - component: {fileID: 566818440}
   - component: {fileID: 566818442}
   m_Layer: 0
   m_Name: Boy
@@ -1964,35 +1949,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.41, y: 2.24}
   m_EdgeRadius: 0
---- !u!114 &566818440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 566818434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57c008f954fe54a8bb972de1018a2cb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_RootBone: {fileID: 110685763}
-  m_BoneTransforms: []
-  m_Bounds:
-    m_Center: {x: 2.1351898, y: -0.026173592, z: 0}
-    m_Extent: {x: 3.9981346, y: 3.4715164, z: 0}
---- !u!114 &566818441
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 566818434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afb6404781555c04b94d057ffb3676d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &566818442
 Animator:
   serializedVersion: 3
