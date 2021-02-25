@@ -17,7 +17,7 @@ public class MoveBoi : MonoBehaviour
 
     public GameObject PuzzleSolvedPanel;
 
-    [HideInInspector] public float speed;
+    [HideInInspector] public float speed = 2f;
     [HideInInspector] public float distanceBetweenTiles;
 
     [HideInInspector] public Vector3 initTargetPosition;
@@ -97,7 +97,7 @@ public class MoveBoi : MonoBehaviour
                     if (tileType != '1')
                     {
                         SoundFXPlayer.Play("flick");
-                        flickForce = 2f;
+                        flickForce = 2.5f;
                     }
 
                     //xdir, ydir로 targetPosition 갱신
@@ -134,24 +134,24 @@ public class MoveBoi : MonoBehaviour
     {
         boiInitPos = transform.position;
         isThereNextTile = true;
-        fastForwardFactor = 1f;
+        fastForwardFactor = 0.5f;
         xdir = 1;
         ydir = 0;
         targetPosition = initTargetPosition;
         GetComponent<BoxCollider2D>().enabled = true;
         isMoving = true;
         StartCoroutine(addFriction);
-        flickForce = 2f;
+        flickForce = 2.5f;
     }
 
     public void FastForward()
     {
-        fastForwardFactor = 3f;
+        fastForwardFactor = 2f;
     }
 
     public void BackToNormalSpeed()
     {
-        fastForwardFactor = 1f;
+        fastForwardFactor = 0.5f;
     }
 
     public void ResetBoyMove()
@@ -318,7 +318,7 @@ public class MoveBoi : MonoBehaviour
     {
         while(true)
         {
-            if(flickForce >= 1f)
+            if(flickForce >= 1.5f)
             {
                 flickForce -= Time.deltaTime * 1.2f;
             }
@@ -358,6 +358,6 @@ public class MoveBoi : MonoBehaviour
         speed = 0f;
         yield return new WaitForSeconds(0.3f);
         gameObject.GetComponent<SpriteRenderer>().sprite = boySprite;
-        speed = 1.9f;
+        speed = 2f;
     }
 }
