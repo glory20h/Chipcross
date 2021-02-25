@@ -48,11 +48,85 @@ public class MoveBoi : MonoBehaviour
         addFriction = AddFriction();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (isMoving)
         {
-            sample4();
+            //targetPosition(목표 타일의 중심)을 향해서 이동...
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * fastForwardFactor * flickForce * Time.deltaTime);
+            //목표 지점에 도착
+            if (transform.position == targetPosition)
+            {
+                if (isThereNextTile)     //파랭이가 아직 타일 위에 있는가?
+                {
+                    if (warp)            //Warp 해야 하는가?
+                    {
+                        Sprite boySprite = gameObject.GetComponent<SpriteRenderer>().sprite;
+                        gameObject.GetComponent<SpriteRenderer>().sprite = (Sprite)Resources.Load("Arts/Nothing", typeof(Sprite));
+
+                        if (tileType == '8')
+                        {
+                            if (GameObject.Find("Tile9(Clone)"))        //반대편 Warp 출구가 FixedTile 인지 Tile 인지 확인
+                            {
+                                gameObject.transform.position = GameObject.Find("Tile9(Clone)").transform.position;
+                            }
+                            else
+                            {
+                                gameObject.transform.position = GameObject.Find("FixedTile9(Clone)").transform.position;
+                            }
+                        }
+                        else if (tileType == '9')
+                        {
+                            if (GameObject.Find("Tile8(Clone)"))       //반대편 Warp 출구가 FixedTile 인지 Tile 인지 확인
+                            {
+                                gameObject.transform.position = GameObject.Find("Tile8(Clone)").transform.position;
+                            }
+                            else
+                            {
+                                gameObject.transform.position = GameObject.Find("FixedTile8(Clone)").transform.position;
+                            }
+                        }
+
+                        StartCoroutine(Waitsecond(boySprite));
+
+                        warp = false;
+                        warpDone = true;
+                    }
+
+                    //사운드 FX 재생
+                    if (tileType != '1')
+                    {
+                        SoundFXPlayer.Play("flick");
+                        flickForce = 2f;
+                    }
+
+                    //xdir, ydir로 targetPosition 갱신
+                    targetPosition = transform.position + new Vector3(xdir * distanceBetweenTiles, ydir * distanceBetweenTiles, 0);
+                    isThereNextTile = false;
+                }
+                else                    //Finish moving; Reached Girl? Or try try again??
+                {
+                    eventChanger.ResetGoNFaster();
+                    isMoving = false;
+                    StopCoroutine(addFriction);
+
+                    if (metGirl) //Correct Solution
+                    {
+                        //Debug.Log("Puzzle solved!! Congrats!! :)");
+                        StartCoroutine(PuzzleSolved());
+                        GoNFasterButton.interactable = false;
+                        ResetButton.interactable = false;
+                        HintButton.interactable = false;
+                        metGirl = false;
+                    }
+                    else //Wrong Solution
+                    {
+                        SoundFXPlayer.Play("fail");
+                        StartCoroutine(DelayBoyFail(1.5f));
+                        //Debug.Log("Try try again!");
+                    }
+                }
+            }
         }
     }
 
@@ -287,82 +361,4 @@ public class MoveBoi : MonoBehaviour
         speed = 1.9f;
     }
 
-    public void sample4()
-    {
-        //targetPosition(목표 타일의 중심)을 향해서 이동...
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * fastForwardFactor * flickForce * Time.deltaTime);
-        //목표 지점에 도착
-        if (transform.position == targetPosition)
-        {
-            if (isThereNextTile)     //파랭이가 아직 타일 위에 있는가?
-            {
-                if (warp)            //Warp 해야 하는가?
-                {
-                    Sprite boySprite = gameObject.GetComponent<SpriteRenderer>().sprite;
-                    gameObject.GetComponent<SpriteRenderer>().sprite = (Sprite)Resources.Load("Arts/Nothing", typeof(Sprite));
-
-                    if (tileType == '8')
-                    {
-                        if (GameObject.Find("Tile9(Clone)"))        //반대편 Warp 출구가 FixedTile 인지 Tile 인지 확인
-                        {
-                            gameObject.transform.position = GameObject.Find("Tile9(Clone)").transform.position;
-                        }
-                        else
-                        {
-                            gameObject.transform.position = GameObject.Find("FixedTile9(Clone)").transform.position;
-                        }
-                    }
-                    else if (tileType == '9')
-                    {
-                        if (GameObject.Find("Tile8(Clone)"))       //반대편 Warp 출구가 FixedTile 인지 Tile 인지 확인
-                        {
-                            gameObject.transform.position = GameObject.Find("Tile8(Clone)").transform.position;
-                        }
-                        else
-                        {
-                            gameObject.transform.position = GameObject.Find("FixedTile8(Clone)").transform.position;
-                        }
-                    }
-
-                    StartCoroutine(Waitsecond(boySprite));
-
-                    warp = false;
-                    warpDone = true;
-                }
-
-                //사운드 FX 재생
-                if (tileType != '1')
-                {
-                    SoundFXPlayer.Play("flick");
-                    flickForce = 2f;
-                }
-
-                //xdir, ydir로 targetPosition 갱신
-                targetPosition = transform.position + new Vector3(xdir * distanceBetweenTiles, ydir * distanceBetweenTiles, 0);
-                isThereNextTile = false;
-            }
-            else                    //Finish moving; Reached Girl? Or try try again??
-            {
-                eventChanger.ResetGoNFaster();
-                isMoving = false;
-                StopCoroutine(addFriction);
-
-                if (metGirl) //Correct Solution
-                {
-                    //Debug.Log("Puzzle solved!! Congrats!! :)");
-                    StartCoroutine(PuzzleSolved());
-                    GoNFasterButton.interactable = false;
-                    ResetButton.interactable = false;
-                    HintButton.interactable = false;
-                    metGirl = false;
-                }
-                else //Wrong Solution
-                {
-                    SoundFXPlayer.Play("fail");
-                    StartCoroutine(DelayBoyFail(1.5f));
-                    //Debug.Log("Try try again!");
-                }
-            }
-        }
-    }
 }
