@@ -48,7 +48,7 @@ public class Event : MonoBehaviour
     GameObject[] triggeredObjects;                  //Array stores info on EmptyTiles        //퍼즐 조각의 빈 타일 탐지용
     Vector3[] PiecePosition;                        //Stores initial position of Pieces      //초기 퍼즐 조각 위치 저장
 
-    float UIPieceScale = 0.4f;                      //UI에서의 퍼즐 조각 크기. 화면/퍼즐에 놓았을 때는 1, UI상에서는 현재 값으로 축소
+    float UIPieceScale;                             //UI에서의 퍼즐 조각 크기. 화면/퍼즐에 놓았을 때는 1, UI상에서는 현재 값으로 축소
     int goNFastBtnState;                            //1 -> Move Boy!, 2 -> Make Boy Faster!, 3 -> Make Boy back to normal speed     출발/가속 버튼용 변수
     public GameObject backGround;                   //Player의 DifficultyFactor에 따라
     [HideInInspector] public bool MovePieceMode;    //boolean for Update Function //Update에 쓸 bool 변수
@@ -106,6 +106,8 @@ public class Event : MonoBehaviour
 
         levelNum = 1;                                        //MANUALLY SET STARTING LEVEL NUMBER BY CHANGING THIS VALUE
         levelData = new LevelDatabase();
+
+        UIPieceScale = 0.5f;                                 //UI에서의 퍼즐 조각 크기. 화면/퍼즐에 놓았을 때는 1, UI상에서는 현재 값으로 축소
 
         applyRating = true;
 
@@ -257,8 +259,6 @@ public class Event : MonoBehaviour
         PlayerDFactorText.text = "Player: " + playerDFactor.ToString();
         DfactorText.text = "Level: " + levelDFactor.ToString();
 
-        
-
         int typeIndex;
         int pieceHeight;
         int pieceWidth;
@@ -321,7 +321,7 @@ public class Event : MonoBehaviour
                 }
                 else if(j == 0)
                 {
-                    //Error #1
+                    //Detect Error #1
                     if (i >= levelData.BoyPos - 0.5 && i <= levelData.BoyPos + 0.5)
                     {
                         LogDisplayText.text = "Error #1";

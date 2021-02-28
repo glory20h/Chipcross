@@ -17,7 +17,7 @@ public class MoveBoi : MonoBehaviour
 
     public GameObject PuzzleSolvedPanel;
 
-    [HideInInspector] public float speed = 2f;
+    [HideInInspector] public float speed;
     [HideInInspector] public float distanceBetweenTiles;
 
     [HideInInspector] public Vector3 initTargetPosition;
@@ -38,13 +38,16 @@ public class MoveBoi : MonoBehaviour
     int temp;
 
     //Warp Tile용 변수
-    bool warp = false;
-    bool warpDone = false;
+    bool warp;
+    bool warpDone;
 
     void Start()
     {
         isMoving = false;
         metGirl = false;
+        speed = 2f;
+        warp = false;
+        warpDone = false;
         addFriction = AddFriction();
     }
 
@@ -140,6 +143,7 @@ public class MoveBoi : MonoBehaviour
         targetPosition = initTargetPosition;
         GetComponent<BoxCollider2D>().enabled = true;
         isMoving = true;
+        warp = false;
         StartCoroutine(addFriction);
         flickForce = 2.5f;
     }
