@@ -38,13 +38,16 @@ public class MoveBoi : MonoBehaviour
     int temp;
 
     //Warp Tile용 변수
-    bool warp = false;
-    bool warpDone = false;
+    bool warp;
+    bool warpDone;
 
     void Start()
     {
         isMoving = false;
         metGirl = false;
+        speed = 2f;
+        warp = false;
+        warpDone = false;
         addFriction = AddFriction();
     }
 
@@ -66,6 +69,7 @@ public class MoveBoi : MonoBehaviour
         targetPosition = initTargetPosition;
         GetComponent<BoxCollider2D>().enabled = true;
         isMoving = true;
+        warp = false;
         StartCoroutine(addFriction);
         flickForce = 2f;
     }
