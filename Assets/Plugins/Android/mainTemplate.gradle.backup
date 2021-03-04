@@ -37,7 +37,7 @@ allprojects {
     }
 }
 // Android Resolver Repos End
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.application'
 **APPLY_PLUGINS**
 
 dependencies {
@@ -68,10 +68,9 @@ android {
     }
 
     defaultConfig {
-consumerProguardFiles 'proguard-unity.txt'**USER_PROGUARD**
         minSdkVersion **MINSDKVERSION**
         targetSdkVersion **TARGETSDKVERSION**
-        
+        applicationId '**APPLICATIONID**'
         ndk {
             abiFilters **ABIFILTERS**
         }
@@ -100,8 +99,18 @@ consumerProguardFiles 'proguard-unity.txt'**USER_PROGUARD**
             useProguard **PROGUARD_RELEASE**
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-unity.txt'**USER_PROGUARD****SIGNCONFIG**
         }
-    }**PACKAGING_OPTIONS**
+    }**PACKAGING_OPTIONS****SPLITS**
 **BUILT_APK_LOCATION**
 **EXTERNAL_SOURCES**
-    
-}**REPOSITORIES****SOURCE_BUILD_SETUP**
+    bundle {
+        language {
+            enableSplit = false
+        }
+        density {
+            enableSplit = false
+        }
+        abi {
+            enableSplit = true
+        }
+    }
+}**SPLITS_VERSION_CODE****REPOSITORIES****SOURCE_BUILD_SETUP**
