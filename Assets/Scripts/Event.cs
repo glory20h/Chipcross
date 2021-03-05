@@ -107,7 +107,7 @@ public class Event : MonoBehaviour
         levelNum = 1;                                        //MANUALLY SET STARTING LEVEL NUMBER BY CHANGING THIS VALUE
         levelData = new LevelDatabase();
 
-        UIPieceScale = 0.5f;                                 //UI에서의 퍼즐 조각 크기. 화면/퍼즐에 놓았을 때는 1, UI상에서는 현재 값으로 축소
+        UIPieceScale = 0.45f;                                 //UI에서의 퍼즐 조각 크기. 화면/퍼즐에 놓았을 때는 1, UI상에서는 현재 값으로 축소
 
         applyRating = true;
 
@@ -815,6 +815,7 @@ public class Event : MonoBehaviour
         // RATE ONLY WHEN IT IS FIRST TIME SOLVING
         if (applyRating)
         {
+            float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
             //Base Starting Rate
             float rate = 0.01f;
             
@@ -873,13 +874,13 @@ public class Event : MonoBehaviour
             rate += levelData.DFactorDiff / 4;
 
             //Lower Level Rate Change Bonus
-            if (boardSize < 9 && rate > 0)
+            if (playerDFactor < -0.5f && rate > 0)
             {
-                rate = rate * 2;
+                rate = rate * 1.5f;
             }
 
             //Higher Level Rate Change Decrease
-            if (boardSize == 25 && rate > 0)
+            if (playerDFactor > 0.5f && rate > 0)
             {
                 rate = rate * 0.75f;
             }
@@ -895,8 +896,9 @@ public class Event : MonoBehaviour
             Debug.Log("Diff Change : " + DFactorDiff / 2);
             Debug.Log("Rate Change : " + rate);
             */
+            Debug.Log("Rate Change : " + rate);
 
-            float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
+            
             playerDFactor += rate;
             if(playerDFactor <= -1f) playerDFactor = -1f;
             if(playerDFactor >= 1f) playerDFactor = 1f;
@@ -973,5 +975,4 @@ public class Event : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
     }
-
 }
