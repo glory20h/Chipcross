@@ -132,106 +132,17 @@ public class Event : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                //마우스 클릭시 충돌 물체 탐지
-                mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-                RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
-
-                if (hit.collider != null)
-                {
-                    //클릭한 물체가 퍼즐 조각일 경우
-                    if (hit.transform.tag == "Tile")
-                    {
-                        if(GonfasterBtn.interactable)
-                        {
-                            GonfasterBtn.interactable = false;
-                        }
-
-                        objToFollowMouse = hit.transform.parent;
-                        objToFollowMouse.localScale = new Vector3(pieceScale, pieceScale, 1);
-
-                        //Enable EmptyTile Box Collider2D & Detectors
-                        for (int i = 0; i < objToFollowMouse.childCount; i++)
-                        {
-                            objToFollowMouse.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 200;
-
-                            //If Tile is on the board
-                            if (objToFollowMouse.IsChildOf(BlockOnBoard))
-                            {
-                                objToFollowMouse.GetChild(i).GetChild(0).GetComponent<TileCollideDetection>().overlappedObject.GetComponent<BoxCollider2D>().enabled = true;  //Disable Box Collider of EmptyTile
-                                objToFollowMouse.GetChild(i).GetChild(0).GetComponent<BoxCollider2D>().enabled = true;  //Enable Detector Box Collider
-                            }
-                        }
-
-                        SoundFXPlayer.Play("pick");
-                        timeCount = true;
-                    }
-                }
+                MouseButtonDownExec();
             }
 
             if (Input.GetMouseButton(0))
             {
-                //마우스로 퍼즐 조각 드래그
-                mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                if (objToFollowMouse != null)
-                {
-                    objToFollowMouse.position = new Vector3(mousePos.x, mousePos.y, 0);
-                }
+                MouseButtonExec();
             }
 
             if (Input.GetMouseButtonUp(0))
             {
-                if (objToFollowMouse != null)
-                {
-                    bool isPiecePlaceable = true;
-                    triggeredObjects = new GameObject[objToFollowMouse.childCount];
-
-                    //Check if isPiecePlaceable
-                    for (int i = objToFollowMouse.childCount - 1; i >= 0; i--)
-                    {
-                        if (objToFollowMouse.GetChild(i).GetChild(0).GetComponent<TileCollideDetection>().overlappedObject != null)
-                        {
-                            triggeredObjects[i] = objToFollowMouse.GetChild(i).GetChild(0).GetComponent<TileCollideDetection>().overlappedObject;
-                            if (triggeredObjects[i].tag != "EmptyTile")
-                            {
-                                isPiecePlaceable = false;
-                            }
-                            if (!triggeredObjects[i].GetComponent<BoxCollider2D>().bounds.Contains(objToFollowMouse.GetChild(i).position))       //If the bounds of an EmptyTile doesn't contain the center point of the tile
-                            {
-                                isPiecePlaceable = false;
-                            }
-                        }
-                        else
-                        {
-                            isPiecePlaceable = false;
-                        }
-                    }
-
-                    if (isPiecePlaceable)
-                    {
-                        //Place piece on the board
-                        objToFollowMouse.position = triggeredObjects[0].transform.position - (objToFollowMouse.GetChild(0).localPosition * scaleFactor);
-                        objToFollowMouse.SetParent(BlockOnBoard, true);
-
-                        //Disable Corresponding EmptyTile BoxCollider2D & Detectors
-                        for (int i = 0; i < objToFollowMouse.childCount; i++)
-                        {
-                            triggeredObjects[i].GetComponent<BoxCollider2D>().enabled = false;                          //Disable EmptyTile's BoxCollider
-                            objToFollowMouse.GetChild(i).GetChild(0).GetComponent<BoxCollider2D>().enabled = false;     //Disable Detector's BoxCollider
-                            objToFollowMouse.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 10;
-                        }
-
-                        SoundFXPlayer.Play("put");
-
-                        CheckIfAllTilesInPlace();
-                    }
-                    else
-                    {
-                        ResetPiecePosition(objToFollowMouse, Mathf.Abs(objToFollowMouse.localPosition.x) >= levelData.piecePlaceXMin && Mathf.Abs(objToFollowMouse.localPosition.x) < levelData.piecePlaceXMax && objToFollowMouse.localPosition.y >= levelData.piecePlaceYMin && objToFollowMouse.localPosition.y < levelData.piecePlaceYMax);
-                    }
-                    TouchUsed++;
-                    objToFollowMouse = null;
-                }
+                MouseButtonUpExec();
             }
         }
 
@@ -239,6 +150,110 @@ public class Event : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
+        }
+    }
+
+    void MouseButtonDownExec()
+    {
+        //마우스 클릭시 충돌 물체 탐지
+        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+
+        if (hit.collider != null)
+        {
+            //클릭한 물체가 퍼즐 조각일 경우
+            if (hit.transform.tag == "Tile")
+            {
+                if (GonfasterBtn.interactable)
+                {
+                    GonfasterBtn.interactable = false;
+                }
+
+                objToFollowMouse = hit.transform.parent;
+                objToFollowMouse.localScale = new Vector3(pieceScale, pieceScale, 1);
+
+                //Enable EmptyTile Box Collider2D & Detectors
+                for (int i = 0; i < objToFollowMouse.childCount; i++)
+                {
+                    objToFollowMouse.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 200;
+
+                    //If Tile is on the board
+                    if (objToFollowMouse.IsChildOf(BlockOnBoard))
+                    {
+                        objToFollowMouse.GetChild(i).GetChild(0).GetComponent<TileCollideDetection>().overlappedObject.GetComponent<BoxCollider2D>().enabled = true;  //Disable Box Collider of EmptyTile
+                        objToFollowMouse.GetChild(i).GetChild(0).GetComponent<BoxCollider2D>().enabled = true;  //Enable Detector Box Collider
+                    }
+                }
+
+                SoundFXPlayer.Play("pick");
+                timeCount = true;
+            }
+        }
+    }
+
+    void MouseButtonExec()
+    {
+        //마우스로 퍼즐 조각 드래그
+        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (objToFollowMouse != null)
+        {
+            objToFollowMouse.position = new Vector3(mousePos.x, mousePos.y, 0);
+        }
+    }
+
+    void MouseButtonUpExec()
+    {
+        if (objToFollowMouse != null)
+        {
+            bool isPiecePlaceable = true;
+            triggeredObjects = new GameObject[objToFollowMouse.childCount];
+
+            //Check if isPiecePlaceable
+            for (int i = objToFollowMouse.childCount - 1; i >= 0; i--)
+            {
+                if (objToFollowMouse.GetChild(i).GetChild(0).GetComponent<TileCollideDetection>().overlappedObject != null)
+                {
+                    triggeredObjects[i] = objToFollowMouse.GetChild(i).GetChild(0).GetComponent<TileCollideDetection>().overlappedObject;
+                    if (triggeredObjects[i].tag != "EmptyTile")
+                    {
+                        isPiecePlaceable = false;
+                    }
+                    if (!triggeredObjects[i].GetComponent<BoxCollider2D>().bounds.Contains(objToFollowMouse.GetChild(i).position))       //If the bounds of an EmptyTile doesn't contain the center point of the tile
+                    {
+                        isPiecePlaceable = false;
+                    }
+                }
+                else
+                {
+                    isPiecePlaceable = false;
+                }
+            }
+
+            if (isPiecePlaceable)
+            {
+                //Place piece on the board
+                objToFollowMouse.position = triggeredObjects[0].transform.position - (objToFollowMouse.GetChild(0).localPosition * scaleFactor);
+                objToFollowMouse.SetParent(BlockOnBoard, true);
+
+                //Disable Corresponding EmptyTile BoxCollider2D & Detectors
+                for (int i = 0; i < objToFollowMouse.childCount; i++)
+                {
+                    triggeredObjects[i].GetComponent<BoxCollider2D>().enabled = false;                          //Disable EmptyTile's BoxCollider
+                    objToFollowMouse.GetChild(i).GetChild(0).GetComponent<BoxCollider2D>().enabled = false;     //Disable Detector's BoxCollider
+                    objToFollowMouse.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 10;
+                }
+
+                SoundFXPlayer.Play("put");
+
+                CheckIfAllTilesInPlace();
+            }
+            else
+            {
+                ResetPiecePosition(objToFollowMouse, Mathf.Abs(objToFollowMouse.localPosition.x) >= levelData.piecePlaceXMin && Mathf.Abs(objToFollowMouse.localPosition.x) < levelData.piecePlaceXMax && objToFollowMouse.localPosition.y >= levelData.piecePlaceYMin && objToFollowMouse.localPosition.y < levelData.piecePlaceYMax);
+            }
+            TouchUsed++;
+            objToFollowMouse = null;
         }
     }
 
