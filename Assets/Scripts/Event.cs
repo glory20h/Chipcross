@@ -234,6 +234,12 @@ public class Event : MonoBehaviour
                 }
             }
         }
+
+        //Quit Program on Android Back Button
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     //게임 레벨 불러오기
@@ -894,7 +900,6 @@ public class Event : MonoBehaviour
             Debug.Log("Touch Change : " + touchChange);
             Debug.Log("Time Change : " + timeChange);
             Debug.Log("Diff Change : " + DFactorDiff / 2);
-            Debug.Log("Rate Change : " + rate);
             */
             Debug.Log("Rate Change : " + rate);
 

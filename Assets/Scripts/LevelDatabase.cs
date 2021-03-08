@@ -334,20 +334,38 @@ public class LevelDatabase
             case 15:
                 maxPieceSize = 5;
                 NumberOfPieces = Random.Range(4, 7);
-                if (BoardWidth == 5) scaleSize = 2;
-                else scaleSize = 3;
+                if (BoardWidth == 5)
+                {
+                    scaleSize = 2;
+                    piecePlaceXMin = 6.7f;
+                }
+                else 
+                {
+                    scaleSize = 3;
+                    piecePlaceXMin = 4.5f;
+                }
                 break;
             case 16:
                 maxPieceSize = 6;
                 NumberOfPieces = Random.Range(4, 8);
+                piecePlaceXMin = 5.8f;
                 break;
             case 20:
                 maxPieceSize = 6;
                 NumberOfPieces = Random.Range(5, 9);
+                if (BoardWidth == 5)
+                {
+                    piecePlaceXMin = 5.7f;
+                }
+                else
+                {
+                    piecePlaceXMin = 5.3f;
+                }
                 break;
             case 25:
                 maxPieceSize = 6;
                 NumberOfPieces = Random.Range(8, 12);
+                piecePlaceXMin = 5.8f;
                 break;
             default:
                 Debug.LogError("Something wrong with the switch statement!");
