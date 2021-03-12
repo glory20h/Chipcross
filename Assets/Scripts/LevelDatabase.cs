@@ -184,17 +184,23 @@ public class LevelDatabase
         int diffIndex;
         float mapDFactor;
 
-        if(playerDFactor >= 1f)
+        diffIndex = Mathf.FloorToInt((playerDFactor + 1.0001f) / 0.01f);
+
+        if (playerDFactor >= 0.99f)
         {
-            randomFac = Random.Range(1, 136);
+            randomFac = Random.Range(1, 15);
         }
         else
         {
-            randomFac = Random.Range(1, 55);
+            randomFac = Random.Range(1, 28);
         }
 
-        diffIndex = Mathf.FloorToInt((playerDFactor + 1.0001f) / 0.01f);
-        linenum = diffIndex * 54 + randomFac;
+        if(diffIndex >= 199)
+        {
+            diffIndex = 199;
+        }
+        
+        linenum = diffIndex * 27 + randomFac;
         mapDFactor = -1 + diffIndex * 0.01f;
 
         //num is # of reading line
@@ -277,7 +283,7 @@ public class LevelDatabase
                 scaleSize = 1;
                 if (BoardWidth == 3)
                 {
-                    piecePlaceXMin = 5.8f;
+                    piecePlaceXMin = 5.5f;
                 }
                 else
                 {
@@ -290,7 +296,7 @@ public class LevelDatabase
                 if (BoardWidth == 4)
                 {
                     scaleSize = 1;
-                    piecePlaceXMin = 6.5f;
+                    piecePlaceXMin = 6.0f;
                 }
                 else
                 {
@@ -310,7 +316,7 @@ public class LevelDatabase
                 if (BoardWidth == 5)
                 {
                     scaleSize = 2;
-                    piecePlaceXMin = 6.1f;
+                    piecePlaceXMin = 5.6f;
                 }
                 else
                 {
@@ -324,7 +330,7 @@ public class LevelDatabase
                 scaleSize = 2;
                 if (BoardWidth == 4)
                 {
-                    piecePlaceXMin = 6.1f;
+                    piecePlaceXMin = 5.6f;
                 }
                 else
                 {
@@ -337,7 +343,7 @@ public class LevelDatabase
                 if (BoardWidth == 5)
                 {
                     scaleSize = 2;
-                    piecePlaceXMin = 6.7f;
+                    piecePlaceXMin = 6.2f;
                 }
                 else 
                 {
@@ -355,7 +361,7 @@ public class LevelDatabase
                 NumberOfPieces = Random.Range(5, 9);
                 if (BoardWidth == 5)
                 {
-                    piecePlaceXMin = 5.7f;
+                    piecePlaceXMin = 5.3f;
                 }
                 else
                 {
@@ -365,7 +371,7 @@ public class LevelDatabase
             case 25:
                 maxPieceSize = 6;
                 NumberOfPieces = Random.Range(8, 12);
-                piecePlaceXMin = 5.8f;
+                piecePlaceXMin = 5.4f;
                 break;
             default:
                 Debug.LogError("Something wrong with the switch statement!");
