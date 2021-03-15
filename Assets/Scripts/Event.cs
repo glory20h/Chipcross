@@ -831,7 +831,7 @@ public class Event : MonoBehaviour
     }
 
     //플레이어의 PlayerDFactor 변경
-    public void ChangeRating()
+    public void ChangeRating(int numOfSteps)
     {
         // RATE ONLY WHEN IT IS FIRST TIME SOLVING
         if (applyRating)
@@ -847,7 +847,7 @@ public class Event : MonoBehaviour
             float timeChange;
 
             //HINT
-            if (boardSize < 17)
+            if (boardSize < 17)  //Small Board
             {
                 if (HintUsed < 3)
                 {
@@ -858,7 +858,7 @@ public class Event : MonoBehaviour
                     hintChange = 0.015f;
                 }
             }
-            else
+            else   //Big Board
             {
                 if (HintUsed < 4)
                 {
@@ -868,7 +868,6 @@ public class Event : MonoBehaviour
                 {
                     hintChange = 0.015f;
                 }
-                
             }
             rate -= hintChange;
 
@@ -894,6 +893,12 @@ public class Event : MonoBehaviour
             //Adaptation by DFactor
             rate += levelData.DFactorDiff / 4;
 
+            //Warp Tile 꼼수 관련
+            if (boardSize >= 16 && numOfSteps < 5)
+            {
+                rate = 0;
+            }
+
             //Lower Level Rate Change Bonus
             if (playerDFactor < -0.5f && rate > 0)
             {
@@ -917,7 +922,6 @@ public class Event : MonoBehaviour
             Debug.Log("Diff Change : " + DFactorDiff / 2);
             */
             Debug.Log("Rate Change : " + rate);
-
             
             playerDFactor += rate;
             if(playerDFactor <= -1f) playerDFactor = -1f;

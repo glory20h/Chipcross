@@ -41,6 +41,8 @@ public class MoveBoi : MonoBehaviour
     bool warp;
     bool warpDone;
 
+    int numOfSteps;
+
     void Start()
     {
         isMoving = false;
@@ -135,6 +137,8 @@ public class MoveBoi : MonoBehaviour
                     //Debug.Log("Try try again!");
                 }
             }
+
+            numOfSteps++;
         }
     }
 
@@ -151,6 +155,7 @@ public class MoveBoi : MonoBehaviour
         warp = false;
         StartCoroutine(addFriction);
         flickForce = 2.5f;
+        numOfSteps = 0;
     }
 
     public void FastForward()
@@ -343,10 +348,10 @@ public class MoveBoi : MonoBehaviour
         eventChanger.timeCount = true;
     }
 
-    //퍼즐 완료시
+    //퍼즐 완료시(When Boi successfully met girl)
     IEnumerator PuzzleSolved()
     {
-        /* This part is related to CoinAnimation -> Disabled for now
+        /* This part related to CoinAnimation -> Disabled for now
         if (eventChanger.coinChangeToggle == false)
         {
             StopCoroutine(eventChanger.CoinIncreaseAnimation());
@@ -356,7 +361,7 @@ public class MoveBoi : MonoBehaviour
 
         eventChanger.DisplayPlayData();
         eventChanger.DisplayTime();
-        eventChanger.ChangeRating();
+        eventChanger.ChangeRating(numOfSteps - 1);
         PuzzleSolvedPanel.SetActive(true);
         SoundFXPlayer.Play("positiveVibe");
         //yield return StartCoroutine(eventChanger.CoinIncreaseAnimation()); //This part is related to CoinAnimation -> Disabled for now
