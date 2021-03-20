@@ -192,15 +192,15 @@ public class LevelDatabase
         }
         else
         {
-            randomFac = Random.Range(1, 28);
+            randomFac = Random.Range(1, 9);
         }
 
-        if(diffIndex >= 199)
+        if(diffIndex >= 189)
         {
-            diffIndex = 199;
+            diffIndex = 189;
         }
         
-        linenum = diffIndex * 27 + randomFac;
+        linenum = diffIndex * 8 + randomFac;
         mapDFactor = -1 + diffIndex * 0.01f;
 
         //num is # of reading line
@@ -208,7 +208,7 @@ public class LevelDatabase
         {
             content = sr.ReadLine();
         }
-        //Debug.Log("Read Line " + linenum);
+        Debug.Log("Read Line " + linenum);
 
         DFactorDiff = mapDFactor - playerDFactor;
 
