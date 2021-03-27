@@ -706,9 +706,9 @@ public class Event : MonoBehaviour
     {
         float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
 
-        if(playerDFactor >= 0.99f)
+        if(playerDFactor >= 0.97f)
         {
-            playerDFactor = 1f;
+            playerDFactor = 0.98f;
         }
         else
         {
@@ -726,9 +726,9 @@ public class Event : MonoBehaviour
     {
         float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
 
-        if (playerDFactor <= -0.99f)
+        if (playerDFactor <= -0.97f)
         {
-            playerDFactor = -1f;
+            playerDFactor = -0.98f;
         }
         else
         {

@@ -186,21 +186,21 @@ public class LevelDatabase
 
         diffIndex = Mathf.FloorToInt((playerDFactor + 1.0001f) / 0.01f);
 
-        if (playerDFactor >= 0.99f)
+        if (playerDFactor >= 0.98f)
         {
-            randomFac = Random.Range(1, 15);
+            randomFac = Random.Range(1, 22);
         }
         else
         {
-            randomFac = Random.Range(1, 9);
+            randomFac = Random.Range(1, 49);
         }
 
-        if(diffIndex >= 189)
+        if(diffIndex >= 198)
         {
-            diffIndex = 189;
+            diffIndex = 198;
         }
         
-        linenum = diffIndex * 8 + randomFac;
+        linenum = diffIndex * 48 + randomFac;
         mapDFactor = -1 + diffIndex * 0.01f;
 
         //num is # of reading line
