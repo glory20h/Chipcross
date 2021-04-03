@@ -83,6 +83,10 @@ public class Event : MonoBehaviour
     [HideInInspector] public bool timeCount;
     /// For Timer
 
+    /// For Application Quit
+    float prevTime;
+    /// For Application Quit
+
     void Start()
     {
         //변수, PlayerPrefs 초기화
@@ -115,6 +119,8 @@ public class Event : MonoBehaviour
 
         //PlayerPrefs.SetInt("tutorial",0);//확인중임 없애도 됨. 기본은 0놓고했었음
         PlayerPrefs.SetInt("Piecedata", 1);
+
+        prevTime = -2f;
 
         //MANUALLY SET STARTING PLAYER'S DIFFICULTYFACTOR BY CHANGING THIS VALUE
         //PlayerPrefs.SetFloat("PlayerDFactor", -1f);
@@ -149,7 +155,12 @@ public class Event : MonoBehaviour
         //Quit Program on Android Back Button
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Application.Quit();
+            float curTime = Time.time;
+            if(curTime - prevTime <= 1.5f)
+            {
+                Application.Quit();
+            }
+            prevTime = curTime;
         }
     }
 
@@ -303,7 +314,7 @@ public class Event : MonoBehaviour
             backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/11");
         else if(levelDFactor < 0f)
             backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/22");
-        else if (levelDFactor < 0.6f)
+        else if (levelDFactor < 0.5f)
             backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/33");
         else
             backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/44");
@@ -726,13 +737,53 @@ public class Event : MonoBehaviour
     {
         float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
 
-        if (playerDFactor <= -0.97f)
+        if (playerDFactor <= -0.98f)
         {
-            playerDFactor = -0.98f;
+            playerDFactor = -0.99f;
         }
         else
         {
             playerDFactor -= 0.01f;
+        }
+
+        PlayerPrefs.SetFloat("PlayerDFactor", playerDFactor);
+        PlayerDFactorText.text = "Player: " + playerDFactor.ToString();
+        DeleteLevel();
+        LoadLevel();
+        SavePiecePosition();
+    }
+
+    public void DevDFactorBigIncrease()
+    {
+        float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
+
+        if (playerDFactor >= 0.45f)
+        {
+            playerDFactor = 0.98f;
+        }
+        else
+        {
+            playerDFactor += 0.55f;
+        }
+
+        PlayerPrefs.SetFloat("PlayerDFactor", playerDFactor);
+        PlayerDFactorText.text = "Player: " + playerDFactor.ToString();
+        DeleteLevel();
+        LoadLevel();
+        SavePiecePosition();
+    }
+
+    public void DevDFactorBigDecrease()
+    {
+        float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
+
+        if (playerDFactor <= -0.45f)
+        {
+            playerDFactor = -0.99f;
+        }
+        else
+        {
+            playerDFactor -= 0.55f;
         }
 
         PlayerPrefs.SetFloat("PlayerDFactor", playerDFactor);
