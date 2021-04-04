@@ -82,6 +82,8 @@ public class Event : MonoBehaviour
     [HideInInspector] public float elapsedTime = 0f;
     [HideInInspector] public bool timeCount;
     /// For Timer
+    //Exit
+    int click = 0;
 
     void Start()
     {
@@ -124,7 +126,18 @@ public class Event : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
         }
-            
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            click++;
+            StartCoroutine(ClickTime());
+
+            if (click > 1)
+            {
+                print("Exit Game!");
+                Application.Quit();
+            }
+        }
+
         //퍼즐조각 움직임 enable/disable
         if (MovePieceMode && Time.timeScale != 0f)
         {
@@ -992,5 +1005,11 @@ public class Event : MonoBehaviour
         }
         TouchUsed++;
         objToFollowMouse = null;
+    }
+
+    IEnumerator ClickTime()
+    {
+        yield return new WaitForSeconds(0.5f);
+        click = 0;
     }
 }
