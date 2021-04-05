@@ -289,21 +289,26 @@ public class Event : MonoBehaviour
         GameObject obj;
         GameObject obj2;
 
-        //OLD : using int levelNum
-        //levelData.LoadLevelData(levelNum);
-
-        //NEW : using PlayerDFactor
-        //int lineNum = levelData.LoadLevelData();
-        if (!playAgain)
+        if(PlayerPrefs.GetInt("tutorial") >= 1)
         {
-            levelDFactor = levelData.LoadLevelData();
+            //OLD : using int levelNum
+            levelData.TutorialData(levelNum);
         }
+        else
+        {
+            //NEW : using PlayerDFactor
+            //int lineNum = levelData.LoadLevelData();
+            if (!playAgain)
+            {
+                levelDFactor = levelData.LoadLevelData();
+            }
 
-        //DfactorText.text = levelData.ReadFileByLine("LevelDifficulty", lineNum);
-        //levelDFactor = float.Parse(DfactorText.text);
-        float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
-        PlayerDFactorText.text = "Player: " + playerDFactor.ToString();
-        DfactorText.text = "Level: " + levelDFactor.ToString();
+            //DfactorText.text = levelData.ReadFileByLine("LevelDifficulty", lineNum);
+            //levelDFactor = float.Parse(DfactorText.text);
+            float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
+            PlayerDFactorText.text = "Player: " + playerDFactor.ToString();
+            DfactorText.text = "Level: " + levelDFactor.ToString();
+        }
 
         int typeIndex;
         int pieceHeight;
@@ -1071,10 +1076,8 @@ public class Event : MonoBehaviour
         Time.timeScale = 0f;
         switch (level)
         {
-            case 1:// boy right
-                //Boy.transform.position = West.transform.position;
-                //Debug.Log(West.transform.position);
-                //Debug.Log(Boy.transform.position);
+            case 1:
+                LoadLevel();
                 break;
             case 2:// 1번 타일
                 break;
