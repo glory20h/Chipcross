@@ -37,6 +37,11 @@ public class Event : MonoBehaviour
     public GameObject tutorialPanel;
     int firstTime = 2;
     bool tutorialDo = true;
+    public GameObject West;
+    public GameObject East;
+    public GameObject North;
+    public GameObject South;
+    public GameObject Center;
     ///튜토리얼 창 관련
 
     ///Dev Tools 관련
@@ -92,11 +97,17 @@ public class Event : MonoBehaviour
         //변수, PlayerPrefs 초기화
         Initialize();
 
-        //levelData 게임 스테이지 데이터베이스에서 데이터를 불러와서 현재 스테이지 생성
-        LoadLevel();
-
-        //퍼즐 조각 초기 위치 저장
-        SavePiecePosition();
+        if (PlayerPrefs.GetInt("tutorial") >= 1)
+        {
+            tutorial(PlayerPrefs.GetInt("tutorial"));
+        }
+        else
+        {
+            //levelData 게임 스테이지 데이터베이스에서 데이터를 불러와서 현재 스테이지 생성
+            LoadLevel();
+            //퍼즐 조각 초기 위치 저장
+            SavePiecePosition();
+        }
 
         //stageLoad();
     }
@@ -117,7 +128,10 @@ public class Event : MonoBehaviour
 
         timeCount = false;
 
-        //PlayerPrefs.SetInt("tutorial",0);//확인중임 없애도 됨. 기본은 0놓고했었음
+        PlayerPrefs.SetInt("tutorial", 1);//확인중임 없애도 됨. 기본은 0놓고했었음 0안하는거, 1이 하는거로 하자
+        //Debug.Log(PlayerPrefs.GetInt("tutorial"));
+        //Debug.Log("Hi");
+
         PlayerPrefs.SetInt("Piecedata", 1);
 
         prevTime = -2f;
@@ -1049,5 +1063,35 @@ public class Event : MonoBehaviour
     IEnumerator Waitsecond()
     {
         yield return new WaitForSeconds(0.3f);
+    }
+
+    public void tutorial(int level)
+    {
+        tutorialPanel.SetActive(true);
+        Time.timeScale = 0f;
+        switch (level)
+        {
+            case 1:// boy right
+                //Boy.transform.position = West.transform.position;
+                //Debug.Log(West.transform.position);
+                //Debug.Log(Boy.transform.position);
+                break;
+            case 2:// 1번 타일
+                break;
+            case 3:// 2번 타일
+                break;
+            case 4:// 3번 타일
+                break;
+            case 5:// 4번 타일
+                break;
+            case 6:// 5번 타일
+                break;
+            case 7:// 6번 타일
+                break;
+            case 8:// 7번 타일
+                break;
+            case 9:// 8번 타일
+                break;
+        }
     }
 }
