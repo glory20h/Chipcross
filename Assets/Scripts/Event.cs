@@ -1073,11 +1073,12 @@ public class Event : MonoBehaviour
     public void tutorial(int level)
     {
         tutorialPanel.SetActive(true);
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f;
         switch (level)
         {
             case 1:
                 LoadLevel();
+                //추가해야되는것 타일 하이라이트와 이를 이동하는 방식
                 break;
             case 2:// 1번 타일
                 break;
