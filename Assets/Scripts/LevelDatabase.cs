@@ -707,12 +707,12 @@ public class LevelDatabase
                 break;
             case 1:
                 scaleSize = 1;
-                BoardWidth = 1;
-                BoardHeight = 1;
+                BoardWidth = 2;
+                BoardHeight = 2;
                 BoyPos = 0;
                 GirlPos = 0;
                 NumberOfPieces = 1;
-                BoardEmptyTileTypeInfo = ConvertStringToIntArray(SetDefaultBoard());
+                BoardEmptyTileTypeInfo = ConvertStringToIntArray("1333");
                 ConvertStringToPieceInfo("111");
                 break;
             case 2:
