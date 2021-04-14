@@ -36,12 +36,9 @@ public class Event : MonoBehaviour
     ///튜토리얼 창 관련
     public GameObject tutorialPanel;
     int firstTime = 2;
-    bool tutorialDo = true;
-    public GameObject West;
-    public GameObject East;
-    public GameObject North;
-    public GameObject South;
-    public GameObject Center;
+    bool tutorialDo = false;
+    public GameObject finger;
+    Vector3 fingerTarget;
     ///튜토리얼 창 관련
 
     ///Dev Tools 관련
@@ -175,6 +172,12 @@ public class Event : MonoBehaviour
                 Application.Quit();
             }
             prevTime = curTime;
+        }
+
+        //For tutorial not using animation
+        if (PlayerPrefs.GetInt("tutorial") >= 1 && tutorialDo)
+        {
+            finger.transform.position = Vector3.MoveTowards(finger.transform.position, fingerTarget, 0.01f);
         }
     }
 
@@ -1073,12 +1076,21 @@ public class Event : MonoBehaviour
     public void tutorial(int level)
     {
         tutorialPanel.SetActive(true);
+        GameObject tilePlace;
         //Time.timeScale = 0f;
         switch (level)
         {
             case 1:
                 LoadLevel();
                 //추가해야되는것 타일 하이라이트와 이를 이동하는 방식
+                finger.SetActive(true);
+                tilePlace = GameObject.FindGameObjectWithTag("Piece");
+                finger.transform.position = tilePlace.transform.position;
+                tilePlace = GameObject.FindGameObjectWithTag("EmptyTile");
+                //Debug.Log(tilePlace.transform.position);
+                //Debug.Log(fingerTarget.transform.position);
+                fingerTarget = tilePlace.transform.position;
+                tutorialDo = true;
                 break;
             case 2:// 1번 타일
                 break;
