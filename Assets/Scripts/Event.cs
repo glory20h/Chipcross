@@ -96,7 +96,7 @@ public class Event : MonoBehaviour
 
         if (PlayerPrefs.GetInt("tutorial") >= 1)
         {
-            tutorial(PlayerPrefs.GetInt("tutorial"));
+            Tutorial(PlayerPrefs.GetInt("tutorial"));
         }
         else
         {
@@ -1041,7 +1041,7 @@ public class Event : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    public void tutorialOff() //tutorial on/off -> 버튼
+    public void TutorialOff() //tutorial on/off -> 버튼
     {
         if (PlayerPrefs.GetInt("tutorial") == 0) // 0이면 처음부터
         {
@@ -1073,7 +1073,7 @@ public class Event : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
     }
 
-    public void tutorial(int level)
+    public void Tutorial(int level)
     {
         tutorialPanel.SetActive(true);
         GameObject tilePlace;
@@ -1082,6 +1082,7 @@ public class Event : MonoBehaviour
         {
             case 1:
                 LoadLevel();
+                SavePiecePosition();
                 //추가해야되는것 타일 하이라이트와 이를 이동하는 방식
                 finger.SetActive(true);
                 tilePlace = GameObject.FindGameObjectWithTag("Piece");
