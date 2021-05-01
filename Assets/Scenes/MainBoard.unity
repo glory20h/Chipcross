@@ -204,8 +204,9 @@ GameObject:
   m_Component:
   - component: {fileID: 13261065}
   - component: {fileID: 13261066}
+  - component: {fileID: 13261067}
   m_Layer: 0
-  m_Name: Music
+  m_Name: BGM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -322,6 +323,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &13261067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 13261064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47b0fa51b4eb10b459b54ae52e3e0de6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &25757805
 GameObject:
   m_ObjectHideFlags: 0
@@ -1083,7 +1096,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &279480629
 Transform:
   m_ObjectHideFlags: 0
@@ -1096,7 +1109,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1687712246}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &279480630
 MonoBehaviour:
@@ -6272,8 +6285,8 @@ Transform:
   m_Children:
   - {fileID: 13261065}
   - {fileID: 1690052408}
-  - {fileID: 279480629}
   - {fileID: 1883187107}
+  - {fileID: 279480629}
   m_Father: {fileID: 760250154}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6289,7 +6302,7 @@ GameObject:
   - component: {fileID: 1690052410}
   - component: {fileID: 1690052409}
   m_Layer: 0
-  m_Name: SoundFX
+  m_Name: SFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6834,7 +6847,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1687712246}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &1883187108
 AudioSource:
