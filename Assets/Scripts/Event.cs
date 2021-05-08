@@ -58,6 +58,7 @@ public class Event : MonoBehaviour
     /// Variables for Level Loading
     LevelDatabase levelData;
     int levelNum;
+    public int tutonum;
     float scaleFactor;
     float distanceBetweenTiles;
     float emptyTileScale;
@@ -117,11 +118,12 @@ public class Event : MonoBehaviour
         GonfasterBtn.interactable = false;
 
         levelNum = 1;                                        //MANUALLY SET STARTING LEVEL NUMBER BY CHANGING THIS VALUE
+        tutonum = 1;
         levelData = new LevelDatabase();
 
         UIPieceScale = 0.45f;                                 //UI에서의 퍼즐 조각 크기. 화면/퍼즐에 놓았을 때는 1, UI상에서는 현재 값으로 축소
 
-        applyRating = true;
+        applyRating = false;
 
         timeCount = false;
 
@@ -295,7 +297,7 @@ public class Event : MonoBehaviour
         if(PlayerPrefs.GetInt("tutorial") >= 1)
         {
             //OLD : using int levelNum
-            levelData.TutorialData(levelNum);
+            levelData.TutorialData(tutonum);
         }
         else
         {
@@ -596,9 +598,19 @@ public class Event : MonoBehaviour
 
         DeleteLevel();
         levelData.LoadLevelData();//For check new tile;
-        if (levelData.tutorialCase)// 바꾸어야될듯? -> leveldata에서 CheckNewPieces앞에 false해서 이제 ㄱㅊ
+        if (PlayerPrefs.GetInt("tutorial") >= 1 && tutonum<8)// 바꾸어야될듯? -> leveldata에서 CheckNewPieces앞에 false해서 이제 ㄱㅊ
         {
-            tutorialPanel.SetActive(true);
+            Debug.Log("Tuto");
+            Tutorial(PlayerPrefs.GetInt("tutorial"));
+        }
+        else if(tutonum>=8)
+        {
+            applyRating = true;
+            finger.SetActive(false);
+            tutorialDo = false;
+            PlayerPrefs.SetInt("tutorial", 0);
+            LoadLevel();
+            SavePiecePosition();
         }
         else
         {
@@ -1078,37 +1090,29 @@ public class Event : MonoBehaviour
         tutorialPanel.SetActive(true);
         GameObject tilePlace;
         //Time.timeScale = 0f;
-        switch (level)
+        if (level < 8)
         {
-            case 1:
-                LoadLevel();
-                SavePiecePosition();
-                //추가해야되는것 타일 하이라이트와 이를 이동하는 방식
-                finger.SetActive(true);
-                tilePlace = GameObject.FindGameObjectWithTag("Piece");
-                finger.transform.position = tilePlace.transform.position;
-                tilePlace = GameObject.FindGameObjectWithTag("EmptyTile");
-                //Debug.Log(tilePlace.transform.position);
-                //Debug.Log(fingerTarget.transform.position);
-                fingerTarget = tilePlace.transform.position;
-                tutorialDo = true;
-                break;
-            case 2:// 1번 타일
-                break;
-            case 3:// 2번 타일
-                break;
-            case 4:// 3번 타일
-                break;
-            case 5:// 4번 타일
-                break;
-            case 6:// 5번 타일
-                break;
-            case 7:// 6번 타일
-                break;
-            case 8:// 7번 타일
-                break;
-            case 9:// 8번 타일
-                break;
+            Debug.Log("11111111111111111");
+            LoadLevel();
+            SavePiecePosition();
+            //추가해야되는것 타일 하이라이트와 이를 이동하는 방식
+            finger.SetActive(true);
+            tilePlace = GameObject.FindGameObjectWithTag("Piece");
+            finger.transform.position = tilePlace.transform.position;
+            tilePlace = GameObject.FindGameObjectWithTag("EmptyTile");
+            //Debug.Log(tilePlace.transform.position);
+            //Debug.Log(fingerTarget.transform.position);
+            fingerTarget = tilePlace.transform.position;
+            tutorialDo = true;
+        }
+        else
+        {
+            applyRating = true;
+            finger.SetActive(false);
+            tutorialDo = false;
+            PlayerPrefs.SetInt("tutorial", 0);
+            LoadLevel();
+            SavePiecePosition();
         }
     }
 }
