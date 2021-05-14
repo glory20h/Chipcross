@@ -370,6 +370,7 @@ public class MoveBoi : MonoBehaviour
         eventChanger.DisplayTime();
         eventChanger.ChangeRating(numOfSteps - 1);
         PuzzleSolvedPanel.SetActive(true);
+        eventChanger.finger.SetActive(false);
         SoundFXPlayer.Play("positiveVibe");
         //yield return StartCoroutine(eventChanger.CoinIncreaseAnimation()); //This part is related to CoinAnimation -> Disabled for now
     }

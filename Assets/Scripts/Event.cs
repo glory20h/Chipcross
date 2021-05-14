@@ -39,6 +39,8 @@ public class Event : MonoBehaviour
     bool tutorialDo = false;
     public GameObject finger;
     Vector3 fingerTarget;
+    [HideInInspector] public Vector3 firstPlace;
+    [HideInInspector] public GameObject tilePlace;
     ///튜토리얼 창 관련
 
     ///Dev Tools 관련
@@ -180,6 +182,8 @@ public class Event : MonoBehaviour
         if (PlayerPrefs.GetInt("tutorial") >= 1 && tutorialDo)
         {
             finger.transform.position = Vector3.MoveTowards(finger.transform.position, fingerTarget, 0.01f);
+            if (finger.transform.position == tilePlace.transform.position)
+                finger.transform.position = firstPlace;
         }
     }
 
@@ -836,11 +840,13 @@ public class Event : MonoBehaviour
         if(OptionMenu.activeSelf)
         {
             OptionMenu.SetActive(false);
+            finger.SetActive(true);
             Time.timeScale = 1f;
         }
         else
         {
             OptionMenu.SetActive(true);
+            finger.SetActive(false);
             Time.timeScale = 0f;
         }
     }
@@ -849,6 +855,7 @@ public class Event : MonoBehaviour
     public void CloseOptionPanel()
     {
         OptionMenu.SetActive(false);
+        finger.SetActive(true);
         Time.timeScale = 1f;
     }
 
@@ -1091,7 +1098,7 @@ public class Event : MonoBehaviour
     public void Tutorial(int level)
     {
         tutorialPanel.SetActive(true);
-        GameObject tilePlace;
+        //GameObject tilePlace;
         //Time.timeScale = 0f;
         if (level < 8)
         {
@@ -1099,14 +1106,16 @@ public class Event : MonoBehaviour
             //Debug.Log(level);
             LoadLevel();
             SavePiecePosition();
-            //추가해야되는것 타일 하이라이트와 이를 이동하는 방식
             finger.SetActive(true);
+            //추가해야되는것 타일 하이라이트와 이를 이동하는 방식
+            /*
             tilePlace = GameObject.FindGameObjectWithTag("Piece");
             finger.transform.position = tilePlace.transform.position;
             tilePlace = GameObject.FindGameObjectWithTag("EmptyTile");
+            fingerTarget = tilePlace.transform.position;*/
+            Fingerloop();
             //Debug.Log(tilePlace.transform.position);
             //Debug.Log(fingerTarget.transform.position);
-            fingerTarget = tilePlace.transform.position;
             tutorialDo = true;
         }
         else
@@ -1121,5 +1130,14 @@ public class Event : MonoBehaviour
             LoadLevel();
             SavePiecePosition();
         }
+    }
+
+    void Fingerloop()
+    {
+        tilePlace = GameObject.FindGameObjectWithTag("Piece");
+        firstPlace = tilePlace.transform.position;
+        finger.transform.position = tilePlace.transform.position;
+        tilePlace = GameObject.FindGameObjectWithTag("EmptyTile");
+        fingerTarget = tilePlace.transform.position;
     }
 }
