@@ -770,9 +770,9 @@ public class LevelDatabase
                 BoardWidth = 2;
                 BoardHeight = 2;
                 BoyPos = 0;
-                GirlPos = 1;
+                GirlPos = 0;
                 NumberOfPieces = 1;
-                BoardEmptyTileTypeInfo = ConvertStringToIntArray("4395");
+                BoardEmptyTileTypeInfo = ConvertStringToIntArray("1395");
                 ConvertStringToPieceInfo("118");
                 break;
         }

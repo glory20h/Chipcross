@@ -58,7 +58,7 @@ public class Event : MonoBehaviour
     /// Variables for Level Loading
     LevelDatabase levelData;
     int levelNum;
-    public int tutonum;
+    //public int tutonum;
     float scaleFactor;
     float distanceBetweenTiles;
     float emptyTileScale;
@@ -118,7 +118,7 @@ public class Event : MonoBehaviour
         GonfasterBtn.interactable = false;
 
         levelNum = 1;                                        //MANUALLY SET STARTING LEVEL NUMBER BY CHANGING THIS VALUE
-        tutonum = 1;
+        //tutonum = 1;
         levelData = new LevelDatabase();
 
         UIPieceScale = 0.45f;                                 //UI에서의 퍼즐 조각 크기. 화면/퍼즐에 놓았을 때는 1, UI상에서는 현재 값으로 축소
@@ -297,7 +297,7 @@ public class Event : MonoBehaviour
         if(PlayerPrefs.GetInt("tutorial") >= 1)
         {
             //OLD : using int levelNum
-            levelData.TutorialData(tutonum);
+            levelData.TutorialData(PlayerPrefs.GetInt("tutorial"));
         }
         else
         {
@@ -334,14 +334,17 @@ public class Event : MonoBehaviour
         pieceScale = 1 * scaleFactor;
 
         //Load map by levelfactor
-        if(levelDFactor < -0.55f) //level factor < -0.55인데 여기서는 어쩔수 없이 갯수로
-            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/11");
-        else if(levelDFactor < 0f)
-            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/22");
-        else if (levelDFactor < 0.5f)
-            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/33");
-        else
-            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/44");
+        if(PlayerPrefs.GetInt("tutorial") < 1)
+        {
+            if (levelDFactor < -0.55f) //level factor < -0.55인데 여기서는 어쩔수 없이 갯수로
+                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/11");
+            else if (levelDFactor < 0f)
+                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/22");
+            else if (levelDFactor < 0.5f)
+                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/33");
+            else
+                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/44");
+        }
 
         //Instantiate 'EmptyTile'
         typeIndex = 0;
@@ -598,12 +601,12 @@ public class Event : MonoBehaviour
 
         DeleteLevel();
         levelData.LoadLevelData();//For check new tile;
-        if (PlayerPrefs.GetInt("tutorial") >= 1 && tutonum<8)// 바꾸어야될듯? -> leveldata에서 CheckNewPieces앞에 false해서 이제 ㄱㅊ
+        if (PlayerPrefs.GetInt("tutorial") >= 1)// 바꾸어야될듯? -> leveldata에서 CheckNewPieces앞에 false해서 이제 ㄱㅊ
         {
-            Debug.Log("Tuto");
+            //Debug.Log("Tuto");
             Tutorial(PlayerPrefs.GetInt("tutorial"));
         }
-        else if(tutonum>=8)
+        else if(PlayerPrefs.GetInt("tutorial") < 1)
         {
             applyRating = true;
             finger.SetActive(false);
@@ -1092,7 +1095,8 @@ public class Event : MonoBehaviour
         //Time.timeScale = 0f;
         if (level < 8)
         {
-            Debug.Log("11111111111111111");
+            //Debug.Log("11111111111111111");
+            //Debug.Log(level);
             LoadLevel();
             SavePiecePosition();
             //추가해야되는것 타일 하이라이트와 이를 이동하는 방식
@@ -1107,6 +1111,9 @@ public class Event : MonoBehaviour
         }
         else
         {
+            //Debug.Log("22222222222222222222");
+            tutorialPanel.SetActive(false);
+            PlayerPrefs.SetInt("tutorial", 0);
             applyRating = true;
             finger.SetActive(false);
             tutorialDo = false;

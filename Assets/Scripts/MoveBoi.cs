@@ -132,7 +132,9 @@ public class MoveBoi : MonoBehaviour
                     if (PlayerPrefs.GetInt("tutorial") >= 1)
                     {
                         //OLD : using int levelNum
-                        eventChanger.tutonum += 1;
+                        int tutolevel = PlayerPrefs.GetInt("tutorial");
+                        tutolevel += 1;
+                        PlayerPrefs.SetInt("tutorial", tutolevel);
                     }
                 }
                 else //Wrong Solution

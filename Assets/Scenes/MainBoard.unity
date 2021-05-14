@@ -185,6 +185,7 @@ MonoBehaviour:
   DevTools: {fileID: 147755336}
   backGround: {fileID: 1033967733}
   MovePieceMode: 0
+  tutonum: 0
   PlayerDFactorText: {fileID: 907820809}
   DfactorText: {fileID: 1465697361}
   UsedHintText: {fileID: 1918675156}
@@ -3897,7 +3898,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -5
-  m_Sprite: {fileID: 21300000, guid: eae96567439f2aa4f9fa1726a3f4fa86, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3905,7 +3906,7 @@ SpriteRenderer:
   m_Size: {x: 25.6, y: 14.4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1033967735
