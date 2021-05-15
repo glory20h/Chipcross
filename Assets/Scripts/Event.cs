@@ -80,7 +80,7 @@ public class Event : MonoBehaviour
 
     /// For DFactor Rate Change
     bool applyRating;
-    float levelDFactor;
+    [HideInInspector] public float levelDFactor;
     /// For DFactor Rate Change
 
     /// For Timer
@@ -1009,14 +1009,14 @@ public class Event : MonoBehaviour
             //CHANGE RATE WITH RANDOM VALUE
             //rate = Random.Range(-0.005f, 0.01f);
 
-            //DISPLAY RATE CHANGE INFO
+            //DISPLAY RATE CHANGE
             /*
             Debug.Log("Hint Change : " + hintChange);
             Debug.Log("Touch Change : " + touchChange);
             Debug.Log("Time Change : " + timeChange);
             Debug.Log("Diff Change : " + DFactorDiff / 2);
             */
-            Debug.Log("Rate Change : " + rate);
+            //Debug.Log("Rate Change : " + rate);
             
             playerDFactor += rate;
             if(playerDFactor <= -1f) playerDFactor = -1f;

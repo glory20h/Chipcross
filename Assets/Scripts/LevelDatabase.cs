@@ -208,7 +208,7 @@ public class LevelDatabase
         {
             content = sr.ReadLine();
         }
-        Debug.Log("Read Line " + linenum);
+        //Debug.Log("Read Line " + linenum);
 
         DFactorDiff = mapDFactor - playerDFactor;
 
