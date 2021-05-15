@@ -129,7 +129,7 @@ public class Event : MonoBehaviour
 
         timeCount = false;
 
-        PlayerPrefs.SetInt("tutorial", 1);//확인중임 없애도 됨. 기본은 0놓고했었음 0안하는거, 1이 하는거로 하자
+        PlayerPrefs.SetInt("tutorial", 0);//확인중임 없애도 됨. 기본은 0놓고했었음 0안하는거, 1이 하는거로 하자
         //Debug.Log(PlayerPrefs.GetInt("tutorial"));
         //Debug.Log("Hi");
 
@@ -840,7 +840,8 @@ public class Event : MonoBehaviour
         if(OptionMenu.activeSelf)
         {
             OptionMenu.SetActive(false);
-            finger.SetActive(true);
+            if(PlayerPrefs.GetInt("tutorial") >= 1)
+                finger.SetActive(true);
             Time.timeScale = 1f;
         }
         else
@@ -855,7 +856,8 @@ public class Event : MonoBehaviour
     public void CloseOptionPanel()
     {
         OptionMenu.SetActive(false);
-        finger.SetActive(true);
+        if (PlayerPrefs.GetInt("tutorial") >= 1)
+            finger.SetActive(true);
         Time.timeScale = 1f;
     }
 
@@ -1122,7 +1124,6 @@ public class Event : MonoBehaviour
         {
             //Debug.Log("22222222222222222222");
             tutorialPanel.SetActive(false);
-            PlayerPrefs.SetInt("tutorial", 0);
             applyRating = true;
             finger.SetActive(false);
             tutorialDo = false;
