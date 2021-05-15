@@ -6,27 +6,33 @@ using UnityEngine.UI;
 public class BGMManager : MonoBehaviour
 {
     public Event ev;
-    public Text titleText;
+    public Text titleTxt;
 
     static AudioClip[] audioLibrary;
     public static AudioClip audioClip;
     static AudioSource audioSrc;
 
-    public bool loadFromBPM90 = true;
+    bool loadFromBPM90;
 
     int repeatAmount = 2;
     int currentRepeat = 0;
 
+    int r;
+    int level;
+
     void Start()
     {
         audioSrc = GetComponent<AudioSource>();
-
-        LoadAudioLibrary(loadFromBPM90);
-        LoadRandomAudioClip();
-
         audioSrc.loop = true;
+        loadFromBPM90 = false;
+        r = 0;
+        level = CurrentLevel();
+
+        LoadAudioLibrary();
+        LoadAudioClip(r);
+        
         audioSrc.Play();
-        titleText.text = audioSrc.clip.name;
+        titleTxt.text = audioSrc.clip.name;
     }
 
     //AUTO-LOOPING VERSION
@@ -58,37 +64,78 @@ public class BGMManager : MonoBehaviour
     }
     */
 
-    void LoadAudioLibrary(bool loadFromBPM90)
+    void LoadAudioLibrary()
     {
         if(loadFromBPM90 == false)
         {
-            if (ev.levelDFactor < -0.55f)
+            if (level == 1)
                 audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level1");
-            else if (ev.levelDFactor < 0f)
+            else if (level == 2)
                 audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level2");
-            else if (ev.levelDFactor < 0.5f)
+            else if (level == 3)
                 audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level3");
             else
                 audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level4");
         }
         else
         {
-            if (ev.levelDFactor < 0f)
+            if (level == 1 || level == 2)
                 audioLibrary = Resources.LoadAll<AudioClip>("Audio/Bpm90/12");
             else
                 audioLibrary = Resources.LoadAll<AudioClip>("Audio/Bpm90/34");
         }
     }
 
-    void LoadRandomAudioClip()
+    void LoadAudioClip(int r)
     {
-        audioSrc.clip = audioLibrary[Random.Range(0, audioLibrary.Length)];
+        audioSrc.clip = audioLibrary[r];
     }
 
-    public void SwitchBGM()
+    int CurrentLevel()
     {
-        LoadRandomAudioClip();
-        titleText.text = audioSrc.clip.name;
+        int level;
+
+        if (ev.levelDFactor < -0.55f)
+            level = 1;
+        else if (ev.levelDFactor < 0f)
+            level = 2;
+        else if (ev.levelDFactor < 0.5f)
+            level = 3;
+        else
+            level = 4;
+
+        return level;
+    }
+
+    public void NextBGM()
+    {
+        if (level != CurrentLevel())
+        {
+            level = CurrentLevel();
+            LoadAudioLibrary();
+            r = 0;
+        }
+        else
+        {
+            r++;
+
+            if (r == audioLibrary.Length) 
+                r = 0;
+        }
+
+        LoadAudioClip(r);
+        titleTxt.text = audioSrc.clip.name;
+        audioSrc.Play();
+    }
+
+    public void SwitchAudioLibrary()
+    {
+        loadFromBPM90 = !loadFromBPM90;
+        LoadAudioLibrary();
+        r = 0;
+
+        LoadAudioClip(r);
+        titleTxt.text = audioSrc.clip.name;
         audioSrc.Play();
     }
 }
