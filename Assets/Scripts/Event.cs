@@ -1030,19 +1030,19 @@ public class Event : MonoBehaviour
     //오디오믹서의 배경음악 볼륨 조절
     public void SetMusicVolume(float vol)
     {
-        audioMixer.SetFloat("MusicVol", vol);
+        audioMixer.SetFloat("MusicVol", -0.0125f * (-vol) * (-vol));
     }
 
     //오디오믹서의 효과음 볼륨 조절
     public void SetSFXVolume(float vol)
     {
-        audioMixer.SetFloat("SFXVol", vol);
+        audioMixer.SetFloat("SFXVol", -0.0125f * (-vol) * (-vol));
     }
 
     //오디오믹서의 환경음 볼륨 조절
     public void SetAmbienceVolume(float vol)
     {
-        audioMixer.SetFloat("AmbienceVol", vol);
+        audioMixer.SetFloat("AmbienceVol", -0.0125f * (-vol) * (-vol));
     }
 
     //save
