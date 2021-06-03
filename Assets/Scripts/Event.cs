@@ -129,7 +129,7 @@ public class Event : MonoBehaviour
 
         timeCount = false;
 
-        PlayerPrefs.SetInt("tutorial", 0);//확인중임 없애도 됨. 기본은 0놓고했었음 0안하는거, 1이 하는거로 하자
+        PlayerPrefs.SetInt("tutorial", 1);//확인중임 없애도 됨. 기본은 0놓고했었음 0안하는거, 1이 하는거로 하자
         //Debug.Log(PlayerPrefs.GetInt("tutorial"));
         //Debug.Log("Hi");
 
@@ -179,7 +179,7 @@ public class Event : MonoBehaviour
         }
 
         //For tutorial not using animation
-        if (PlayerPrefs.GetInt("tutorial") >= 1 && tutorialDo)
+        if (PlayerPrefs.GetInt("tutorial") > 1 && tutorialDo)
         {
             finger.transform.position = Vector3.MoveTowards(finger.transform.position, fingerTarget, 0.01f);
             if (finger.transform.position == tilePlace.transform.position)
@@ -404,29 +404,32 @@ public class Event : MonoBehaviour
         //Instantiate 'Piece' & 'Tile'
         //Random Puzzle Piece Position Version
         //PieceInitPosition = new Vector3[levelData.NumberOfPieces];
-        for (int i = 0; i < levelData.NumberOfPieces; i++)
+        if (PlayerPrefs.GetInt("tutorial") != 1)
         {
-            prefab = Resources.Load("Prefabs/Piece") as GameObject;
-            obj = Instantiate(prefab, new Vector3(Random.value < 0.5 ? Random.Range(-(levelData.piecePlaceXMax - 0.5f), -(levelData.piecePlaceXMin + 0.5f)) : Random.Range(levelData.piecePlaceXMin + 0.5f, levelData.piecePlaceXMax - 0.5f), Random.Range(levelData.piecePlaceYMin + 0.4f, levelData.piecePlaceYMax)), Quaternion.identity);
-            obj.transform.SetParent(BlockPieces, false);
-            obj.GetComponent<VariableProvider>().pieceNum = i;
-            obj.GetComponent<VariableProvider>().solutionLoc = levelData.pieceDatas[i].solutionLoc;
-
-            typeIndex = 0;
-            pieceHeight = levelData.pieceDatas[i].PieceHeight;
-            pieceWidth = levelData.pieceDatas[i].PieceWidth;
-            for (int j = 0; j < pieceHeight; j++)
+            for (int i = 0; i < levelData.NumberOfPieces; i++)
             {
-                for (int k = 0; k < pieceWidth; k++)
+                prefab = Resources.Load("Prefabs/Piece") as GameObject;
+                obj = Instantiate(prefab, new Vector3(Random.value < 0.5 ? Random.Range(-(levelData.piecePlaceXMax - 0.5f), -(levelData.piecePlaceXMin + 0.5f)) : Random.Range(levelData.piecePlaceXMin + 0.5f, levelData.piecePlaceXMax - 0.5f), Random.Range(levelData.piecePlaceYMin + 0.4f, levelData.piecePlaceYMax)), Quaternion.identity);
+                obj.transform.SetParent(BlockPieces, false);
+                obj.GetComponent<VariableProvider>().pieceNum = i;
+                obj.GetComponent<VariableProvider>().solutionLoc = levelData.pieceDatas[i].solutionLoc;
+
+                typeIndex = 0;
+                pieceHeight = levelData.pieceDatas[i].PieceHeight;
+                pieceWidth = levelData.pieceDatas[i].PieceWidth;
+                for (int j = 0; j < pieceHeight; j++)
                 {
-                    if (levelData.pieceDatas[i].TileType[typeIndex] != 0)
+                    for (int k = 0; k < pieceWidth; k++)
                     {
-                        prefab = Resources.Load("Prefabs/Tile" + levelData.pieceDatas[i].TileType[typeIndex].ToString()) as GameObject;
-                        obj2 = Instantiate(prefab, new Vector3(-pieceWidth + 1 + 2 * k, pieceHeight - 1 - 2 * j, 0), Quaternion.identity);
-                        obj2.transform.SetParent(obj.transform, false);
-                        obj2.GetComponent<SpriteRenderer>().sortingOrder = 75 + i;
+                        if (levelData.pieceDatas[i].TileType[typeIndex] != 0)
+                        {
+                            prefab = Resources.Load("Prefabs/Tile" + levelData.pieceDatas[i].TileType[typeIndex].ToString()) as GameObject;
+                            obj2 = Instantiate(prefab, new Vector3(-pieceWidth + 1 + 2 * k, pieceHeight - 1 - 2 * j, 0), Quaternion.identity);
+                            obj2.transform.SetParent(obj.transform, false);
+                            obj2.GetComponent<SpriteRenderer>().sortingOrder = 75 + i;
+                        }
+                        typeIndex++;
                     }
-                    typeIndex++;
                 }
             }
         }
@@ -448,6 +451,10 @@ public class Event : MonoBehaviour
     void CheckIfAllTilesInPlace()
     {
         if(PiecePosition.Length == BlockOnBoard.childCount)
+        {
+            GonfasterBtn.interactable = true;
+        }
+        else if(PlayerPrefs.GetInt("tutorial") == 1)
         {
             GonfasterBtn.interactable = true;
         }
@@ -1108,14 +1115,21 @@ public class Event : MonoBehaviour
             //Debug.Log(level);
             LoadLevel();
             SavePiecePosition();
-            finger.SetActive(true);
+            if(PlayerPrefs.GetInt("tutorial") != 1)
+            {
+                finger.SetActive(true);
+                Fingerloop();
+            }
+            else
+            {
+                GonfasterBtn.interactable = true;
+            }
             //추가해야되는것 타일 하이라이트와 이를 이동하는 방식
             /*
             tilePlace = GameObject.FindGameObjectWithTag("Piece");
             finger.transform.position = tilePlace.transform.position;
             tilePlace = GameObject.FindGameObjectWithTag("EmptyTile");
             fingerTarget = tilePlace.transform.position;*/
-            Fingerloop();
             //Debug.Log(tilePlace.transform.position);
             //Debug.Log(fingerTarget.transform.position);
             tutorialDo = true;

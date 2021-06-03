@@ -712,8 +712,8 @@ public class LevelDatabase
                 BoyPos = 0;
                 GirlPos = 0;
                 NumberOfPieces = 1;
-                BoardEmptyTileTypeInfo = ConvertStringToIntArray("1333");
-                ConvertStringToPieceInfo("111");
+                BoardEmptyTileTypeInfo = ConvertStringToIntArray("3333");
+                //ConvertStringToPieceInfo("111");
                 break;
             case 2://empty ->
                 scaleSize = 1;
