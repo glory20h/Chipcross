@@ -129,7 +129,7 @@ public class Event : MonoBehaviour
 
         timeCount = false;
 
-        PlayerPrefs.SetInt("tutorial", 1);//확인중임 없애도 됨. 기본은 0놓고했었음 0안하는거, 1이 하는거로 하자
+        PlayerPrefs.SetInt("tutorial", 3);//확인중임 없애도 됨. 기본은 0놓고했었음 0안하는거, 1이 하는거로 하자
         //Debug.Log(PlayerPrefs.GetInt("tutorial"));
         //Debug.Log("Hi");
 
@@ -281,6 +281,7 @@ public class Event : MonoBehaviour
                 SoundFXPlayer.Play("put");
 
                 CheckIfAllTilesInPlace();
+                Fingerloop();
             }
             else
             {
@@ -1149,10 +1150,17 @@ public class Event : MonoBehaviour
 
     void Fingerloop()
     {
-        tilePlace = GameObject.FindGameObjectWithTag("Piece");
+        tilePlace = BlockPieces.GetChild(0).gameObject;
         firstPlace = tilePlace.transform.position;
         finger.transform.position = tilePlace.transform.position;
-        tilePlace = GameObject.FindGameObjectWithTag("EmptyTile");
+        //Debug.Log(GameObject.FindGameObjectWithTag("EmptyTile").GetComponent<BoxCollider2D>().enabled);
+        if(GameObject.FindGameObjectWithTag("EmptyTile").GetComponent<BoxCollider2D>().enabled == true)
+        {
+            tilePlace = GameObject.FindGameObjectWithTag("EmptyTile");
+        }
+
+        //tilePlace = GameObject.FindGameObjectWithTag("EmptyTile");// Box colider on 되어있는거 가져와야됨
+
         fingerTarget = tilePlace.transform.position;
     }
 }
