@@ -730,7 +730,7 @@ public class LevelDatabase
                 BoardWidth = 3;
                 BoardHeight = 3;
                 BoyPos = 0;
-                GirlPos = 0;
+                GirlPos = 1;
                 NumberOfPieces = 2;
                 BoardEmptyTileTypeInfo = ConvertStringToIntArray("135133135");
                 ConvertStringToPieceInfo("12411131241");
