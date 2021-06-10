@@ -1150,17 +1150,27 @@ public class Event : MonoBehaviour
 
     void Fingerloop()
     {
-        tilePlace = BlockPieces.GetChild(0).gameObject;
+        try
+        {
+            tilePlace = BlockPieces.GetChild(0).gameObject;
+        }
+        catch
+        {
+            finger.SetActive(false);
+        }
         firstPlace = tilePlace.transform.position;
         finger.transform.position = tilePlace.transform.position;
         //Debug.Log(GameObject.FindGameObjectWithTag("EmptyTile").GetComponent<BoxCollider2D>().enabled);
-        if(GameObject.FindGameObjectWithTag("EmptyTile").GetComponent<BoxCollider2D>().enabled == true)
+        GameObject[] test = GameObject.FindGameObjectsWithTag("EmptyTile");
+        for (int i = 0; i < test.Length; i++)
         {
-            tilePlace = GameObject.FindGameObjectWithTag("EmptyTile");
+            if (test[i].GetComponent<BoxCollider2D>().enabled == true)
+            {
+                tilePlace = test[i];
+                break;
+            }
         }
-
         //tilePlace = GameObject.FindGameObjectWithTag("EmptyTile");// Box colider on 되어있는거 가져와야됨
-
         fingerTarget = tilePlace.transform.position;
     }
 }
