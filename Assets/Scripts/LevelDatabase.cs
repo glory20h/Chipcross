@@ -699,7 +699,8 @@ public class LevelDatabase
             TileTypeCode = "";
         }
     }
-    public void TutorialData(int num)
+
+    public void LoadTutorialData(int num)
     {
         switch (num)
         {

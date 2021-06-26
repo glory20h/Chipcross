@@ -14,8 +14,9 @@ public class BGMManager : MonoBehaviour
 
     bool loadFromBPM90;
 
-    int repeatAmount = 2;
-    int currentRepeat = 0;
+    //Going to be used for Auto-Loop
+    //int repeatAmount = 2;
+    //int currentRepeat = 0;
 
     int r;
     int level;

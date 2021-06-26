@@ -33,15 +33,15 @@ public class Event : MonoBehaviour
     [HideInInspector] public bool coinChangeToggle = true;
     ///퍼즐 완료 창 관련
 
-    ///튜토리얼 창 관련
+    ///튜토리얼 관련
     public GameObject tutorialPanel;
     int firstTime = 2;
-    bool tutorialDo = false;
+    bool fingerAnimate = false;
     public GameObject finger;
     Vector3 fingerTarget;
     [HideInInspector] public Vector3 firstPlace;
     [HideInInspector] public GameObject tilePlace;
-    ///튜토리얼 창 관련
+    ///튜토리얼 관련
 
     ///Dev Tools 관련
     public GameObject DevTools;
@@ -97,6 +97,7 @@ public class Event : MonoBehaviour
         //변수, PlayerPrefs 초기화
         Initialize();
 
+        //IF NEED TUTORIAL
         if (PlayerPrefs.GetInt("tutorial") >= 1)
         {
             Tutorial(PlayerPrefs.GetInt("tutorial"));
@@ -115,30 +116,27 @@ public class Event : MonoBehaviour
     void Initialize()
     {
         MovePieceMode = true;
-
         goNFastBtnState = 1;
         GonfasterBtn.interactable = false;
-
-        levelNum = 1;                                        //MANUALLY SET STARTING LEVEL NUMBER BY CHANGING THIS VALUE
-        //tutonum = 1;
-        levelData = new LevelDatabase();
-
-        UIPieceScale = 0.45f;                                 //UI에서의 퍼즐 조각 크기. 화면/퍼즐에 놓았을 때는 1, UI상에서는 현재 값으로 축소
-
+        UIPieceScale = 0.45f;                                //UI에서의 퍼즐 조각 크기. 화면/퍼즐에 놓았을 때는 1, UI상에서는 현재 값으로 축소
         applyRating = false;
-
         timeCount = false;
-
-        PlayerPrefs.SetInt("tutorial", 3);//확인중임 없애도 됨. 기본은 0놓고했었음 0안하는거, 1이 하는거로 하자
-        //Debug.Log(PlayerPrefs.GetInt("tutorial"));
-        //Debug.Log("Hi");
-
-        PlayerPrefs.SetInt("Piecedata", 1);
-
-        prevTime = -2f;
 
         //MANUALLY SET STARTING PLAYER'S DIFFICULTYFACTOR BY CHANGING THIS VALUE
         //PlayerPrefs.SetFloat("PlayerDFactor", -1f);
+
+        levelData = new LevelDatabase();
+
+        //MANUALLY SET STARTING TUTORIAL LEVEL BY CHANGING THIS VALUE; DEFAULT 0
+        PlayerPrefs.SetInt("tutorial", 1);                   
+
+        PlayerPrefs.SetInt("Piecedata", 1);
+
+        fingerAnimate = false;
+
+        prevTime = -2f;                                      //For Quitting Program on Android Back Button
+
+        
     }
 
     void Update()
@@ -179,7 +177,7 @@ public class Event : MonoBehaviour
         }
 
         //For tutorial not using animation
-        if (PlayerPrefs.GetInt("tutorial") > 1 && tutorialDo)
+        if (fingerAnimate)
         {
             finger.transform.position = Vector3.MoveTowards(finger.transform.position, fingerTarget, 0.01f);
             if (finger.transform.position == tilePlace.transform.position)
@@ -299,10 +297,11 @@ public class Event : MonoBehaviour
         GameObject obj;
         GameObject obj2;
 
+        //IF NEED TUTORIAL
         if(PlayerPrefs.GetInt("tutorial") >= 1)
         {
-            //OLD : using int levelNum
-            levelData.TutorialData(PlayerPrefs.GetInt("tutorial"));
+            //OLD : used int levelNum
+            levelData.LoadTutorialData(PlayerPrefs.GetInt("tutorial"));
         }
         else
         {
@@ -622,7 +621,7 @@ public class Event : MonoBehaviour
         {
             applyRating = true;
             finger.SetActive(false);
-            tutorialDo = false;
+            fingerAnimate = false;
             PlayerPrefs.SetInt("tutorial", 0);
             LoadLevel();
             SavePiecePosition();
@@ -1083,10 +1082,10 @@ public class Event : MonoBehaviour
             LoadLevel();
             SavePiecePosition();
         }
-        else if(PlayerPrefs.GetInt("tutorial") == 1 && tutorialDo)
+        else if(PlayerPrefs.GetInt("tutorial") == 1 && fingerAnimate)
         {
             tutorialPanel.SetActive(false);
-            tutorialDo = false;
+            fingerAnimate = false;
             //변수 초기화
             Initialize();
             LoadLevel();
@@ -1108,8 +1107,8 @@ public class Event : MonoBehaviour
     public void Tutorial(int level)
     {
         tutorialPanel.SetActive(true);
-        //GameObject tilePlace;
         //Time.timeScale = 0f;
+
         if (level < 8)
         {
             //Debug.Log("11111111111111111");
@@ -1125,15 +1124,18 @@ public class Event : MonoBehaviour
             {
                 GonfasterBtn.interactable = true;
             }
+
             //추가해야되는것 타일 하이라이트와 이를 이동하는 방식
             /*
             tilePlace = GameObject.FindGameObjectWithTag("Piece");
             finger.transform.position = tilePlace.transform.position;
             tilePlace = GameObject.FindGameObjectWithTag("EmptyTile");
-            fingerTarget = tilePlace.transform.position;*/
+            fingerTarget = tilePlace.transform.position;
+            */
             //Debug.Log(tilePlace.transform.position);
             //Debug.Log(fingerTarget.transform.position);
-            tutorialDo = true;
+
+            fingerAnimate = true;
         }
         else
         {
@@ -1141,7 +1143,7 @@ public class Event : MonoBehaviour
             tutorialPanel.SetActive(false);
             applyRating = true;
             finger.SetActive(false);
-            tutorialDo = false;
+            fingerAnimate = false;
             PlayerPrefs.SetInt("tutorial", 0);
             LoadLevel();
             SavePiecePosition();
@@ -1158,6 +1160,7 @@ public class Event : MonoBehaviour
         {
             finger.SetActive(false);
         }
+
         firstPlace = tilePlace.transform.position;
         finger.transform.position = tilePlace.transform.position;
         //Debug.Log(GameObject.FindGameObjectWithTag("EmptyTile").GetComponent<BoxCollider2D>().enabled);
@@ -1172,5 +1175,6 @@ public class Event : MonoBehaviour
         }
         //tilePlace = GameObject.FindGameObjectWithTag("EmptyTile");// Box colider on 되어있는거 가져와야됨
         fingerTarget = tilePlace.transform.position;
+        fingerAnimate = true;
     }
 }

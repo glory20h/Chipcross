@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class MoveBoi : MonoBehaviour
 {
     /* 파랭이를 움직이게 만드는 Script */
-
     public Event eventChanger;
 
     public GameObject TileBoard;
@@ -129,13 +128,9 @@ public class MoveBoi : MonoBehaviour
                     ResetButton.interactable = false;
                     HintButton.interactable = false;
                     metGirl = false;
-                    if (PlayerPrefs.GetInt("tutorial") >= 1)
-                    {
-                        //OLD : using int levelNum
-                        int tutolevel = PlayerPrefs.GetInt("tutorial");
-                        tutolevel += 1;
-                        PlayerPrefs.SetInt("tutorial", tutolevel);
-                    }
+
+                    //TUTORIAL
+                    if (PlayerPrefs.GetInt("tutorial") >= 1) PlayerPrefs.SetInt("tutorial", PlayerPrefs.GetInt("tutorial") + 1);
                 }
                 else //Wrong Solution
                 {
