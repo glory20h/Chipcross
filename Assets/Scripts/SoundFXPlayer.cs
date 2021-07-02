@@ -9,14 +9,14 @@ public class SoundFXPlayer : MonoBehaviour
 
     void Start()
     {
-        flick = Resources.Load<AudioClip>("Audio/Arcade_Jump");
-        win = Resources.Load<AudioClip>("Audio/Positive_Bell_Sound");
-        fail = Resources.Load<AudioClip>("Audio/Game_Over");
-        pick = Resources.Load<AudioClip>("Audio/Piece_Pick_Up");
-        put = Resources.Load<AudioClip>("Audio/Piece_Put_Down");
-        go = Resources.Load<AudioClip>("Audio/Go_Button");
-        positiveVibe = Resources.Load<AudioClip>("Audio/Vibrant_Positive");
-        click = Resources.Load<AudioClip>("Audio/Button_Click_1");
+        flick = Resources.Load<AudioClip>("Audio/FX/Arcade_Jump");
+        win = Resources.Load<AudioClip>("Audio/FX/Positive_Bell_Sound");
+        fail = Resources.Load<AudioClip>("Audio/FX/Game_Over");
+        pick = Resources.Load<AudioClip>("Audio/FX/Piece_Pick_Up");
+        put = Resources.Load<AudioClip>("Audio/FX/Piece_Put_Down");
+        go = Resources.Load<AudioClip>("Audio/FX/Go_Button");
+        positiveVibe = Resources.Load<AudioClip>("Audio/FX/Vibrant_Positive");
+        click = Resources.Load<AudioClip>("Audio/FX/Button_Click_1");
 
         audioSrc = GetComponent<AudioSource>();
     }

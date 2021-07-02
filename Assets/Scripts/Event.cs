@@ -128,15 +128,11 @@ public class Event : MonoBehaviour
         levelData = new LevelDatabase();
 
         //MANUALLY SET STARTING TUTORIAL LEVEL BY CHANGING THIS VALUE; DEFAULT 0
-        PlayerPrefs.SetInt("tutorial", 1);                   
-
-        PlayerPrefs.SetInt("Piecedata", 1);
+        PlayerPrefs.SetInt("tutorial", 9);                   
 
         fingerAnimate = false;
 
         prevTime = -2f;                                      //For Quitting Program on Android Back Button
-
-        
     }
 
     void Update()
@@ -179,7 +175,8 @@ public class Event : MonoBehaviour
         //For tutorial not using animation
         if (fingerAnimate)
         {
-            finger.transform.position = Vector3.MoveTowards(finger.transform.position, fingerTarget, 0.01f);
+            finger.transform.position = Vector3.MoveTowards(finger.transform.position, fingerTarget, 0.01f);    //Change 0.01f dynamically for more realistic anim: Slow If near start/end, Fast otherwise
+            //If loop ended
             if (finger.transform.position == tilePlace.transform.position)
                 finger.transform.position = firstPlace;
         }
@@ -279,7 +276,7 @@ public class Event : MonoBehaviour
                 SoundFXPlayer.Play("put");
 
                 CheckIfAllTilesInPlace();
-                Fingerloop();
+                SetFingerLoopAnim();
             }
             else
             {
@@ -1118,7 +1115,7 @@ public class Event : MonoBehaviour
             if(PlayerPrefs.GetInt("tutorial") != 1)
             {
                 finger.SetActive(true);
-                Fingerloop();
+                SetFingerLoopAnim();
             }
             else
             {
@@ -1134,8 +1131,6 @@ public class Event : MonoBehaviour
             */
             //Debug.Log(tilePlace.transform.position);
             //Debug.Log(fingerTarget.transform.position);
-
-            fingerAnimate = true;
         }
         else
         {
@@ -1150,7 +1145,7 @@ public class Event : MonoBehaviour
         }
     }
 
-    void Fingerloop()
+    void SetFingerLoopAnim()
     {
         try
         {
@@ -1163,6 +1158,7 @@ public class Event : MonoBehaviour
 
         firstPlace = tilePlace.transform.position;
         finger.transform.position = tilePlace.transform.position;
+
         //Debug.Log(GameObject.FindGameObjectWithTag("EmptyTile").GetComponent<BoxCollider2D>().enabled);
         GameObject[] test = GameObject.FindGameObjectsWithTag("EmptyTile");
         for (int i = 0; i < test.Length; i++)
@@ -1174,6 +1170,7 @@ public class Event : MonoBehaviour
             }
         }
         //tilePlace = GameObject.FindGameObjectWithTag("EmptyTile");// Box colider on 되어있는거 가져와야됨
+
         fingerTarget = tilePlace.transform.position;
         fingerAnimate = true;
     }

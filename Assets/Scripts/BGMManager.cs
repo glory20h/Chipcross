@@ -12,25 +12,22 @@ public class BGMManager : MonoBehaviour
     public static AudioClip audioClip;
     static AudioSource audioSrc;
 
-    bool loadFromBPM90;
-
     //Going to be used for Auto-Loop
     //int repeatAmount = 2;
     //int currentRepeat = 0;
 
-    int r;
+    int idx;
     int level;
 
     void Start()
     {
         audioSrc = GetComponent<AudioSource>();
-        audioSrc.loop = true;
-        loadFromBPM90 = false;
-        r = 0;
+        audioSrc.loop = false;
+        idx = 0;
         level = CurrentLevel();
 
         LoadAudioLibrary();
-        LoadAudioClip(r);
+        LoadAudioClip(idx);
         
         audioSrc.Play();
         titleTxt.text = audioSrc.clip.name;
@@ -54,37 +51,36 @@ public class BGMManager : MonoBehaviour
             }
         }
     }
-    
+    */
+
+    void Update()
+    {
+        if (!audioSrc.isPlaying)
+        {
+            LoadRandomAudioClip();
+            audioSrc.Play();
+        }
+    }
+
     void LoadRandomAudioClip()
     {
-        currentRepeat = 0;
-
-        int r = Random.Range(1, 13);
-        audioClip = Resources.Load<AudioClip>("Audio/Bpm90/12/" + r.ToString());
-        audioSrc.clip = audioClip;
+        //currentRepeat = 0;
+        audioSrc.clip = audioLibrary[Random.Range(1, audioLibrary.Length)];
     }
-    */
 
     void LoadAudioLibrary()
     {
-        if(loadFromBPM90 == false)
-        {
-            if (level == 1)
-                audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level1");
-            else if (level == 2)
-                audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level2");
-            else if (level == 3)
-                audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level3");
-            else
-                audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level4");
-        }
+        audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM");
+        /*
+        if (level == 1)
+            audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level1");
+        else if (level == 2)
+            audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level2");
+        else if (level == 3)
+            audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level3");
         else
-        {
-            if (level == 1 || level == 2)
-                audioLibrary = Resources.LoadAll<AudioClip>("Audio/Bpm90/12");
-            else
-                audioLibrary = Resources.LoadAll<AudioClip>("Audio/Bpm90/34");
-        }
+            audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level4");
+        */
     }
 
     void LoadAudioClip(int r)
@@ -114,28 +110,17 @@ public class BGMManager : MonoBehaviour
         {
             level = CurrentLevel();
             LoadAudioLibrary();
-            r = 0;
+            idx = 0;
         }
         else
         {
-            r++;
+            idx++;
 
-            if (r == audioLibrary.Length) 
-                r = 0;
+            if (idx == audioLibrary.Length) 
+                idx = 0;
         }
 
-        LoadAudioClip(r);
-        titleTxt.text = audioSrc.clip.name;
-        audioSrc.Play();
-    }
-
-    public void SwitchAudioLibrary()
-    {
-        loadFromBPM90 = !loadFromBPM90;
-        LoadAudioLibrary();
-        r = 0;
-
-        LoadAudioClip(r);
+        LoadAudioClip(idx);
         titleTxt.text = audioSrc.clip.name;
         audioSrc.Play();
     }
