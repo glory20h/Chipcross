@@ -79,7 +79,7 @@ public class Event : MonoBehaviour
     /// For DevTools Elements
 
     /// For DFactor Rate Change
-    bool applyRating;
+    bool applyRating; 
     [HideInInspector] public float levelDFactor;
     /// For DFactor Rate Change
 
@@ -128,7 +128,7 @@ public class Event : MonoBehaviour
         levelData = new LevelDatabase();
 
         //MANUALLY SET STARTING TUTORIAL LEVEL BY CHANGING THIS VALUE; DEFAULT 0
-        PlayerPrefs.SetInt("tutorial", 9);                   
+        PlayerPrefs.SetInt("tutorial", 0);                   
 
         fingerAnimate = false;
 
@@ -582,27 +582,6 @@ public class Event : MonoBehaviour
     //다음 스테이지 불러오기
     public void GoToNextLevel()
     {
-        //OLD
-        /*
-        levelNum++;
-        MovePieceMode = true;
-        ResetBtn.interactable = true;
-        hintBtn.interactable = true;
-
-        DeleteLevel();
-        levelData.LoadLevelData(levelNum);//For check new tile;
-        if (levelData.tutorialCase)// 바꾸어야될듯? -> leveldata에서 CheckNewPieces앞에 false해서 이제 ㄱㅊ
-        {
-            tutorialPanel.SetActive(true);
-        }
-        else
-        {
-            LoadLevel();
-            SavePiecePosition();
-        }
-        */
-
-        //NEW
         MovePieceMode = true;
         ResetBtn.interactable = true;
         hintBtn.interactable = true;
@@ -630,17 +609,6 @@ public class Event : MonoBehaviour
         }
 
         applyRating = true;
-
-        /*
-        levelNum = 0;
-        levelData.dfac = -1;
-        string s = levelData.ReadFileByFactor(levelData.dfac);
-        levelData.GenerateSlicedPieces(s);
-        DeleteLevel();
-        LoadLevel();
-        SavePiecePosition();
-        MovePieceMode = true;
-        */
 
         //퍼즐 완료창 종료
         PuzzleSolvedPanel.SetActive(false);
@@ -725,19 +693,6 @@ public class Event : MonoBehaviour
         LoadLevel();
         SavePiecePosition();
         //Change Text Display For difficultyfactor
-
-        //GenerateSlicedPieces 테스트용 실행코드
-        /*
-        levelNum = 0;
-        levelData.dfac = -1;
-        string s = levelData.ReadFileByFactor(levelData.dfac);
-        //string s = "13302141534313";
-        levelData.GenerateSlicedPieces(s);
-        DeleteLevel();
-        LoadLevel();
-        SavePiecePosition();
-        */
-        //levelData.PieceCutterModuleTEST();
     }
 
     //Go To Level +10
@@ -1032,23 +987,24 @@ public class Event : MonoBehaviour
     }
 
     //오디오믹서의 배경음악 볼륨 조절
-    public void SetMusicVolume(float vol)
+    public void SetMusicVolume(int vol)
     {
-        audioMixer.SetFloat("MusicVol", -0.0125f * (-vol) * (-vol));
+        audioMixer.SetFloat("MusicVol", -5f * vol * vol);
     }
 
     //오디오믹서의 효과음 볼륨 조절
-    public void SetSFXVolume(float vol)
+    public void SetSFXVolume(int vol)
     {
-        audioMixer.SetFloat("SFXVol", -0.0125f * (-vol) * (-vol));
+        audioMixer.SetFloat("SFXVol", -5f * vol * vol);
     }
 
     //오디오믹서의 환경음 볼륨 조절
-    public void SetAmbienceVolume(float vol)
+    public void SetAmbienceVolume(int vol)
     {
-        audioMixer.SetFloat("AmbienceVol", -0.0125f * (-vol) * (-vol));
+        audioMixer.SetFloat("AmbienceVol", -5f * vol * vol);
     }
 
+    //////////////////////////////////////////////// 아래로 Tutorial용 Experiments ////////////////////////////////////////////////
     //save
     void stageSave()
     {
@@ -1069,6 +1025,7 @@ public class Event : MonoBehaviour
         PlayerPrefs.Save();
     }
 
+    
     public void TutorialOff() //tutorial on/off -> 버튼
     {
         if (PlayerPrefs.GetInt("tutorial") == 0) // 0이면 처음부터

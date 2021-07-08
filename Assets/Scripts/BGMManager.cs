@@ -23,11 +23,12 @@ public class BGMManager : MonoBehaviour
     {
         audioSrc = GetComponent<AudioSource>();
         audioSrc.loop = false;
-        idx = 0;
         level = CurrentLevel();
+        idx = 0;
 
         LoadAudioLibrary();
-        LoadAudioClip(idx);
+        //LoadAudioClip(idx);
+        LoadRandomAudioClip();
         
         audioSrc.Play();
         titleTxt.text = audioSrc.clip.name;
@@ -70,7 +71,7 @@ public class BGMManager : MonoBehaviour
 
     void LoadAudioLibrary()
     {
-        audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM");
+        audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level1");
         /*
         if (level == 1)
             audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level1");
