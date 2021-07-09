@@ -33,20 +33,6 @@ public class Event : MonoBehaviour
     [HideInInspector] public bool coinChangeToggle = true;
     ///퍼즐 완료 창 관련
 
-    ///튜토리얼 관련
-    public GameObject tutorialPanel;
-    int firstTime = 2;
-    bool fingerAnimate = false;
-    public GameObject finger;
-    Vector3 fingerTarget;
-    [HideInInspector] public Vector3 firstPlace;
-    [HideInInspector] public GameObject tilePlace;
-    ///튜토리얼 관련
-
-    ///Dev Tools 관련
-    public GameObject DevTools;
-    ///Dev Tools 관련
-
     Vector2 mousePos;                               //마우스의 2차원상 위치
     Transform objToFollowMouse;                     //마우스를 따라 다닐 물체(퍼즐 조각)
     GameObject[] triggeredObjects;                  //Array stores info on EmptyTiles        //퍼즐 조각의 빈 타일 탐지용
@@ -57,26 +43,34 @@ public class Event : MonoBehaviour
     public GameObject backGround;                   //Player의 DifficultyFactor에 따라
     [HideInInspector] public bool MovePieceMode;    //boolean for Update Function //Update에 쓸 bool 변수
 
-    /// Variables for Level Loading
+    /// For Level Loading
     LevelDatabase levelData;
     int levelNum;
-    //public int tutonum;
     float scaleFactor;
     float distanceBetweenTiles;
     float emptyTileScale;
     float pieceScale;
-    /// Variables for Level Loading
+    /// For Level Loading
 
-    /// For DevTools Elements
+    /// For Tutorial
+    public GameObject tutorialPanel;
+    public GameObject finger;
+    bool fingerAnimate = false;
+    Vector3 fingerTarget;
+    [HideInInspector] public Vector3 firstPlace;
+    [HideInInspector] public GameObject tilePlace;
+    /// For Tutorial
+
+    /// For DevTools
+    public GameObject DevTools;
     public Text PlayerDFactorText;
     public Text DfactorText;
-
     public Text UsedHintText;
     public Text UsedTouchText;
     public Text LogDisplayText;
     [HideInInspector] public int HintUsed = 0;
     [HideInInspector] public int TouchUsed = 0;
-    /// For DevTools Elements
+    /// For DevTools
 
     /// For DFactor Rate Change
     bool applyRating; 
@@ -97,20 +91,23 @@ public class Event : MonoBehaviour
         //변수, PlayerPrefs 초기화
         Initialize();
 
+        /*
+        //levelData 게임 스테이지 데이터베이스에서 데이터를 불러와서 현재 스테이지 생성
+        LoadLevel();
+        */
+
+
         //IF NEED TUTORIAL
         if (PlayerPrefs.GetInt("tutorial") >= 1)
         {
-            Tutorial(PlayerPrefs.GetInt("tutorial"));
+            TutorialExec(PlayerPrefs.GetInt("tutorial"));
         }
         else
         {
             //levelData 게임 스테이지 데이터베이스에서 데이터를 불러와서 현재 스테이지 생성
             LoadLevel();
-            //퍼즐 조각 초기 위치 저장
-            SavePiecePosition();
         }
 
-        //stageLoad();
     }
 
     void Initialize()
@@ -127,8 +124,8 @@ public class Event : MonoBehaviour
 
         levelData = new LevelDatabase();
 
-        //MANUALLY SET STARTING TUTORIAL LEVEL BY CHANGING THIS VALUE; DEFAULT 0
-        PlayerPrefs.SetInt("tutorial", 0);                   
+        //MANUALLY SET STARTING TUTORIAL LEVEL BY CHANGING THIS VALUE; DEFAULT 0 -> 평소에는 주석처리 되어 있어야함
+        PlayerPrefs.SetInt("tutorial", 1);                   
 
         fingerAnimate = false;
 
@@ -294,16 +291,14 @@ public class Event : MonoBehaviour
         GameObject obj;
         GameObject obj2;
 
-        //IF NEED TUTORIAL
+        //CHECK IF TUTORIAL NEEDS TO BE LOADED
         if(PlayerPrefs.GetInt("tutorial") >= 1)
         {
-            //OLD : used int levelNum
             levelData.LoadTutorialData(PlayerPrefs.GetInt("tutorial"));
         }
         else
         {
             //NEW : using PlayerDFactor
-            //int lineNum = levelData.LoadLevelData();
             if (!playAgain)
             {
                 levelDFactor = levelData.LoadLevelData();
@@ -334,7 +329,7 @@ public class Event : MonoBehaviour
         emptyTileScale = 0.25f * scaleFactor;
         pieceScale = 1 * scaleFactor;
 
-        //Load map by levelfactor
+        //Load Different Background according to corresponding levelDfactor
         if(PlayerPrefs.GetInt("tutorial") < 1)
         {
             if (levelDFactor < -0.55f) //level factor < -0.55인데 여기서는 어쩔수 없이 갯수로
@@ -431,9 +426,10 @@ public class Event : MonoBehaviour
             }
         }
 
-        //StartCoroutine(Waitsecond());
+        SavePiecePosition();
     }
 
+    //퍼즐 조각 초기 위치 저장
     void SavePiecePosition()
     {
         PiecePosition = new Vector3[BlockPieces.childCount];
@@ -588,10 +584,11 @@ public class Event : MonoBehaviour
 
         DeleteLevel();
         levelData.LoadLevelData();//For check new tile;
+
         if (PlayerPrefs.GetInt("tutorial") >= 1)// 바꾸어야될듯? -> leveldata에서 CheckNewPieces앞에 false해서 이제 ㄱㅊ
         {
             //Debug.Log("Tuto");
-            Tutorial(PlayerPrefs.GetInt("tutorial"));
+            TutorialExec(PlayerPrefs.GetInt("tutorial"));
         }
         else if(PlayerPrefs.GetInt("tutorial") < 1)
         {
@@ -600,12 +597,10 @@ public class Event : MonoBehaviour
             fingerAnimate = false;
             PlayerPrefs.SetInt("tutorial", 0);
             LoadLevel();
-            SavePiecePosition();
         }
         else
         {
             LoadLevel();
-            SavePiecePosition();
         }
 
         applyRating = true;
@@ -624,7 +619,6 @@ public class Event : MonoBehaviour
         /* ResetBoard */
         DeleteLevel();
         LoadLevel(true);
-        SavePiecePosition();
         /* ResetBoard */
 
         Boy.GetComponent<MoveBoi>().ResetBoyPosition();
@@ -691,7 +685,6 @@ public class Event : MonoBehaviour
         levelNum++;
         DeleteLevel();
         LoadLevel();
-        SavePiecePosition();
         //Change Text Display For difficultyfactor
     }
 
@@ -701,7 +694,6 @@ public class Event : MonoBehaviour
         levelNum = levelNum + 10;
         DeleteLevel();
         LoadLevel();
-        SavePiecePosition();
     }
 
     //Go To Level +100
@@ -710,7 +702,6 @@ public class Event : MonoBehaviour
         levelNum = levelNum + 100;
         DeleteLevel();
         LoadLevel();
-        SavePiecePosition();
     }
 
     public void DevDFactorIncrease()
@@ -730,7 +721,6 @@ public class Event : MonoBehaviour
         PlayerDFactorText.text = "Player: " + playerDFactor.ToString();
         DeleteLevel();
         LoadLevel();
-        SavePiecePosition();
     }
 
     public void DevDFactorDecrease()
@@ -750,7 +740,6 @@ public class Event : MonoBehaviour
         PlayerDFactorText.text = "Player: " + playerDFactor.ToString();
         DeleteLevel();
         LoadLevel();
-        SavePiecePosition();
     }
 
     public void DevDFactorBigIncrease()
@@ -770,7 +759,6 @@ public class Event : MonoBehaviour
         PlayerDFactorText.text = "Player: " + playerDFactor.ToString();
         DeleteLevel();
         LoadLevel();
-        SavePiecePosition();
     }
 
     public void DevDFactorBigDecrease()
@@ -790,7 +778,6 @@ public class Event : MonoBehaviour
         PlayerDFactorText.text = "Player: " + playerDFactor.ToString();
         DeleteLevel();
         LoadLevel();
-        SavePiecePosition();
     }
 
     //옵션 버튼을 눌러 Option창 토글
@@ -987,45 +974,29 @@ public class Event : MonoBehaviour
     }
 
     //오디오믹서의 배경음악 볼륨 조절
-    public void SetMusicVolume(int vol)
+    public void SetMusicVolume(float vol)
     {
         audioMixer.SetFloat("MusicVol", -5f * vol * vol);
     }
 
     //오디오믹서의 효과음 볼륨 조절
-    public void SetSFXVolume(int vol)
+    public void SetSFXVolume(float vol)
     {
         audioMixer.SetFloat("SFXVol", -5f * vol * vol);
     }
 
     //오디오믹서의 환경음 볼륨 조절
-    public void SetAmbienceVolume(int vol)
+    public void SetAmbienceVolume(float vol)
     {
         audioMixer.SetFloat("AmbienceVol", -5f * vol * vol);
     }
 
-    //////////////////////////////////////////////// 아래로 Tutorial용 Experiments ////////////////////////////////////////////////
-    //save
-    void stageSave()
+    IEnumerator Waitsecond(float time)
     {
-        PlayerPrefs.SetInt("tutorial", 1);
-        PlayerPrefs.Save();
+        yield return new WaitForSeconds(time);
     }
 
-    //load
-    void stageLoad()
-    {
-        firstTime = PlayerPrefs.GetInt("tutorial");
-    }
-
-    //reset
-    void stageReset()
-    {
-        PlayerPrefs.SetInt("tutorial", 1);
-        PlayerPrefs.Save();
-    }
-
-    
+    //////////////////////////////////////////////// 아래로 Tutorial용 함수들 ////////////////////////////////////////////////
     public void TutorialOff() //tutorial on/off -> 버튼
     {
         if (PlayerPrefs.GetInt("tutorial") == 0) // 0이면 처음부터
@@ -1034,7 +1005,6 @@ public class Event : MonoBehaviour
             tutorialPanel.SetActive(false);
             Initialize();
             LoadLevel();
-            SavePiecePosition();
         }
         else if(PlayerPrefs.GetInt("tutorial") == 1 && fingerAnimate)
         {
@@ -1043,32 +1013,23 @@ public class Event : MonoBehaviour
             //변수 초기화
             Initialize();
             LoadLevel();
-            SavePiecePosition();
         }
         else//level불러오는거
         {
             tutorialPanel.SetActive(false);
             LoadLevel();
-            SavePiecePosition();
         }
     }
 
-    IEnumerator Waitsecond()
-    {
-        yield return new WaitForSeconds(0.3f);
-    }
-
-    public void Tutorial(int level)
+    public void TutorialExec(int level)
     {
         tutorialPanel.SetActive(true);
-        //Time.timeScale = 0f;
 
         if (level < 8)
         {
             //Debug.Log("11111111111111111");
             //Debug.Log(level);
             LoadLevel();
-            SavePiecePosition();
             if(PlayerPrefs.GetInt("tutorial") != 1)
             {
                 finger.SetActive(true);
@@ -1098,7 +1059,6 @@ public class Event : MonoBehaviour
             fingerAnimate = false;
             PlayerPrefs.SetInt("tutorial", 0);
             LoadLevel();
-            SavePiecePosition();
         }
     }
 
