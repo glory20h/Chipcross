@@ -95,18 +95,6 @@ public class Event : MonoBehaviour
         //LevelDatabase에서 데이터 불러와서 현재 필요한 스테이지 생성
         LoadLevel();
 
-        /*
-        //CHECK IF NEED TUTORIAL
-        if (PlayerPrefs.GetInt("tutorial") >= 1)
-        {
-            TutorialExec(PlayerPrefs.GetInt("tutorial"));
-        }
-        else
-        {
-            //LevelDatabase에서 데이터 불러와서 현재 필요한 스테이지 생성
-            LoadLevel();
-        }
-        */
     }
 
     void Initialize()
@@ -121,10 +109,10 @@ public class Event : MonoBehaviour
         //MANUALLY SET STARTING PLAYER'S DIFFICULTYFACTOR BY CHANGING THIS VALUE
         //PlayerPrefs.SetFloat("PlayerDFactor", -1f);
 
-        levelData = new LevelDatabase();
-
         //MANUALLY SET STARTING TUTORIAL LEVEL BY CHANGING THIS VALUE; DEFAULT 0 -> 평소에는 주석처리 되어 있어야함
-        PlayerPrefs.SetInt("tutorial", 1);                   
+        PlayerPrefs.SetInt("tutorial", 1);
+
+        levelData = new LevelDatabase();
 
         fingerAnimate = false;
         isTutorial = false;
@@ -606,25 +594,6 @@ public class Event : MonoBehaviour
         DeleteLevel();
         LoadLevel();
 
-        /*
-        if (PlayerPrefs.GetInt("tutorial") >= 1)// 바꾸어야될듯? -> leveldata에서 CheckNewPieces앞에 false해서 이제 ㄱㅊ
-        {
-            //Debug.Log("Tuto");
-            TutorialExec(PlayerPrefs.GetInt("tutorial"));
-        }
-        else if(PlayerPrefs.GetInt("tutorial") < 1)
-        {
-            applyRating = true;
-            finger.SetActive(false);
-            fingerAnimate = false;
-            LoadLevel();
-        }
-        else
-        {
-            LoadLevel();
-        }
-        */
-
         MovePieceMode = true;
         ResetBtn.interactable = true;
         hintBtn.interactable = true;
@@ -700,32 +669,6 @@ public class Event : MonoBehaviour
                 hintPiece.GetChild(i).gameObject.tag = "Hint";
             }
         }
-    }
-
-    //테스트용 개발자 버튼용
-    public void DevBtnAct()  //Go To Level X
-    {
-        //바로 다음 퍼즐로 ㄱ
-        levelNum++;
-        DeleteLevel();
-        LoadLevel();
-        //Change Text Display For difficultyfactor
-    }
-
-    //Go To Level +10
-    public void DevBtnAct2()
-    {
-        levelNum = levelNum + 10;
-        DeleteLevel();
-        LoadLevel();
-    }
-
-    //Go To Level +100
-    public void DevBtnAct3()
-    {
-        levelNum = levelNum + 100;
-        DeleteLevel();
-        LoadLevel();
     }
 
     public void DevDFactorIncrease()
@@ -1020,30 +963,6 @@ public class Event : MonoBehaviour
     }
 
     //////////////////////////////////////////////// 아래로 Tutorial용 함수들 ////////////////////////////////////////////////
-    public void TutorialOff() //tutorial on/off -> 버튼
-    {
-        if (PlayerPrefs.GetInt("tutorial") == 0) // 0이면 처음부터
-        {
-            PlayerPrefs.SetInt("tutorial", 1);// 1이면 loadlevel 사용
-            tutorialPanel.SetActive(false);
-            Initialize();
-            LoadLevel();
-        }
-        else if(PlayerPrefs.GetInt("tutorial") == 1 && fingerAnimate)
-        {
-            tutorialPanel.SetActive(false);
-            fingerAnimate = false;
-            //변수 초기화
-            Initialize();
-            LoadLevel();
-        }
-        else//level불러오는거
-        {
-            tutorialPanel.SetActive(false);
-            LoadLevel();
-        }
-    }
-
     public void TutorialExec(int tutLevel)
     {
         if(tutLevel == 1)
