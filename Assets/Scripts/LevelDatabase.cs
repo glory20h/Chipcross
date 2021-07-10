@@ -704,8 +704,6 @@ public class LevelDatabase
     {
         switch (num)
         {
-            case 0:
-                break;
             case 1://empty
                 scaleSize = 1;
                 BoardWidth = 2;
@@ -775,6 +773,8 @@ public class LevelDatabase
                 NumberOfPieces = 1;
                 BoardEmptyTileTypeInfo = ConvertStringToIntArray("1395");
                 ConvertStringToPieceInfo("118");
+                break;
+            default:
                 break;
         }
     }

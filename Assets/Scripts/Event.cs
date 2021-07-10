@@ -57,8 +57,9 @@ public class Event : MonoBehaviour
     public GameObject finger;
     bool fingerAnimate = false;
     Vector3 fingerTarget;
-    [HideInInspector] public Vector3 firstPlace;
-    [HideInInspector] public GameObject tilePlace;
+    Vector3 firstPlace;
+    GameObject tilePlace;
+    bool isTutorial;
     /// For Tutorial
 
     /// For DevTools
@@ -91,23 +92,21 @@ public class Event : MonoBehaviour
         //변수, PlayerPrefs 초기화
         Initialize();
 
-        /*
-        //levelData 게임 스테이지 데이터베이스에서 데이터를 불러와서 현재 스테이지 생성
+        //LevelDatabase에서 데이터 불러와서 현재 필요한 스테이지 생성
         LoadLevel();
-        */
 
-
-        //IF NEED TUTORIAL
+        /*
+        //CHECK IF NEED TUTORIAL
         if (PlayerPrefs.GetInt("tutorial") >= 1)
         {
             TutorialExec(PlayerPrefs.GetInt("tutorial"));
         }
         else
         {
-            //levelData 게임 스테이지 데이터베이스에서 데이터를 불러와서 현재 스테이지 생성
+            //LevelDatabase에서 데이터 불러와서 현재 필요한 스테이지 생성
             LoadLevel();
         }
-
+        */
     }
 
     void Initialize()
@@ -128,6 +127,7 @@ public class Event : MonoBehaviour
         PlayerPrefs.SetInt("tutorial", 1);                   
 
         fingerAnimate = false;
+        isTutorial = false;
 
         prevTime = -2f;                                      //For Quitting Program on Android Back Button
     }
@@ -273,7 +273,11 @@ public class Event : MonoBehaviour
                 SoundFXPlayer.Play("put");
 
                 CheckIfAllTilesInPlace();
-                SetFingerLoopAnim();
+
+                if (isTutorial)
+                {
+                    SetFingerLoopAnim();
+                }
             }
             else
             {
@@ -287,29 +291,29 @@ public class Event : MonoBehaviour
     //게임 레벨 불러오기
     void LoadLevel(bool playAgain = false)
     {
+        int tutLevel = PlayerPrefs.GetInt("tutorial", 1);
+        //Set Global bool 'isTutorial' here
+        isTutorial = tutLevel < 8;
+
+        if (!playAgain)
+        {
+            //CHECK IF TUTORIAL NEEDS TO BE LOADED
+            if (isTutorial)
+            {
+                levelData.LoadTutorialData(tutLevel);
+            }
+            else
+            {
+                //Regular LevelLoading
+                levelDFactor = levelData.LoadLevelData();
+                PlayerDFactorText.text = "Player: " + PlayerPrefs.GetFloat("PlayerDFactor").ToString();
+                DfactorText.text = "Level: " + levelDFactor.ToString();
+            }
+        }
+
         GameObject prefab;
         GameObject obj;
         GameObject obj2;
-
-        //CHECK IF TUTORIAL NEEDS TO BE LOADED
-        if(PlayerPrefs.GetInt("tutorial") >= 1)
-        {
-            levelData.LoadTutorialData(PlayerPrefs.GetInt("tutorial"));
-        }
-        else
-        {
-            //NEW : using PlayerDFactor
-            if (!playAgain)
-            {
-                levelDFactor = levelData.LoadLevelData();
-            }
-
-            //DfactorText.text = levelData.ReadFileByLine("LevelDifficulty", lineNum);
-            //levelDFactor = float.Parse(DfactorText.text);
-            float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
-            PlayerDFactorText.text = "Player: " + playerDFactor.ToString();
-            DfactorText.text = "Level: " + levelDFactor.ToString();
-        }
 
         int typeIndex;
         int pieceHeight;
@@ -330,17 +334,14 @@ public class Event : MonoBehaviour
         pieceScale = 1 * scaleFactor;
 
         //Load Different Background according to corresponding levelDfactor
-        if(PlayerPrefs.GetInt("tutorial") < 1)
-        {
-            if (levelDFactor < -0.55f) //level factor < -0.55인데 여기서는 어쩔수 없이 갯수로
-                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/11");
-            else if (levelDFactor < 0f)
-                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/22");
-            else if (levelDFactor < 0.5f)
-                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/33");
-            else
-                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/44");
-        }
+        if (levelDFactor < -0.55f) //level factor < -0.55인데 여기서는 어쩔수 없이 갯수로
+            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/11");
+        else if (levelDFactor < 0f)
+            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/22");
+        else if (levelDFactor < 0.5f)
+            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/33");
+        else
+            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/44");
 
         //Instantiate 'EmptyTile'
         typeIndex = 0;
@@ -427,6 +428,8 @@ public class Event : MonoBehaviour
         }
 
         SavePiecePosition();
+
+        if (isTutorial) TutorialExec(tutLevel);
     }
 
     //퍼즐 조각 초기 위치 저장
@@ -578,13 +581,32 @@ public class Event : MonoBehaviour
     //다음 스테이지 불러오기
     public void GoToNextLevel()
     {
-        MovePieceMode = true;
-        ResetBtn.interactable = true;
-        hintBtn.interactable = true;
+        int tutLevel = PlayerPrefs.GetInt("tutorial");
+
+        if(isTutorial)
+        {
+            //If it's the last tutorial level
+            if(tutLevel == 7)
+            {
+                //Toggle Off Tutorial Settings
+                tutorialPanel.SetActive(false);
+                applyRating = true;
+                finger.SetActive(false);
+                fingerAnimate = false;
+            }
+
+            tutLevel++;
+            PlayerPrefs.SetInt("tutorial", tutLevel);
+        }
+        else
+        {
+            applyRating = true;
+        }
 
         DeleteLevel();
-        levelData.LoadLevelData();//For check new tile;
+        LoadLevel();
 
+        /*
         if (PlayerPrefs.GetInt("tutorial") >= 1)// 바꾸어야될듯? -> leveldata에서 CheckNewPieces앞에 false해서 이제 ㄱㅊ
         {
             //Debug.Log("Tuto");
@@ -595,15 +617,17 @@ public class Event : MonoBehaviour
             applyRating = true;
             finger.SetActive(false);
             fingerAnimate = false;
-            PlayerPrefs.SetInt("tutorial", 0);
             LoadLevel();
         }
         else
         {
             LoadLevel();
         }
+        */
 
-        applyRating = true;
+        MovePieceMode = true;
+        ResetBtn.interactable = true;
+        hintBtn.interactable = true;
 
         //퍼즐 완료창 종료
         PuzzleSolvedPanel.SetActive(false);
@@ -786,14 +810,13 @@ public class Event : MonoBehaviour
         if(OptionMenu.activeSelf)
         {
             OptionMenu.SetActive(false);
-            if(PlayerPrefs.GetInt("tutorial") >= 1)
-                finger.SetActive(true);
+            if(isTutorial) finger.SetActive(true);
             Time.timeScale = 1f;
         }
         else
         {
             OptionMenu.SetActive(true);
-            finger.SetActive(false);
+            if(isTutorial) finger.SetActive(false);
             Time.timeScale = 0f;
         }
     }
@@ -1021,45 +1044,30 @@ public class Event : MonoBehaviour
         }
     }
 
-    public void TutorialExec(int level)
+    public void TutorialExec(int tutLevel)
     {
-        tutorialPanel.SetActive(true);
-
-        if (level < 8)
+        if(tutLevel == 1)
         {
-            //Debug.Log("11111111111111111");
-            //Debug.Log(level);
-            LoadLevel();
-            if(PlayerPrefs.GetInt("tutorial") != 1)
-            {
-                finger.SetActive(true);
-                SetFingerLoopAnim();
-            }
-            else
-            {
-                GonfasterBtn.interactable = true;
-            }
+            //Toggle On Tutorial Settings
+            tutorialPanel.SetActive(true);
+            applyRating = false;
 
-            //추가해야되는것 타일 하이라이트와 이를 이동하는 방식
-            /*
-            tilePlace = GameObject.FindGameObjectWithTag("Piece");
-            finger.transform.position = tilePlace.transform.position;
-            tilePlace = GameObject.FindGameObjectWithTag("EmptyTile");
-            fingerTarget = tilePlace.transform.position;
-            */
-            //Debug.Log(tilePlace.transform.position);
-            //Debug.Log(fingerTarget.transform.position);
+            GonfasterBtn.interactable = true;
         }
         else
         {
-            //Debug.Log("22222222222222222222");
-            tutorialPanel.SetActive(false);
-            applyRating = true;
-            finger.SetActive(false);
-            fingerAnimate = false;
-            PlayerPrefs.SetInt("tutorial", 0);
-            LoadLevel();
+            SetFingerLoopAnim();
         }
+
+        //추가해야되는것 타일 하이라이트와 이를 이동하는 방식
+        /*
+        tilePlace = GameObject.FindGameObjectWithTag("Piece");
+        finger.transform.position = tilePlace.transform.position;
+        tilePlace = GameObject.FindGameObjectWithTag("EmptyTile");
+        fingerTarget = tilePlace.transform.position;
+        */
+        //Debug.Log(tilePlace.transform.position);
+        //Debug.Log(fingerTarget.transform.position);
     }
 
     void SetFingerLoopAnim()
@@ -1071,8 +1079,10 @@ public class Event : MonoBehaviour
         catch
         {
             finger.SetActive(false);
+            return;
         }
 
+        finger.SetActive(true);
         firstPlace = tilePlace.transform.position;
         finger.transform.position = tilePlace.transform.position;
 
@@ -1089,6 +1099,7 @@ public class Event : MonoBehaviour
         //tilePlace = GameObject.FindGameObjectWithTag("EmptyTile");// Box colider on 되어있는거 가져와야됨
 
         fingerTarget = tilePlace.transform.position;
+
         fingerAnimate = true;
     }
 }

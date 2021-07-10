@@ -128,9 +128,6 @@ public class MoveBoi : MonoBehaviour
                     ResetButton.interactable = false;
                     HintButton.interactable = false;
                     metGirl = false;
-
-                    //TUTORIAL
-                    if (PlayerPrefs.GetInt("tutorial") >= 1) PlayerPrefs.SetInt("tutorial", PlayerPrefs.GetInt("tutorial") + 1);
                 }
                 else //Wrong Solution
                 {
