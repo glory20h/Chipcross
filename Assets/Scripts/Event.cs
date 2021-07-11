@@ -753,13 +753,13 @@ public class Event : MonoBehaviour
         if(OptionMenu.activeSelf)
         {
             OptionMenu.SetActive(false);
-            if(isTutorial) finger.SetActive(true);
+            if(fingerAnimate) finger.SetActive(true);
             Time.timeScale = 1f;
         }
         else
         {
             OptionMenu.SetActive(true);
-            if(isTutorial) finger.SetActive(false);
+            if(fingerAnimate) finger.SetActive(false);
             Time.timeScale = 0f;
         }
     }
@@ -768,8 +768,7 @@ public class Event : MonoBehaviour
     public void CloseOptionPanel()
     {
         OptionMenu.SetActive(false);
-        if (PlayerPrefs.GetInt("tutorial") >= 1)
-            finger.SetActive(true);
+        if (fingerAnimate) finger.SetActive(true);
         Time.timeScale = 1f;
     }
 
