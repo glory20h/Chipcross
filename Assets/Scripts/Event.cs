@@ -24,6 +24,9 @@ public class Event : MonoBehaviour
     public GameObject OptionMenu;
     public static bool GameIsPaused = false;        // Game pause
     public Button OptionExit;                       // 옵션 나가기
+    public Slider MusicSlider;
+    public Slider SFXSlider;
+    public Slider AmbSlider;
     ///옵션 창 관련
 
     ///퍼즐 완료 창 관련
@@ -45,7 +48,6 @@ public class Event : MonoBehaviour
 
     /// For Level Loading
     LevelDatabase levelData;
-    int levelNum;
     float scaleFactor;
     float distanceBetweenTiles;
     float emptyTileScale;
@@ -55,11 +57,12 @@ public class Event : MonoBehaviour
     /// For Tutorial
     public GameObject tutorialPanel;
     public GameObject finger;
+    bool isTutorial;
     bool fingerAnimate = false;
     Vector3 fingerTarget;
     Vector3 firstPlace;
     GameObject tilePlace;
-    bool isTutorial;
+    float fingerSpeed;
     /// For Tutorial
 
     /// For DevTools
@@ -94,7 +97,6 @@ public class Event : MonoBehaviour
 
         //LevelDatabase에서 데이터 불러와서 현재 필요한 스테이지 생성
         LoadLevel();
-
     }
 
     void Initialize()
@@ -105,6 +107,14 @@ public class Event : MonoBehaviour
         UIPieceScale = 0.45f;                                //UI에서의 퍼즐 조각 크기. 화면/퍼즐에 놓았을 때는 1, UI상에서는 현재 값으로 축소
         applyRating = false;
         timeCount = false;
+
+        //Set Volume Settings
+        MusicSlider.value = PlayerPrefs.GetFloat("MusicVol", -1f);
+        SFXSlider.value = PlayerPrefs.GetFloat("SFXVol", 0f);
+        AmbSlider.value = (PlayerPrefs.GetFloat("AmbVol", -1f));
+        SetMusicVolume(PlayerPrefs.GetFloat("MusicVol", -1f));
+        SetSFXVolume(PlayerPrefs.GetFloat("SFXVol", 0f));
+        SetAmbienceVolume(PlayerPrefs.GetFloat("AmbVol", -1f));
 
         //MANUALLY SET STARTING PLAYER'S DIFFICULTYFACTOR BY CHANGING THIS VALUE
         //PlayerPrefs.SetFloat("PlayerDFactor", -1f);
@@ -160,7 +170,10 @@ public class Event : MonoBehaviour
         //For tutorial not using animation
         if (fingerAnimate)
         {
-            finger.transform.position = Vector3.MoveTowards(finger.transform.position, fingerTarget, 0.01f);    //Change 0.01f dynamically for more realistic anim: Slow If near start/end, Fast otherwise
+            //Set Finger Speed
+            fingerSpeed = 0.01f * (Mathf.Min(Vector3.Distance(firstPlace, finger.transform.position), Vector3.Distance(fingerTarget, finger.transform.position)) + 0.15f);
+
+            finger.transform.position = Vector3.MoveTowards(finger.transform.position, fingerTarget, fingerSpeed);    //Change 0.01f dynamically for more realistic anim: Slow If near start/end, Fast otherwise
             //If loop ended
             if (finger.transform.position == tilePlace.transform.position)
                 finger.transform.position = firstPlace;
@@ -942,18 +955,21 @@ public class Event : MonoBehaviour
     public void SetMusicVolume(float vol)
     {
         audioMixer.SetFloat("MusicVol", -5f * vol * vol);
+        PlayerPrefs.SetFloat("MusicVol", vol);
     }
 
     //오디오믹서의 효과음 볼륨 조절
     public void SetSFXVolume(float vol)
     {
         audioMixer.SetFloat("SFXVol", -5f * vol * vol);
+        PlayerPrefs.SetFloat("SFXVol", vol);
     }
 
     //오디오믹서의 환경음 볼륨 조절
     public void SetAmbienceVolume(float vol)
     {
         audioMixer.SetFloat("AmbienceVol", -5f * vol * vol);
+        PlayerPrefs.SetFloat("AmbVol", vol);
     }
 
     IEnumerator Waitsecond(float time)
