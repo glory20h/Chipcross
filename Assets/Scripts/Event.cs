@@ -170,10 +170,10 @@ public class Event : MonoBehaviour
         //For tutorial not using animation
         if (fingerAnimate)
         {
-            //Set Finger Speed
-            fingerSpeed = 0.01f * (Mathf.Min(Vector3.Distance(firstPlace, finger.transform.position), Vector3.Distance(fingerTarget, finger.transform.position)) + 0.15f);
+            //Set finger speed dynamically for more realistic anim: Slow If near start/end, Fast otherwise
+            fingerSpeed = 0.02f * (Mathf.Min(Vector3.Distance(firstPlace, finger.transform.position), Vector3.Distance(fingerTarget, finger.transform.position)) + 0.05f);
 
-            finger.transform.position = Vector3.MoveTowards(finger.transform.position, fingerTarget, fingerSpeed);    //Change 0.01f dynamically for more realistic anim: Slow If near start/end, Fast otherwise
+            finger.transform.position = Vector3.MoveTowards(finger.transform.position, fingerTarget, fingerSpeed);
             //If loop ended
             if (finger.transform.position == tilePlace.transform.position)
                 finger.transform.position = firstPlace;

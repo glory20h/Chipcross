@@ -71,7 +71,8 @@ public class BGMManager : MonoBehaviour
 
     void LoadAudioLibrary()
     {
-        audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level1");
+        //audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level1");
+        audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level2");
         /*
         if (level == 1)
             audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level1");
