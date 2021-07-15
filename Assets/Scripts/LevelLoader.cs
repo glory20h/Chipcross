@@ -6,29 +6,45 @@ public class LevelLoader : MonoBehaviour
 {
     public Animator transition;
     public GameObject loadingScreen;
-    public GameObject sliderob;
-    public Slider slider;
+    [SerializeField]Image progressBar;
+    [SerializeField]Image progressBarframe;
     public void LoadNextLevel()
     {
         StartCoroutine(LoadLevel(1));
     }
     IEnumerator LoadLevel(int sceneIndex)
     {
+        yield return null;
+        progressBar.enabled = true;
+        progressBarframe.enabled = true;
         transition.SetTrigger("Start");
-        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
+        AsyncOperation op = SceneManager.LoadSceneAsync(sceneIndex);
+        op.allowSceneActivation = false;
 
         loadingScreen.SetActive(false);
-        sliderob.SetActive(true);
-        //Time.timeScale = 0f;
-        //Debug.Log(operation.isDone);
-        //Debug.Log(operation.progress);
-        while (!operation.isDone)
+        float timer = 0.0f; 
+        while (!op.isDone)
         {
-            float progress = Mathf.Clamp01(operation.progress / .9f);
-            slider.value = progress;
-            yield return null;
-            //Debug.Log(operation.progress);
+            yield return null; 
+            timer += Time.deltaTime;
+            if(op.progress < 0.9f)
+            {
+                progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, op.progress, timer);
+                if(progressBar.fillAmount >= op.progress)
+                {
+                    timer = 0f;
+                }
+            }
+            else
+            {
+                progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, 1f, timer);
+                if(progressBar.fillAmount == 1.0f)
+                {
+                    op.allowSceneActivation = true; 
+                    yield break;
+                }
+            }
         }
-        //SceneManager.LoadScene(1);
+
     }
 }
