@@ -16,6 +16,8 @@ public class MoveBoi : MonoBehaviour
 
     public GameObject PuzzleSolvedPanel;
 
+    public Animator boyAnimator;
+
     [HideInInspector] public float speed;
     [HideInInspector] public float distanceBetweenTiles;
 
@@ -50,6 +52,7 @@ public class MoveBoi : MonoBehaviour
         warp = false;
         warpDone = false;
         addFriction = AddFriction();
+        boyAnimator = gameObject.GetComponent<Animator>();
     }
 
     void FixedUpdate()
@@ -71,7 +74,7 @@ public class MoveBoi : MonoBehaviour
             {
                 if (warp)            //Warp 해야 하는가?
                 {
-                    Sprite boySprite = gameObject.GetComponent<SpriteRenderer>().sprite;
+                    boyAnimator.enabled = false;// -> Pause Animator
                     gameObject.GetComponent<SpriteRenderer>().sprite = (Sprite)Resources.Load("Arts/Nothing", typeof(Sprite));
 
                     if (tileType == '8')
@@ -97,7 +100,7 @@ public class MoveBoi : MonoBehaviour
                         }
                     }
 
-                    StartCoroutine(Waitsecond(boySprite));
+                    StartCoroutine(Waitsecond(0.3f));
 
                     warp = false;
                     warpDone = true;
@@ -367,11 +370,11 @@ public class MoveBoi : MonoBehaviour
         //yield return StartCoroutine(eventChanger.CoinIncreaseAnimation()); //This part is related to CoinAnimation -> Disabled for now
     }
 
-    IEnumerator Waitsecond(Sprite boySprite)
+    IEnumerator Waitsecond(float time)
     {
         speed = 0f;
-        yield return new WaitForSeconds(0.3f);
-        gameObject.GetComponent<SpriteRenderer>().sprite = boySprite;
+        yield return new WaitForSeconds(time);
+        boyAnimator.enabled = true;
         speed = 2f;
     }
 }

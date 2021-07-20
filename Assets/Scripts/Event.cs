@@ -309,6 +309,16 @@ public class Event : MonoBehaviour
                 levelDFactor = levelData.LoadLevelData();
                 PlayerDFactorText.text = "Player: " + PlayerPrefs.GetFloat("PlayerDFactor").ToString();
                 DfactorText.text = "Level: " + levelDFactor.ToString();
+
+                //Load Different Background according to corresponding levelDfactor
+                if (levelDFactor < -0.55f) //level factor < -0.55인데 여기서는 어쩔수 없이 갯수로
+                    backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/11");
+                else if (levelDFactor < 0f)
+                    backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/22");
+                else if (levelDFactor < 0.5f)
+                    backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/33");
+                else
+                    backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/44");
             }
         }
 
@@ -333,16 +343,6 @@ public class Event : MonoBehaviour
         distanceBetweenTiles = 2 * scaleFactor;
         emptyTileScale = 0.25f * scaleFactor;
         pieceScale = 1 * scaleFactor;
-
-        //Load Different Background according to corresponding levelDfactor
-        if (levelDFactor < -0.55f) //level factor < -0.55인데 여기서는 어쩔수 없이 갯수로
-            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/11");
-        else if (levelDFactor < 0f)
-            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/22");
-        else if (levelDFactor < 0.5f)
-            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/33");
-        else
-            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/44");
 
         //Instantiate 'EmptyTile'
         typeIndex = 0;
@@ -980,12 +980,12 @@ public class Event : MonoBehaviour
     //////////////////////////////////////////////// 아래로 Tutorial용 함수들 ////////////////////////////////////////////////
     public void TutorialExec(int tutLevel)
     {
-        if(tutLevel == 1)
-        {
-            //Toggle On Tutorial Settings
-            tutorialPanel.SetActive(true);
-            applyRating = false;
+        //Tutorial Settings
+        tutorialPanel.SetActive(true);
+        applyRating = false;
 
+        if (tutLevel == 1)
+        {
             GonfasterBtn.interactable = true;
         }
         else
