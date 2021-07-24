@@ -57,6 +57,7 @@ public class Event : MonoBehaviour
     /// For Tutorial
     public GameObject tutorialPanel;
     public GameObject finger;
+    int tutLevel;
     bool isTutorial;
     bool fingerAnimate = false;
     Vector3 fingerTarget;
@@ -292,12 +293,12 @@ public class Event : MonoBehaviour
     //게임 레벨 불러오기
     void LoadLevel(bool playAgain = false)
     {
-        int tutLevel = PlayerPrefs.GetInt("tutorial", 1);
-        //Set Global bool 'isTutorial' here
-        isTutorial = tutLevel < 8;
-
         if (!playAgain)
         {
+            tutLevel = PlayerPrefs.GetInt("tutorial", 1);
+            //Set Global bool 'isTutorial' here
+            isTutorial = tutLevel < 5;
+
             //CHECK IF TUTORIAL NEEDS TO BE LOADED
             if (isTutorial)
             {
@@ -305,8 +306,22 @@ public class Event : MonoBehaviour
             }
             else
             {
-                //Regular LevelLoading
+                //Main LevelLoading
                 levelDFactor = levelData.LoadLevelData();
+
+                //Tutorial for 6,7 Tile
+                if(tutLevel == 5 && levelData.contains67)
+                {
+                    isTutorial = true;
+                    levelData.LoadTutorialData(tutLevel);
+                }
+                //Tutorial for Warp Tile
+                else if (tutLevel == 7 && levelData.contains89)
+                {
+                    isTutorial = true;
+                    levelData.LoadTutorialData(tutLevel);
+                }
+
                 PlayerDFactorText.text = "Player: " + PlayerPrefs.GetFloat("PlayerDFactor").ToString();
                 DfactorText.text = "Level: " + levelDFactor.ToString();
 

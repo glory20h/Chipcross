@@ -25,6 +25,9 @@ public class LevelDatabase
 
     [HideInInspector] public float DFactorDiff;
 
+    [HideInInspector] public bool contains67;
+    [HideInInspector] public bool contains89;
+
     public class PieceData
     {
         public int PieceWidth;
@@ -183,6 +186,9 @@ public class LevelDatabase
         int linenum;
         int diffIndex;
         float mapDFactor;
+
+        contains67 = false;
+        contains89 = false;
 
         diffIndex = Mathf.FloorToInt((playerDFactor + 1.0001f) / 0.01f);
 
@@ -457,6 +463,7 @@ public class LevelDatabase
         List<Vector2Int> ValidTiles;
         List<Vector2Int> AddedTiles;
         int index; //범용성 Index
+        int tileCode;
         bool noTilesLeftToAdd; //boolean handler for flow control when there is no ValidTile to add
         Vector2 boardCenter; //For Adding Location for Hints
         Vector2 pieceCenter; //For Adding Location for Hints
@@ -464,15 +471,26 @@ public class LevelDatabase
 
         /////////////////데이터 받아오기/////////////////
         LoadedMapTile[,] LoadedMap = new LoadedMapTile[BoardHeight, BoardWidth];
-        index = 0; 
+        index = 0;
         //LoadedMap Array로 Input Map 정보 할당
         for (int i = 0; i < BoardHeight; i++) 
         {
             for (int j = 0; j < BoardWidth; j++)
             {
+                tileCode = Board[index] - '0';
+
+                if(tileCode == 6 || tileCode == 7)
+                {
+                    contains67 = true;
+                }
+                else if(tileCode == 8 || tileCode == 9)
+                {
+                    contains89 = true;
+                }
+
                 LoadedMap[i, j] = new LoadedMapTile
                 {
-                    LoadedTileCode = Board[index] - '0'
+                    LoadedTileCode = tileCode
                 };
                 index++;
             }
