@@ -285,6 +285,7 @@ public class Event : MonoBehaviour
             {
                 ResetPiecePosition(objToFollowMouse, Mathf.Abs(objToFollowMouse.localPosition.x) >= levelData.piecePlaceXMin && Mathf.Abs(objToFollowMouse.localPosition.x) < levelData.piecePlaceXMax && objToFollowMouse.localPosition.y >= levelData.piecePlaceYMin && objToFollowMouse.localPosition.y < levelData.piecePlaceYMax);
             }
+
             TouchUsed++;
             objToFollowMouse = null;
         }
@@ -303,37 +304,44 @@ public class Event : MonoBehaviour
             if (isTutorial)
             {
                 levelData.LoadTutorialData(tutLevel);
+                hintBtn.interactable = false;
             }
             else
             {
                 //Main LevelLoading
                 levelDFactor = levelData.LoadLevelData();
 
-                //Tutorial for 6,7 Tile
+                //Tutorial for 6,7 Tile -> 이 부분 나중에 최적화 시켜야 됨
                 if(tutLevel == 5 && levelData.contains67)
                 {
                     isTutorial = true;
+                    hintBtn.interactable = false;
                     levelData.LoadTutorialData(tutLevel);
                 }
                 //Tutorial for Warp Tile
                 else if (tutLevel == 7 && levelData.contains89)
                 {
                     isTutorial = true;
+                    hintBtn.interactable = false;
                     levelData.LoadTutorialData(tutLevel);
                 }
-
-                PlayerDFactorText.text = "Player: " + PlayerPrefs.GetFloat("PlayerDFactor").ToString();
-                DfactorText.text = "Level: " + levelDFactor.ToString();
-
-                //Load Different Background according to corresponding levelDfactor
-                if (levelDFactor < -0.55f) //level factor < -0.55인데 여기서는 어쩔수 없이 갯수로
-                    backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/11");
-                else if (levelDFactor < 0f)
-                    backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/22");
-                else if (levelDFactor < 0.5f)
-                    backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/33");
                 else
-                    backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/44");
+                {
+                    PlayerDFactorText.text = "Player: " + PlayerPrefs.GetFloat("PlayerDFactor").ToString();
+                    DfactorText.text = "Level: " + levelDFactor.ToString();
+
+                    //Load Different Background according to corresponding levelDfactor
+                    if (levelDFactor < -0.55f) //level factor < -0.55인데 여기서는 어쩔수 없이 갯수로
+                        backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/11");
+                    else if (levelDFactor < 0f)
+                        backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/22");
+                    else if (levelDFactor < 0.5f)
+                        backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/33");
+                    else
+                        backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/44");
+
+                    hintBtn.interactable = true;
+                }
             }
         }
 
@@ -624,7 +632,6 @@ public class Event : MonoBehaviour
 
         MovePieceMode = true;
         ResetBtn.interactable = true;
-        hintBtn.interactable = true;
 
         //퍼즐 완료창 종료
         PuzzleSolvedPanel.SetActive(false);
@@ -635,7 +642,7 @@ public class Event : MonoBehaviour
     {
         MovePieceMode = true;
         ResetBtn.interactable = true;
-        hintBtn.interactable = true;
+        hintBtn.interactable = !isTutorial;
 
         /* ResetBoard */
         DeleteLevel();
