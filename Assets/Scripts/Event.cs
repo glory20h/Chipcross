@@ -610,7 +610,7 @@ public class Event : MonoBehaviour
         if(isTutorial)
         {
             //If it's the last tutorial level
-            if(tutLevel == 7)
+            if(tutLevel == 5)
             {
                 //Toggle Off Tutorial Settings
                 tutorialPanel.SetActive(false);
@@ -976,21 +976,21 @@ public class Event : MonoBehaviour
     //오디오믹서의 배경음악 볼륨 조절
     public void SetMusicVolume(float vol)
     {
-        audioMixer.SetFloat("MusicVol", -5f * vol * vol);
+        audioMixer.SetFloat("MusicVol", -4f * vol * vol);
         PlayerPrefs.SetFloat("MusicVol", vol);
     }
 
     //오디오믹서의 효과음 볼륨 조절
     public void SetSFXVolume(float vol)
     {
-        audioMixer.SetFloat("SFXVol", -5f * vol * vol);
+        audioMixer.SetFloat("SFXVol", -4f * vol * vol);
         PlayerPrefs.SetFloat("SFXVol", vol);
     }
 
     //오디오믹서의 환경음 볼륨 조절
     public void SetAmbienceVolume(float vol)
     {
-        audioMixer.SetFloat("AmbienceVol", -5f * vol * vol);
+        audioMixer.SetFloat("AmbienceVol", -4f * vol * vol);
         PlayerPrefs.SetFloat("AmbVol", vol);
     }
 

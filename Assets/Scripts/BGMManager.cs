@@ -65,15 +65,16 @@ public class BGMManager : MonoBehaviour
 
     void LoadRandomAudioClip()
     {
-        //currentRepeat = 0;
+        if (level != CurrentLevel())
+        {
+            level = CurrentLevel();
+            LoadAudioLibrary();
+        }
         audioSrc.clip = audioLibrary[Random.Range(1, audioLibrary.Length)];
     }
 
     void LoadAudioLibrary()
     {
-        //audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level1");
-        audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level2");
-        /*
         if (level == 1)
             audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level1");
         else if (level == 2)
@@ -82,7 +83,6 @@ public class BGMManager : MonoBehaviour
             audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level3");
         else
             audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level4");
-        */
     }
 
     void LoadAudioClip(int r)
