@@ -110,12 +110,7 @@ public class Event : MonoBehaviour
         timeCount = false;
 
         //Set Volume Settings
-        MusicSlider.value = PlayerPrefs.GetFloat("MusicVol", -1f);
-        SFXSlider.value = PlayerPrefs.GetFloat("SFXVol", 0f);
-        AmbSlider.value = (PlayerPrefs.GetFloat("AmbVol", -1f));
-        SetMusicVolume(PlayerPrefs.GetFloat("MusicVol", -1f));
-        SetSFXVolume(PlayerPrefs.GetFloat("SFXVol", 0f));
-        SetAmbienceVolume(PlayerPrefs.GetFloat("AmbVol", -1f));
+        SetVolumeSettings();
 
         //MANUALLY SET STARTING PLAYER'S DIFFICULTYFACTOR BY CHANGING THIS VALUE
         //PlayerPrefs.SetFloat("PlayerDFactor", -1f);
@@ -297,52 +292,64 @@ public class Event : MonoBehaviour
         if (!playAgain)
         {
             tutLevel = PlayerPrefs.GetInt("tutorial", 1);
-            //Set Global bool 'isTutorial' here
-            isTutorial = tutLevel < 5;
+            levelDFactor = levelData.LoadLevelData();
 
             //CHECK IF TUTORIAL NEEDS TO BE LOADED
+            if (tutLevel < 5)
+            {
+                isTutorial = true;
+            }
+            else if(tutLevel == 5 && levelData.contains67)
+            {
+                isTutorial = true;
+            }
+            else if(tutLevel == 6)
+            {
+                isTutorial = true;
+            }
+            else if(tutLevel == 7 && levelData.contains89)
+            {
+                isTutorial = true;
+            }
+            else
+            {
+                isTutorial = false;
+            }
+
+            //Load Level according to isTutorial
             if (isTutorial)
             {
                 levelData.LoadTutorialData(tutLevel);
                 hintBtn.interactable = false;
+                applyRating = false;
             }
             else
             {
-                //Main LevelLoading
-                levelDFactor = levelData.LoadLevelData();
+                //Toggle Off Tutorial Settings
+                tutorialPanel.SetActive(false);
+                applyRating = true;
+                finger.SetActive(false);
+                fingerAnimate = false;
 
-                //Tutorial for 6,7 Tile -> 이 부분 나중에 최적화 시켜야 됨
-                if(tutLevel == 5 && levelData.contains67)
-                {
-                    isTutorial = true;
-                    hintBtn.interactable = false;
-                    levelData.LoadTutorialData(tutLevel);
-                }
-                //Tutorial for Warp Tile
-                else if (tutLevel == 7 && levelData.contains89)
-                {
-                    isTutorial = true;
-                    hintBtn.interactable = false;
-                    levelData.LoadTutorialData(tutLevel);
-                }
+                PlayerDFactorText.text = "Player: " + PlayerPrefs.GetFloat("PlayerDFactor").ToString();
+                DfactorText.text = "Level: " + levelDFactor.ToString();
+
+                //Load Different Background according to corresponding levelDfactor
+                if (levelDFactor < -0.55f) //level factor < -0.55인데 여기서는 어쩔수 없이 갯수로
+                    backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/11");
+                else if (levelDFactor < 0f)
+                    backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/22");
+                else if (levelDFactor < 0.5f)
+                    backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/33");
                 else
-                {
-                    PlayerDFactorText.text = "Player: " + PlayerPrefs.GetFloat("PlayerDFactor").ToString();
-                    DfactorText.text = "Level: " + levelDFactor.ToString();
+                    backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/44");
 
-                    //Load Different Background according to corresponding levelDfactor
-                    if (levelDFactor < -0.55f) //level factor < -0.55인데 여기서는 어쩔수 없이 갯수로
-                        backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/11");
-                    else if (levelDFactor < 0f)
-                        backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/22");
-                    else if (levelDFactor < 0.5f)
-                        backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/33");
-                    else
-                        backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/44");
-
-                    hintBtn.interactable = true;
-                }
+                hintBtn.interactable = true;
             }
+        }
+        else
+        {
+            applyRating = false;
         }
 
         GameObject prefab;
@@ -609,22 +616,8 @@ public class Event : MonoBehaviour
 
         if(isTutorial)
         {
-            //If it's the last tutorial level
-            if(tutLevel == 5)
-            {
-                //Toggle Off Tutorial Settings
-                tutorialPanel.SetActive(false);
-                applyRating = true;
-                finger.SetActive(false);
-                fingerAnimate = false;
-            }
-
             tutLevel++;
             PlayerPrefs.SetInt("tutorial", tutLevel);
-        }
-        else
-        {
-            applyRating = true;
         }
 
         DeleteLevel();
@@ -650,8 +643,6 @@ public class Event : MonoBehaviour
         /* ResetBoard */
 
         Boy.GetComponent<MoveBoi>().ResetBoyPosition();
-
-        applyRating = false;
 
         //퍼즐 완료창 종료
         PuzzleSolvedPanel.SetActive(false);
@@ -976,22 +967,53 @@ public class Event : MonoBehaviour
     //오디오믹서의 배경음악 볼륨 조절
     public void SetMusicVolume(float vol)
     {
-        audioMixer.SetFloat("MusicVol", -4f * vol * vol);
+        if(vol <= -4f)
+        {
+            audioMixer.SetFloat("MusicVol", -80f);
+        }
+        else
+        {
+            audioMixer.SetFloat("MusicVol", -4f * vol * vol);
+        }
         PlayerPrefs.SetFloat("MusicVol", vol);
     }
 
     //오디오믹서의 효과음 볼륨 조절
     public void SetSFXVolume(float vol)
     {
-        audioMixer.SetFloat("SFXVol", -4f * vol * vol);
+        if (vol <= -4f)
+        {
+            audioMixer.SetFloat("SFXVol", -80f);
+        }
+        else
+        {
+            audioMixer.SetFloat("SFXVol", -4f * vol * vol);
+        }
         PlayerPrefs.SetFloat("SFXVol", vol);
     }
 
     //오디오믹서의 환경음 볼륨 조절
     public void SetAmbienceVolume(float vol)
     {
-        audioMixer.SetFloat("AmbienceVol", -4f * vol * vol);
+        if (vol <= -4f)
+        {
+            audioMixer.SetFloat("AmbienceVol", -80f);
+        }
+        else
+        {
+            audioMixer.SetFloat("AmbienceVol", -4f * vol * vol);
+        }
         PlayerPrefs.SetFloat("AmbVol", vol);
+    }
+
+    void SetVolumeSettings()
+    {
+        MusicSlider.value = PlayerPrefs.GetFloat("MusicVol", -1f);
+        SFXSlider.value = PlayerPrefs.GetFloat("SFXVol", 0f);
+        AmbSlider.value = (PlayerPrefs.GetFloat("AmbVol", -1f));
+        SetMusicVolume(PlayerPrefs.GetFloat("MusicVol", -1f));
+        SetSFXVolume(PlayerPrefs.GetFloat("SFXVol", 0f));
+        SetAmbienceVolume(PlayerPrefs.GetFloat("AmbVol", -1f));
     }
 
     IEnumerator Waitsecond(float time)
