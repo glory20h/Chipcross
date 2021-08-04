@@ -36,6 +36,7 @@ public class LevelLoader : MonoBehaviour
                 progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, op.progress, timer);
                 //Debug.Log(op.progress);
                 Rocket.transform.position = (Target.transform.position - Rocket.transform.position) * op.progress + Rocket.transform.position;
+                //Rocket.transform.position = new Vector3(Mathf.Lerp(Rocket.transform.position.x, Target.transform.position.x, timer), Target.transform.position.y, 0);
                 if (progressBar.fillAmount >= op.progress)
                 {
                     timer = 0f;
@@ -44,7 +45,8 @@ public class LevelLoader : MonoBehaviour
             else
             {
                 progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, 1f, timer);
-                Rocket.transform.position = Target.transform.position;
+                //Rocket.transform.position = Target.transform.position;
+                Rocket.transform.position = (Target.transform.position - Rocket.transform.position) * op.progress + Rocket.transform.position;
                 if (progressBar.fillAmount == 1.0f)
                 {
                     op.allowSceneActivation = true; 
