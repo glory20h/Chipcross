@@ -6,8 +6,11 @@ public class LevelLoader : MonoBehaviour
 {
     public Animator transition;
     public GameObject loadingScreen;
+    public GameObject progressScreen;
     [SerializeField]Image progressBar;
-    [SerializeField]Image progressBarframe;
+    //[SerializeField]Image progressBarframe;
+    public GameObject Rocket;
+    public GameObject Target;
     public void LoadNextLevel()
     {
         StartCoroutine(LoadLevel(1));
@@ -15,13 +18,14 @@ public class LevelLoader : MonoBehaviour
     IEnumerator LoadLevel(int sceneIndex)
     {
         yield return null;
-        progressBar.enabled = true;
-        progressBarframe.enabled = true;
+        //progressBar.enabled = true;
+        //progressBarframe.enabled = true;
         transition.SetTrigger("Start");
         AsyncOperation op = SceneManager.LoadSceneAsync(sceneIndex);
         op.allowSceneActivation = false;
 
         loadingScreen.SetActive(false);
+        progressScreen.SetActive(true);
         float timer = 0.0f; 
         while (!op.isDone)
         {
@@ -30,7 +34,9 @@ public class LevelLoader : MonoBehaviour
             if(op.progress < 0.9f)
             {
                 progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, op.progress, timer);
-                if(progressBar.fillAmount >= op.progress)
+                //Debug.Log(op.progress);
+                Rocket.transform.position = (Target.transform.position - Rocket.transform.position) * op.progress + Rocket.transform.position;
+                if (progressBar.fillAmount >= op.progress)
                 {
                     timer = 0f;
                 }
@@ -38,7 +44,8 @@ public class LevelLoader : MonoBehaviour
             else
             {
                 progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, 1f, timer);
-                if(progressBar.fillAmount == 1.0f)
+                Rocket.transform.position = Target.transform.position;
+                if (progressBar.fillAmount == 1.0f)
                 {
                     op.allowSceneActivation = true; 
                     yield break;
