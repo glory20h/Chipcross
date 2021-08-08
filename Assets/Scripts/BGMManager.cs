@@ -31,7 +31,7 @@ public class BGMManager : MonoBehaviour
         LoadRandomAudioClip();
         
         audioSrc.Play();
-        titleTxt.text = audioSrc.clip.name;
+        
     }
 
     //AUTO-LOOPING VERSION
@@ -68,9 +68,11 @@ public class BGMManager : MonoBehaviour
         if (level != CurrentLevel())
         {
             level = CurrentLevel();
+            PlayerPrefs.SetInt("BGMLevel", level);
             LoadAudioLibrary();
         }
         audioSrc.clip = audioLibrary[Random.Range(1, audioLibrary.Length)];
+        if (titleTxt) titleTxt.text = audioSrc.clip.name;
     }
 
     void LoadAudioLibrary()
@@ -85,27 +87,44 @@ public class BGMManager : MonoBehaviour
             audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level4");
     }
 
-    void LoadAudioClip(int r)
-    {
-        audioSrc.clip = audioLibrary[r];
-    }
-
     int CurrentLevel()
     {
         int level;
 
-        if (ev.levelDFactor < -0.55f)
-            level = 1;
-        else if (ev.levelDFactor < 0f)
-            level = 2;
-        else if (ev.levelDFactor < 0.5f)
-            level = 3;
+        if (ev)
+        {
+            if (ev.levelDFactor < -0.55f)
+                level = 1;
+            else if (ev.levelDFactor < 0f)
+                level = 2;
+            else if (ev.levelDFactor < 0.5f)
+                level = 3;
+            else
+                level = 4;
+        }
         else
-            level = 4;
+        {
+            level = PlayerPrefs.GetInt("BGMLevel", 1);
+        }
 
         return level;
     }
 
+    public void Transition()
+    {
+        ev = FindObjectOfType<Event>();
+        titleTxt = GameObject.Find("BGMTitle").GetComponent<Text>();
+        titleTxt.text = audioSrc.clip.name;
+    }
+
+    /*
+    void LoadAudioClip(int r)
+    {
+        audioSrc.clip = audioLibrary[r];
+    }
+    */
+
+    /*
     public void NextBGM()
     {
         if (level != CurrentLevel())
@@ -126,4 +145,5 @@ public class BGMManager : MonoBehaviour
         titleTxt.text = audioSrc.clip.name;
         audioSrc.Play();
     }
+    */
 }

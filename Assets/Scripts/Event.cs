@@ -109,11 +109,10 @@ public class Event : MonoBehaviour
         applyRating = false;
         timeCount = false;
 
-        //Set Volume Settings
-        SetVolumeSettings();
-
         //MANUALLY SET STARTING PLAYER'S DIFFICULTYFACTOR BY CHANGING THIS VALUE
         //PlayerPrefs.SetFloat("PlayerDFactor", -1f);
+
+        SetAudioSliderSettings();
 
         //MANUALLY SET STARTING TUTORIAL LEVEL BY CHANGING THIS VALUE; DEFAULT 0 -> 평소에는 주석처리 되어 있어야함
         PlayerPrefs.SetInt("tutorial", 1);
@@ -967,7 +966,7 @@ public class Event : MonoBehaviour
     //오디오믹서의 배경음악 볼륨 조절
     public void SetMusicVolume(float vol)
     {
-        if(vol <= -4f)
+        if (vol <= -4f)
         {
             audioMixer.SetFloat("MusicVol", -80f);
         }
@@ -1006,14 +1005,11 @@ public class Event : MonoBehaviour
         PlayerPrefs.SetFloat("AmbVol", vol);
     }
 
-    void SetVolumeSettings()
+    void SetAudioSliderSettings()
     {
         MusicSlider.value = PlayerPrefs.GetFloat("MusicVol", -1f);
         SFXSlider.value = PlayerPrefs.GetFloat("SFXVol", 0f);
         AmbSlider.value = (PlayerPrefs.GetFloat("AmbVol", -1f));
-        SetMusicVolume(PlayerPrefs.GetFloat("MusicVol", -1f));
-        SetSFXVolume(PlayerPrefs.GetFloat("SFXVol", 0f));
-        SetAmbienceVolume(PlayerPrefs.GetFloat("AmbVol", -1f));
     }
 
     IEnumerator Waitsecond(float time)

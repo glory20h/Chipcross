@@ -11,6 +11,7 @@ public class LevelLoader : MonoBehaviour
     //[SerializeField]Image progressBarframe;
     public GameObject Rocket;
     public GameObject Target;
+    public BGMManager BGMManager;
     public void LoadNextLevel()
     {
         StartCoroutine(LoadLevel(1));
@@ -55,5 +56,6 @@ public class LevelLoader : MonoBehaviour
             }
         }
 
+        BGMManager.Transition();
     }
 }
