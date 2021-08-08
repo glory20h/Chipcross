@@ -166,7 +166,7 @@ public class Event : MonoBehaviour
         if (fingerAnimate)
         {
             //Set finger speed dynamically for more realistic anim: Slow If near start/end, Fast otherwise
-            fingerSpeed = 0.15f * (Mathf.Min(Vector3.Distance(firstPlace, finger.transform.position), Vector3.Distance(fingerTarget, finger.transform.position)) + 0.05f);
+            fingerSpeed = 0.05f * (Mathf.Min(Vector3.Distance(firstPlace, finger.transform.position), Vector3.Distance(fingerTarget, finger.transform.position)) + 0.05f);
 
             finger.transform.position = Vector3.MoveTowards(finger.transform.position, fingerTarget, fingerSpeed);
             //If loop ended
