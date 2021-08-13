@@ -9,6 +9,9 @@ public class Event : MonoBehaviour
 {
     public AudioMixer audioMixer;                   //오디오 믹서
 
+    public GameObject MainBoard;
+    public GameObject TutBoard;
+
     public Transform TileBoard;                     //빈 타일(퍼즐판)의 Parent
     public Transform BlockPieces;                   //아직 타일 위에 안 놓아진 퍼즐 조각들의 Parent
     public Transform HintPieces;                    //힌트 조각들이 들어갈 Parent
@@ -56,7 +59,8 @@ public class Event : MonoBehaviour
 
     /// For Tutorial
     public GameObject tutorialPanel;
-    public GameObject finger;
+    public GameObject finger1;
+    public GameObject finger2;
     int tutLevel;
     bool isTutorial;
     bool fingerAnimate = false;
@@ -64,6 +68,9 @@ public class Event : MonoBehaviour
     Vector3 firstPlace;
     GameObject tilePlace;
     float fingerSpeed;
+    float finger2min = 0f;
+    float finger2max = 0.5f;
+    float finger2t;
     /// For Tutorial
 
     /// For DevTools
@@ -98,6 +105,9 @@ public class Event : MonoBehaviour
 
         //LevelDatabase에서 데이터 불러와서 현재 필요한 스테이지 생성
         LoadLevel();
+
+        //Finger Lerper
+
     }
 
     void Initialize()
@@ -123,6 +133,8 @@ public class Event : MonoBehaviour
         isTutorial = false;
 
         prevTime = -2f;                                      //For Quitting Program on Android Back Button
+
+        finger2t = 0f;
     }
 
     void Update()
@@ -151,27 +163,31 @@ public class Event : MonoBehaviour
             }
         }
 
-        //Quit Program on Android Back Button
-        if (Input.GetKeyDown(KeyCode.Escape))
+        finger2.transform.localPosition = new Vector3(0, Mathf.Lerp(finger2min, finger2max, finger2t), 0);
+        finger2t += Time.deltaTime;
+        if (finger2t > 1f)
         {
-            float curTime = Time.time;
-            if(curTime - prevTime <= 1.5f)
-            {
-                Application.Quit();
-            }
-            prevTime = curTime;
+            float temp = finger2max;
+            finger2max = finger2min;
+            finger2min = temp;
+            finger2t = 0f;
         }
 
         //For tutorial not using animation
         if (fingerAnimate)
         {
-            //Set finger speed dynamically for more realistic anim: Slow If near start/end, Fast otherwise
-            fingerSpeed = 0.05f * (Mathf.Min(Vector3.Distance(firstPlace, finger.transform.position), Vector3.Distance(fingerTarget, finger.transform.position)) + 0.05f);
+            FingerAnim1();
+        }
 
-            finger.transform.position = Vector3.MoveTowards(finger.transform.position, fingerTarget, fingerSpeed);
-            //If loop ended
-            if (finger.transform.position == tilePlace.transform.position)
-                finger.transform.position = firstPlace;
+        //Quit Program on Android Back Button
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            float curTime = Time.time;
+            if (curTime - prevTime <= 1.5f)
+            {
+                Application.Quit();
+            }
+            prevTime = curTime;
         }
     }
 
@@ -268,11 +284,11 @@ public class Event : MonoBehaviour
 
                 SoundFXPlayer.Play("put");
 
-                CheckIfAllTilesInPlace();
+                GonfasterBtn.interactable = CheckIfAllTilesInPlace();
 
                 if (isTutorial)
                 {
-                    SetFingerLoopAnim();
+                    SetFingerAnim();
                 }
             }
             else
@@ -283,6 +299,22 @@ public class Event : MonoBehaviour
             TouchUsed++;
             objToFollowMouse = null;
         }
+    }
+
+    void FingerAnim1()
+    {
+        //Set finger speed dynamically for more realistic anim: Slow If near start/end, Fast otherwise
+        fingerSpeed = 0.05f * (Mathf.Min(Vector3.Distance(firstPlace, finger1.transform.position), Vector3.Distance(fingerTarget, finger1.transform.position)) + 0.05f);
+
+        finger1.transform.position = Vector3.MoveTowards(finger1.transform.position, fingerTarget, fingerSpeed);
+        //If loop ended
+        if (finger1.transform.position == tilePlace.transform.position)
+            finger1.transform.position = firstPlace;
+    }
+
+    void FingerAnim2()
+    {
+        
     }
 
     //게임 레벨 불러오기
@@ -327,7 +359,7 @@ public class Event : MonoBehaviour
                 //Toggle Off Tutorial Settings
                 tutorialPanel.SetActive(false);
                 applyRating = true;
-                finger.SetActive(false);
+                finger1.SetActive(false);
                 fingerAnimate = false;
 
                 PlayerDFactorText.text = "Player: " + PlayerPrefs.GetFloat("PlayerDFactor").ToString();
@@ -474,19 +506,19 @@ public class Event : MonoBehaviour
     }
 
     //퍼즐 조각들이 모두 타일위에 놓아졌는지 확인
-    void CheckIfAllTilesInPlace()
+    bool CheckIfAllTilesInPlace()
     {
         if(PiecePosition.Length == BlockOnBoard.childCount)
         {
-            GonfasterBtn.interactable = true;
+            return true;
         }
         else if(PlayerPrefs.GetInt("tutorial") == 1)
         {
-            GonfasterBtn.interactable = true;
+            return true;
         }
         else
         {
-            GonfasterBtn.interactable = false;
+            return false;
         }
     }
 
@@ -602,7 +634,7 @@ public class Event : MonoBehaviour
         else //During Puzzle Solving Phase
         {
             ResetBoard();
-            CheckIfAllTilesInPlace();
+            GonfasterBtn.interactable = CheckIfAllTilesInPlace();
         }
         
         timeCount = true;
@@ -778,13 +810,13 @@ public class Event : MonoBehaviour
         if(OptionMenu.activeSelf)
         {
             OptionMenu.SetActive(false);
-            if(fingerAnimate) finger.SetActive(true);
+            if(fingerAnimate) finger1.SetActive(true);
             Time.timeScale = 1f;
         }
         else
         {
             OptionMenu.SetActive(true);
-            if(fingerAnimate) finger.SetActive(false);
+            if(fingerAnimate) finger1.SetActive(false);
             Time.timeScale = 0f;
         }
     }
@@ -793,7 +825,7 @@ public class Event : MonoBehaviour
     public void CloseOptionPanel()
     {
         OptionMenu.SetActive(false);
-        if (fingerAnimate) finger.SetActive(true);
+        if (fingerAnimate) finger1.SetActive(true);
         Time.timeScale = 1f;
     }
 
@@ -1030,7 +1062,7 @@ public class Event : MonoBehaviour
         }
         else
         {
-            SetFingerLoopAnim();
+            SetFingerAnim();
         }
 
         //추가해야되는것 타일 하이라이트와 이를 이동하는 방식
@@ -1044,7 +1076,7 @@ public class Event : MonoBehaviour
         //Debug.Log(fingerTarget.transform.position);
     }
 
-    void SetFingerLoopAnim()
+    void SetFingerAnim()
     {
         try
         {
@@ -1052,13 +1084,13 @@ public class Event : MonoBehaviour
         }
         catch
         {
-            finger.SetActive(false);
+            finger1.SetActive(false);
             return;
         }
 
-        finger.SetActive(true);
+        finger1.SetActive(true);
         firstPlace = tilePlace.transform.position;
-        finger.transform.position = tilePlace.transform.position;
+        finger1.transform.position = tilePlace.transform.position;
 
         //Debug.Log(GameObject.FindGameObjectWithTag("EmptyTile").GetComponent<BoxCollider2D>().enabled);
         GameObject[] test = GameObject.FindGameObjectsWithTag("EmptyTile");

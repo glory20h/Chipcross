@@ -16,7 +16,6 @@ public class BGMManager : MonoBehaviour
     //int repeatAmount = 2;
     //int currentRepeat = 0;
 
-    int idx;
     int level;
 
     void Start()
@@ -24,7 +23,6 @@ public class BGMManager : MonoBehaviour
         audioSrc = GetComponent<AudioSource>();
         audioSrc.loop = false;
         level = CurrentLevel();
-        idx = 0;
 
         LoadAudioLibrary();
         //LoadAudioClip(idx);
