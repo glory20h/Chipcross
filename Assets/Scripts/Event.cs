@@ -63,7 +63,7 @@ public class Event : MonoBehaviour
     public GameObject finger2;
     int tutLevel;
     bool isTutorial;
-    bool fingerAnimate = false;
+    int fingerAnimate = 0;
     Vector3 fingerTarget;
     Vector3 firstPlace;
     GameObject tilePlace;
@@ -105,9 +105,6 @@ public class Event : MonoBehaviour
 
         //LevelDatabase에서 데이터 불러와서 현재 필요한 스테이지 생성
         LoadLevel();
-
-        //Finger Lerper
-
     }
 
     void Initialize()
@@ -129,7 +126,7 @@ public class Event : MonoBehaviour
 
         levelData = new LevelDatabase();
 
-        fingerAnimate = false;
+        fingerAnimate = 0;
         isTutorial = false;
 
         prevTime = -2f;                                      //For Quitting Program on Android Back Button
@@ -143,9 +140,10 @@ public class Event : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
         }
-            
+
         //퍼즐조각 움직임 enable/disable
-        if (MovePieceMode && Time.timeScale != 0f)
+        //if (MovePieceMode && Time.timeScale != 0f)
+        if (MovePieceMode)
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -163,20 +161,14 @@ public class Event : MonoBehaviour
             }
         }
 
-        finger2.transform.localPosition = new Vector3(0, Mathf.Lerp(finger2min, finger2max, finger2t), 0);
-        finger2t += Time.deltaTime;
-        if (finger2t > 1f)
-        {
-            float temp = finger2max;
-            finger2max = finger2min;
-            finger2min = temp;
-            finger2t = 0f;
-        }
-
-        //For tutorial not using animation
-        if (fingerAnimate)
+        //For tutorial finger animation
+        if (fingerAnimate == 1)
         {
             FingerAnim1();
+        }
+        else if(fingerAnimate == 2)
+        {
+            FingerAnim2();
         }
 
         //Quit Program on Android Back Button
@@ -314,7 +306,15 @@ public class Event : MonoBehaviour
 
     void FingerAnim2()
     {
-        
+        finger2.transform.localPosition = new Vector3(0, Mathf.Lerp(finger2min, finger2max, finger2t), 0);
+        finger2t += Time.deltaTime * 2.5f;
+        if (finger2t > 1f)
+        {
+            float temp = finger2max;
+            finger2max = finger2min;
+            finger2min = temp;
+            finger2t = 0f;
+        }
     }
 
     //게임 레벨 불러오기
@@ -360,7 +360,7 @@ public class Event : MonoBehaviour
                 tutorialPanel.SetActive(false);
                 applyRating = true;
                 finger1.SetActive(false);
-                fingerAnimate = false;
+                fingerAnimate = 0;
 
                 PlayerDFactorText.text = "Player: " + PlayerPrefs.GetFloat("PlayerDFactor").ToString();
                 DfactorText.text = "Level: " + levelDFactor.ToString();
@@ -598,6 +598,11 @@ public class Event : MonoBehaviour
             goNFastBtnState = 2;
             GonfasterBtn.image.sprite = Resources.Load<Sprite>("Arts/FastForward");
             SoundFXPlayer.Play("go");
+
+            if (isTutorial)
+            {
+                SetFingerAnim();
+            }
         }
         else if(goNFastBtnState == 2)
         {
@@ -810,13 +815,27 @@ public class Event : MonoBehaviour
         if(OptionMenu.activeSelf)
         {
             OptionMenu.SetActive(false);
-            if(fingerAnimate) finger1.SetActive(true);
+            if(fingerAnimate == 1)
+            {
+                finger1.SetActive(true);
+            }
+            else if(fingerAnimate == 2)
+            {
+                finger2.SetActive(true);
+            }
             Time.timeScale = 1f;
         }
         else
         {
             OptionMenu.SetActive(true);
-            if(fingerAnimate) finger1.SetActive(false);
+            if (fingerAnimate == 1)
+            {
+                finger1.SetActive(false);
+            }
+            else if (fingerAnimate == 2)
+            {
+                finger2.SetActive(false);
+            }
             Time.timeScale = 0f;
         }
     }
@@ -825,7 +844,14 @@ public class Event : MonoBehaviour
     public void CloseOptionPanel()
     {
         OptionMenu.SetActive(false);
-        if (fingerAnimate) finger1.SetActive(true);
+        if (fingerAnimate == 1)
+        {
+            finger1.SetActive(true);
+        }
+        else if (fingerAnimate == 2)
+        {
+            finger2.SetActive(true);
+        }
         Time.timeScale = 1f;
     }
 
@@ -1060,10 +1086,8 @@ public class Event : MonoBehaviour
         {
             GonfasterBtn.interactable = true;
         }
-        else
-        {
-            SetFingerAnim();
-        }
+
+        SetFingerAnim();
 
         //추가해야되는것 타일 하이라이트와 이를 이동하는 방식
         /*
@@ -1076,36 +1100,50 @@ public class Event : MonoBehaviour
         //Debug.Log(fingerTarget.transform.position);
     }
 
-    void SetFingerAnim()
+    void SetFingerAnim() 
     {
-        try
+        if(fingerAnimate == 2)
         {
-            tilePlace = BlockPieces.GetChild(0).gameObject;
+            fingerAnimate = 0;
+            finger2.SetActive(false);
         }
-        catch
+        else
         {
-            finger1.SetActive(false);
-            return;
-        }
-
-        finger1.SetActive(true);
-        firstPlace = tilePlace.transform.position;
-        finger1.transform.position = tilePlace.transform.position;
-
-        //Debug.Log(GameObject.FindGameObjectWithTag("EmptyTile").GetComponent<BoxCollider2D>().enabled);
-        GameObject[] test = GameObject.FindGameObjectsWithTag("EmptyTile");
-        for (int i = 0; i < test.Length; i++)
-        {
-            if (test[i].GetComponent<BoxCollider2D>().enabled == true)
+            try
             {
-                tilePlace = test[i];
-                break;
+                //Grab next tutorial piece
+                tilePlace = BlockPieces.GetChild(0).gameObject;
             }
+            catch
+            {   //No more tutorial piece
+                finger1.SetActive(false);
+
+                //Swap from 1 to 2
+                finger2.SetActive(true);
+                fingerAnimate = 2;
+
+                return;
+            }
+
+            finger1.SetActive(true);
+            firstPlace = tilePlace.transform.position;
+            finger1.transform.position = tilePlace.transform.position;
+
+            //Debug.Log(GameObject.FindGameObjectWithTag("EmptyTile").GetComponent<BoxCollider2D>().enabled);
+            GameObject[] test = GameObject.FindGameObjectsWithTag("EmptyTile");
+            for (int i = 0; i < test.Length; i++)
+            {
+                if (test[i].GetComponent<BoxCollider2D>().enabled == true)
+                {
+                    tilePlace = test[i];
+                    break;
+                }
+            }
+            //tilePlace = GameObject.FindGameObjectWithTag("EmptyTile");// Box colider on 되어있는거 가져와야됨
+
+            fingerTarget = tilePlace.transform.position;
+
+            fingerAnimate = 1;
         }
-        //tilePlace = GameObject.FindGameObjectWithTag("EmptyTile");// Box colider on 되어있는거 가져와야됨
-
-        fingerTarget = tilePlace.transform.position;
-
-        fingerAnimate = true;
     }
 }
