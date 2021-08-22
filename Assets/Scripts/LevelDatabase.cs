@@ -20,7 +20,6 @@ public class LevelDatabase
     [HideInInspector] public float piecePlaceYMax = 6.8f;
     [HideInInspector] public float piecePlaceYMin = -0.4f;
 
-    [HideInInspector] public bool tutorialCase = false;
     [HideInInspector] public float dfac = 0;
 
     [HideInInspector] public float DFactorDiff;
@@ -66,7 +65,6 @@ public class LevelDatabase
     public void ConvertStringToPieceInfo(string s)
     {
         int[] data = ConvertStringToIntArray(s);
-        tutorialCase = false;
         int d = 0;
         int pieceSize;
         //pieceDatas = new PieceData[NumberOfPieces]; //Array -> List migration
@@ -715,85 +713,6 @@ public class LevelDatabase
             }
             Debug.Log("PieceWidth : " + pieceDatas[i].PieceWidth + ", PieceHeight : " + pieceDatas[i].PieceHeight + ", TileTypeCode : " + TileTypeCode);
             TileTypeCode = "";
-        }
-    }
-
-    public void LoadTutorialData(int num)
-    {
-        switch (num)
-        {
-            case 1://empty
-                scaleSize = 1;
-                BoardWidth = 2;
-                BoardHeight = 2;
-                BoyPos = 0;
-                GirlPos = 0;
-                NumberOfPieces = 1;
-                BoardEmptyTileTypeInfo = ConvertStringToIntArray("3333");
-                //ConvertStringToPieceInfo("111");
-                break;
-            case 2://empty ->
-                scaleSize = 1;
-                BoardWidth = 2;
-                BoardHeight = 2;
-                BoyPos = 0;
-                GirlPos = 0;
-                NumberOfPieces = 1;
-                BoardEmptyTileTypeInfo = ConvertStringToIntArray("4315");
-                ConvertStringToPieceInfo("113");
-                break;
-            case 3://empty 아래
-                scaleSize = 1;
-                BoardWidth = 3;
-                BoardHeight = 3;
-                BoyPos = 0;
-                GirlPos = 1;
-                NumberOfPieces = 2;
-                BoardEmptyTileTypeInfo = ConvertStringToIntArray("135133135");
-                ConvertStringToPieceInfo("12411131241");
-                break;
-            case 4://empty 위
-                scaleSize = 1;
-                BoardWidth = 2;
-                BoardHeight = 2;
-                BoyPos = 0;
-                GirlPos = 0;
-                NumberOfPieces = 1;
-                BoardEmptyTileTypeInfo = ConvertStringToIntArray("4331");
-                ConvertStringToPieceInfo("115");
-                break;
-            case 5://back 넘기고 6번타일
-                scaleSize = 1;
-                BoardWidth = 2;
-                BoardHeight = 2;
-                BoyPos = 0;
-                GirlPos = 0;
-                NumberOfPieces = 1;
-                BoardEmptyTileTypeInfo = ConvertStringToIntArray("4315");
-                ConvertStringToPieceInfo("116");
-                break;
-            case 6://empty 7번타일
-                scaleSize = 1;
-                BoardWidth = 2;
-                BoardHeight = 2;
-                BoyPos = 0;
-                GirlPos = 0;
-                NumberOfPieces = 1;
-                BoardEmptyTileTypeInfo = ConvertStringToIntArray("4135");
-                ConvertStringToPieceInfo("117");
-                break;
-            case 7://empty 8번
-                scaleSize = 1;
-                BoardWidth = 2;
-                BoardHeight = 2;
-                BoyPos = 0;
-                GirlPos = 0;
-                NumberOfPieces = 1;
-                BoardEmptyTileTypeInfo = ConvertStringToIntArray("1395");
-                ConvertStringToPieceInfo("118");
-                break;
-            default:
-                break;
         }
     }
 }
