@@ -365,8 +365,6 @@ public class Event : MonoBehaviour
         else
         {
             //Toggle Off Tutorial Settings
-            TutBoard.gameObject.SetActive(false);
-            MainBoard.gameObject.SetActive(true);
             applyRating = true;
             finger1.SetActive(false);
             fingerAnimate = 0;
@@ -1073,8 +1071,6 @@ public class Event : MonoBehaviour
         tutLevelData.LoadTutorialData(tutLevel);
 
         //Tutorial Settings
-        TutBoard.gameObject.SetActive(true);
-        MainBoard.gameObject.SetActive(false);
         applyRating = false;
         hintBtn.interactable = false;
 
@@ -1082,99 +1078,6 @@ public class Event : MonoBehaviour
         {
             GonfasterBtn.interactable = true;
         }
-
-        GameObject prefab;
-        GameObject obj;
-        GameObject obj2;
-
-        int typeIndex;
-        int pieceHeight;
-        int pieceWidth;
-
-        //Add Scaling by scaleSize!
-        scaleFactor = 1 - 0.2f * (tutLevelData.scaleSize - 1);
-        distanceBetweenTiles = 2 * scaleFactor;
-        emptyTileScale = 0.25f * scaleFactor;
-        pieceScale = 1 * scaleFactor;
-
-        //Instantiate 'EmptyTile'
-        typeIndex = 0;
-        for (int i = 0; i < tutLevelData.BoardHeight; i++)
-        {
-            for (int j = 0; j < tutLevelData.BoardWidth; j++)
-            {
-                //Get prefab information from array
-                if (tutLevelData.BoardEmptyTileTypeInfo[typeIndex] == 1)
-                {
-                    prefab = Resources.Load("Prefabs/EmptyTile") as GameObject;
-                }
-                else if (tutLevelData.BoardEmptyTileTypeInfo[typeIndex] == 0)
-                {
-                    prefab = Resources.Load("Prefabs/VoidTile") as GameObject;
-                }
-                else
-                {
-                    prefab = Resources.Load("Prefabs/FixedTile" + tutLevelData.BoardEmptyTileTypeInfo[typeIndex].ToString()) as GameObject;
-                }
-
-                obj = Instantiate(prefab, new Vector3((-tutLevelData.BoardWidth + 1) * (distanceBetweenTiles / 2f) + distanceBetweenTiles * j, (tutLevelData.BoardHeight - 1) * (distanceBetweenTiles / 2f) - distanceBetweenTiles * i, 0), Quaternion.identity);//이부분이 생성하는 부분
-                obj.transform.localScale = new Vector3(emptyTileScale, emptyTileScale, 1);
-                obj.transform.SetParent(TileBoard_tut, false);
-
-                //Set Boy Position
-                if (i == tutLevelData.BoyPos && j == 0)
-                {
-                    Boy.transform.position = obj.transform.position - new Vector3(distanceBetweenTiles, 0, 0);
-                    Boy.GetComponent<MoveBoi>().initTargetPosition = obj.transform.position;
-                    Boy.GetComponent<MoveBoi>().distanceBetweenTiles = distanceBetweenTiles;
-                    Boy.transform.localScale = new Vector3(emptyTileScale, emptyTileScale, 1);
-                }
-
-                //Set Girl Position
-                if (i == tutLevelData.GirlPos && j == tutLevelData.BoardWidth - 1)
-                {
-                    Girl.transform.position = obj.transform.position + new Vector3(distanceBetweenTiles, 0, 0);
-                    Girl.transform.localScale = new Vector3(emptyTileScale, emptyTileScale, 1);
-                }
-
-                typeIndex++;
-            }
-        }
-
-        //Instantiate 'Piece' & 'Tile'
-        //Random Puzzle Piece Position Version
-        //PieceInitPosition = new Vector3[levelData.NumberOfPieces];
-        if (PlayerPrefs.GetInt("tutorial") != 1)
-        {
-            for (int i = 0; i < tutLevelData.NumberOfPieces; i++)
-            {
-                prefab = Resources.Load("Prefabs/Piece") as GameObject;
-                obj = Instantiate(prefab, new Vector3(Random.value < 0.5 ? Random.Range(-(tutLevelData.piecePlaceXMax - 0.5f), -(tutLevelData.piecePlaceXMin + 0.5f)) : Random.Range(tutLevelData.piecePlaceXMin + 0.5f, tutLevelData.piecePlaceXMax - 0.5f), Random.Range(tutLevelData.piecePlaceYMin + 0.4f, tutLevelData.piecePlaceYMax)), Quaternion.identity);
-                obj.transform.SetParent(BlockPieces_tut, false);
-                obj.GetComponent<VariableProvider>().pieceNum = i;
-                obj.GetComponent<VariableProvider>().solutionLoc = tutLevelData.pieceDatas[i].solutionLoc;
-
-                typeIndex = 0;
-                pieceHeight = tutLevelData.pieceDatas[i].PieceHeight;
-                pieceWidth = tutLevelData.pieceDatas[i].PieceWidth;
-                for (int j = 0; j < pieceHeight; j++)
-                {
-                    for (int k = 0; k < pieceWidth; k++)
-                    {
-                        if (tutLevelData.pieceDatas[i].TileType[typeIndex] != 0)
-                        {
-                            prefab = Resources.Load("Prefabs/Tile" + tutLevelData.pieceDatas[i].TileType[typeIndex].ToString()) as GameObject;
-                            obj2 = Instantiate(prefab, new Vector3(-pieceWidth + 1 + 2 * k, pieceHeight - 1 - 2 * j, 0), Quaternion.identity);
-                            obj2.transform.SetParent(obj.transform, false);
-                            obj2.GetComponent<SpriteRenderer>().sortingOrder = 75 + i;
-                        }
-                        typeIndex++;
-                    }
-                }
-            }
-        }
-
-        SavePiecePosition();
 
         SetFingerAnim();
     }
