@@ -58,6 +58,7 @@ public class Event : MonoBehaviour
 
     /// For Tutorial
     TutLevelDatabase tutLevelData;
+    public Transform tutBoard;
     public GameObject finger1;
     public GameObject finger2;
     int tutLevel;
@@ -1071,9 +1072,8 @@ public class Event : MonoBehaviour
     }
 
     //////////////////////////////////////////////// 아래로 Tutorial용 함수들 ////////////////////////////////////////////////
-    public void TutExec(int tutLevel)
+    void TutExec(int tutLevel)
     {
-
         //Tutorial Settings
         applyRating = false;
         hintBtn.interactable = false;
@@ -1130,6 +1130,18 @@ public class Event : MonoBehaviour
             fingerTarget = tilePlace.transform.position;
 
             fingerAnimate = 1;
+        }
+    }
+
+    public void ToggleHelpTutBtn()
+    {
+        if (tutBoard.gameObject.activeSelf)
+        {
+            tutBoard.gameObject.SetActive(false);
+        }
+        else
+        {
+            tutBoard.gameObject.SetActive(true);
         }
     }
 }
