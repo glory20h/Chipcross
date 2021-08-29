@@ -367,7 +367,7 @@ public class Event : MonoBehaviour
             //tutLevelData.LoadTutorialData(tutLevel);
             //TutExec(tutLevel);
             levelData.LoadTutorialData(tutLevel);
-            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/FantasyClouds");
+            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/tutorial");
         }
         else
         {
