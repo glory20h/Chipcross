@@ -120,7 +120,7 @@ public class Event : MonoBehaviour
         //PlayerPrefs.SetFloat("PlayerDFactor", -1f);
 
         //MANUALLY SET STARTING TUTLEVEL BY CHANGING THIS VALUE; DEFAULT 0 -> 평소에는 주석처리 되어 있어야함
-        PlayerPrefs.SetInt("tutorial", 1);
+        //PlayerPrefs.SetInt("tutorial", 1);
 
         TileBoard = MainBoard.GetChild(0);
         BlockOnBoard = MainBoard.GetChild(1);
@@ -330,7 +330,9 @@ public class Event : MonoBehaviour
             /////////////////////////CHECK IF TUTORIAL NEEDS TO BE LOADED/////////////////////////
             tutLevel = PlayerPrefs.GetInt("tutorial", 1);
             levelDFactor = levelData.LoadLevelData();
-            
+
+            isTutorial = tutLevel < 8;
+            /*
             if (tutLevel < 5)
             {
                 isTutorial = true;
@@ -351,6 +353,7 @@ public class Event : MonoBehaviour
             {
                 isTutorial = false;
             }
+            */
             /////////////////////////CHECK IF TUTORIAL NEEDS TO BE LOADED/////////////////////////
         }
         else // -> PlayAgain true
@@ -1133,11 +1136,13 @@ public class Event : MonoBehaviour
         }
     }
 
-    public void ToggleHelpTutBtn()
+    public void ActivateHelpTutBtn()
     {
+        OptionMenu.SetActive(false);
         if (tutBoard.gameObject.activeSelf)
         {
             tutBoard.gameObject.SetActive(false);
+            
         }
         else
         {
