@@ -11,18 +11,19 @@ public class LevelLoader : MonoBehaviour
     //[SerializeField]Image progressBarframe;
     public GameObject Rocket;
     public GameObject Target;
-    public BGMManager BGMManager;
+
     public void LoadNextLevel()
     {
-        StartCoroutine(LoadLevel(1));
+        StartCoroutine(LoadLevel("Prologue"));
     }
-    IEnumerator LoadLevel(int sceneIndex)
+
+    IEnumerator LoadLevel(string sceneName)
     {
         yield return null;
         //progressBar.enabled = true;
         //progressBarframe.enabled = true;
         transition.SetTrigger("Start");
-        AsyncOperation op = SceneManager.LoadSceneAsync(sceneIndex);
+        AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
         op.allowSceneActivation = false;
 
         loadingScreen.SetActive(false);
@@ -55,7 +56,5 @@ public class LevelLoader : MonoBehaviour
                 }
             }
         }
-
-        BGMManager.Transition();
     }
 }

@@ -1155,7 +1155,7 @@ MonoBehaviour:
   progressBar: {fileID: 1481045613}
   Rocket: {fileID: 1255060451}
   Target: {fileID: 1350749402}
-  BGMManager: {fileID: 0}
+  BGMManager: {fileID: 316819216}
 --- !u!1 &1255060451
 GameObject:
   m_ObjectHideFlags: 0

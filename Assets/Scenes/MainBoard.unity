@@ -191,6 +191,7 @@ MonoBehaviour:
   UsedHintText: {fileID: 1918675156}
   UsedTouchText: {fileID: 168716194}
   LogDisplayText: {fileID: 275704865}
+  BGMTitleText: {fileID: 275704865}
   HintUsed: 0
   TouchUsed: 0
   levelDFactor: 0
@@ -338,7 +339,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ev: {fileID: 10895953}
-  titleTxt: {fileID: 275704865}
 --- !u!1 &25757805
 GameObject:
   m_ObjectHideFlags: 0
@@ -6097,7 +6097,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1687712246
 Transform:
   m_ObjectHideFlags: 0

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class BGMManager : MonoBehaviour
 {
     public Event ev;
-    public Text titleTxt;
 
     static AudioClip[] audioLibrary;
     public static AudioClip audioClip;
@@ -61,6 +61,19 @@ public class BGMManager : MonoBehaviour
         }
     }
 
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if(scene.name == "MainBoard")
+        {
+            ev = FindObjectOfType<Event>();
+        }
+    }
+
     void LoadRandomAudioClip()
     {
         if (level != CurrentLevel())
@@ -70,7 +83,7 @@ public class BGMManager : MonoBehaviour
             LoadAudioLibrary();
         }
         audioSrc.clip = audioLibrary[Random.Range(1, audioLibrary.Length)];
-        if (titleTxt) titleTxt.text = audioSrc.clip.name;
+        if(ev) ev.DisplayBGMTitle(audioSrc.clip.name);
     }
 
     void LoadAudioLibrary()
@@ -106,13 +119,6 @@ public class BGMManager : MonoBehaviour
         }
 
         return level;
-    }
-
-    public void Transition()
-    {
-        ev = FindObjectOfType<Event>();
-        titleTxt = GameObject.Find("BGMTitle").GetComponent<Text>();
-        titleTxt.text = audioSrc.clip.name;
     }
 
     /*

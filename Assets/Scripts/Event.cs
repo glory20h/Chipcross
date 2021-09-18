@@ -80,6 +80,7 @@ public class Event : MonoBehaviour
     public Text UsedHintText;
     public Text UsedTouchText;
     public Text LogDisplayText;
+    public Text BGMTitleText;
     [HideInInspector] public int HintUsed = 0;
     [HideInInspector] public int TouchUsed = 0;
     /// For DevTools
@@ -1060,6 +1061,11 @@ public class Event : MonoBehaviour
             audioMixer.SetFloat("AmbienceVol", -4f * vol * vol);
         }
         PlayerPrefs.SetFloat("AmbVol", vol);
+    }
+
+    public void DisplayBGMTitle(string title)
+    {
+        if(BGMTitleText) BGMTitleText.text = title;
     }
 
     void SetAudioSliderSettings()
