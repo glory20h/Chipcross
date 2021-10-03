@@ -14,7 +14,7 @@ public class LevelLoader : MonoBehaviour
 
     public void LoadNextLevel()
     {
-        StartCoroutine(LoadLevel("Prologue"));
+        StartCoroutine(LoadLevel("Story"));
     }
 
     IEnumerator LoadLevel(string sceneName)

@@ -19,13 +19,13 @@ public class PrologueEvent : MonoBehaviour
     public void LoadNextCut()
     {
         index++;
-        if (index == 7)
+        if (index == 21)
         {
             SceneManager.LoadSceneAsync("MainBoard");
         }
         else
         {
-            display_button.image.sprite = Resources.Load<Sprite>("Arts/Prologue/" + index.ToString());
+            display_button.image.sprite = Resources.Load<Sprite>("Arts/Story/" + index.ToString());
         }
     }
 }
