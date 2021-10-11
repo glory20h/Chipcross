@@ -8,6 +8,7 @@ using UnityEngine.Advertisements;
 public class Event : MonoBehaviour
 {
     public AudioMixer audioMixer;                   //오디오 믹서
+    public GameObject audioManager;
 
     public Transform MainBoard;
     Transform TileBoard;                            //빈 타일(퍼즐판)의 Parent
@@ -121,7 +122,7 @@ public class Event : MonoBehaviour
         //PlayerPrefs.SetFloat("PlayerDFactor", -1f);
 
         //MANUALLY SET STARTING TUTLEVEL BY CHANGING THIS VALUE; DEFAULT 0 -> 평소에는 주석처리 되어 있어야함
-        //PlayerPrefs.SetInt("tutorial", 1);
+        PlayerPrefs.SetInt("tutorial", 1);
 
         TileBoard = MainBoard.GetChild(0);
         BlockOnBoard = MainBoard.GetChild(1);
@@ -138,6 +139,11 @@ public class Event : MonoBehaviour
         prevTime = -2f;                                      //For Quitting Program on Android Back Button
 
         finger2t = 0f;
+
+        if (!GameObject.Find("AudioManager"))
+        {
+            audioManager.SetActive(true);
+        }
     }
 
     void Update()

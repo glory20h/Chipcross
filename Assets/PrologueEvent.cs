@@ -21,7 +21,7 @@ public class PrologueEvent : MonoBehaviour
         index++;
         if (index == 21)
         {
-            SceneManager.LoadSceneAsync("MainBoard");
+            SceneManager.LoadScene("MainBoard");
         }
         else
         {

@@ -165,6 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioMixer: {fileID: 24100000, guid: fbc9a92e1a970f448be492cde088c573, type: 2}
+  audioManager: {fileID: 1687712245}
   MainBoard: {fileID: 37491123}
   Boy: {fileID: 566818434}
   Girl: {fileID: 25757805}

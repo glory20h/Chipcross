@@ -14,7 +14,14 @@ public class LevelLoader : MonoBehaviour
 
     public void LoadNextLevel()
     {
-        StartCoroutine(LoadLevel("Story"));
+        if (PlayerPrefs.GetInt("tutorial", 1) == 1)
+        {
+            StartCoroutine(LoadLevel("Story"));
+        }
+        else
+        {
+            StartCoroutine(LoadLevel("MainBoard"));
+        }
     }
 
     IEnumerator LoadLevel(string sceneName)
@@ -33,7 +40,7 @@ public class LevelLoader : MonoBehaviour
         {
             yield return null; 
             timer += Time.deltaTime;
-            if(op.progress < 0.9f)
+            if (op.progress < 0.9f)
             {
                 progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, op.progress, timer);
                 //Debug.Log(op.progress);
