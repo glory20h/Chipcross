@@ -173,16 +173,6 @@ public class Event : MonoBehaviour
             }
         }
 
-        //For tutorial finger animation
-        if (fingerAnimate == 1)
-        {
-            FingerAnim1();
-        }
-        else if(fingerAnimate == 2)
-        {
-            FingerAnim2();
-        }
-
         //Quit Program on Android Back Button
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -192,6 +182,19 @@ public class Event : MonoBehaviour
                 Application.Quit();
             }
             prevTime = curTime;
+        }
+    }
+
+    void FixedUpdate()
+    {
+        //For tutorial finger animation
+        if (fingerAnimate == 1)
+        {
+            FingerAnim1();
+        }
+        else if (fingerAnimate == 2)
+        {
+            FingerAnim2();
         }
     }
 
@@ -308,7 +311,7 @@ public class Event : MonoBehaviour
     void FingerAnim1()
     {
         //Set finger speed dynamically for more realistic anim: Slow If near start/end, Fast otherwise
-        fingerSpeed = 0.05f * (Mathf.Min(Vector3.Distance(firstPlace, finger1.transform.position), Vector3.Distance(fingerTarget, finger1.transform.position)) + 0.05f);
+        fingerSpeed = 0.1f * (Mathf.Min(Vector3.Distance(firstPlace, finger1.transform.position), Vector3.Distance(fingerTarget, finger1.transform.position)) + 0.1f);
 
         finger1.transform.position = Vector3.MoveTowards(finger1.transform.position, fingerTarget, fingerSpeed);
         //If loop ended
