@@ -122,7 +122,7 @@ public class Event : MonoBehaviour
         //PlayerPrefs.SetFloat("PlayerDFactor", -1f);
 
         //MANUALLY SET STARTING TUTLEVEL BY CHANGING THIS VALUE; DEFAULT 0 -> 평소에는 주석처리 되어 있어야함
-        PlayerPrefs.SetInt("tutorial", 1);
+        //PlayerPrefs.SetInt("tutorial", 1);
 
         TileBoard = MainBoard.GetChild(0);
         BlockOnBoard = MainBoard.GetChild(1);

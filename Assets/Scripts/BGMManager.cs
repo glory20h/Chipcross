@@ -8,6 +8,7 @@ public class BGMManager : MonoBehaviour
 {
     public Event ev;
 
+    int[] audioPool;
     static AudioClip[] audioLibrary;
     public static AudioClip audioClip;
     static AudioSource audioSrc;
@@ -82,20 +83,32 @@ public class BGMManager : MonoBehaviour
             PlayerPrefs.SetInt("BGMLevel", level);
             LoadAudioLibrary();
         }
-        audioSrc.clip = audioLibrary[Random.Range(1, audioLibrary.Length)];
+        audioSrc.clip = audioLibrary[audioPool[Random.Range(1, audioPool.Length)]];
         if(ev) ev.DisplayBGMTitle(audioSrc.clip.name);
     }
 
     void LoadAudioLibrary()
     {
         if (level == 1)
-            audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level1");
+        {
+            audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/lib1-2");
+            audioPool = new int[] { 0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13 };
+        }
         else if (level == 2)
-            audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level2");
+        {
+            audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/lib1-2");
+            audioPool = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 18 };
+        }
         else if (level == 3)
-            audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level3");
+        {
+            audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/lib3-4");
+            audioPool = new int[] { 0, 2, 4, 5, 6, 7, 8, 9, 10, 11 };
+        }
         else
-            audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/Level4");
+        {
+            audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/lib3-4");
+            audioPool = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+        }
     }
 
     int CurrentLevel()
