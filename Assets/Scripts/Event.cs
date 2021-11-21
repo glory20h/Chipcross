@@ -391,13 +391,13 @@ public class Event : MonoBehaviour
 
             //Load Different Background according to corresponding levelDfactor
             if (levelDFactor < -0.55f)
-                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/11");
+                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/1_1");
             else if (levelDFactor < 0f)
-                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/22");
+                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/2_1");
             else if (levelDFactor < 0.5f)
-                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/33");
+                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/3_1");
             else
-                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/44");
+                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/4_1");
 
             hintBtn.interactable = true;
         }
