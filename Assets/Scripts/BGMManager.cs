@@ -80,7 +80,7 @@ public class BGMManager : MonoBehaviour
         if (level != CurrentLevel())
         {
             level = CurrentLevel();
-            PlayerPrefs.SetInt("BGMLevel", level);
+            PlayerPrefs.SetInt("CurrentLevel", level);
             LoadAudioLibrary();
         }
         audioSrc.clip = audioLibrary[audioPool[Random.Range(1, audioPool.Length)]];
@@ -128,7 +128,7 @@ public class BGMManager : MonoBehaviour
         }
         else
         {
-            level = PlayerPrefs.GetInt("BGMLevel", 1);
+            level = PlayerPrefs.GetInt("CurrentLevel", 1);
         }
 
         return level;

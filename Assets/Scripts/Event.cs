@@ -10,6 +10,8 @@ public class Event : MonoBehaviour
     public AudioMixer audioMixer;                   //오디오 믹서
     public GameObject audioManager;
 
+    public BGAnimate BgAnimate;
+
     public Transform MainBoard;
     Transform TileBoard;                            //빈 타일(퍼즐판)의 Parent
     Transform BlockPieces;                          //아직 타일 위에 안 놓아진 퍼즐 조각들의 Parent
@@ -398,6 +400,7 @@ public class Event : MonoBehaviour
                 backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/3_1");
             else
                 backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/4_1");
+            BgAnimate.ToggleBGAnim(levelDFactor);       //Toggle Background animation components by level
 
             hintBtn.interactable = true;
         }
@@ -500,7 +503,7 @@ public class Event : MonoBehaviour
 
         SavePiecePosition();
 
-        if(isTutorial) TutExec(tutLevel);
+        if (isTutorial) TutExec(tutLevel);
     }
 
     //퍼즐 조각 초기 위치 저장
