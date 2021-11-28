@@ -379,7 +379,7 @@ public class Event : MonoBehaviour
             //tutLevelData.LoadTutorialData(tutLevel);
             //TutExec(tutLevel);
             levelData.LoadTutorialData(tutLevel);
-            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/tut_2");
+            backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/tut_2");
         }
         else
         {
@@ -393,13 +393,13 @@ public class Event : MonoBehaviour
 
             //Load Different Background according to corresponding levelDfactor
             if (levelDFactor < -0.55f)
-                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/1_1");
+                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/1_1");
             else if (levelDFactor < 0f)
-                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/2_1");
+                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/2_1");
             else if (levelDFactor < 0.5f)
-                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/3_1");
+                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/3_1");
             else
-                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/4_1");
+                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/4_1");
             BgAnimate.ToggleBGAnim(levelDFactor);       //Toggle Background animation components by level
 
             hintBtn.interactable = true;
