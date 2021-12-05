@@ -7,8 +7,12 @@ public class BGAnimate : MonoBehaviour
     public Transform cloud1;
     public Transform cloud2;
     public Transform star1;
+    public Transform star2;
+    public Transform star_ring;
+    public Transform stars;
     float speed1;
     float speed2;
+    float speed3;
     Vector3 scaleChange1;
 
     int level;
@@ -17,6 +21,7 @@ public class BGAnimate : MonoBehaviour
     {
         speed1 = 0.2f;
         speed2 = 0.16f;
+        speed3 = 0.04f;
         scaleChange1 = new Vector3(-0.005f, -0.005f, 0);
     }
 
@@ -43,6 +48,11 @@ public class BGAnimate : MonoBehaviour
             {
                 scaleChange1 = -scaleChange1;
             }
+            // Animate Star & Star ring
+        }
+        if (level == 4)
+        {
+            stars.Translate(new Vector3(1, -1) * Time.deltaTime * speed3);
         }
     }
 
@@ -66,6 +76,7 @@ public class BGAnimate : MonoBehaviour
         }
         else
         {
+            stars.gameObject.SetActive(true);
             level = 4;
         }
     }
@@ -75,5 +86,8 @@ public class BGAnimate : MonoBehaviour
         cloud1.gameObject.SetActive(false);
         cloud2.gameObject.SetActive(false);
         star1.gameObject.SetActive(false);
+        star2.gameObject.SetActive(false);
+        star_ring.gameObject.SetActive(false);
+        stars.gameObject.SetActive(false);
     }
 }

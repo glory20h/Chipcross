@@ -1167,4 +1167,9 @@ public class Event : MonoBehaviour
             tutBoard.gameObject.SetActive(true);
         }
     }
+
+    public void ChangeTileTheme(string theme)
+    {
+        // Reload all Tile & Change prefab sprites
+    }
 }
