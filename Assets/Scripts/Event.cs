@@ -102,6 +102,11 @@ public class Event : MonoBehaviour
     float prevTime;
     /// For Application Quit
 
+    void Awake()
+    {
+        Advertisement.Initialize("3861973", false);
+    }
+
     void Start()
     {
         //변수, PlayerPrefs 초기화
@@ -113,6 +118,7 @@ public class Event : MonoBehaviour
 
     void Initialize()
     {
+
         MovePieceMode = true;
         goNFastBtnState = 1;
         GonfasterBtn.interactable = false;
@@ -701,10 +707,7 @@ public class Event : MonoBehaviour
     {
         ResetBoard();
         HintUsed++;
-        /*if(Advertisement.IsReady())
-        {
-            Advertisement.Show("video");
-        }*/ //hint activation
+        ShowRewardedAD();
         if (BlockPieces.childCount != 0)
         {
             int random = Random.Range(0, BlockPieces.childCount);
@@ -1172,4 +1175,30 @@ public class Event : MonoBehaviour
     {
         // Reload all Tile & Change prefab sprites
     }
+
+    public void ShowRewardedAD()
+    {
+        if (Advertisement.IsReady("rewardedVideo"))
+        {
+            var options = new ShowOptions { resultCallback = HandleShowResult };
+            Advertisement.Show("rewardedVideo", options);
+        }
+    }
+
+    private void HandleShowResult(ShowResult result)
+    {
+        switch (result)
+        {
+            case ShowResult.Finished:
+                Debug.Log("Finished");
+                break;
+            case ShowResult.Skipped:
+                Debug.Log("Skipped");
+                break;
+            case ShowResult.Failed:
+                Debug.Log("Failed");
+                break;
+        }
+    }
+
 }
