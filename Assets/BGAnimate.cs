@@ -23,7 +23,7 @@ public class BGAnimate : MonoBehaviour
     {
         speed1 = 0.2f;
         speed2 = 0.16f;
-        speed3 = 0.04f;
+        speed3 = 0.015f;
         scaleChange1 = new Vector3(-0.005f, -0.005f, 0);
         scaleChange2 = new Vector3(0.02f, 0.02f, 0);
         scaleChange3 = new Vector3(0.003f, 0.003f, 0);
@@ -70,7 +70,11 @@ public class BGAnimate : MonoBehaviour
         }
         if (level == 4)
         {
-            stars.Translate(new Vector3(1, -1) * Time.deltaTime * speed3);
+            stars.Translate(new Vector3(1.792f, -1) * Time.deltaTime * speed3);
+            if(stars.position.x > 9f)
+            {
+                stars.position = new Vector3(-9.23f, 5.14f);
+            }
         }
     }
 
