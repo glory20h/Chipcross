@@ -399,13 +399,25 @@ public class Event : MonoBehaviour
 
             //Load Different Background according to corresponding levelDfactor
             if (levelDFactor < -0.55f)
+            {
                 backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/1_1");
+                ChangeTileTheme(1);
+            }
             else if (levelDFactor < 0f)
+            {
                 backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/2_1");
+                ChangeTileTheme(2);
+            }
             else if (levelDFactor < 0.5f)
+            {
                 backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/3_1");
+                ChangeTileTheme(3);
+            }
             else
+            {
                 backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/4_1");
+                ChangeTileTheme(4);
+            }
             BgAnimate.ToggleBGAnim(levelDFactor);       //Toggle Background animation components by level
 
             hintBtn.interactable = true;
@@ -1171,9 +1183,23 @@ public class Event : MonoBehaviour
         }
     }
 
-    public void ChangeTileTheme(string theme)
+
+    public void ChangeTileTheme(int theme)
     {
-        // Reload all Tile & Change prefab sprites
+        GameObject tile;
+
+        for (int i = 1; i < 10; i++)
+        {
+            tile = Resources.Load("Prefabs/Tile" + i.ToString()) as GameObject;
+            if (i == 9)
+            {
+                tile.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Tiles/Theme" + theme.ToString() + "Tile8");
+            }
+            else
+            {
+                tile.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Tiles/Theme" + theme.ToString() + "Tile" + i.ToString());
+            }
+        }
     }
 
     public void ShowRewardedAD()
@@ -1200,5 +1226,4 @@ public class Event : MonoBehaviour
                 break;
         }
     }
-
 }
