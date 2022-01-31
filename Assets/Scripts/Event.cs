@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
-using UnityEngine.Advertisements;
+//using UnityEngine.Advertisements;
+using GoogleMobileAds.Api;
 
 public class Event : MonoBehaviour
 {
@@ -104,7 +105,11 @@ public class Event : MonoBehaviour
 
     void Awake()
     {
-        Advertisement.Initialize("3861973", false);
+        //Advertisement.Initialize("3861973", false);
+        MobileAds.Initialize((initStatus) =>
+        {
+            // SDK initialization is complete
+        });
     }
 
     void Start()
@@ -1227,4 +1232,9 @@ public class Event : MonoBehaviour
         }
     }
     */
+
+    public void OnBannerAdFailedToLoad(string reason)
+    {
+        Debug.Log("Banner ad failed to load: " + reason);
+    }
 }
