@@ -199,6 +199,7 @@ MonoBehaviour:
   levelDFactor: 0
   elapsedTime: 0
   timeCount: 0
+  position: 5
 --- !u!1 &13261064
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
-using UnityEngine.Advertisements;
+//using UnityEngine.Advertisements;
+using GoogleMobileAds;
+using GoogleMobileAds.Api;
 
 public class Event : MonoBehaviour
 {
@@ -101,10 +103,15 @@ public class Event : MonoBehaviour
     /// For Application Quit
     float prevTime;
     /// For Application Quit
+    private readonly string unitID = "ca-app-pub-5723541742432012~2554634700";
+    private readonly string test_unitID = "ca-app-pub-3940256099942544/6300978111";
+    private readonly string test_deviceID = "be7ffd8c-3409-4a30-89c2-5542386cf2f3";
+    private BannerView banner;
+    public AdPosition position;
 
     void Awake()
     {
-        Advertisement.Initialize("3861973", false);
+        //Advertisement.Initialize("3861973", false);
     }
 
     void Start()
@@ -114,6 +121,8 @@ public class Event : MonoBehaviour
 
         //LevelDatabase에서 데이터 불러와서 현재 필요한 스테이지 생성
         LoadLevel();
+
+        InitAd();
     }
 
     void Initialize()
@@ -719,7 +728,7 @@ public class Event : MonoBehaviour
     {
         ResetBoard();
         HintUsed++;
-        ShowRewardedAD();
+        //ShowRewardedAD();
         if (BlockPieces.childCount != 0)
         {
             int random = Random.Range(0, BlockPieces.childCount);
@@ -1201,7 +1210,7 @@ public class Event : MonoBehaviour
             }
         }
     }
-
+    /*
     public void ShowRewardedAD()
     {
         if (Advertisement.IsReady("rewardedVideo"))
@@ -1225,5 +1234,16 @@ public class Event : MonoBehaviour
                 Debug.Log("Failed");
                 break;
         }
+    }*/
+
+    private void InitAd()
+    {
+        string id = Debug.isDebugBuild ? test_unitID : unitID;
+
+        banner = new BannerView(id, AdSize.SmartBanner, position);
+
+        AdRequest request = new AdRequest.Builder().Build();
+
+        banner.LoadAd(request);
     }
 }
