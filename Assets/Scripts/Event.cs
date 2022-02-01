@@ -719,7 +719,7 @@ public class Event : MonoBehaviour
     {
         ResetBoard();
         HintUsed++;
-        //ShowRewardedAD();
+        ShowRewardedAD();
         if (BlockPieces.childCount != 0)
         {
             int random = Random.Range(0, BlockPieces.childCount);
@@ -1201,7 +1201,7 @@ public class Event : MonoBehaviour
             }
         }
     }
-    /*
+
     public void ShowRewardedAD()
     {
         if (Advertisement.IsReady("rewardedVideo"))
@@ -1226,5 +1226,4 @@ public class Event : MonoBehaviour
                 break;
         }
     }
-    */
 }
