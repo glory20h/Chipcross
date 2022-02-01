@@ -103,12 +103,18 @@ public class Event : MonoBehaviour
     /// For Application Quit
     float prevTime;
     /// For Application Quit
-    private readonly string unitID = "ca-app-pub-5723541742432012~2554634700";
-    private readonly string test_unitID = "ca-app-pub-3940256099942544/6300978111";
-    private readonly string test_deviceID = "be7ffd8c-3409-4a30-89c2-5542386cf2f3";
-    private BannerView banner;
-    public AdPosition position;
+    /// 
+    ///region 배너 광고
+    const string bannerTestID = "ca-app-pub-3940256099942544/6300978111";
+    const string bannerID = "ca-app-pub-5723541742432012/1563465749";
+    BannerView bannerAd;
 
+    ///region 리워드 광고
+    const string rewardTestID = "ca-app-pub-3940256099942544/5224354917";
+    const string rewardID = "ca-app-pub-5723541742432012/3576428520";
+    RewardedAd rewardAd;
+    private InterstitialAd screenAd;
+    public bool isTestMode;
     void Awake()
     {
         //Advertisement.Initialize("3861973", false);
@@ -729,6 +735,7 @@ public class Event : MonoBehaviour
         ResetBoard();
         HintUsed++;
         //ShowRewardedAD();
+        InterAd();
         if (BlockPieces.childCount != 0)
         {
             int random = Random.Range(0, BlockPieces.childCount);
@@ -1238,12 +1245,38 @@ public class Event : MonoBehaviour
 
     private void InitAd()
     {
-        string id = Debug.isDebugBuild ? test_unitID : unitID;
+        string id = Debug.isDebugBuild ? bannerTestID : bannerID;
 
-        banner = new BannerView(id, AdSize.SmartBanner, position);
+        BannerView banner = new BannerView(id, AdSize.SmartBanner, AdPosition.BottomRight);
 
         AdRequest request = new AdRequest.Builder().Build();
 
         banner.LoadAd(request);
+    }
+
+    private void InterAd()
+    {
+        string id = Debug.isDebugBuild ? rewardTestID : rewardID;
+
+        InterstitialAd screenAd = new InterstitialAd(id);
+
+        AdRequest request = new AdRequest.Builder().Build();
+        Debug.Log(request);
+        screenAd.LoadAd(request);
+        screenAd.OnAdClosed += (sender, e) => Debug.Log("광고가 닫힘");
+        screenAd.OnAdLoaded += (sender, e) => Debug.Log("광고가 로드됨");
+    }
+    public void Show()
+    {
+        StartCoroutine("ShowScreenAd");
+    }
+    private IEnumerator ShowScreenAD()
+    {
+        while(!screenAd.IsLoaded())
+        {
+            yield return null;
+        }
+
+        screenAd.Show();
     }
 }
