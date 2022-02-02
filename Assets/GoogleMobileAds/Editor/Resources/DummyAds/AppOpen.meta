@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 9959ef1b3b6d11a4c8a08d139a42cbcc
+=======
+guid: cf1d16a232f053b43a8ab95524a48110
+>>>>>>> parent of 34662ad (커서 복구)
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
