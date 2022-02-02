@@ -128,7 +128,7 @@ public class Event : MonoBehaviour
         //LevelDatabase에서 데이터 불러와서 현재 필요한 스테이지 생성
         LoadLevel();
 
-        InitAd();
+        //InitAd();
     }
 
     void Initialize()
@@ -735,7 +735,7 @@ public class Event : MonoBehaviour
         ResetBoard();
         HintUsed++;
         //ShowRewardedAD();
-        InterAd();
+        //InterAd();
         if (BlockPieces.childCount != 0)
         {
             int random = Random.Range(0, BlockPieces.childCount);
@@ -1242,7 +1242,7 @@ public class Event : MonoBehaviour
                 break;
         }
     }*/
-
+    /*
     private void InitAd()
     {
         string id = Debug.isDebugBuild ? bannerTestID : bannerID;
@@ -1278,5 +1278,5 @@ public class Event : MonoBehaviour
         }
 
         screenAd.Show();
-    }
+    }*/
 }
