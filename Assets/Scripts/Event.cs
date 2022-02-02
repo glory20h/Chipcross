@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
-using UnityEngine.Advertisements;
+//using UnityEngine.Advertisements;
 
 public class Event : MonoBehaviour
 {
@@ -104,7 +104,7 @@ public class Event : MonoBehaviour
 
     void Awake()
     {
-        Advertisement.Initialize("3861973", false);
+        //Advertisement.Initialize("3861973", false);
     }
 
     void Start()
@@ -719,7 +719,7 @@ public class Event : MonoBehaviour
     {
         ResetBoard();
         HintUsed++;
-        ShowRewardedAD();
+        //ShowRewardedAD();
         if (BlockPieces.childCount != 0)
         {
             int random = Random.Range(0, BlockPieces.childCount);
@@ -1202,7 +1202,7 @@ public class Event : MonoBehaviour
         }
     }
 
-    public void ShowRewardedAD()
+    /*public void ShowRewardedAD()
     {
         if (Advertisement.IsReady("rewardedVideo"))
         {
@@ -1225,5 +1225,5 @@ public class Event : MonoBehaviour
                 Debug.Log("Failed");
                 break;
         }
-    }
+    }*/
 }
