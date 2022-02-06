@@ -6,27 +6,44 @@ public class BGAnimate : MonoBehaviour
 {
     public Transform cloud1;
     public Transform cloud2;
+    public Transform meteor1;
+    public Transform meteor2;
+
     public Transform star1;
     public Transform star2;
-    public Transform star_ring;
+    public Transform starRing;
+
+    Vector3 star1ScaleChange;
+    Vector3 star1RingScaleChange;
+    Vector3 star2ScaleChange;
+
     public Transform stars;
-    float speed1;
-    float speed2;
-    float speed3;
-    Vector3 scaleChange1;
-    Vector3 scaleChange2;
-    Vector3 scaleChange3;
 
     int level;
 
+    // Configuration Variables
+
+    [Header("- Level1")]
+    public float cloud1Speed = 0.2f;
+    public float cloud2Speed = 0.16f;
+    public float meteor1Speed = 1f;
+    public float meteor2Speed = 1f;
+
+    [Header("- Level2")]
+    public float star1Scale = 0.005f;
+    public float star1RingScale = 0.02f;
+    public float star2Scale = 0.003f;
+
+    [Header("- Level3")]
+
+    [Header("- Level4")]
+    public float starsSpeed = 0.015f;
+
     void Start()
     {
-        speed1 = 0.2f;
-        speed2 = 0.16f;
-        speed3 = 0.015f;
-        scaleChange1 = new Vector3(-0.005f, -0.005f, 0);
-        scaleChange2 = new Vector3(0.02f, 0.02f, 0);
-        scaleChange3 = new Vector3(0.003f, 0.003f, 0);
+        star1ScaleChange = new Vector3(-star1Scale, -star1Scale, 0);
+        star1RingScaleChange = new Vector3(star1RingScale, star1RingScale, 0);
+        star2ScaleChange = new Vector3(star2Scale, star2Scale, 0);
     }
 
     // Update is called once per frame
@@ -34,43 +51,85 @@ public class BGAnimate : MonoBehaviour
     {
         if (level == 1)
         {
-            cloud1.Translate(Vector3.left * Time.deltaTime * speed1);
-            cloud2.Translate(Vector3.left * Time.deltaTime * speed2);
+            // Animate clouds
+            cloud1.Translate(Vector3.left * Time.deltaTime * cloud1Speed);
             if (cloud1.position.x < -12)
             {
                 cloud1.position = new Vector3(12.5f, cloud1.position.y, cloud1.position.z);
             }
+
+            cloud2.Translate(Vector3.left * Time.deltaTime * cloud2Speed);
             if (cloud2.position.x < -11)
             {
                 cloud2.position = new Vector3(11.5f, cloud2.position.y, cloud2.position.z);
             }
-        }
-        if (level == 2)
-        {
-            star1.localScale += scaleChange1;
-            if (star1.transform.localScale.y < 0.9f || star1.transform.localScale.y > 1.1f)
+
+            // Animate meteors
+            meteor1.localPosition = meteor1.localPosition + (Vector3.down * Time.deltaTime * meteor1Speed);
+            if (meteor1.localPosition.y > -1.5f)
             {
-                scaleChange1 = -scaleChange1;
+                meteor1.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, (3f - meteor1.localPosition.y) / (3f - (-1.5f)));
+            }
+            else
+            {
+                meteor1.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, (6f + meteor1.localPosition.y) / (-1.5f - (-6f)));
+            }
+            if (meteor1.localPosition.y < -20f)
+            {
+                meteor1.localPosition = new Vector3(0, 3f, 0);
+                meteor1.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, 0f);
             }
 
-            star_ring.localScale += scaleChange2;
-            star_ring.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, -0.015f);
-            if(star_ring.localScale.x >= 2.5f)
+            /*
+            meteor2.localPosition = meteor2.localPosition + (Vector3.down * Time.deltaTime * meteor2Speed);
+            if (meteor2.localPosition.y > -1.5f)
             {
-                star_ring.localScale = new Vector3(1, 1, 1);
-                star_ring.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+                meteor2.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, 0.05f);
+            }
+            else
+            {
+                meteor2.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, -0.015f);
+            }
+            if (meteor2.localPosition.y < -20f)
+            {
+                meteor2.localPosition = new Vector3(0, 3f, 0);
+                meteor2.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, 0f);
+            }
+            */
+        }
+
+        if (level == 2)
+        {
+            star1.localScale += star1ScaleChange;
+            if (star1.transform.localScale.y < 0.9f || star1.transform.localScale.y > 1.1f)
+            {
+                star1ScaleChange = -star1ScaleChange;
+            }
+
+            starRing.localScale += star1RingScaleChange;
+            starRing.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, -0.015f);
+            if(starRing.localScale.x >= 2.5f)
+            {
+                starRing.localScale = new Vector3(1, 1, 1);
+                starRing.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
                 star2.localScale = new Vector3(1, 1, 1);
             }
 
             // Animate Star & Star ring
             if(star2.localScale.x < 1.1f)
             {
-                star2.localScale += scaleChange3;
+                star2.localScale += star2ScaleChange;
             }
         }
+
+        if (level == 3)
+        {
+
+        }
+
         if (level == 4)
         {
-            stars.Translate(new Vector3(1.792f, -1) * Time.deltaTime * speed3);
+            stars.Translate(new Vector3(1.792f, -1) * Time.deltaTime * starsSpeed);
             if(stars.position.x > 9f)
             {
                 stars.position = new Vector3(-9.23f, 5.14f);
@@ -91,7 +150,7 @@ public class BGAnimate : MonoBehaviour
         {
             star1.gameObject.SetActive(true);
             star2.gameObject.SetActive(true);
-            star_ring.gameObject.SetActive(true);
+            starRing.gameObject.SetActive(true);
             level = 2;
         }
         else if (levelDFactor < 0.5f)
@@ -111,7 +170,7 @@ public class BGAnimate : MonoBehaviour
         cloud2.gameObject.SetActive(false);
         star1.gameObject.SetActive(false);
         star2.gameObject.SetActive(false);
-        star_ring.gameObject.SetActive(false);
+        starRing.gameObject.SetActive(false);
         stars.gameObject.SetActive(false);
     }
 }

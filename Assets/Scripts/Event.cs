@@ -400,17 +400,17 @@ public class Event : MonoBehaviour
             //Load Different Background according to corresponding levelDfactor
             if (levelDFactor < -0.55f)
             {
-                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/1_1");
+                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/1");
                 ChangeTileTheme(1);
             }
             else if (levelDFactor < 0f)
             {
-                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/2_1");
+                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/2");
                 ChangeTileTheme(2);
             }
             else if (levelDFactor < 0.5f)
             {
-                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/3_1");
+                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/3");
                 ChangeTileTheme(3);
             }
             else
