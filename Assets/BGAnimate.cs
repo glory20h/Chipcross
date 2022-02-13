@@ -44,7 +44,7 @@ public class BGAnimate : MonoBehaviour
     public float meteor2Speed = 1.5f;
 
     [Header("- Level 2")]
-    public float star1_2_Scale = 0.005f;
+    public float star1_2_Scale = 0.0001f;
     public float star1_2_RingScale = 0.015f;
     public float star2_2_AlphaChange = 0.018f;
     public float star3_2_AlphaChange = 0.016f;
@@ -136,7 +136,7 @@ public class BGAnimate : MonoBehaviour
             star1_2.localScale += star1ScaleChange;
             starRing.localScale += star1RingScaleChange;
             starRing.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, -0.02f);
-            if (star1_2.localScale.x < 0.5f)
+            if (star1_2.localScale.x < 0.55f)
             {
                 star1ScaleChange = -star1ScaleChange;
                 starRing.localScale = new Vector3(0.7f, 0.7f, 1);
@@ -234,7 +234,7 @@ public class BGAnimate : MonoBehaviour
             }
 
             planet_light_3.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, -plantlight_3_AlphaChange);
-            if (planet_light_3.GetComponent<SpriteRenderer>().color.a >= 2f || planet_light_3.GetComponent<SpriteRenderer>().color.a <= 0.25f)
+            if (planet_light_3.GetComponent<SpriteRenderer>().color.a >= 2f || planet_light_3.GetComponent<SpriteRenderer>().color.a <= 0f)
             {
                 plantlight_3_AlphaChange = -plantlight_3_AlphaChange;
             }
