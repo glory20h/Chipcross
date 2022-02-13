@@ -104,7 +104,7 @@ public class Event : MonoBehaviour
 
     void Awake()
     {
-        Advertisement.Initialize("3861973", false);
+        Advertisement.Initialize("3861973", false, true);
     }
 
     void Start()
@@ -130,7 +130,7 @@ public class Event : MonoBehaviour
         //PlayerPrefs.SetFloat("PlayerDFactor", -1f);
 
         //MANUALLY SET STARTING TUTLEVEL BY CHANGING THIS VALUE; DEFAULT 0 -> 평소에는 주석처리 되어 있어야함
-        PlayerPrefs.SetInt("tutorial", 1);
+        //PlayerPrefs.SetInt("tutorial", 1);
 
         TileBoard = MainBoard.GetChild(0);
         BlockOnBoard = MainBoard.GetChild(1);
@@ -152,6 +152,9 @@ public class Event : MonoBehaviour
         {
             audioManager.SetActive(true);
         }
+
+        Advertisement.Banner.SetPosition(BannerPosition.BOTTOM_RIGHT);
+        LoadBanner();
     }
 
     void Update()
@@ -1226,4 +1229,36 @@ public class Event : MonoBehaviour
                 break;
         }
     }
+
+    public void LoadBanner()
+    {
+        BannerLoadOptions options = new BannerLoadOptions
+        {
+            loadCallback = ShowBannerAd,
+            errorCallback = OnBannerError
+        };
+
+        Advertisement.Banner.Load("3861973", options);
+    }
+
+    void OnBannerError(string message)
+    {
+        Debug.Log($"Banner Error: {message}");
+    }
+
+    void ShowBannerAd()
+    {
+        BannerOptions options = new BannerOptions
+        {
+            clickCallback = OnBannerClicked,
+            hideCallback = OnBannerHidden,
+            showCallback = OnBannerShown
+        };
+
+        Advertisement.Banner.Show("Banner_Android", options);
+    }
+
+    void OnBannerClicked() { }
+    void OnBannerShown() { }
+    void OnBannerHidden() { }
 }
