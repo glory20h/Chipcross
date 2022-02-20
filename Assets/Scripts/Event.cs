@@ -118,19 +118,12 @@ public class Event : MonoBehaviour
 
     void Initialize()
     {
-
         MovePieceMode = true;
         goNFastBtnState = 1;
         GonfasterBtn.interactable = false;
         UIPieceScale = 0.45f;                                //UI에서의 퍼즐 조각 크기. 화면/퍼즐에 놓았을 때는 1, UI상에서는 현재 값으로 축소
         applyRating = false;
         timeCount = false;
-
-        //MANUALLY SET STARTING DIFFICULTYFACTOR BY CHANGING THIS VALUE
-        //PlayerPrefs.SetFloat("PlayerDFactor", -1f);
-
-        //MANUALLY SET STARTING TUTLEVEL BY CHANGING THIS VALUE; DEFAULT 0 -> 평소에는 주석처리 되어 있어야함
-        //PlayerPrefs.SetInt("tutorial", 1);
 
         TileBoard = MainBoard.GetChild(0);
         BlockOnBoard = MainBoard.GetChild(1);
@@ -1039,7 +1032,7 @@ public class Event : MonoBehaviour
             Debug.Log("Time Change : " + timeChange);
             Debug.Log("Diff Change : " + DFactorDiff / 2);
             */
-            Debug.Log("Rating Change : " + rate);
+            // Debug.Log("Rating Change : " + rate);
             
             playerDFactor += rate;
             if(playerDFactor <= -1f) playerDFactor = -1f;
