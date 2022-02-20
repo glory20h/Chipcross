@@ -104,7 +104,7 @@ public class Event : MonoBehaviour
 
     void Awake()
     {
-        Advertisement.Initialize("3861973", false, true);
+        Advertisement.Initialize("3861973", false);
     }
 
     void Start()
@@ -722,9 +722,9 @@ public class Event : MonoBehaviour
     {
         ResetBoard();
         HintUsed++;
-        //ShowRewardedAD();
-        LoadInterstitialAds();
-        ShowInterstitialAds();
+        ShowRewardedAD();
+        //LoadInterstitialAds();
+        //ShowInterstitialAds();
         if (BlockPieces.childCount != 0)
         {
             int random = Random.Range(0, BlockPieces.childCount);
@@ -1206,7 +1206,7 @@ public class Event : MonoBehaviour
             }
         }
     }
-    /*
+    
     public void ShowRewardedAD()
     {
         if (Advertisement.IsReady("rewardedVideo"))
@@ -1230,7 +1230,7 @@ public class Event : MonoBehaviour
                 Debug.Log("Failed");
                 break;
         }
-    }*/
+    }
 
     public void LoadBanner()
     {
@@ -1264,7 +1264,7 @@ public class Event : MonoBehaviour
     void OnBannerShown() { }
     void OnBannerHidden() { }
 
-    public void LoadInterstitialAds()
+    /*public void LoadInterstitialAds()
     {
         Debug.Log("Loading Ad: " + "Interstitial_Android");
         Advertisement.Load("Interstitial_Android");
@@ -1273,5 +1273,5 @@ public class Event : MonoBehaviour
     {
         Debug.Log("Showing Ad: " + "Interstitial_Android");
         Advertisement.Show("Interstitial_Android");
-    }
+    }*/
 }
