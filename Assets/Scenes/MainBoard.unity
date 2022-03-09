@@ -132,8 +132,6 @@ GameObject:
   - component: {fileID: 10895952}
   - component: {fileID: 10895953}
   - component: {fileID: 10895954}
-  - component: {fileID: 10895956}
-  - component: {fileID: 10895955}
   m_Layer: 0
   m_Name: EventChanger
   m_TagString: EventChanger
@@ -211,36 +209,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 10895951}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de86f40522f4ba64c9923b2a8670fb82, type: 3}
+  m_Script: {fileID: 11500000, guid: d5efde540229f014d917c287c775c437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AnimatedImage: {fileID: 1733149916}
---- !u!114 &10895955
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 10895951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8288c356dd85fd541abadd0d6b89a138, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AnimatedImage: {fileID: 736138595}
---- !u!114 &10895956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 10895951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13e0a55f7161d294881ca32aecc0fb3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AnimatedImage: {fileID: 223678652}
 --- !u!1 &13261064
 GameObject:
   m_ObjectHideFlags: 0
@@ -8361,7 +8333,7 @@ RectTransform:
   m_GameObject: {fileID: 1733149915}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 1668214332}
   m_RootOrder: 0
@@ -8369,7 +8341,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -100, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 400, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1734007145
 GameObject:
