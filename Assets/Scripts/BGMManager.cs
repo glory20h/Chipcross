@@ -107,7 +107,7 @@ public class BGMManager : MonoBehaviour
         else
         {
             audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/lib3-4");
-            audioPool = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+            audioPool = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
         }
     }
 
