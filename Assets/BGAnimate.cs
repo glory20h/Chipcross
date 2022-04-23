@@ -65,7 +65,7 @@ public class BGAnimate : MonoBehaviour
 
     [Header("- Level 4")]
     public float starsSpeed = 0.015f;
-
+    public GameObject backgroundObject;
     void Start()
     {
         star1ScaleChange = new Vector3(star1_2_Scale, star1_2_Scale, 0);
@@ -247,6 +247,7 @@ public class BGAnimate : MonoBehaviour
             {
                 stars.position = new Vector3(-9.23f, 5.14f);
             }
+            backgroundObject.SetActive(true);
         }
     }
 
