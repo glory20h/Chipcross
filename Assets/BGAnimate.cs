@@ -290,6 +290,7 @@ public class BGAnimate : MonoBehaviour
         else
         {
             stars.gameObject.SetActive(true);
+            backgroundObject.SetActive(true);
             level = 4;
         }
     }
@@ -318,5 +319,6 @@ public class BGAnimate : MonoBehaviour
         planet_3.gameObject.SetActive(false);
         planet_light_3.gameObject.SetActive(false);
         stars.gameObject.SetActive(false);
+        backgroundObject.SetActive(false);
     }
 }
