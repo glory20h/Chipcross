@@ -66,6 +66,7 @@ public class BGAnimate : MonoBehaviour
     [Header("- Level 4")]
     public float starsSpeed = 0.015f;
     public GameObject backgroundObject;
+    public GameObject backgroundsplite;
     void Start()
     {
         star1ScaleChange = new Vector3(star1_2_Scale, star1_2_Scale, 0);
@@ -247,7 +248,6 @@ public class BGAnimate : MonoBehaviour
             {
                 stars.position = new Vector3(-9.23f, 5.14f);
             }
-            backgroundObject.SetActive(true);
         }
     }
 
@@ -290,11 +290,15 @@ public class BGAnimate : MonoBehaviour
         else
         {
             stars.gameObject.SetActive(true);
-            backgroundObject.SetActive(true);
+            backgroundsplite.SetActive(true);
+            Invoke("backgroundActive", 1);
             level = 4;
         }
     }
-
+    void backgroundActive()
+    {
+        backgroundObject.SetActive(true);
+    }
     void TurnOffAllBGAnim()
     {
         cloud1.gameObject.SetActive(false);
@@ -320,5 +324,6 @@ public class BGAnimate : MonoBehaviour
         planet_light_3.gameObject.SetActive(false);
         stars.gameObject.SetActive(false);
         backgroundObject.SetActive(false);
+        backgroundsplite.SetActive(false);
     }
 }
