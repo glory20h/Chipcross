@@ -832,12 +832,12 @@ GameObject:
   - component: {fileID: 138127626}
   - component: {fileID: 138127627}
   m_Layer: 0
-  m_Name: "\uC911\uAC04\uBCC4"
+  m_Name: 4_midstar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &138127626
 Transform:
   m_ObjectHideFlags: 0
@@ -846,11 +846,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 138127625}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -881, y: 475, z: -12956.261}
-  m_LocalScale: {x: 143.95847, y: 143.95847, z: 143.95845}
+  m_LocalPosition: {x: -5.664, y: 3.469, z: 62.507812}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0}
   m_Children: []
-  m_Father: {fileID: 429854099}
-  m_RootOrder: 4
+  m_Father: {fileID: 2002259425}
+  m_RootOrder: 25
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &138127627
 SpriteRenderer:
@@ -1928,7 +1928,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &429854099
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1942,9 +1942,6 @@ RectTransform:
   m_Children:
   - {fileID: 1704467630}
   - {fileID: 1008740886}
-  - {fileID: 1720137055}
-  - {fileID: 476911620}
-  - {fileID: 138127626}
   m_Father: {fileID: 2002259425}
   m_RootOrder: 23
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2105,12 +2102,12 @@ GameObject:
   - component: {fileID: 476911620}
   - component: {fileID: 476911621}
   m_Layer: 0
-  m_Name: "\uC791\uC740\uBCC4"
+  m_Name: 4_smallstar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &476911620
 Transform:
   m_ObjectHideFlags: 0
@@ -2119,11 +2116,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 476911619}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -647, y: 567, z: -12956.261}
-  m_LocalScale: {x: 143.95847, y: 143.95847, z: 143.95845}
+  m_LocalPosition: {x: -3.919, y: 3.406, z: 62.507812}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0}
   m_Children: []
-  m_Father: {fileID: 429854099}
-  m_RootOrder: 3
+  m_Father: {fileID: 2002259425}
+  m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &476911621
 SpriteRenderer:
@@ -8247,7 +8244,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1704467630
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8351,12 +8348,12 @@ GameObject:
   - component: {fileID: 1720137055}
   - component: {fileID: 1720137056}
   m_Layer: 0
-  m_Name: "\uD070\uBCC4"
+  m_Name: 4_bigstar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1720137055
 Transform:
   m_ObjectHideFlags: 0
@@ -8365,11 +8362,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1720137054}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 957, y: -321, z: -12956.261}
-  m_LocalScale: {x: 143.95847, y: 143.95847, z: 143.95845}
+  m_LocalPosition: {x: 6.68, y: -2.36, z: 62.507812}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_Children: []
-  m_Father: {fileID: 429854099}
-  m_RootOrder: 2
+  m_Father: {fileID: 2002259425}
+  m_RootOrder: 26
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1720137056
 SpriteRenderer:
@@ -8895,7 +8892,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -3
+  m_SortingOrder: -2
   m_Sprite: {fileID: 21300000, guid: d6521a5a278da2c4894f5c87f9124593, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -8919,7 +8916,7 @@ Transform:
   m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_Children: []
   m_Father: {fileID: 2002259425}
-  m_RootOrder: 24
+  m_RootOrder: 27
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1857018044
 GameObject:
@@ -9464,7 +9461,11 @@ MonoBehaviour:
   wave3_3: {fileID: 740394040}
   planet_3: {fileID: 53926771}
   planet_light_3: {fileID: 2092177113}
-  stars: {fileID: 644065679}
+  stars_4: {fileID: 644065679}
+  bigstar_4: {fileID: 1720137055}
+  midstar_4: {fileID: 138127626}
+  smallstar_4: {fileID: 476911620}
+  videoPlayer_4: {fileID: 1008740887}
   cloud1Speed: 0.2
   cloud2Speed: 0.16
   meteor1Speed: 10
@@ -9522,6 +9523,9 @@ Transform:
   - {fileID: 2092177113}
   - {fileID: 644065679}
   - {fileID: 429854099}
+  - {fileID: 476911620}
+  - {fileID: 138127626}
+  - {fileID: 1720137055}
   - {fileID: 1848124115}
   m_Father: {fileID: 1033967735}
   m_RootOrder: 0

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class BGAnimate : MonoBehaviour
 {
@@ -31,7 +32,11 @@ public class BGAnimate : MonoBehaviour
     public Transform planet_3;
     public Transform planet_light_3;
 
-    public Transform stars;
+    public Transform stars_4;
+    public Transform bigstar_4;
+    public Transform midstar_4;
+    public Transform smallstar_4;
+    public VideoPlayer videoPlayer_4;
 
     int level;
 
@@ -67,6 +72,7 @@ public class BGAnimate : MonoBehaviour
     public float starsSpeed = 0.015f;
     public GameObject backgroundObject;
     public GameObject backgroundsplite;
+
     void Start()
     {
         star1ScaleChange = new Vector3(star1_2_Scale, star1_2_Scale, 0);
@@ -81,6 +87,8 @@ public class BGAnimate : MonoBehaviour
         star3_3.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, Random.Range(0f, 1f));
         star4_3.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, Random.Range(0f, 1f));
         star5_3.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, Random.Range(0f, 1f));
+
+        videoPlayer_4.Prepare();
     }
 
     // Update is called once per frame
@@ -243,10 +251,10 @@ public class BGAnimate : MonoBehaviour
 
         if (level == 4)
         {
-            stars.Translate(new Vector3(1.792f, -1) * Time.deltaTime * starsSpeed);
-            if (stars.position.x > 9f)
+            stars_4.Translate(new Vector3(1.792f, -1) * Time.deltaTime * starsSpeed);
+            if (stars_4.position.x > 9f)
             {
-                stars.position = new Vector3(-9.23f, 5.14f);
+                stars_4.position = new Vector3(-9.23f, 5.14f);
             }
         }
     }
@@ -289,7 +297,13 @@ public class BGAnimate : MonoBehaviour
         }
         else
         {
-            stars.gameObject.SetActive(true);
+            stars_4.gameObject.SetActive(true);
+            bigstar_4.gameObject.SetActive(true);
+            midstar_4.gameObject.SetActive(true);
+            smallstar_4.gameObject.SetActive(true);
+            
+            videoPlayer_4.Play();
+
             backgroundsplite.SetActive(true);
             Invoke("backgroundActive", 1);
             level = 4;
@@ -322,7 +336,11 @@ public class BGAnimate : MonoBehaviour
         wave3_3.gameObject.SetActive(false);
         planet_3.gameObject.SetActive(false);
         planet_light_3.gameObject.SetActive(false);
-        stars.gameObject.SetActive(false);
+        stars_4.gameObject.SetActive(false);
+        bigstar_4.gameObject.SetActive(false);
+        midstar_4.gameObject.SetActive(false);
+        smallstar_4.gameObject.SetActive(false);
+        videoPlayer_4.Stop();
         backgroundObject.SetActive(false);
         backgroundsplite.SetActive(false);
     }
