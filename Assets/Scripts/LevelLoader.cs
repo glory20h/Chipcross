@@ -15,10 +15,10 @@ public class LevelLoader : MonoBehaviour
     void Start()
     {
         //MANUALLY SET STARTING DIFFICULTYFACTOR BY CHANGING THIS VALUE
-        PlayerPrefs.SetFloat("PlayerDFactor", -1f);
+        //PlayerPrefs.SetFloat("PlayerDFactor", -1f);
 
         //MANUALLY SET STARTING TUTLEVEL BY CHANGING THIS VALUE; DEFAULT 0 -> 평소에는 주석처리 되어 있어야함
-        PlayerPrefs.SetInt("tutorial", 1);
+        //PlayerPrefs.SetInt("tutorial", 1);
     }
 
     public void LoadNextLevel()

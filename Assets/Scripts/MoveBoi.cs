@@ -364,22 +364,31 @@ public class MoveBoi : MonoBehaviour
         eventChanger.DisplayPlayData();
         eventChanger.DisplayTime();
         eventChanger.ChangeRating(numOfSteps - 1);
-        if (eventChanger.levelDFactor < -0.55f)
-        {
-            PuzzleSolvedPanel.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/clear_1");
-        }
-        else if (eventChanger.levelDFactor < 0f)
-        {
-            PuzzleSolvedPanel.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/clear_1");
-        }
-        else if (eventChanger.levelDFactor < 0.5f)
+
+        if (eventChanger.isTutorial)
         {
             PuzzleSolvedPanel.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/clear_2");
         }
         else
         {
-            PuzzleSolvedPanel.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/clear_3");
+            if (eventChanger.levelDFactor < -0.55f)
+            {
+                PuzzleSolvedPanel.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/clear_1");
+            }
+            else if (eventChanger.levelDFactor < 0f)
+            {
+                PuzzleSolvedPanel.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/clear_1");
+            }
+            else if (eventChanger.levelDFactor < 0.5f)
+            {
+                PuzzleSolvedPanel.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/clear_2");
+            }
+            else
+            {
+                PuzzleSolvedPanel.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/clear_3");
+            }
         }
+
         PuzzleSolvedPanel.SetActive(true);
         eventChanger.finger1.SetActive(false);
         SoundFXPlayer.Play("positiveVibe");

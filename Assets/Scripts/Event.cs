@@ -65,7 +65,7 @@ public class Event : MonoBehaviour
     public GameObject finger1;
     public GameObject finger2;
     int tutLevel;
-    bool isTutorial;
+    [HideInInspector] public bool isTutorial;
     int fingerAnimate = 0;
     Vector3 fingerTarget;
     Vector3 firstPlace;
