@@ -146,8 +146,10 @@ public class Event : MonoBehaviour
             audioManager.SetActive(true);
         }
 
+        /*
         Advertisement.Banner.SetPosition(BannerPosition.BOTTOM_RIGHT);
         LoadBanner();
+        */
     }
 
     void Update()
