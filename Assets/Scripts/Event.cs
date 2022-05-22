@@ -104,7 +104,7 @@ public class Event : MonoBehaviour
 
     void Awake()
     {
-        Advertisement.Initialize("3861973", false);
+        //Advertisement.Initialize("3861973", false);
     }
 
     void Start()
