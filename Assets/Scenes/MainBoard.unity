@@ -187,6 +187,7 @@ MonoBehaviour:
   tutBoard: {fileID: 793714101}
   finger1: {fileID: 1532816262}
   finger2: {fileID: 1429702528}
+  isTutorial: 0
   DevTools: {fileID: 147755336}
   PlayerDFactorText: {fileID: 907820809}
   DfactorText: {fileID: 1465697361}
@@ -3327,7 +3328,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 956f11366479f5847b2b70afb3e22c71, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 62303db1ecef1a446b59f46945e4a5d3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -9485,7 +9486,7 @@ MonoBehaviour:
   wave1_3_Speed: 0.075
   wave2_3_Speed: 0.1
   wave3_3_Speed: 0.05
-  starsSpeed: 0.015
+  starsSpeed: 0.03
   backgroundObject: {fileID: 429854098}
   backgroundsplite: {fileID: 1848124113}
 --- !u!4 &2002259425
