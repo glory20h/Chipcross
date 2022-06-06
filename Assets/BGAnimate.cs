@@ -251,10 +251,10 @@ public class BGAnimate : MonoBehaviour
 
         if (level == 4)
         {
-            stars_4.Translate(new Vector3(1.792f, -1) * Time.deltaTime * starsSpeed);
-            if (stars_4.position.x > 9f)
+            stars_4.Translate(new Vector3(1.777f, -1) * Time.deltaTime * starsSpeed);
+            if (stars_4.position.x > 8.96f)
             {
-                stars_4.position = new Vector3(-9.23f, 5.14f);
+                stars_4.position = new Vector3(-8.96f, 4.98f);
             }
         }
     }
