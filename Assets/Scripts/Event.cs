@@ -487,7 +487,7 @@ public class Event : MonoBehaviour
         //Instantiate 'Piece' & 'Tile'
         //Random Puzzle Piece Position Version
         //PieceInitPosition = new Vector3[levelData.NumberOfPieces];
-        if (PlayerPrefs.GetInt("tutorial") != 1)
+        if (PlayerPrefs.GetInt("tutorial", 1) != 1)
         {
             for (int i = 0; i < levelData.NumberOfPieces; i++)
             {
@@ -536,11 +536,11 @@ public class Event : MonoBehaviour
     //퍼즐 조각들이 모두 타일위에 놓아졌는지 확인
     bool CheckIfAllTilesInPlace()
     {
-        if(PiecePosition.Length == BlockOnBoard.childCount)
+        if (PlayerPrefs.GetInt("tutorial", 1) == 1)
         {
             return true;
         }
-        else if(PlayerPrefs.GetInt("tutorial") == 1)
+        else if (PiecePosition.Length == BlockOnBoard.childCount)
         {
             return true;
         }
@@ -676,7 +676,7 @@ public class Event : MonoBehaviour
     //다음 스테이지 불러오기
     public void GoToNextLevel()
     {
-        int tutLevel = PlayerPrefs.GetInt("tutorial");
+        int tutLevel = PlayerPrefs.GetInt("tutorial", 1);
 
         if(isTutorial)
         {
