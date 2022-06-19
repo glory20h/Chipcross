@@ -757,13 +757,13 @@ public class LevelDatabase
                 break;
             case 5://back
                 scaleSize = 1;
-                BoardWidth = 2;
+                BoardWidth = 3;
                 BoardHeight = 3;
-                BoyPos = 2;
-                GirlPos = 1;
-                NumberOfPieces = 0;
-                BoardEmptyTileTypeInfo = ConvertStringToIntArray("213153");
-                //ConvertStringToPieceInfo("116");
+                BoyPos = 1;
+                GirlPos = 2;
+                NumberOfPieces = 1;
+                BoardEmptyTileTypeInfo = ConvertStringToIntArray("331541233");
+                ConvertStringToPieceInfo("1242");
                 break;
             case 6://empty 6번타일
                 scaleSize = 2;
