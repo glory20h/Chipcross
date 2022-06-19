@@ -105,7 +105,7 @@ public class Event : MonoBehaviour
     void Awake()
     {
         //Advertisement.Initialize("3861973", false);
-        PlayerPrefs.SetInt("tutorial", 1);
+        //PlayerPrefs.SetInt("tutorial", 1);
     }
 
     void Start()
