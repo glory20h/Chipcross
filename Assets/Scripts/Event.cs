@@ -105,6 +105,7 @@ public class Event : MonoBehaviour
     void Awake()
     {
         //Advertisement.Initialize("3861973", false);
+        //PlayerPrefs.SetInt("tutorial", 1);
     }
 
     void Start()
@@ -347,7 +348,7 @@ public class Event : MonoBehaviour
             tutLevel = PlayerPrefs.GetInt("tutorial", 1);
             levelDFactor = levelData.LoadLevelData();
 
-            isTutorial = tutLevel < 8;
+            isTutorial = tutLevel < 9;
             /*
             if (tutLevel < 5)
             {

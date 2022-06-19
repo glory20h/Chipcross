@@ -748,42 +748,52 @@ public class LevelDatabase
             case 4://empty 위
                 scaleSize = 1;
                 BoardWidth = 2;
-                BoardHeight = 2;
-                BoyPos = 0;
+                BoardHeight = 3;
+                BoyPos = 1;
                 GirlPos = 0;
                 NumberOfPieces = 1;
-                BoardEmptyTileTypeInfo = ConvertStringToIntArray("4331");
-                ConvertStringToPieceInfo("115");
+                BoardEmptyTileTypeInfo = ConvertStringToIntArray("131433");
+                ConvertStringToPieceInfo("1235");
                 break;
-            case 5://back 넘기고 6번타일
+            case 5://back
                 scaleSize = 1;
                 BoardWidth = 2;
-                BoardHeight = 2;
-                BoyPos = 0;
-                GirlPos = 0;
-                NumberOfPieces = 1;
-                BoardEmptyTileTypeInfo = ConvertStringToIntArray("4315");
-                ConvertStringToPieceInfo("116");
+                BoardHeight = 3;
+                BoyPos = 2;
+                GirlPos = 1;
+                NumberOfPieces = 0;
+                BoardEmptyTileTypeInfo = ConvertStringToIntArray("213153");
+                //ConvertStringToPieceInfo("116");
                 break;
-            case 6://empty 7번타일
-                scaleSize = 1;
-                BoardWidth = 2;
-                BoardHeight = 2;
-                BoyPos = 0;
+            case 6://empty 6번타일
+                scaleSize = 2;
+                BoardWidth = 4;
+                BoardHeight = 4;
+                BoyPos = 2;
                 GirlPos = 0;
-                NumberOfPieces = 1;
-                BoardEmptyTileTypeInfo = ConvertStringToIntArray("4135");
-                ConvertStringToPieceInfo("117");
+                NumberOfPieces = 2;
+                BoardEmptyTileTypeInfo = ConvertStringToIntArray("3133315531112232");
+                ConvertStringToPieceInfo("134162136");
                 break;
-            case 7://empty 8번
-                scaleSize = 1;
-                BoardWidth = 2;
-                BoardHeight = 2;
-                BoyPos = 0;
+            case 7://empty 7번
+                scaleSize = 2;
+                BoardWidth = 5;
+                BoardHeight = 3;
+                BoyPos = 1;
                 GirlPos = 0;
-                NumberOfPieces = 1;
-                BoardEmptyTileTypeInfo = ConvertStringToIntArray("1395");
-                ConvertStringToPieceInfo("118");
+                NumberOfPieces = 2;
+                BoardEmptyTileTypeInfo = ConvertStringToIntArray("451131311415352");
+                ConvertStringToPieceInfo("2277511275");
+                break;
+            case 8://empty 7번
+                scaleSize = 3;
+                BoardWidth = 5;
+                BoardHeight = 5;
+                BoyPos = 1;
+                GirlPos = 0;
+                NumberOfPieces = 3;
+                BoardEmptyTileTypeInfo = ConvertStringToIntArray("2117111471163716111661917");
+                ConvertStringToPieceInfo("330817605001332132446202");
                 break;
             default:
                 break;
