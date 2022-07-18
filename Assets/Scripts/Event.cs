@@ -89,7 +89,7 @@ public class Event : MonoBehaviour
     /// For DevTools
 
     /// For DFactor Rate Change
-    bool applyRating; 
+    bool applyRating;
     [HideInInspector] public float levelDFactor;
     /// For DFactor Rate Change
 
@@ -106,6 +106,7 @@ public class Event : MonoBehaviour
     {
         //Advertisement.Initialize("3861973", false);
         //PlayerPrefs.SetInt("tutorial", 1);
+        NetworkCheck();
     }
 
     void Start()
@@ -190,6 +191,8 @@ public class Event : MonoBehaviour
             }
             prevTime = curTime;
         }
+
+        NetworkCheck();
     }
 
     void FixedUpdate()
@@ -633,7 +636,7 @@ public class Event : MonoBehaviour
                 SetFingerAnim();
             }
         }
-        else if(goNFastBtnState == 2)
+        else if (goNFastBtnState == 2)
         {
             //Boy FastForward
             Boy.GetComponent<MoveBoi>().FastForward();
@@ -659,7 +662,7 @@ public class Event : MonoBehaviour
     //초기화 버튼 눌렀을때
     public void ResetLevelClick()
     {
-        if(Boy.GetComponent<MoveBoi>().isMoving) //During Boy Moving Phase
+        if (Boy.GetComponent<MoveBoi>().isMoving) //During Boy Moving Phase
         {
             //Reset the boy moving
             Boy.GetComponent<MoveBoi>().ResetBoyMove();
@@ -670,7 +673,7 @@ public class Event : MonoBehaviour
             ResetBoard();
             GonfasterBtn.interactable = CheckIfAllTilesInPlace();
         }
-        
+
         timeCount = true;
     }
 
@@ -679,7 +682,7 @@ public class Event : MonoBehaviour
     {
         int tutLevel = PlayerPrefs.GetInt("tutorial", 1);
 
-        if(isTutorial)
+        if (isTutorial)
         {
             tutLevel++;
             PlayerPrefs.SetInt("tutorial", tutLevel);
@@ -763,7 +766,7 @@ public class Event : MonoBehaviour
     {
         float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
 
-        if(playerDFactor >= 0.97f)
+        if (playerDFactor >= 0.97f)
         {
             playerDFactor = 0.98f;
         }
@@ -838,14 +841,14 @@ public class Event : MonoBehaviour
     //옵션 버튼을 눌러 Option창 토글
     public void ToggleOptionPanel()
     {
-        if(OptionMenu.activeSelf)
+        if (OptionMenu.activeSelf)
         {
             OptionMenu.SetActive(false);
-            if(fingerAnimate == 1)
+            if (fingerAnimate == 1)
             {
                 finger1.SetActive(true);
             }
-            else if(fingerAnimate == 2)
+            else if (fingerAnimate == 2)
             {
                 finger2.SetActive(true);
             }
@@ -920,7 +923,7 @@ public class Event : MonoBehaviour
     //PuzzleSolved 창에 문제 푼 시간 뜨게 함
     public void DisplayTime()
     {
-        int time_ = (int) elapsedTime;
+        int time_ = (int)elapsedTime;
         if (time_ < 60)
         {
             timeText.text = "00 : 00 : " + convFormat(time_);
@@ -956,7 +959,7 @@ public class Event : MonoBehaviour
             float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
             //Base Starting Rate
             float rate = 0.01f;
-            
+
             int boardSize = levelData.BoardWidth * levelData.BoardHeight;
             int numOfPieces = levelData.NumberOfPieces;
             float hintChange;
@@ -991,9 +994,9 @@ public class Event : MonoBehaviour
             //TOUCH
             touchChange = (TouchUsed - numOfPieces) * (-0.005f / (4 * numOfPieces));
             rate -= touchChange;
-            
+
             //TIME
-            int timeUsed = (int) elapsedTime;
+            int timeUsed = (int)elapsedTime;
             if (timeUsed <= 200)
             {
                 timeChange = timeUsed * 0.00001f;
@@ -1039,10 +1042,10 @@ public class Event : MonoBehaviour
             Debug.Log("Diff Change : " + DFactorDiff / 2);
             */
             // Debug.Log("Rating Change : " + rate);
-            
+
             playerDFactor += rate;
-            if(playerDFactor <= -1f) playerDFactor = -1f;
-            if(playerDFactor >= 1f) playerDFactor = 1f;
+            if (playerDFactor <= -1f) playerDFactor = -1f;
+            if (playerDFactor >= 1f) playerDFactor = 1f;
             PlayerPrefs.SetFloat("PlayerDFactor", playerDFactor);
         }
     }
@@ -1091,7 +1094,7 @@ public class Event : MonoBehaviour
 
     public void DisplayBGMTitle(string title)
     {
-        if(BGMTitleText) BGMTitleText.text = title;
+        if (BGMTitleText) BGMTitleText.text = title;
     }
 
     void SetAudioSliderSettings()
@@ -1121,9 +1124,9 @@ public class Event : MonoBehaviour
         SetFingerAnim();
     }
 
-    void SetFingerAnim() 
+    void SetFingerAnim()
     {
-        if(fingerAnimate == 2)
+        if (fingerAnimate == 2)
         {
             fingerAnimate = 0;
             finger2.SetActive(false);
@@ -1174,7 +1177,7 @@ public class Event : MonoBehaviour
         if (tutBoard.gameObject.activeSelf)
         {
             tutBoard.gameObject.SetActive(false);
-            
+
         }
         else
         {
@@ -1257,4 +1260,16 @@ public class Event : MonoBehaviour
     void OnBannerClicked() { }
     void OnBannerShown() { }
     void OnBannerHidden() { }
+
+    void NetworkCheck()
+    {
+        if (Application.internetReachability == NetworkReachability.NotReachable)
+        {
+            hintBtn.interactable = false;
+        }
+        else
+        {
+            hintBtn.interactable = true;
+        }
+    }
 }
