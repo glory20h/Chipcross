@@ -16,6 +16,7 @@ public class LevelLoader : MonoBehaviour
     {
         //MANUALLY SET STARTING DIFFICULTYFACTOR BY CHANGING THIS VALUE
         PlayerPrefs.SetFloat("PlayerDFactor", -1f);
+        PlayerPrefs.SetFloat("RateChange", 4f);
 
         //MANUALLY SET STARTING TUTLEVEL BY CHANGING THIS VALUE; DEFAULT 0 -> 평소에는 주석처리 되어 있어야함
         PlayerPrefs.SetInt("tutorial", 1);

@@ -853,6 +853,7 @@ public class Event : MonoBehaviour
                 finger2.SetActive(true);
             }
             Time.timeScale = 1f;
+            MovePieceMode = true;
         }
         else
         {
@@ -866,6 +867,7 @@ public class Event : MonoBehaviour
                 finger2.SetActive(false);
             }
             Time.timeScale = 0f;
+            MovePieceMode = false;
         }
     }
 
@@ -882,6 +884,7 @@ public class Event : MonoBehaviour
             finger2.SetActive(true);
         }
         Time.timeScale = 1f;
+        MovePieceMode = true;
     }
 
     //Dev Tools Toggle
@@ -957,6 +960,7 @@ public class Event : MonoBehaviour
         if (applyRating)
         {
             float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
+            float rateChange = PlayerPrefs.GetFloat("RateChange", 1f);
             //Base Starting Rate
             float rate = 0.01f;
 
@@ -978,7 +982,7 @@ public class Event : MonoBehaviour
                     hintChange = 0.015f;
                 }
             }
-            else   //Big Board
+            else  //Big Board
             {
                 if (HintUsed < 4)
                 {
@@ -1031,8 +1035,13 @@ public class Event : MonoBehaviour
                 rate = rate * 0.75f;
             }
 
-            //CHANGE RATE WITH RANDOM VALUE
-            //rate = Random.Range(-0.005f, 0.01f);
+            //초반 PlayerDFactor rate change 가중치
+            if (rateChange > 1f)
+            {
+                rateChange -= 0.1f;
+                PlayerPrefs.SetFloat("RateChange", rateChange);
+            }
+            rate = rate * rateChange;
 
             //DISPLAY RATE CHANGE
             /*
@@ -1041,7 +1050,7 @@ public class Event : MonoBehaviour
             Debug.Log("Time Change : " + timeChange);
             Debug.Log("Diff Change : " + DFactorDiff / 2);
             */
-            // Debug.Log("Rating Change : " + rate);
+            Debug.Log("Rating Change : " + rate);
 
             playerDFactor += rate;
             if (playerDFactor <= -1f) playerDFactor = -1f;
@@ -1263,13 +1272,20 @@ public class Event : MonoBehaviour
 
     void NetworkCheck()
     {
-        if (Application.internetReachability == NetworkReachability.NotReachable)
+        if (isTutorial)
         {
             hintBtn.interactable = false;
         }
         else
         {
-            hintBtn.interactable = true;
+            if (Application.internetReachability == NetworkReachability.NotReachable)
+            {
+                hintBtn.interactable = false;
+            }
+            else
+            {
+                hintBtn.interactable = true;
+            }
         }
     }
 }

@@ -27,12 +27,19 @@ public class PrologueEvent : MonoBehaviour
         {
             display_button.GetComponent<Image>().color = new Color(1, 1, 1, 1);
             a_change = -a_change;
+            // Disable display button
         }
         else if (display_button.GetComponent<Image>().color.a < -1f)
         {
             display_button.GetComponent<Image>().color = new Color(1, 1, 1, 0);
             a_change = -a_change;
             LoadNextCut();
+        }
+
+        if (display_button.GetComponent<Image>().color.a > 1f)
+        {
+            // Enable display button
+            // display_button = 
         }
     }
 
