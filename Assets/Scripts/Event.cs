@@ -396,7 +396,7 @@ public class Event : MonoBehaviour
             finger1.SetActive(false);
             fingerAnimate = 0;
 
-            PlayerDFactorText.text = "Player: " + PlayerPrefs.GetFloat("PlayerDFactor").ToString();
+            PlayerDFactorText.text = "Player: " + PlayerPrefs.GetFloat("PlayerDFactor", -1f).ToString();
             DfactorText.text = "Level: " + levelDFactor.ToString();
 
             //Load Different Background according to corresponding levelDfactor
@@ -959,8 +959,8 @@ public class Event : MonoBehaviour
         // RATE ONLY WHEN IT IS FIRST TIME SOLVING
         if (applyRating)
         {
-            float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor");
-            float rateChange = PlayerPrefs.GetFloat("RateChange", 1f);
+            float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor", -1f);
+            float rateChange = PlayerPrefs.GetFloat("RateChange", 4f);
             //Base Starting Rate
             float rate = 0.01f;
 
