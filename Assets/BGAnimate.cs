@@ -5,6 +5,9 @@ using UnityEngine.Video;
 
 public class BGAnimate : MonoBehaviour
 {
+    int level;
+
+    // Transform components
     public Transform cloud1;
     public Transform cloud2;
     public Transform meteor1;
@@ -17,9 +20,6 @@ public class BGAnimate : MonoBehaviour
     public Transform star4_2;
     public Transform wave_2;
     public Transform planet_2;
-
-    Vector3 star1ScaleChange;
-    Vector3 star1RingScaleChange;
 
     public Transform star1_3;
     public Transform star2_3;
@@ -38,10 +38,19 @@ public class BGAnimate : MonoBehaviour
     public Transform smallstar_4;
     public VideoPlayer videoPlayer_4;
 
-    int level;
+    // SpriteRenderer components
+    private SpriteRenderer star2_2SpriteRenderer;
+    private SpriteRenderer star3_2SpriteRenderer;
+    private SpriteRenderer star4_2SpriteRenderer;
+
+    private SpriteRenderer star1_3SpriteRenderer;
+    private SpriteRenderer star2_3SpriteRenderer;
+    private SpriteRenderer star3_3SpriteRenderer;
+    private SpriteRenderer star4_3SpriteRenderer;
+    private SpriteRenderer star5_3SpriteRenderer;
+    private SpriteRenderer planet_light_3SpriteRenderer;
 
     // Configuration Variables
-
     [Header("- Level 1")]
     public float cloud1Speed = 0.2f;
     public float cloud2Speed = 0.16f;
@@ -73,190 +82,74 @@ public class BGAnimate : MonoBehaviour
     public GameObject backgroundObject;
     public GameObject backgroundsplite;
 
+    // Vector3 variables
+    private Vector3 star1ScaleChange;
+    private Vector3 star1RingScaleChange;
+
     void Start()
     {
+        // Store references to the SpriteRenderer components
+        star2_2SpriteRenderer = star2_2.GetComponent<SpriteRenderer>();
+        star3_2SpriteRenderer = star3_2.GetComponent<SpriteRenderer>();
+        star4_2SpriteRenderer = star4_2.GetComponent<SpriteRenderer>();
+
+        star1_3SpriteRenderer = star1_3.GetComponent<SpriteRenderer>();
+        star2_3SpriteRenderer = star2_3.GetComponent<SpriteRenderer>();
+        star3_3SpriteRenderer = star3_3.GetComponent<SpriteRenderer>();
+        star4_3SpriteRenderer = star4_3.GetComponent<SpriteRenderer>();
+        star5_3SpriteRenderer = star5_3.GetComponent<SpriteRenderer>();
+        planet_light_3SpriteRenderer = planet_light_3.GetComponent<SpriteRenderer>();
+
+        // Initialize Vector3 variables
         star1ScaleChange = new Vector3(star1_2_Scale, star1_2_Scale, 0);
         star1RingScaleChange = new Vector3(star1_2_RingScale, star1_2_RingScale, 0);
 
-        star2_2.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, Random.Range(0f, 1f));
-        star3_2.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, Random.Range(0f, 1f));
-        star4_2.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, Random.Range(0f, 1f));
+        // Set initial alpha values for SpriteRenderer components
+        star2_2SpriteRenderer.color = new Color(1, 1, 1, Random.Range(0f, 1f));
+        star3_2SpriteRenderer.color = new Color(1, 1, 1, Random.Range(0f, 1f));
+        star4_2SpriteRenderer.color = new Color(1, 1, 1, Random.Range(0f, 1f));
 
-        star1_3.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, Random.Range(0f, 1f));
-        star2_3.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, Random.Range(0f, 1f));
-        star3_3.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, Random.Range(0f, 1f));
-        star4_3.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, Random.Range(0f, 1f));
-        star5_3.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, Random.Range(0f, 1f));
-
-        videoPlayer_4.Prepare();
+        star1_3SpriteRenderer.color = new Color(1, 1, 1, Random.Range(0f, 1f));
+        star2_3SpriteRenderer.color = new Color(1, 1, 1, Random.Range(0f, 1f));
+        star3_3SpriteRenderer.color = new Color(1, 1, 1, Random.Range(0f, 1f));
+        star4_3SpriteRenderer.color = new Color(1, 1, 1, Random.Range(0f, 1f));
+        star5_3SpriteRenderer.color = new Color(1, 1, 1, Random.Range(0f, 1f));
+        planet_light_3SpriteRenderer.color = new Color(1, 1, 1, Random.Range(0f, 1f));
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-        if (level == 1)
-        {
-            // Animate clouds
-            cloud1.Translate(Vector3.left * Time.deltaTime * cloud1Speed);
-            if (cloud1.position.x < -12)
-            {
-                cloud1.position = new Vector3(12.5f, cloud1.position.y, cloud1.position.z);
-            }
+        // Level 1 animations
+        cloud1.position += new Vector3(cloud1Speed * Time.deltaTime, 0, 0);
+        cloud2.position += new Vector3(cloud2Speed * Time.deltaTime, 0, 0);
+        meteor1.position += new Vector3(-meteor1Speed * Time.deltaTime, 0, 0);
+        meteor2.position += new Vector3(-meteor2Speed * Time.deltaTime, 0, 0);
 
-            cloud2.Translate(Vector3.left * Time.deltaTime * cloud2Speed);
-            if (cloud2.position.x < -11)
-            {
-                cloud2.position = new Vector3(11.5f, cloud2.position.y, cloud2.position.z);
-            }
+        // Level 2 animations
+        float scaleFactor = Mathf.Sin(Time.time * 0.5f)*500;
+        star1_2.localScale = star1ScaleChange * scaleFactor;
+        starRing.localScale = star1RingScaleChange * scaleFactor;
+        star2_2SpriteRenderer.color = new Color(1, 1, 1, Mathf.Clamp01(star2_2SpriteRenderer.color.a + star2_2_AlphaChange * Time.deltaTime));
+        star3_2SpriteRenderer.color = new Color(1, 1, 1, Mathf.Clamp01(star3_2SpriteRenderer.color.a + star3_2_AlphaChange * Time.deltaTime));
+        star4_2SpriteRenderer.color = new Color(1, 1, 1, Mathf.Clamp01(star4_2SpriteRenderer.color.a + star4_2_AlphaChange * Time.deltaTime));
+        wave_2.position += new Vector3(0, -wave2Speed * Time.deltaTime, 0);
 
-            // Animate meteors
-            meteor1.localPosition = meteor1.localPosition + (Vector3.down * Time.deltaTime * meteor1Speed);
-            if (meteor1.localPosition.y > -1.5f)
-            {
-                meteor1.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, (4f - meteor1.localPosition.y) / (4f - (-1.5f)));
-            }
-            else
-            {
-                meteor1.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, (6f + meteor1.localPosition.y) / (-1.5f - (-6f)));
-            }
-            if (meteor1.localPosition.y < -100f)
-            {
-                meteor1.localPosition = new Vector3(0, 3f, 0);
-            }
+        // Level 3 animations
+        star1_3SpriteRenderer.color = new Color(1, 1, 1, Mathf.Clamp01(star1_3SpriteRenderer.color.a + star1_3_AlphaChange * Time.deltaTime));
+        star2_3SpriteRenderer.color = new Color(1, 1, 1, Mathf.Clamp01(star2_3SpriteRenderer.color.a + star2_3_AlphaChange * Time.deltaTime));
+        star3_3SpriteRenderer.color = new Color(1, 1, 1, Mathf.Clamp01(star3_3SpriteRenderer.color.a + star3_3_AlphaChange * Time.deltaTime));
+        star4_3SpriteRenderer.color = new Color(1, 1, 1, Mathf.Clamp01(star4_3SpriteRenderer.color.a + star4_3_AlphaChange * Time.deltaTime));
+        star5_3SpriteRenderer.color = new Color(1, 1, 1, Mathf.Clamp01(star5_3SpriteRenderer.color.a + star5_3_AlphaChange * Time.deltaTime));
+        planet_light_3SpriteRenderer.color = new Color(1, 1, 1, Mathf.Clamp01(planet_light_3SpriteRenderer.color.a + plantlight_3_AlphaChange * Time.deltaTime));
+        wave1_3.position += new Vector3(0, -wave1_3_Speed * Time.deltaTime, 0);
+        wave2_3.position += new Vector3(0, -wave2_3_Speed * Time.deltaTime, 0);
+        wave3_3.position += new Vector3(0, -wave3_3_Speed * Time.deltaTime, 0);
 
-            meteor2.localPosition = meteor2.localPosition + (Vector3.down * Time.deltaTime * meteor2Speed);
-            if (meteor2.localPosition.y > 0)
-            {
-                meteor2.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, (6f - meteor2.localPosition.y) / (6f - (0)));
-            }
-            else
-            {
-                meteor2.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, (4f + meteor2.localPosition.y) / (0 - (-4f)));
-            }
-            if (meteor2.localPosition.y < -250f)
-            {
-                meteor2.localPosition = new Vector3(0, 3f, 0);
-            }
-        }
-
-        if (level == 2)
-        {
-            // Animate Star & Star ring
-            star1_2.localScale += star1ScaleChange;
-            starRing.localScale += star1RingScaleChange;
-            starRing.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, -0.02f);
-            if (star1_2.localScale.x < 0.55f)
-            {
-                star1ScaleChange = -star1ScaleChange;
-                starRing.localScale = new Vector3(0.7f, 0.7f, 1);
-                starRing.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
-            }
-            else if (star1_2.localScale.x > 0.7f)
-            {
-                star1ScaleChange = -star1ScaleChange;
-            }
-
-            /*
-            starRing.localScale += star1RingScaleChange;
-            starRing.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, -0.015f);
-            if (starRing.localScale.x >= 1.5f)
-            {
-                starRing.localScale = new Vector3(1, 1, 1);
-                starRing.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
-                star1.localScale = new Vector3(0.6f, 0.6f, 0.6f);
-            }
-            */
-
-            star2_2.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, -star2_2_AlphaChange);
-            if (star2_2.GetComponent<SpriteRenderer>().color.a >= 1f || star2_2.GetComponent<SpriteRenderer>().color.a <= 0)
-            {
-                star2_2_AlphaChange = -star2_2_AlphaChange;
-            }
-
-            star3_2.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, -star3_2_AlphaChange);
-            if (star3_2.GetComponent<SpriteRenderer>().color.a >= 1f || star3_2.GetComponent<SpriteRenderer>().color.a <= 0)
-            {
-                star3_2_AlphaChange = -star3_2_AlphaChange;
-            }
-
-            star4_2.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, -star4_2_AlphaChange);
-            if (star4_2.GetComponent<SpriteRenderer>().color.a >= 1f || star4_2.GetComponent<SpriteRenderer>().color.a <= 0)
-            {
-                star4_2_AlphaChange = -star4_2_AlphaChange;
-            }
-
-            wave_2.Translate(new Vector3(-1, 0) * Time.deltaTime * wave2Speed);
-            if (wave_2.position.x < -13.77f)
-            {
-                wave_2.position = new Vector3(13.8f, -0.54f);
-            }
-        }
-
-        if (level == 3)
-        {
-            star1_3.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, -star1_3_AlphaChange);
-            if (star1_3.GetComponent<SpriteRenderer>().color.a >= 1f || star1_3.GetComponent<SpriteRenderer>().color.a <= 0)
-            {
-                star1_3_AlphaChange = -star1_3_AlphaChange;
-            }
-
-            star2_3.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, -star2_3_AlphaChange);
-            if (star2_3.GetComponent<SpriteRenderer>().color.a >= 1f || star2_3.GetComponent<SpriteRenderer>().color.a <= 0)
-            {
-                star2_3_AlphaChange = -star2_3_AlphaChange;
-            }
-
-            star3_3.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, -star3_3_AlphaChange);
-            if (star3_3.GetComponent<SpriteRenderer>().color.a >= 1f || star3_3.GetComponent<SpriteRenderer>().color.a <= 0)
-            {
-                star3_3_AlphaChange = -star3_3_AlphaChange;
-            }
-
-            star4_3.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, -star4_3_AlphaChange);
-            if (star4_3.GetComponent<SpriteRenderer>().color.a >= 1f || star4_3.GetComponent<SpriteRenderer>().color.a <= 0)
-            {
-                star4_3_AlphaChange = -star4_3_AlphaChange;
-            }
-
-            star5_3.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, -star5_3_AlphaChange);
-            if (star5_3.GetComponent<SpriteRenderer>().color.a >= 1f || star5_3.GetComponent<SpriteRenderer>().color.a <= 0)
-            {
-                star5_3_AlphaChange = -star5_3_AlphaChange;
-            }
-
-            wave1_3.Translate(new Vector3(1.778f, -1) * Time.deltaTime * wave1_3_Speed);
-            if (wave1_3.position.x > 3.1f)
-            {
-                wave1_3.position = new Vector3(-14.83f, 1.19f);
-            }
-
-            wave2_3.Translate(new Vector3(1, 0) * Time.deltaTime * wave2_3_Speed);
-            if (wave2_3.position.x > 9.05f)
-            {
-                wave2_3.position = new Vector3(-8.6f, -3.15f);
-            }
-
-            wave3_3.Translate(new Vector3(-1.777f, 1) * Time.deltaTime * wave3_3_Speed);
-            if (wave3_3.position.x < -5.09f)
-            {
-                wave3_3.position = new Vector3(12.818f, -3.674f);
-            }
-
-            planet_light_3.GetComponent<SpriteRenderer>().color += new Color(0, 0, 0, -plantlight_3_AlphaChange);
-            if (planet_light_3.GetComponent<SpriteRenderer>().color.a >= 2f || planet_light_3.GetComponent<SpriteRenderer>().color.a <= 0f)
-            {
-                plantlight_3_AlphaChange = -plantlight_3_AlphaChange;
-            }
-        }
-
-        if (level == 4)
-        {
-            stars_4.Translate(new Vector3(1.777f, -1) * Time.deltaTime * starsSpeed);
-            if (stars_4.position.x > 8.96f)
-            {
-                stars_4.position = new Vector3(-8.96f, 4.98f);
-            }
-        }
+        // Level 4 animations
+        stars_4.Rotate(0, 0, starsSpeed);
+        bigstar_4.Rotate(0, 0, -starsSpeed * 2);
+        midstar_4.Rotate(0, 0, -starsSpeed * 1.5f);
+        smallstar_4.Rotate(0, 0, -starsSpeed * 1.25f);
     }
 
     public void ToggleBGAnim(float levelDFactor)
