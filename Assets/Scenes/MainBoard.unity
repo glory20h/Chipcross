@@ -2906,6 +2906,7 @@ GameObject:
   - component: {fileID: 566818438}
   - component: {fileID: 566818437}
   - component: {fileID: 566818442}
+  - component: {fileID: 566818440}
   m_Layer: 0
   m_Name: Boy
   m_TagString: Untagged
@@ -2996,7 +2997,6 @@ MonoBehaviour:
   ResetButton: {fileID: 711313912}
   HintButton: {fileID: 1817190564}
   PuzzleSolvedPanel: {fileID: 290660372}
-  boyAnimator: {fileID: 0}
   speed: 2
   distanceBetweenTiles: 0
   initTargetPosition: {x: 0, y: 0, z: 0}
@@ -3048,6 +3048,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.41, y: 2.24}
   m_EdgeRadius: 0
+--- !u!114 &566818440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 566818434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b8edf50fc0dcc94a9b60f775e17a8c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gifPath: Arts/Boysample
+  frames: []
+  frameDelay: 1
 --- !u!95 &566818442
 Animator:
   serializedVersion: 3

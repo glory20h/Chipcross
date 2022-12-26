@@ -16,7 +16,7 @@ public class MoveBoi : MonoBehaviour
 
     public GameObject PuzzleSolvedPanel;
 
-    public Animator boyAnimator;
+    //public Animator boyAnimator;
 
     [HideInInspector] public float speed;
     [HideInInspector] public float distanceBetweenTiles;
@@ -52,7 +52,7 @@ public class MoveBoi : MonoBehaviour
         warp = false;
         warpDone = false;
         addFriction = AddFriction();
-        boyAnimator = gameObject.GetComponent<Animator>();
+        //boyAnimator = gameObject.GetComponent<Animator>();
     }
 
     void FixedUpdate()
@@ -74,7 +74,7 @@ public class MoveBoi : MonoBehaviour
             {
                 if (warp)            //Warp 해야 하는가?
                 {
-                    boyAnimator.enabled = false;// -> Pause Animator
+                    //boyAnimator.enabled = false;// -> Pause Animator
                     gameObject.GetComponent<SpriteRenderer>().sprite = (Sprite)Resources.Load("Arts/Nothing", typeof(Sprite));
 
                     if (tileType == '8')
@@ -399,7 +399,7 @@ public class MoveBoi : MonoBehaviour
     {
         speed = 0f;
         yield return new WaitForSeconds(time);
-        boyAnimator.enabled = true;
+        //boyAnimator.enabled = true;
         speed = 2f;
     }
 }
