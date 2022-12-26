@@ -14,13 +14,14 @@ public class GifInputer : MonoBehaviour
     private int frameIndex;
 
     // The delay between each frame in seconds
-    public float frameDelay;
+    private float frameDelay;
 
     // A reference to the SpriteRenderer component that will display the gif
     private SpriteRenderer spriteRenderer;
 
     void Start()
     {
+        frameDelay = 0.01f;
         // Load the gif frames as sprites
         Sprite[] sprites = Resources.LoadAll<Sprite>(gifPath);
 
@@ -36,7 +37,10 @@ public class GifInputer : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         // Set the initial frame
-        spriteRenderer.sprite = frames[0];
+        if (frames.Count > 0)
+        {
+            spriteRenderer.sprite = frames[0];
+        }
 
         // Start the animation coroutine
         StartCoroutine(AnimateGif());
@@ -46,8 +50,11 @@ public class GifInputer : MonoBehaviour
     {
         while (true)
         {
-            // Wait for the frame delay
-            yield return new WaitForSeconds(frameDelay);
+            if (frameDelay > 0)
+            {
+                // Wait for the frame delay
+                yield return new WaitForSeconds(frameDelay);
+            }
 
             // Increment the frame index and wrap around if necessary
             frameIndex = (frameIndex + 1) % frames.Count;
