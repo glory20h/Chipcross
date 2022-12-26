@@ -102,6 +102,9 @@ public class Event : MonoBehaviour
     float prevTime;
     /// For Application Quit
 
+    //For skin
+    [SerializeField] private SkinManager skinManager;
+    //For skin
     void Awake()
     {
         Advertisement.Initialize("3861973", false);
@@ -152,6 +155,8 @@ public class Event : MonoBehaviour
         Advertisement.Banner.SetPosition(BannerPosition.BOTTOM_RIGHT);
         LoadBanner();
         */
+
+        //GetComponent<SpriteRenderer>().sprite = skinManager.GetSelectedSkin().sprite;
     }
 
     void Update()
@@ -403,21 +408,25 @@ public class Event : MonoBehaviour
             if (levelDFactor < -0.55f)
             {
                 backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/1");
+                //backGround.GetComponent<SpriteRenderer>().sprite = skinManager.GetSelectedSkin().sprite;
                 ChangeTileTheme(1);
             }
             else if (levelDFactor < 0f)
             {
                 backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/2");
+                //backGround.GetComponent<SpriteRenderer>().sprite = skinManager.GetSelectedSkin().sprite;
                 ChangeTileTheme(2);
             }
             else if (levelDFactor < 0.5f)
             {
                 backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/3");
+                //backGround.GetComponent<SpriteRenderer>().sprite = skinManager.GetSelectedSkin().sprite;
                 ChangeTileTheme(3);
             }
             else
             {
                 backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/4_1");
+                //backGround.GetComponent<SpriteRenderer>().sprite = skinManager.GetSelectedSkin().sprite;
                 ChangeTileTheme(4);
             }
             BgAnimate.ToggleBGAnim(levelDFactor);       //Toggle Background animation components by level
@@ -1288,4 +1297,5 @@ public class Event : MonoBehaviour
             }
         }
     }
+
 }
