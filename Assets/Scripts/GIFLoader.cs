@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using UnityEditor;
 
 public class GIFLoader : MonoBehaviour
 {
     public IEnumerator<Texture2D> Load(string path)
     {
-        if (path == null)
+        if (string.IsNullOrEmpty(path))
         {
             yield break;
         }
@@ -32,5 +33,6 @@ public class GIFLoader : MonoBehaviour
             yield return frame;
         }
     }
+
 
 }
