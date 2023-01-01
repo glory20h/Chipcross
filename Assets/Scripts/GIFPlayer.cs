@@ -6,15 +6,15 @@ public class GIFPlayer : MonoBehaviour
 {
     public string GIFPath;
     public float FrameInterval = 0.1f;
-    private GIFLoader loader;
+    public GIFLoader loader; // Declare a public field for the GIFLoader component
     private IEnumerator<Texture2D> frames;
     private float timeSinceLastFrame;
     private bool isPlaying;
 
     private void Start()
     {
-        // Create a new GIFLoader instance
-        loader = new GIFLoader();
+        // Get the GIFLoader component
+        loader = GetComponent<GIFLoader>();
 
         // Load the GIF file and get the frames
         frames = loader.Load(GIFPath);
@@ -55,3 +55,4 @@ public class GIFPlayer : MonoBehaviour
     }
 
 }
+
