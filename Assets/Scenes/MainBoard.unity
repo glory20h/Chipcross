@@ -367,7 +367,7 @@ GameObject:
   - component: {fileID: 25757807}
   - component: {fileID: 25757806}
   - component: {fileID: 25757808}
-  - component: {fileID: 25757810}
+  - component: {fileID: 25757809}
   m_Layer: 0
   m_Name: Girl
   m_TagString: Untagged
@@ -465,7 +465,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.41, y: 2.24}
   m_EdgeRadius: 0
---- !u!114 &25757810
+--- !u!114 &25757809
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -474,10 +474,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 25757805}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b8edf50fc0dcc94a9b60f775e17a8c4, type: 3}
+  m_Script: {fileID: 11500000, guid: e35bf9b736d713246a56d8c25ce4cdf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gifPath: Arts/Rocketsample
+  GIFPath: Assets/Resources/Arts/Gifs/test
+  FrameInterval: 0.1
 --- !u!1 &29284699
 GameObject:
   m_ObjectHideFlags: 0
