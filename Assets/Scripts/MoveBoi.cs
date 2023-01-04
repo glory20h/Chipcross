@@ -44,6 +44,8 @@ public class MoveBoi : MonoBehaviour
 
     int numOfSteps;
 
+    int coin_value;
+
     void Start()
     {
         isMoving = false;
@@ -392,7 +394,10 @@ public class MoveBoi : MonoBehaviour
         PuzzleSolvedPanel.SetActive(true);
         eventChanger.finger1.SetActive(false);
         SoundFXPlayer.Play("positiveVibe");
-        //yield return StartCoroutine(eventChanger.CoinIncreaseAnimation()); //This part is related to CoinAnimation -> Disabled for now
+        coin_value = 100;
+        yield return StartCoroutine(eventChanger.CoinIncreaseAnimation(coin_value)); //This part is related to CoinAnimation -> Disabled for now
+        PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins", 0) + coin_value);
+        eventChanger.SetCoinText(PlayerPrefs.GetInt("Coins", 0) + coin_value);
     }
 
     IEnumerator Waitsecond(float time)

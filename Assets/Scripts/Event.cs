@@ -912,17 +912,24 @@ public class Event : MonoBehaviour
     //퍼즐 완료창 코인 또로로로 효과
     public IEnumerator CoinIncreaseAnimation(int coin = 100)
     {
-        coinText.text = "";
+        int player_coins = PlayerPrefs.GetInt("Coins", 0);
+        int i = player_coins;
+
         yield return new WaitForSeconds(0.5f);
-        int i = 0;
+
         coinChangeToggle = true;
-        while (i < coin + 1 && coinChangeToggle)
+        while (i < player_coins + coin + 1 && coinChangeToggle)
         {
-            coinText.text = i.ToString();
+            SetCoinText(i);
             CoinFXPlayer.Play();
             i++;
             yield return null;
         }
+    }
+
+    public void SetCoinText(int coin)
+    {
+        coinText.text = coin.ToString();
     }
 
     //DevTools Display에 Hint, Touch, Restart 뜨게 함
@@ -1059,7 +1066,7 @@ public class Event : MonoBehaviour
             Debug.Log("Time Change : " + timeChange);
             Debug.Log("Diff Change : " + DFactorDiff / 2);
             */
-            Debug.Log("Rating Change : " + rate);
+            // Debug.Log("Rating Change : " + rate);
 
             playerDFactor += rate;
             if (playerDFactor <= -1f) playerDFactor = -1f;

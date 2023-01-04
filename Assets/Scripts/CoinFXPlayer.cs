@@ -9,7 +9,7 @@ public class CoinFXPlayer : MonoBehaviour
     
     void Start()
     {
-        coin = Resources.Load<AudioClip>("Audio/Quick_Coin");
+        coin = Resources.Load<AudioClip>("Audio/FX/Quick_Coin");
 
         audioSrc = GetComponent<AudioSource>();
     }

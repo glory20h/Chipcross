@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SoundFXPlayer : MonoBehaviour
 {
-    public static AudioClip flick, win, fail, pick, put, go, positiveVibe, click;
+    public static AudioClip flick, win, fail, pick, put, go, positiveVibe, click, coin;
     static AudioSource audioSrc;
 
     void Start()
