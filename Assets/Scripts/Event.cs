@@ -408,25 +408,25 @@ public class Event : MonoBehaviour
             if (levelDFactor < -0.55f)
             {
                 backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/1");
-                //backGround.GetComponent<SpriteRenderer>().sprite = skinManager.GetSelectedSkin().sprite;
+                backgroundskin();
                 ChangeTileTheme(1);
             }
             else if (levelDFactor < 0f)
             {
                 backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/2");
-                //backGround.GetComponent<SpriteRenderer>().sprite = skinManager.GetSelectedSkin().sprite;
+                backgroundskin();
                 ChangeTileTheme(2);
             }
             else if (levelDFactor < 0.5f)
             {
                 backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/3");
-                //backGround.GetComponent<SpriteRenderer>().sprite = skinManager.GetSelectedSkin().sprite;
+                backgroundskin();
                 ChangeTileTheme(3);
             }
             else
             {
                 backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/4_1");
-                //backGround.GetComponent<SpriteRenderer>().sprite = skinManager.GetSelectedSkin().sprite;
+                backgroundskin();
                 ChangeTileTheme(4);
             }
             BgAnimate.ToggleBGAnim(levelDFactor);       //Toggle Background animation components by level
@@ -1305,4 +1305,17 @@ public class Event : MonoBehaviour
         }
     }
 
+    void backgroundskin()
+    {
+        backGround.GetComponent<SpriteRenderer>().sprite = skinManager.GetSelectedSkin().sprite;
+
+        float spriteWidth = backGround.GetComponent<SpriteRenderer>().sprite.bounds.size.x;
+        float spriteHeight = backGround.GetComponent<SpriteRenderer>().sprite.bounds.size.y;
+
+        float screenHeight = Camera.main.orthographicSize * 2.0f;
+        float screenWidth = screenHeight / Screen.height * Screen.width;
+
+        backGround.transform.localScale = new Vector3(screenWidth / spriteWidth, screenHeight / spriteHeight, 1);
+
+    }
 }
