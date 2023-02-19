@@ -52,6 +52,12 @@ public class SkinManager : ScriptableObject
         return unlockedSkins;
     }
 
+    // 새로 추가한 GetAllSkins() 메서드
+    public Skin[] GetAllSkins()
+    {
+        return skins;
+    }
+
     public List<Skin> GetNextPage(int pageSize, int pageIndex)
     {
         List<Skin> unlockedSkins = GetUnlockedSkins();

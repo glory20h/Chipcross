@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class SkinShopItem : MonoBehaviour
 {
-    [SerializeField] private SkinManager skinManager;
-    [SerializeField] private int skinIndex;
-    [SerializeField] private Button buyButton;
-    [SerializeField] private Text costText;
+    [SerializeField] public SkinManager skinManager;
+    [SerializeField] public int skinIndex;
+    [SerializeField] public Button buyButton;
+    [SerializeField] public Text costText;
     private Skin skin;
 
     void Start()
@@ -56,13 +56,9 @@ public class SkinShopItem : MonoBehaviour
 
     public void Next()
     {
-        int newIndex = skinIndex + 1;
-        if (newIndex >= skinManager.skins.Length)
-        {
-            newIndex = 0;
-        }
+        int newIndex = (skinIndex + 1) % skinManager.GetAllSkins().Length;
         skinIndex = newIndex;
-        skin = skinManager.skins[skinIndex];
+        skin = skinManager.GetAllSkins()[skinIndex];
         GetComponent<Image>().sprite = skin.sprite;
         if (skinManager.IsUnlocked(skinIndex))
         {
@@ -77,13 +73,9 @@ public class SkinShopItem : MonoBehaviour
 
     public void Previous()
     {
-        int newIndex = skinIndex - 1;
-        if (newIndex < 0)
-        {
-            newIndex = skinManager.skins.Length - 1;
-        }
+        int newIndex = (skinIndex - 1 + skinManager.GetAllSkins().Length) % skinManager.GetAllSkins().Length;
         skinIndex = newIndex;
-        skin = skinManager.skins[skinIndex];
+        skin = skinManager.GetAllSkins()[skinIndex];
         GetComponent<Image>().sprite = skin.sprite;
         if (skinManager.IsUnlocked(skinIndex))
         {
@@ -95,4 +87,6 @@ public class SkinShopItem : MonoBehaviour
             costText.text = skin.cost.ToString();
         }
     }
+
+
 }

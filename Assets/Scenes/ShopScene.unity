@@ -2736,6 +2736,13 @@ MonoBehaviour:
   selectedSkin: {fileID: 853021262}
   coinsText: {fileID: 1680705675}
   skinManager: {fileID: 11400000, guid: 1a4ad2149dd5348429dcdf513ba76f2f, type: 2}
+  nextSkinButton: {fileID: 941333639}
+  previousSkinButton: {fileID: 772197392}
+  shopItems: []
+  shopItemPrefab: {fileID: 854547730}
+  shopItemPrefab1: {fileID: 744160084}
+  shopItemPrefab2: {fileID: 1128502419}
+  shopItemPrefab3: {fileID: 431722088}
 --- !u!4 &1879791279
 Transform:
   m_ObjectHideFlags: 0
