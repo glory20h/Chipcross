@@ -7,11 +7,11 @@ public class MovetoShop : MonoBehaviour
 {
     public void LoadShop()
     {
-        SceneManager.LoadScene("ShopScene");
+        SceneManager.LoadSceneAsync("ShopScene", LoadSceneMode.Additive);
     }
 
     public void MainBoard()
     {
-        SceneManager.LoadScene("MainBoard");
+        SceneManager.UnloadSceneAsync("ShopScene");
     }
 }
