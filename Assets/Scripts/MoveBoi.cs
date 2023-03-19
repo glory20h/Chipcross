@@ -371,6 +371,7 @@ public class MoveBoi : MonoBehaviour
         {
             PuzzleSolvedPanel.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/clear_2");
         }
+        /*
         else
         {
             if (eventChanger.levelDFactor < -0.55f)
@@ -390,6 +391,7 @@ public class MoveBoi : MonoBehaviour
                 PuzzleSolvedPanel.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/clear_3");
             }
         }
+        */
 
         PuzzleSolvedPanel.SetActive(true);
         eventChanger.finger1.SetActive(false);

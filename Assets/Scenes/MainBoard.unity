@@ -180,6 +180,8 @@ MonoBehaviour:
   SFXSlider: {fileID: 2004198877}
   AmbSlider: {fileID: 603779701}
   PuzzleSolvedPanel: {fileID: 290660372}
+  PlayAgainBtn: {fileID: 1559028384}
+  GoToNextLevelBtn: {fileID: 1168419479}
   coinText: {fileID: 1703925066}
   timeText: {fileID: 1462976068}
   coinChangeToggle: 1
@@ -1221,7 +1223,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &275704864
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1956,8 +1958,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 247, y: 201}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 272.1, y: 201}
+  m_SizeDelta: {x: 80, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &413882997
 MonoBehaviour:
@@ -4774,7 +4776,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &907820808
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7012,7 +7014,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1465697360
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7505,7 +7507,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7e637d3250621214f847b073e1fc4fab, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ed50c02addce2594a8c8a79eef5a0564, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -8871,7 +8873,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 17b6a5399900aa644912458d88ef9dcc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8ce174befb69d0c4f8942ff0eaad96db, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9613,7 +9615,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Sample Shop
+  m_Text: Shop
 --- !u!222 &1956479501
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -36,6 +36,8 @@ public class Event : MonoBehaviour
 
     ///퍼즐 완료 창 관련
     public GameObject PuzzleSolvedPanel;
+    public Button PlayAgainBtn;
+    public Button GoToNextLevelBtn;
     public Text coinText;
     public Text timeText;
     [HideInInspector] public bool coinChangeToggle = true;
@@ -105,6 +107,7 @@ public class Event : MonoBehaviour
     //For skin
     [SerializeField] private SkinManager skinManager;
     //For skin
+
     void Awake()
     {
         Advertisement.Initialize("3861973", false);
@@ -156,7 +159,11 @@ public class Event : MonoBehaviour
         LoadBanner();
         */
 
-        //GetComponent<SpriteRenderer>().sprite = skinManager.GetSelectedSkin().sprite;
+        /*
+        PlayerPrefs.SetInt("SelectedSkin", 0);
+        Debug.Log(skinManager.GetSelectedSkin().name);
+        Debug.Log(PlayerPrefs.GetInt("SelectedSkin"));
+        */
     }
 
     void Update()
@@ -404,31 +411,8 @@ public class Event : MonoBehaviour
             PlayerDFactorText.text = "Player: " + PlayerPrefs.GetFloat("PlayerDFactor", -1f).ToString();
             DfactorText.text = "Level: " + levelDFactor.ToString();
 
-            //Load Different Background according to corresponding levelDfactor
-            if (levelDFactor < -0.55f)
-            {
-                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/1");
-                backgroundskin();
-                ChangeTileTheme(1);
-            }
-            else if (levelDFactor < 0f)
-            {
-                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/2");
-                backgroundskin();
-                ChangeTileTheme(2);
-            }
-            else if (levelDFactor < 0.5f)
-            {
-                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/3");
-                backgroundskin();
-                ChangeTileTheme(3);
-            }
-            else
-            {
-                backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Background/4_1");
-                backgroundskin();
-                ChangeTileTheme(4);
-            }
+            SetSkin(levelDFactor);
+            
             BgAnimate.ToggleBGAnim(levelDFactor);       //Toggle Background animation components by level
 
             hintBtn.interactable = true;
@@ -623,6 +607,91 @@ public class Event : MonoBehaviour
             }
 
             ResetPiecePosition(objToReset);
+        }
+    }
+
+    void SetSkin(float levelDFactor)
+    {
+        int level;
+        string prefix;
+        GameObject tile;
+        Sprite sprite;
+
+        //Load Different Sprites According to levelDfactor
+        if (levelDFactor < -0.55f)
+        {
+            level = 1;
+        }
+        else if (levelDFactor < 0f)
+        {
+            level = 2;
+        }
+        else if (levelDFactor < 0.5f)
+        {
+            level = 3;
+        }
+        else
+        {
+            level = 4;
+        }
+
+        BgAnimate.gameObject.SetActive(skinManager.GetSelectedSkin().name == "Default");
+        prefix = "Arts/Skins/" + skinManager.GetSelectedSkin().name + "/";
+
+        // Set Background Skins
+        backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(prefix + level);
+
+        float spriteWidth = backGround.GetComponent<SpriteRenderer>().sprite.bounds.size.x;
+        float spriteHeight = backGround.GetComponent<SpriteRenderer>().sprite.bounds.size.y;
+
+        float screenHeight = Camera.main.orthographicSize * 2.0f;
+        float screenWidth = screenHeight / Screen.height * Screen.width;
+
+        backGround.transform.localScale = new Vector3(screenWidth / spriteWidth, screenHeight / spriteHeight, 1);
+
+        // Set Character Skins
+        Boy.GetComponent<GifInputer>().animate = skinManager.GetSelectedSkin().name == "Default";
+        Boy.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(prefix + "Boy");
+        Girl.GetComponent<GifInputer>().animate = skinManager.GetSelectedSkin().name == "Default";
+        Girl.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(prefix + "Rocket");
+
+        // Set UI Skins
+        hintBtn.GetComponent<Image>().sprite = Resources.Load<Sprite>(prefix + "Hint");
+        PlayAgainBtn.GetComponent<Image>().sprite = Resources.Load<Sprite>(prefix + "PlayAgain");
+        GoToNextLevelBtn.GetComponent<Image>().sprite = Resources.Load<Sprite>(prefix + "GoToNextLevel");
+        sprite = Resources.Load<Sprite>(prefix + "Clear" + level.ToString());
+        if (sprite == null)
+        {
+            sprite = Resources.Load<Sprite>(prefix + "Clear");
+        }
+        PuzzleSolvedPanel.GetComponent<Image>().sprite = sprite;
+
+        // Set Tile Skins
+        prefix = "Arts/Skins/" + skinManager.GetSelectedSkin().name + "/Theme" + level.ToString();
+
+        for (int i = 1; i < 10; i++)
+        {
+            tile = Resources.Load("Prefabs/Tile" + i.ToString()) as GameObject;
+            if (i == 9)
+            {
+                sprite = Resources.Load<Sprite>(prefix + "Tile8");
+                if (sprite == null)
+                {
+                    prefix = "Arts/Skins/" + skinManager.GetSelectedSkin().name + "/";
+                    sprite = Resources.Load<Sprite>(prefix + "Tile8");
+                }
+                tile.GetComponent<SpriteRenderer>().sprite = sprite;
+            }
+            else
+            {
+                sprite = Resources.Load<Sprite>(prefix + "Tile" + i.ToString());
+                if (sprite == null)
+                {
+                    prefix = "Arts/Skins/" + skinManager.GetSelectedSkin().name + "/";
+                    sprite = Resources.Load<Sprite>(prefix + "Tile" + i.ToString());
+                }
+                tile.GetComponent<SpriteRenderer>().sprite = sprite;
+            }
         }
     }
 
@@ -1210,25 +1279,6 @@ public class Event : MonoBehaviour
         }
     }
 
-
-    public void ChangeTileTheme(int theme)
-    {
-        GameObject tile;
-
-        for (int i = 1; i < 10; i++)
-        {
-            tile = Resources.Load("Prefabs/Tile" + i.ToString()) as GameObject;
-            if (i == 9)
-            {
-                tile.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Tiles/Theme" + theme.ToString() + "Tile8");
-            }
-            else
-            {
-                tile.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Tiles/Theme" + theme.ToString() + "Tile" + i.ToString());
-            }
-        }
-    }
-
     public void ShowRewardedAD()
     {
         if (Advertisement.IsReady("rewardedVideo"))
@@ -1303,19 +1353,5 @@ public class Event : MonoBehaviour
                 hintBtn.interactable = true;
             }
         }
-    }
-
-    void backgroundskin()
-    {
-        backGround.GetComponent<SpriteRenderer>().sprite = skinManager.GetSelectedSkin().sprite;
-
-        float spriteWidth = backGround.GetComponent<SpriteRenderer>().sprite.bounds.size.x;
-        float spriteHeight = backGround.GetComponent<SpriteRenderer>().sprite.bounds.size.y;
-
-        float screenHeight = Camera.main.orthographicSize * 2.0f;
-        float screenWidth = screenHeight / Screen.height * Screen.width;
-
-        backGround.transform.localScale = new Vector3(screenWidth / spriteWidth, screenHeight / spriteHeight, 1);
-
     }
 }
