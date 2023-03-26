@@ -177,8 +177,11 @@ MonoBehaviour:
   OptionMenu: {fileID: 1473720125}
   OptionExit: {fileID: 737905258}
   MusicSlider: {fileID: 1699263567}
+  MusicSliderBG: {fileID: 300760624}
+  MusicSliderHandle: {fileID: 499049161}
   SFXSlider: {fileID: 2004198877}
-  AmbSlider: {fileID: 603779701}
+  SFXSliderBG: {fileID: 247415395}
+  SFXSliderHandle: {fileID: 1941294264}
   PuzzleSolvedPanel: {fileID: 290660372}
   PlayAgainBtn: {fileID: 1559028384}
   GoToNextLevelBtn: {fileID: 1168419479}
@@ -1010,7 +1013,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &168716193
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3227,7 +3230,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &603779700
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5789,7 +5792,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 66e231db02480fa4cb29d2e5847622b7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 350deee765dd36c47afc7664ca418b79, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -9309,7 +9312,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1918675155
 RectTransform:
   m_ObjectHideFlags: 0

@@ -4,43 +4,118 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+[System.Serializable]
+public class Skin
+{
+    public int cost;
+    public Sprite sprite;
+    public string name;
+}
+
 public class ShopController : MonoBehaviour
 {
     [SerializeField] private Image selectedSkin;
     [SerializeField] private Text coinsText;
     [SerializeField] private SkinManager skinManager;
-    public Button nextSkinButton;
-    public Button previousSkinButton;
-    public List<SkinShopItem> shopItems;
-    [SerializeField] public GameObject shopItemPrefab;
-    [SerializeField] public GameObject shopItemPrefab1;
-    [SerializeField] public GameObject shopItemPrefab2;
-    [SerializeField] public GameObject shopItemPrefab3;
+    [SerializeField] private Button nextSkinButton;
+    [SerializeField] private Button previousSkinButton;
+    [SerializeField] private Transform shopItems;
+
+    Button curBtn;
 
     void Start()
     {
-        nextSkinButton.onClick.AddListener(SelectNextSkin);
-        previousSkinButton.onClick.AddListener(SelectPreviousSkin);
-
-        // 원하는 SkinShopItem 게임오브젝트들을 넣어줍니다.
-        shopItems = new List<SkinShopItem>();
-        shopItems.Add(shopItemPrefab.GetComponent<SkinShopItem>());
-        shopItems.Add(shopItemPrefab1.GetComponent<SkinShopItem>());
-        shopItems.Add(shopItemPrefab2.GetComponent<SkinShopItem>());
-        shopItems.Add(shopItemPrefab3.GetComponent<SkinShopItem>());
-    }
-
-    void Update()
-    {
         coinsText.text = "Coins: " + PlayerPrefs.GetInt("Coins");
         selectedSkin.sprite = skinManager.GetSelectedSkin().sprite;
+
+        /*
+        nextSkinButton.onClick.AddListener(SelectNextSkin);
+        previousSkinButton.onClick.AddListener(SelectPreviousSkin);
+        */
+
+        foreach (Transform item in shopItems)
+        {
+            SetupItem(item);
+        }
     }
 
-    public void LoadMenu()
+    void SetupItem(Transform item)
     {
-        SceneManager.LoadScene("MainMenuScene");
+        int skinIndex = item.GetSiblingIndex();
+        Button skinImg = item.GetComponent<Button>();
+        Button buyButton = item.GetChild(0).GetComponent<Button>();
+        Text costText = buyButton.transform.GetChild(0).GetComponent<Text>();
+
+        Skin skin = skinManager.skins[skinIndex];
+        item.GetComponent<Image>().sprite = skin.sprite;
+
+        if (skinManager.IsUnlocked(skinIndex))
+        {
+            costText.text = "0";
+        }
+        else
+        {
+            costText.text = skin.cost.ToString();
+        }
+        
+        if (skinIndex == PlayerPrefs.GetInt("SelectedSkin", 0))
+        {
+            buyButton.interactable = false;
+            curBtn = buyButton;
+        }
+        else
+        {
+            buyButton.interactable = true;
+        }
+
+        skinImg.onClick.AddListener(() => OnSkinPressed(skinIndex));
+        buyButton.onClick.AddListener(() => OnBuyButtonPressed(skinIndex, buyButton, costText));
     }
 
+    public void OnSkinPressed(int skinIndex)
+    {
+        Skin skin = skinManager.skins[skinIndex];
+
+        // Display skin info
+        selectedSkin.sprite = skin.sprite;
+    }
+
+    public void OnBuyButtonPressed(int skinIndex, Button buyButton, Text costText)
+    {
+        int coins = PlayerPrefs.GetInt("Coins", 0);
+        Skin skin = skinManager.skins[skinIndex];
+
+        // If skin is already unlocked
+        if (skinManager.IsUnlocked(skinIndex))
+        {
+            skinManager.SelectSkin(skinIndex);
+            buyButton.interactable = false;
+            curBtn.interactable = true;
+            curBtn = buyButton;
+            return;
+        }
+
+        // Unlock the skin
+        if (coins >= skin.cost)
+        {
+            coins = coins - skin.cost;
+            coinsText.text = "Coins: " + coins;
+            PlayerPrefs.SetInt("Coins", coins);
+            costText.text = "0";
+
+            skinManager.Unlock(skinIndex);
+            skinManager.SelectSkin(skinIndex);
+            buyButton.interactable = false;
+            curBtn.interactable = true;
+            curBtn = buyButton;
+        }
+        else
+        {
+            Debug.Log("Not enough coins :(");
+        }
+    }
+
+    /*
     public void SelectNextSkin()
     {
         foreach (var item in shopItems)
@@ -56,6 +131,5 @@ public class ShopController : MonoBehaviour
             item.Previous();
         }
     }
-
-
+    */
 }

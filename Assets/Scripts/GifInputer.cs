@@ -7,9 +7,6 @@ public class GifInputer : MonoBehaviour
     // The path to the gif file in the asset folder
     public string gifPath;
 
-    // Boolean to control animation
-    public bool animate;
-
     // A list of sprites that represent the gif frames
     private List<Sprite> frames;
 
@@ -21,6 +18,8 @@ public class GifInputer : MonoBehaviour
 
     // A reference to the SpriteRenderer component that will display the gif
     private SpriteRenderer spriteRenderer;
+
+    private IEnumerator coroutine;
 
     void Start()
     {
@@ -39,21 +38,13 @@ public class GifInputer : MonoBehaviour
         // Get a reference to the SpriteRenderer component
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        // Set the initial frame
-        /*
-        if (frames.Count > 0)
-        {
-            spriteRenderer.sprite = frames[0];
-        }
-        */
-
         // Start the animation coroutine
-        StartCoroutine(AnimateGif());
+        coroutine = AnimateGif();
     }
 
     IEnumerator AnimateGif()
     {
-        while (animate)
+        while (true)
         {
             if (frameDelay > 0)
             {
@@ -66,6 +57,20 @@ public class GifInputer : MonoBehaviour
 
             // Set the current frame
             spriteRenderer.sprite = frames[frameIndex];
+        }
+    }
+
+    public void ToggleAnimation(bool t)
+    {
+        if (coroutine == null) return;
+
+        if (t)
+        {
+            StartCoroutine(coroutine);
+        }
+        else
+        {
+            StopCoroutine(coroutine);
         }
     }
 }

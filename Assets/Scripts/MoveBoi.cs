@@ -44,8 +44,6 @@ public class MoveBoi : MonoBehaviour
 
     int numOfSteps;
 
-    int coin_value;
-
     void Start()
     {
         isMoving = false;
@@ -67,17 +65,16 @@ public class MoveBoi : MonoBehaviour
 
     void BoyMove()
     {
-        //targetPosition(목표 타일의 중심)을 향해서 이동...
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * fastForwardFactor * flickForce * Time.deltaTime);
-        //목표 지점에 도착
+        
         if (transform.position == targetPosition)
         {
-            if (isThereNextTile)     //파랭이가 아직 타일 위에 있는가?
+            if (isThereNextTile)
             {
-                if (warp)            //Warp 해야 하는가?
+                if (warp)
                 {
                     //boyAnimator.enabled = false;// -> Pause Animator
-                    gameObject.GetComponent<SpriteRenderer>().sprite = (Sprite)Resources.Load("Arts/Nothing", typeof(Sprite));
+                    gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Nothing");
 
                     if (tileType == '8')
                     {
@@ -103,6 +100,8 @@ public class MoveBoi : MonoBehaviour
                     }
 
                     StartCoroutine(Waitsecond(0.3f));
+
+                    gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(eventChanger.SkinPrefix() + "Boy");
 
                     warp = false;
                     warpDone = true;
@@ -185,7 +184,6 @@ public class MoveBoi : MonoBehaviour
     public void ResetBoyPosition()
     {
         transform.position = boiInitPos;
-        //NEED something more???
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -371,35 +369,12 @@ public class MoveBoi : MonoBehaviour
         {
             PuzzleSolvedPanel.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/clear_2");
         }
-        /*
-        else
-        {
-            if (eventChanger.levelDFactor < -0.55f)
-            {
-                PuzzleSolvedPanel.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/clear_1");
-            }
-            else if (eventChanger.levelDFactor < 0f)
-            {
-                PuzzleSolvedPanel.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/clear_1");
-            }
-            else if (eventChanger.levelDFactor < 0.5f)
-            {
-                PuzzleSolvedPanel.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/clear_2");
-            }
-            else
-            {
-                PuzzleSolvedPanel.GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/clear_3");
-            }
-        }
-        */
 
         PuzzleSolvedPanel.SetActive(true);
         eventChanger.finger1.SetActive(false);
         SoundFXPlayer.Play("positiveVibe");
-        coin_value = 100;
-        yield return StartCoroutine(eventChanger.CoinIncreaseAnimation(coin_value)); //This part is related to CoinAnimation -> Disabled for now
-        PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins", 0) + coin_value);
-        eventChanger.SetCoinText(PlayerPrefs.GetInt("Coins", 0) + coin_value);
+
+        eventChanger.EarnCoins();
     }
 
     IEnumerator Waitsecond(float time)

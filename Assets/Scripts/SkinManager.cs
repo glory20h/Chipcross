@@ -18,14 +18,13 @@ public class SkinManager : ScriptableObject
     public Skin GetSelectedSkin()
     {
         int skinIndex = PlayerPrefs.GetInt(SelectedSkin, 0);
+
         if (skinIndex >= 0 && skinIndex < skins.Length)
         {
             return skins[skinIndex];
         }
-        else
-        {
-            return null;
-        }
+
+        return null;
     }
 
     public void Unlock(int skinIndex)

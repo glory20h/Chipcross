@@ -30,8 +30,12 @@ public class Event : MonoBehaviour
     public static bool GameIsPaused = false;        // Game pause
     public Button OptionExit;                       // 옵션 나가기
     public Slider MusicSlider;
+    public Image MusicSliderBG;
+    public Image MusicSliderHandle;
     public Slider SFXSlider;
-    public Slider AmbSlider;
+    public Image SFXSliderBG;
+    public Image SFXSliderHandle;
+    //public Slider AmbSlider;
     ///옵션 창 관련
 
     ///퍼즐 완료 창 관련
@@ -106,6 +110,7 @@ public class Event : MonoBehaviour
 
     //For skin
     [SerializeField] private SkinManager skinManager;
+    string skin_prefix;
     //For skin
 
     void Awake()
@@ -159,10 +164,14 @@ public class Event : MonoBehaviour
         LoadBanner();
         */
 
+        // TEMP
         /*
         PlayerPrefs.SetInt("SelectedSkin", 0);
-        Debug.Log(skinManager.GetSelectedSkin().name);
+        PlayerPrefs.SetInt("Coins", 5000);
         Debug.Log(PlayerPrefs.GetInt("SelectedSkin"));
+        Debug.Log(PlayerPrefs.GetInt("Coins"));
+        PlayerPrefs.SetInt("Skin_0", 1);
+        PlayerPrefs.SetInt("Skin_1", 0);
         */
     }
 
@@ -613,7 +622,6 @@ public class Event : MonoBehaviour
     void SetSkin(float levelDFactor)
     {
         int level;
-        string prefix;
         GameObject tile;
         Sprite sprite;
 
@@ -636,10 +644,10 @@ public class Event : MonoBehaviour
         }
 
         BgAnimate.gameObject.SetActive(skinManager.GetSelectedSkin().name == "Default");
-        prefix = "Arts/Skins/" + skinManager.GetSelectedSkin().name + "/";
+        skin_prefix = "Arts/Skins/" + skinManager.GetSelectedSkin().name + "/";
 
         // Set Background Skins
-        backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(prefix + level);
+        backGround.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(skin_prefix + level);
 
         float spriteWidth = backGround.GetComponent<SpriteRenderer>().sprite.bounds.size.x;
         float spriteHeight = backGround.GetComponent<SpriteRenderer>().sprite.bounds.size.y;
@@ -650,45 +658,55 @@ public class Event : MonoBehaviour
         backGround.transform.localScale = new Vector3(screenWidth / spriteWidth, screenHeight / spriteHeight, 1);
 
         // Set Character Skins
-        Boy.GetComponent<GifInputer>().animate = skinManager.GetSelectedSkin().name == "Default";
-        Boy.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(prefix + "Boy");
-        Girl.GetComponent<GifInputer>().animate = skinManager.GetSelectedSkin().name == "Default";
-        Girl.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(prefix + "Rocket");
+        Boy.GetComponent<GifInputer>().ToggleAnimation(skinManager.GetSelectedSkin().name == "Default");
+        Boy.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(skin_prefix + "Boy");
+        Girl.GetComponent<GifInputer>().ToggleAnimation(skinManager.GetSelectedSkin().name == "Default");
+        Girl.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(skin_prefix + "Rocket");
 
         // Set UI Skins
-        hintBtn.GetComponent<Image>().sprite = Resources.Load<Sprite>(prefix + "Hint");
-        PlayAgainBtn.GetComponent<Image>().sprite = Resources.Load<Sprite>(prefix + "PlayAgain");
-        GoToNextLevelBtn.GetComponent<Image>().sprite = Resources.Load<Sprite>(prefix + "GoToNextLevel");
-        sprite = Resources.Load<Sprite>(prefix + "Clear" + level.ToString());
+        ResetBtn.GetComponent<Image>().sprite = Resources.Load<Sprite>(skin_prefix + "Reset");
+        GonfasterBtn.GetComponent<Image>().sprite = Resources.Load<Sprite>(skin_prefix + "Go");
+
+        hintBtn.GetComponent<Image>().sprite = Resources.Load<Sprite>(skin_prefix + "Hint");
+        PlayAgainBtn.GetComponent<Image>().sprite = Resources.Load<Sprite>(skin_prefix + "PlayAgain");
+        GoToNextLevelBtn.GetComponent<Image>().sprite = Resources.Load<Sprite>(skin_prefix + "GoToNextLevel");
+        sprite = Resources.Load<Sprite>(skin_prefix + "Clear" + level.ToString());
         if (sprite == null)
         {
-            sprite = Resources.Load<Sprite>(prefix + "Clear");
+            sprite = Resources.Load<Sprite>(skin_prefix + "Clear");
         }
         PuzzleSolvedPanel.GetComponent<Image>().sprite = sprite;
 
-        // Set Tile Skins
-        prefix = "Arts/Skins/" + skinManager.GetSelectedSkin().name + "/Theme" + level.ToString();
+        OptionMenu.GetComponent<Image>().sprite = Resources.Load<Sprite>(skin_prefix + "OptionMenu");
+        OptionExit.GetComponent<Image>().sprite = Resources.Load<Sprite>(skin_prefix + "OptionExit");
 
+        MusicSliderBG.sprite = Resources.Load<Sprite>(skin_prefix + "Slider");
+        MusicSliderHandle.sprite = Resources.Load<Sprite>(skin_prefix + "SliderHandle");
+        SFXSliderBG.sprite = Resources.Load<Sprite>(skin_prefix + "Slider");
+        SFXSliderHandle.sprite = Resources.Load<Sprite>(skin_prefix + "SliderHandle");
+
+        // Set Tile Skins
+        tile = Resources.Load("Prefabs/EmptyTile") as GameObject;
+        tile.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(skin_prefix + "EmptyTile");
+        
         for (int i = 1; i < 10; i++)
         {
             tile = Resources.Load("Prefabs/Tile" + i.ToString()) as GameObject;
             if (i == 9)
             {
-                sprite = Resources.Load<Sprite>(prefix + "Tile8");
+                sprite = Resources.Load<Sprite>(skin_prefix + "Theme" + level.ToString() + "Tile8");
                 if (sprite == null)
                 {
-                    prefix = "Arts/Skins/" + skinManager.GetSelectedSkin().name + "/";
-                    sprite = Resources.Load<Sprite>(prefix + "Tile8");
+                    sprite = Resources.Load<Sprite>(skin_prefix + "Tile8");
                 }
                 tile.GetComponent<SpriteRenderer>().sprite = sprite;
             }
             else
             {
-                sprite = Resources.Load<Sprite>(prefix + "Tile" + i.ToString());
+                sprite = Resources.Load<Sprite>(skin_prefix + "Theme" + level.ToString() + "Tile" + i.ToString());
                 if (sprite == null)
                 {
-                    prefix = "Arts/Skins/" + skinManager.GetSelectedSkin().name + "/";
-                    sprite = Resources.Load<Sprite>(prefix + "Tile" + i.ToString());
+                    sprite = Resources.Load<Sprite>(skin_prefix + "Tile" + i.ToString());
                 }
                 tile.GetComponent<SpriteRenderer>().sprite = sprite;
             }
@@ -696,6 +714,11 @@ public class Event : MonoBehaviour
     }
 
     //////////////////////////////////////////////// 아래로 public 함수들 ////////////////////////////////////////////////
+
+    public string SkinPrefix()
+    {
+        return skin_prefix;
+    }
 
     //출발/가속 버튼 State 1 -> 누르면 이동 시작, 2 -> 누르면 빨라짐, 3 -> 누르면 다시 원래 속도로 돌아옴
     public void GoNFastForwardClick()
@@ -706,7 +729,7 @@ public class Event : MonoBehaviour
             Boy.GetComponent<MoveBoi>().MoveDaBoi();
             MovePieceMode = false;
             goNFastBtnState = 2;
-            GonfasterBtn.image.sprite = Resources.Load<Sprite>("Arts/FastForward");
+            GonfasterBtn.image.sprite = Resources.Load<Sprite>(skin_prefix + "FastForward");
             SoundFXPlayer.Play("go");
 
             if (isTutorial)
@@ -719,14 +742,14 @@ public class Event : MonoBehaviour
             //Boy FastForward
             Boy.GetComponent<MoveBoi>().FastForward();
             goNFastBtnState = 3;
-            GonfasterBtn.image.sprite = Resources.Load<Sprite>("Arts/NormalSpeed");
+            GonfasterBtn.image.sprite = Resources.Load<Sprite>(skin_prefix + "NormalSpeed");
         }
         else
         {
             //Boy Back to normal speed
             Boy.GetComponent<MoveBoi>().BackToNormalSpeed();
             goNFastBtnState = 2;
-            GonfasterBtn.image.sprite = Resources.Load<Sprite>("Arts/FastForward");
+            GonfasterBtn.image.sprite = Resources.Load<Sprite>(skin_prefix + "FastForward");
         }
     }
 
@@ -734,7 +757,7 @@ public class Event : MonoBehaviour
     public void ResetGoNFaster()
     {
         goNFastBtnState = 1;
-        GonfasterBtn.image.sprite = Resources.Load<Sprite>("Arts/Goooo");
+        GonfasterBtn.image.sprite = Resources.Load<Sprite>(skin_prefix + "Go");
     }
 
     //초기화 버튼 눌렀을때
@@ -978,6 +1001,15 @@ public class Event : MonoBehaviour
         }
     }
 
+    public void EarnCoins()
+    {
+        int coin_value = Mathf.FloorToInt(Mathf.Pow(10, levelDFactor + 2));
+
+        StartCoroutine(CoinIncreaseAnimation(coin_value)); //This part is related to CoinAnimation -> Disabled for now
+
+        PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins", 0) + coin_value);
+    }
+
     //퍼즐 완료창 코인 또로로로 효과
     public IEnumerator CoinIncreaseAnimation(int coin = 100)
     {
@@ -989,16 +1021,11 @@ public class Event : MonoBehaviour
         coinChangeToggle = true;
         while (i < player_coins + coin + 1 && coinChangeToggle)
         {
-            SetCoinText(i);
+            coinText.text = i.ToString();
             CoinFXPlayer.Play();
             i++;
             yield return null;
         }
-    }
-
-    public void SetCoinText(int coin)
-    {
-        coinText.text = coin.ToString();
     }
 
     //DevTools Display에 Hint, Touch, Restart 뜨게 함
@@ -1195,7 +1222,7 @@ public class Event : MonoBehaviour
     {
         MusicSlider.value = PlayerPrefs.GetFloat("MusicVol", -1f);
         SFXSlider.value = PlayerPrefs.GetFloat("SFXVol", 0f);
-        AmbSlider.value = (PlayerPrefs.GetFloat("AmbVol", -1f));
+        //AmbSlider.value = (PlayerPrefs.GetFloat("AmbVol", -1f));
     }
 
     IEnumerator Waitsecond(float time)
@@ -1354,4 +1381,6 @@ public class Event : MonoBehaviour
             }
         }
     }
+
+    
 }

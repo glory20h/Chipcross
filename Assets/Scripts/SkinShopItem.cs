@@ -19,11 +19,12 @@ public class SkinShopItem : MonoBehaviour
 
         if (skinManager.IsUnlocked(skinIndex))
         {
-            buyButton.gameObject.SetActive(false);
+            buyButton.interactable = false;
+            costText.text = "";
         }
         else
         {
-            buyButton.gameObject.SetActive(true);
+            buyButton.interactable = true;
             costText.text = skin.cost.ToString();
         }
     }
@@ -41,11 +42,11 @@ public class SkinShopItem : MonoBehaviour
         int coins = PlayerPrefs.GetInt("Coins", 0);
 
         // Unlock the skin
-        if (coins >= skin.cost && !skinManager.IsUnlocked(skinIndex))
+        if (coins >= skin.cost)
         {
             PlayerPrefs.SetInt("Coins", coins - skin.cost);
             skinManager.Unlock(skinIndex);
-            buyButton.gameObject.SetActive(false);
+            buyButton.interactable = false;
             skinManager.SelectSkin(skinIndex);
         }
         else
@@ -62,11 +63,12 @@ public class SkinShopItem : MonoBehaviour
         GetComponent<Image>().sprite = skin.sprite;
         if (skinManager.IsUnlocked(skinIndex))
         {
-            buyButton.gameObject.SetActive(false);
+            buyButton.interactable = false;
+            costText.text = "";
         }
         else
         {
-            buyButton.gameObject.SetActive(true);
+            buyButton.interactable = true;
             costText.text = skin.cost.ToString();
         }
     }
@@ -79,11 +81,12 @@ public class SkinShopItem : MonoBehaviour
         GetComponent<Image>().sprite = skin.sprite;
         if (skinManager.IsUnlocked(skinIndex))
         {
-            buyButton.gameObject.SetActive(false);
+            buyButton.interactable = false;
+            costText.text = "";
         }
         else
         {
-            buyButton.gameObject.SetActive(true);
+            buyButton.interactable = true;
             costText.text = skin.cost.ToString();
         }
     }
