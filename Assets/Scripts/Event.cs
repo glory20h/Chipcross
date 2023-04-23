@@ -165,14 +165,12 @@ public class Event : MonoBehaviour
         */
 
         // TEMP
-        /*
         PlayerPrefs.SetInt("SelectedSkin", 0);
         PlayerPrefs.SetInt("Coins", 5000);
         Debug.Log(PlayerPrefs.GetInt("SelectedSkin"));
         Debug.Log(PlayerPrefs.GetInt("Coins"));
         PlayerPrefs.SetInt("Skin_0", 1);
         PlayerPrefs.SetInt("Skin_1", 0);
-        */
     }
 
     void Update()
