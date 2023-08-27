@@ -11,6 +11,7 @@ public class LevelLoader : MonoBehaviour
     [SerializeField] Image progressBar;
     public GameObject Rocket;
     public GameObject Target;
+    private const float lerpSpeedFactor = 0.1f; // 새로운 상수
 
     void Start()
     {
@@ -20,6 +21,12 @@ public class LevelLoader : MonoBehaviour
 
         // MANUALLY SET STARTING TUTLEVEL BY CHANGING THIS VALUE; DEFAULT 0 -> 평소에는 주석처리 되어 있어야함
         // PlayerPrefs.SetInt("tutorial", 1);
+        InitializePlayerSettings();
+    }
+
+    private void InitializePlayerSettings()
+    {
+        // 이 부분에서 플레이어 설정을 초기화합니다.
     }
 
     public void LoadNextLevel()
@@ -34,8 +41,7 @@ public class LevelLoader : MonoBehaviour
         AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
         op.allowSceneActivation = false;
 
-        loadingScreen.SetActive(false);
-        progressScreen.SetActive(true);
+        ShowProgressScreen();
 
         float timer = 0f;
         while (!op.isDone)
@@ -43,20 +49,32 @@ public class LevelLoader : MonoBehaviour
             yield return null;
             timer += Time.deltaTime;
 
-            float progress = (op.progress < 0.9f) ? op.progress : 1f;
-            progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, progress, timer);
-            Rocket.transform.position = Vector3.Lerp(Rocket.transform.position, Target.transform.position, op.progress);
+            float progress = Mathf.Min(op.progress, 0.9f);
+            UpdateProgressBar(progress, ref timer);
 
-            if (progressBar.fillAmount >= progress)
-            {
-                timer = 0f;
-            }
-
-            if (progressBar.fillAmount >= 0.99f && op.progress >= 0.9f)
+            if (IsLoadingComplete(op, progress))
             {
                 op.allowSceneActivation = true;
                 yield break;
             }
         }
+    }
+
+    private void ShowProgressScreen()
+    {
+        loadingScreen.SetActive(false);
+        progressScreen.SetActive(true);
+    }
+
+    private void UpdateProgressBar(float progress, ref float timer)
+    {
+        progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, progress, timer * lerpSpeedFactor);
+        Rocket.transform.position = Vector3.Lerp(Rocket.transform.position, Target.transform.position, progress);
+        if (progressBar.fillAmount >= progress) timer = 0f;
+    }
+
+    private bool IsLoadingComplete(AsyncOperation op, float progress)
+    {
+        return progressBar.fillAmount >= 0.99f && progress >= 0.9f;
     }
 }
