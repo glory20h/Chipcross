@@ -26,25 +26,42 @@ public class MoveBoi : MonoBehaviour
     Vector3 boiInitPos;
 
     [HideInInspector] public bool isMoving;
-    bool isThereNextTile;
-    bool metGirl;
 
     float fastForwardFactor;
     float flickForce;
     IEnumerator addFriction;
 
-    char tileType;
-    int xdir;
-    int ydir;
-    int temp;
-
-    //Warp Tile용 변수
-    bool warp;
-    bool warpDone;
-
     int numOfSteps;
 
-    void Start()
+    private enum TileType
+    {
+        None = 0,
+        Normal = 1,
+        Left = 2,
+        Right = 3,
+        Up = 4,
+        Down = 5,
+        RotateClockwise = 6,
+        RotateCounterClockwise = 7,
+        WarpA = 8,
+        WarpB = 9
+    }
+
+    private int xdir = 1;
+    private int ydir = 0;
+    private int temp = 0;
+    private bool warpDone = false;
+    private bool isThereNextTile = false;
+    private bool metGirl = false;
+    private bool warp = false;
+    private TileType tileType = TileType.None;
+
+    private void Start()
+    {
+        InitializeVariables();
+    }
+
+    private void InitializeVariables()
     {
         isMoving = false;
         metGirl = false;
@@ -52,7 +69,7 @@ public class MoveBoi : MonoBehaviour
         warp = false;
         warpDone = false;
         addFriction = AddFriction();
-        //boyAnimator = gameObject.GetComponent<Animator>();
+        //boyAnimator = gameObject.GetComponent<Animator>()
     }
 
     void FixedUpdate()
@@ -63,7 +80,7 @@ public class MoveBoi : MonoBehaviour
         }
     }
 
-    void BoyMove()
+    private void BoyMove()
     {
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * fastForwardFactor * flickForce * Time.deltaTime);
         
@@ -76,7 +93,7 @@ public class MoveBoi : MonoBehaviour
                     //boyAnimator.enabled = false;// -> Pause Animator
                     gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Arts/Nothing");
 
-                    if (tileType == '8')
+                    if (tileType == TileType.WarpA)
                     {
                         if (GameObject.Find("Tile9(Clone)"))        //반대편 Warp 출구가 FixedTile 인지 Tile 인지 확인
                         {
@@ -87,7 +104,7 @@ public class MoveBoi : MonoBehaviour
                             gameObject.transform.position = GameObject.Find("FixedTile9(Clone)").transform.position;
                         }
                     }
-                    else if (tileType == '9')
+                    else if (tileType == TileType.WarpA)
                     {
                         if (GameObject.Find("Tile8(Clone)"))       //반대편 Warp 출구가 FixedTile 인지 Tile 인지 확인
                         {
@@ -108,7 +125,7 @@ public class MoveBoi : MonoBehaviour
                 }
 
                 //사운드 FX 재생
-                if (tileType != '1')
+                if (tileType != TileType.Normal)
                 {
                     SoundFXPlayer.Play("flick");
                     flickForce = 2.5f;
@@ -190,145 +207,72 @@ public class MoveBoi : MonoBehaviour
     {
         if (collision.tag == "Tile" || collision.tag == "Hint")
         {
-            if (warpDone)           //워프에서 반대편으로 나왔을때 바로 타일 탐지하는것 방지
-            {
-                warpDone = false;
-            }
-            else
-            {
-                isThereNextTile = true;
-                tileType = collision.gameObject.name[4];
-
-                switch (tileType)
-                {
-                    case '1':
-                        break;
-                    case '2':
-                        xdir = -1;
-                        ydir = 0;
-                        break;
-                    case '3':
-                        xdir = 1;
-                        ydir = 0;
-                        break;
-                    case '4':
-                        xdir = 0;
-                        ydir = -1;
-                        break;
-                    case '5':
-                        xdir = 0;
-                        ydir = 1;
-                        break;
-                    case '6':
-                        temp = xdir;
-                        xdir = -ydir;
-                        ydir = temp;
-                        break;
-                    case '7':
-                        temp = xdir;
-                        xdir = ydir;
-                        ydir = -temp;
-                        break;
-                    case '8':
-                        /*
-                        gameObject.transform.position = GameObject.Find("Tile9(Clone)").transform.position;
-                        targetPosition = GameObject.Find("Tile9(Clone)").transform.position;
-                        warpDone = true;
-                        */
-                        warp = true;
-                        break;
-                    case '9':
-                        /*
-                        gameObject.transform.position = GameObject.Find("Tile8(Clone)").transform.position;
-                        targetPosition = GameObject.Find("Tile8(Clone)").transform.position;
-                        warpDone = true;
-                        */
-                        warp = true;
-                        break;
-                }
-            }
-
-            /*if (warpDone && (tileType == '8' || tileType == '9'))
-            {
-                tileType = '1';
-                warpDone = false;
-            }*/
-
+            HandleTileCollision(collision, 4);
         }
-        else if(collision.tag == "FixedTile")
+        else if (collision.tag == "FixedTile")
         {
-            if (warpDone)           //워프에서 반대편으로 나왔을때 바로 타일 탐지하는것 방지
-            {
-                warpDone = false;
-            }
-            else
-            {
-                isThereNextTile = true;
-                tileType = collision.gameObject.name[9];
-
-                switch (tileType)
-                {
-                    case '1':
-                        break;
-                    case '2':
-                        xdir = -1;
-                        ydir = 0;
-                        break;
-                    case '3':
-                        xdir = 1;
-                        ydir = 0;
-                        break;
-                    case '4':
-                        xdir = 0;
-                        ydir = -1;
-                        break;
-                    case '5':
-                        xdir = 0;
-                        ydir = 1;
-                        break;
-                    case '6':
-                        temp = xdir;
-                        xdir = -ydir;
-                        ydir = temp;
-                        break;
-                    case '7':
-                        temp = xdir;
-                        xdir = ydir;
-                        ydir = -temp;
-                        break;
-                    case '8':
-                        /*
-                        gameObject.transform.position = GameObject.Find("Tile9(Clone)").transform.position;
-                        targetPosition = GameObject.Find("FixedTile9(Clone)").transform.position;
-                        warpDone = true;
-                        */
-                        warp = true;
-                        break;
-                    case '9':
-                        /*
-                        gameObject.transform.position = GameObject.Find("Tile8(Clone)").transform.position;
-                        targetPosition = GameObject.Find("FixedTile8(Clone)").transform.position;
-                        warpDone = true;
-                        */
-                        warp = true;
-                        break;
-                }
-            }
-
-            /*if (warpDone && (tileType == '8' || tileType == '9'))
-            {
-                tileType = '1';
-                warpDone = false;
-            }*/
-
+            HandleTileCollision(collision, 9);
         }
-        else if(collision.gameObject.name == "Girl")
+        else if (collision.gameObject.name == "Girl")
         {
             xdir = 0;
             ydir = 0;
             metGirl = true;
         }
     }
+
+    private void HandleTileCollision(Collider2D collision, int nameIndex)
+    {
+        if (warpDone)
+        {
+            warpDone = false;
+        }
+        else
+        {
+            isThereNextTile = true;
+            tileType = (TileType)int.Parse(collision.gameObject.name[nameIndex].ToString());
+
+            switch (tileType)
+            {
+                case TileType.Normal:
+                    break;
+                case TileType.Left:
+                    xdir = -1;
+                    ydir = 0;
+                    break;
+                case TileType.Right:
+                    xdir = 1;
+                    ydir = 0;
+                    break;
+                case TileType.Up:
+                    xdir = 0;
+                    ydir = -1;
+                    break;
+                case TileType.Down:
+                    xdir = 0;
+                    ydir = 1;
+                    break;
+                case TileType.RotateClockwise:
+                    temp = xdir;
+                    xdir = -ydir;
+                    ydir = temp;
+                    break;
+                case TileType.RotateCounterClockwise:
+                    temp = xdir;
+                    xdir = ydir;
+                    ydir = -temp;
+                    break;
+                case TileType.WarpA:
+                case TileType.WarpB:
+                    warp = true;
+                    break;
+                default:
+                    Debug.LogWarning("Invalid tileType");
+                    break;
+            }
+        }
+    }
+
 
     IEnumerator AddFriction()
     {
