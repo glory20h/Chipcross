@@ -1,23 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class BGMManager : MonoBehaviour
 {
-    public Event ev;
+    [SerializeField] private Event ev;
 
-    int[] audioPool;
-    static AudioClip[] audioLibrary;
-    public static AudioClip audioClip;
-    static AudioSource audioSrc;
+    private List<int> audioPool = new List<int>();
+    private static AudioClip[] audioLibrary;
+    private static AudioSource audioSrc;
 
-    //Going to be used for Auto-Loop
-    //int repeatAmount = 2;
-    //int currentRepeat = 0;
-
-    int level;
+    private int level;
 
     void Start()
     {
@@ -26,32 +20,9 @@ public class BGMManager : MonoBehaviour
         level = CurrentLevel();
 
         LoadAudioLibrary();
-        //LoadAudioClip(idx);
         LoadRandomAudioClip();
-        
         audioSrc.Play();
-        
     }
-
-    //AUTO-LOOPING VERSION
-    /*
-    void Update()
-    {
-        if (!audioSrc.isPlaying)
-        {
-            if (currentRepeat < repeatAmount)
-            {
-                audioSrc.Play();
-                currentRepeat++;
-                Debug.Log("currentRepeat : " + currentRepeat);
-            }
-            else
-            {
-                LoadRandomAudioClip();
-            }
-        }
-    }
-    */
 
     void Update()
     {
@@ -69,7 +40,7 @@ public class BGMManager : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if(scene.name == "MainBoard")
+        if (scene.name == "MainBoard")
         {
             ev = FindObjectOfType<Event>();
         }
@@ -83,84 +54,31 @@ public class BGMManager : MonoBehaviour
             PlayerPrefs.SetInt("CurrentLevel", level);
             LoadAudioLibrary();
         }
-        audioSrc.clip = audioLibrary[audioPool[Random.Range(1, audioPool.Length)]];
-        if(ev) ev.DisplayBGMTitle(audioSrc.clip.name);
+        audioSrc.clip = audioLibrary[audioPool[Random.Range(0, audioPool.Count)]];
+        if (ev) ev.DisplayBGMTitle(audioSrc.clip.name);
     }
 
     void LoadAudioLibrary()
     {
-        if (level == 1)
+        string path = "Audio/BGM/lib" + (level % 2 == 0 ? "1-2" : "3-4");
+        audioLibrary = Resources.LoadAll<AudioClip>(path);
+
+        audioPool.Clear();
+        for (int i = 0; i < audioLibrary.Length; i++)
         {
-            audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/lib1-2");
-            audioPool = new int[] { 0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13 };
-        }
-        else if (level == 2)
-        {
-            audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/lib1-2");
-            audioPool = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 18 };
-        }
-        else if (level == 3)
-        {
-            audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/lib3-4");
-            audioPool = new int[] { 0, 2, 4, 5, 6, 7, 8, 9, 10, 11 };
-        }
-        else
-        {
-            audioLibrary = Resources.LoadAll<AudioClip>("Audio/BGM/lib3-4");
-            audioPool = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+            audioPool.Add(i);
         }
     }
 
     int CurrentLevel()
     {
-        int level;
-
         if (ev)
         {
-            if (ev.levelDFactor < -0.55f)
-                level = 1;
-            else if (ev.levelDFactor < 0f)
-                level = 2;
-            else if (ev.levelDFactor < 0.5f)
-                level = 3;
-            else
-                level = 4;
+            if (ev.levelDFactor < -0.55f) return 1;
+            if (ev.levelDFactor < 0f) return 2;
+            if (ev.levelDFactor < 0.5f) return 3;
+            return 4;
         }
-        else
-        {
-            level = PlayerPrefs.GetInt("CurrentLevel", 1);
-        }
-
-        return level;
+        return PlayerPrefs.GetInt("CurrentLevel", 1);
     }
-
-    /*
-    void LoadAudioClip(int r)
-    {
-        audioSrc.clip = audioLibrary[r];
-    }
-    */
-
-    /*
-    public void NextBGM()
-    {
-        if (level != CurrentLevel())
-        {
-            level = CurrentLevel();
-            LoadAudioLibrary();
-            idx = 0;
-        }
-        else
-        {
-            idx++;
-
-            if (idx == audioLibrary.Length) 
-                idx = 0;
-        }
-
-        LoadAudioClip(idx);
-        titleTxt.text = audioSrc.clip.name;
-        audioSrc.Play();
-    }
-    */
 }

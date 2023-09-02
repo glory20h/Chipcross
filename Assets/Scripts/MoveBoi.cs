@@ -104,7 +104,7 @@ public class MoveBoi : MonoBehaviour
                             gameObject.transform.position = GameObject.Find("FixedTile9(Clone)").transform.position;
                         }
                     }
-                    else if (tileType == TileType.WarpA)
+                    else if (tileType == TileType.WarpB)
                     {
                         if (GameObject.Find("Tile8(Clone)"))       //반대편 Warp 출구가 FixedTile 인지 Tile 인지 확인
                         {

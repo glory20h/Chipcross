@@ -279,7 +279,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9383f3f24fb01084f94c025b7e4c9f8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  display_button: {fileID: 248333638}
+  displayButton: {fileID: 248333638}
 --- !u!4 &363957065
 Transform:
   m_ObjectHideFlags: 0
