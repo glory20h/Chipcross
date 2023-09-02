@@ -6,40 +6,45 @@ using UnityEngine.SceneManagement;
 
 public class PrologueEvent : MonoBehaviour
 {
-    public Button display_button;
+    [SerializeField] private Button displayButton;
+    private Image displayImage;
 
-    int index;
-    float a_change;
-    float cum_change;
+    private enum State { FadeIn, FadeOut }
+    private State currentState;
 
-    // Start is called before the first frame update
+    private int index;
+    private float alphaChange;
+
     void Start()
     {
         index = 1;
-        a_change = 0.02f;
+        alphaChange = 0.002f;//내리면 속도 감소
+        currentState = State.FadeIn;
+        displayImage = displayButton.GetComponent<Image>();
     }
 
     void Update()
     {
-        display_button.GetComponent<Image>().color += new Color(0, 0, 0, a_change);
+        Color newColor = displayImage.color + new Color(0, 0, 0, alphaChange);
+        displayImage.color = newColor;
 
-        if (display_button.GetComponent<Image>().color.a > 6f)
+        switch (currentState)
         {
-            display_button.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-            a_change = -a_change;
-            // Disable display button
-        }
-        else if (display_button.GetComponent<Image>().color.a < -1f)
-        {
-            display_button.GetComponent<Image>().color = new Color(1, 1, 1, 0);
-            a_change = -a_change;
-            LoadNextCut();
-        }
-
-        if (display_button.GetComponent<Image>().color.a > 1f)
-        {
-            // Enable display button
-            // display_button = 
+            case State.FadeIn:
+                if (newColor.a > 1f)
+                {
+                    currentState = State.FadeOut;
+                    alphaChange = -alphaChange;
+                }
+                break;
+            case State.FadeOut:
+                if (newColor.a < 0f)
+                {
+                    currentState = State.FadeIn;
+                    alphaChange = -alphaChange;
+                    LoadNextCut();
+                }
+                break;
         }
     }
 
@@ -52,7 +57,7 @@ public class PrologueEvent : MonoBehaviour
         }
         else
         {
-            display_button.image.sprite = Resources.Load<Sprite>("Arts/Story/" + index.ToString());
+            displayImage.sprite = Resources.Load<Sprite>($"Arts/Story/{index}");
         }
     }
 
