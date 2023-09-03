@@ -294,7 +294,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ev: {fileID: 0}
-  titleTxt: {fileID: 0}
 --- !u!82 &316819217
 AudioSource:
   m_ObjectHideFlags: 0
@@ -906,7 +905,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &993336596
 Transform:
   m_ObjectHideFlags: 0
@@ -1155,7 +1154,6 @@ MonoBehaviour:
   progressBar: {fileID: 1481045613}
   Rocket: {fileID: 1255060451}
   Target: {fileID: 1350749402}
-  BGMManager: {fileID: 316819216}
 --- !u!1 &1255060451
 GameObject:
   m_ObjectHideFlags: 0
