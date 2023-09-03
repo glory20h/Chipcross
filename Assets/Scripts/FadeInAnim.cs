@@ -5,28 +5,44 @@ using UnityEngine.UI;
 
 public class FadeInAnim : MonoBehaviour
 {
+    private const float MAX_TIME = 3f;
+    private const float INITIAL_ALPHA = 0f;
+    private const float MAX_ALPHA = 1f;
 
-    float time = 0;
-    [SerializeField]Image Text;
+    private float time = 0;
+    [SerializeField]
+    private Image Text;
+    private Color textColor;
+    // Update is called once per frame
+    private void Start()
+    {
+        Initialize();
+    }
+
+    private void Initialize()
+    {
+        textColor = new Color(1, 1, 1, INITIAL_ALPHA);
+        Text.color = textColor;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (time < 3f)
+        if (time < MAX_TIME)
         {
-            Text.color = new Color(1, 1, 1, time/3);
+            textColor.a = time / MAX_TIME;
+            Text.color = textColor;
         }
         else
         {
-            time = 0;
-            this.gameObject.SetActive(false);
+            ResetAnim();
         }
         time += Time.deltaTime;
-
     }
 
-    public void resetAnim()
+    public void ResetAnim()
     {
-        Text.color = new Color(1, 1, 1, 0);
+        Initialize();
         this.gameObject.SetActive(true);
         time = 0;
     }
