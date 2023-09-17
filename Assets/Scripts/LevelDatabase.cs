@@ -6,9 +6,18 @@ using UnityEngine;
 
 public class LevelDatabase
 {
-    [HideInInspector] public int scaleSize;
-    [HideInInspector] public int BoardWidth;
-    [HideInInspector] public int BoardHeight;
+    private const int ASCII_DIGIT_START = 48;
+    private const int ASCII_DIGIT_END = 57;
+    private const int ASCII_UPPERCASE_START = 65;
+    private const int ASCII_UPPERCASE_END = 90;
+    private const int ASCII_CONVERSION_OFFSET = 7;
+
+    [HideInInspector]
+    private int scaleSize;
+    [HideInInspector]
+    private int BoardWidth;
+    [HideInInspector]
+    private int BoardHeight;
     [HideInInspector] public int BoyPos;
     [HideInInspector] public int GirlPos;
     [HideInInspector] public int NumberOfPieces;
@@ -26,33 +35,46 @@ public class LevelDatabase
 
     [HideInInspector] public bool contains67;
     [HideInInspector] public bool contains89;
-
+    public int ScaleSize => scaleSize;
+    public int BoardWidthValue => BoardWidth;
+    public int BoardHeightValue => BoardHeight;
     public class PieceData
     {
-        public int PieceWidth;
-        public int PieceHeight;
-        public List<int> TileType; //Array -> List migration
-        public Vector3 solutionLoc; //solution for hint
+        public int PieceWidth { get; set; }
+        public int PieceHeight { get; set; }
+        public List<int> TileType { get; set; }
+        public Vector3 SolutionLoc { get; set; }
+
+        public PieceData() { }
+
+        public PieceData(int pieceWidth, int pieceHeight, List<int> tileType, Vector3 solutionLoc)
+        {
+            PieceWidth = pieceWidth;
+            PieceHeight = pieceHeight;
+            TileType = tileType;
+            SolutionLoc = solutionLoc;
+        }
     }
+
 
     class LoadedMapTile //need public?
     {
         public int LoadedTileCode;
         public bool isBoardSelected = false;
     }
-
     public int[] ConvertStringToIntArray(string data)
     {
         int[] arr = new int[data.Length];
         for (int i = 0; i < data.Length; i++)
         {
-            if (data[i] < 58 && data[i] > 47)
+            char currentChar = data[i];
+            if (IsDigit(currentChar))
             {
-                arr[i] = data[i] - '0';
+                arr[i] = currentChar - '0';
             }
-            else if (data[i] > 64 && data[i] < 91)
+            else if (IsUppercaseLetter(currentChar))
             {
-                arr[i] = data[i] - '7';
+                arr[i] = currentChar - ASCII_CONVERSION_OFFSET;
             }
             else
             {
@@ -61,7 +83,14 @@ public class LevelDatabase
         }
         return arr;
     }
-
+    private bool IsDigit(char ch)
+    {
+        return ch >= ASCII_DIGIT_START && ch <= ASCII_DIGIT_END;
+    }
+    private bool IsUppercaseLetter(char ch)
+    {
+        return ch >= ASCII_UPPERCASE_START && ch <= ASCII_UPPERCASE_END;
+    }
     public void ConvertStringToPieceInfo(string s)
     {
         int[] data = ConvertStringToIntArray(s);
@@ -647,7 +676,7 @@ public class LevelDatabase
 
                     //Add Solution Location Vector for the Hint System
                     pieceCenter = new Vector2(((float) (piece_start_X + piece_end_X)) / 2 + 0.5f, ((float) (piece_start_Y + piece_end_Y)) / 2 + 0.5f); //(float) 실험
-                    pieceDatas[pieceDatas.Count - 1].solutionLoc = (pieceCenter - boardCenter) * new Vector2(1, -1); //FlipY
+                    pieceDatas[pieceDatas.Count - 1].SolutionLoc = (pieceCenter - boardCenter) * new Vector2(1, -1);//FlipY
                     //Debug.Log("Piece " + (pieceDatas.Count - 1) + " solutionLoc : " + (pieceCenter - boardCenter));
 
                     //Update remainingTiles as next element from pieceSizeArray

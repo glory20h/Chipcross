@@ -439,16 +439,16 @@ public class Event : MonoBehaviour
         timeCount = false;
 
         //Add Scaling by scaleSize!
-        scaleFactor = 1 - 0.2f * (levelData.scaleSize - 1);
+        scaleFactor = 1 - 0.2f * (levelData.ScaleSize - 1);
         distanceBetweenTiles = 2 * scaleFactor;
         emptyTileScale = 0.25f * scaleFactor;
         pieceScale = 1 * scaleFactor;
 
         //Instantiate 'EmptyTile'
         typeIndex = 0;
-        for (int i = 0; i < levelData.BoardHeight; i++)
+        for (int i = 0; i < levelData.BoardHeightValue; i++)
         {
-            for (int j = 0; j < levelData.BoardWidth; j++)
+            for (int j = 0; j < levelData.BoardWidthValue; j++)
             {
                 //Get prefab information from array
                 if (levelData.BoardEmptyTileTypeInfo[typeIndex] == 1)
@@ -464,7 +464,7 @@ public class Event : MonoBehaviour
                     prefab = Resources.Load("Prefabs/FixedTile" + levelData.BoardEmptyTileTypeInfo[typeIndex].ToString()) as GameObject;
                 }
 
-                obj = Instantiate(prefab, new Vector3((-levelData.BoardWidth + 1) * (distanceBetweenTiles / 2f) + distanceBetweenTiles * j, (levelData.BoardHeight - 1) * (distanceBetweenTiles / 2f) - distanceBetweenTiles * i, 0), Quaternion.identity);//이부분이 생성하는 부분
+                obj = Instantiate(prefab, new Vector3((-levelData.BoardWidthValue + 1) * (distanceBetweenTiles / 2f) + distanceBetweenTiles * j, (levelData.BoardHeightValue - 1) * (distanceBetweenTiles / 2f) - distanceBetweenTiles * i, 0), Quaternion.identity);//이부분이 생성하는 부분
                 obj.transform.localScale = new Vector3(emptyTileScale, emptyTileScale, 1);
                 obj.transform.SetParent(TileBoard, false);
 
@@ -478,7 +478,7 @@ public class Event : MonoBehaviour
                 }
 
                 //Set Girl Position
-                if (i == levelData.GirlPos && j == levelData.BoardWidth - 1)
+                if (i == levelData.GirlPos && j == levelData.BoardWidthValue - 1)
                 {
                     Girl.transform.position = obj.transform.position + new Vector3(distanceBetweenTiles, 0, 0);
                     Girl.transform.localScale = new Vector3(emptyTileScale, emptyTileScale, 1);
@@ -499,7 +499,7 @@ public class Event : MonoBehaviour
                 obj = Instantiate(prefab, new Vector3(Random.value < 0.5 ? Random.Range(-(levelData.piecePlaceXMax - 0.5f), -(levelData.piecePlaceXMin + 0.5f)) : Random.Range(levelData.piecePlaceXMin + 0.5f, levelData.piecePlaceXMax - 0.5f), Random.Range(levelData.piecePlaceYMin + 0.4f, levelData.piecePlaceYMax)), Quaternion.identity);
                 obj.transform.SetParent(BlockPieces, false);
                 obj.GetComponent<VariableProvider>().pieceNum = i;
-                obj.GetComponent<VariableProvider>().solutionLoc = levelData.pieceDatas[i].solutionLoc;
+                obj.GetComponent<VariableProvider>().solutionLoc = levelData.pieceDatas[i].SolutionLoc;
 
                 typeIndex = 0;
                 pieceHeight = levelData.pieceDatas[i].PieceHeight;
@@ -1074,7 +1074,7 @@ public class Event : MonoBehaviour
             //Base Starting Rate
             float rate = 0.01f;
 
-            int boardSize = levelData.BoardWidth * levelData.BoardHeight;
+            int boardSize = levelData.BoardWidthValue * levelData.BoardHeightValue;
             int numOfPieces = levelData.NumberOfPieces;
             float hintChange;
             float touchChange;
