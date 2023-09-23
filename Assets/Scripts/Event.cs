@@ -113,6 +113,11 @@ public class Event : MonoBehaviour
     string skin_prefix;
     //For skin
 
+    //For Q-table
+    Dictionary<string, Dictionary<string, float>> QTable = new Dictionary<string, Dictionary<string, float>>();
+    float learningRate = 0.1f;
+    float discountFactor = 0.9f;
+    //For Q-table
     void Awake()
     {
         Advertisement.Initialize("3861973", false);
@@ -419,7 +424,7 @@ public class Event : MonoBehaviour
             DfactorText.text = "Level: " + levelDFactor.ToString();
 
             SetSkin(levelDFactor);
-            
+
             BgAnimate.ToggleBGAnim(levelDFactor);       //Toggle Background animation components by level
 
             hintBtn.interactable = true;
@@ -686,7 +691,7 @@ public class Event : MonoBehaviour
         // Set Tile Skins
         tile = Resources.Load("Prefabs/EmptyTile") as GameObject;
         tile.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(skin_prefix + "EmptyTile");
-        
+
         for (int i = 1; i < 10; i++)
         {
             tile = Resources.Load("Prefabs/Tile" + i.ToString()) as GameObject;
@@ -1062,6 +1067,34 @@ public class Event : MonoBehaviour
             }
         }
     }
+    public void InitializeQTable(List<string> states, List<string> actions)
+    {
+        foreach (var state in states)
+        {
+            QTable[state] = new Dictionary<string, float>();
+            foreach (var action in actions)
+            {
+                QTable[state][action] = 0f;
+            }
+        }
+    }
+
+    public float QLearningUpdate(string currentState, string action, float reward, string nextState)
+    {
+        float currentQValue = QTable[currentState][action];
+        float maxNextQValue = float.MinValue;
+
+        foreach (var nextAction in QTable[nextState].Keys)
+        {
+            if (QTable[nextState][nextAction] > maxNextQValue)
+            {
+                maxNextQValue = QTable[nextState][nextAction];
+            }
+        }
+
+        float newQValue = (1 - learningRate) * currentQValue + learningRate * (reward + discountFactor * maxNextQValue);
+        return newQValue;
+    }
 
     //플레이어의 PlayerDFactor 변경
     public void ChangeRating(int numOfSteps)
@@ -1380,5 +1413,5 @@ public class Event : MonoBehaviour
         }
     }
 
-    
+
 }
