@@ -168,7 +168,7 @@ public class Event : MonoBehaviour
         Advertisement.Banner.SetPosition(BannerPosition.BOTTOM_RIGHT);
         LoadBanner();
         */
-
+        LoadQTable();
         // TEMP
         PlayerPrefs.SetInt("SelectedSkin", 0);
         PlayerPrefs.SetInt("Coins", 5000);
@@ -1067,143 +1067,203 @@ public class Event : MonoBehaviour
             }
         }
     }
-    public void InitializeQTable(List<string> states, List<string> actions)
+
+    // QTable을 PlayerPrefs에서 로드
+    void LoadQTable()
     {
-        foreach (var state in states)
+        foreach (string boardSize in new string[] { "Small", "Big" })
         {
-            QTable[state] = new Dictionary<string, float>();
-            foreach (var action in actions)
+            foreach (string hintChange in new string[] { "Low", "High" })
             {
-                QTable[state][action] = 0f;
+                string state = boardSize + "_" + hintChange;
+                QTable[state] = new Dictionary<string, float>();
+                foreach (string action in new string[] { "Increase", "Decrease" })
+                {
+                    float value = PlayerPrefs.GetFloat(state + "_" + action, 0.01f);  // 초기값은 0.01
+                    QTable[state][action] = value;
+                }
             }
         }
     }
 
-    public float QLearningUpdate(string currentState, string action, float reward, string nextState)
+    // QTable을 PlayerPrefs에 저장
+    void SaveQTable()
     {
-        float currentQValue = QTable[currentState][action];
-        float maxNextQValue = float.MinValue;
-
-        foreach (var nextAction in QTable[nextState].Keys)
+        foreach (var state in QTable.Keys)
         {
-            if (QTable[nextState][nextAction] > maxNextQValue)
+            foreach (var action in QTable[state].Keys)
             {
-                maxNextQValue = QTable[nextState][nextAction];
+                PlayerPrefs.SetFloat(state + "_" + action, QTable[state][action]);
             }
         }
-
-        float newQValue = (1 - learningRate) * currentQValue + learningRate * (reward + discountFactor * maxNextQValue);
-        return newQValue;
     }
 
-    //플레이어의 PlayerDFactor 변경
+    // ChangeRating 함수 - Q-table 사용
     public void ChangeRating(int numOfSteps)
     {
-        // RATE ONLY WHEN IT IS FIRST TIME SOLVING
-        if (applyRating)
+        if (applyRating)  // applyRating을 대체 (실제 코드에서는 조건을 설정)
         {
             float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor", -1f);
             float rateChange = PlayerPrefs.GetFloat("RateChange", 4f);
-            //Base Starting Rate
             float rate = 0.01f;
-
-            int boardSize = levelData.BoardWidthValue * levelData.BoardHeightValue;
-            int numOfPieces = levelData.NumberOfPieces;
+            int boardSize = 16;  // levelData.BoardWidthValue * levelData.BoardHeightValue;
+            //int numOfPieces = 10;  // levelData.NumberOfPieces;
             float hintChange;
-            float touchChange;
-            float timeChange;
-
-            //HINT
-            if (boardSize < 17)  //Small Board
+            if (boardSize < 17)
             {
-                if (HintUsed < 3)
-                {
-                    hintChange = HintUsed * 0.005f;
-                }
-                else
-                {
-                    hintChange = 0.015f;
-                }
-            }
-            else  //Big Board
-            {
-                if (HintUsed < 4)
-                {
-                    hintChange = HintUsed * 0.004f;
-                }
-                else
-                {
-                    hintChange = 0.015f;
-                }
-            }
-            rate -= hintChange;
-
-            //TOUCH
-            touchChange = (TouchUsed - numOfPieces) * (-0.005f / (4 * numOfPieces));
-            rate -= touchChange;
-
-            //TIME
-            int timeUsed = (int)elapsedTime;
-            if (timeUsed <= 200)
-            {
-                timeChange = timeUsed * 0.00001f;
-            }
-            else if (timeUsed <= 300)
-            {
-                timeChange = 0.002f + (timeUsed - 200) * 0.000005f;
+                hintChange = 0.015f;  // HintUsed 등을 기반으로 계산
             }
             else
             {
-                timeChange = 0.0025f;
+                hintChange = 0.015f;  // HintUsed 등을 기반으로 계산
             }
+            rate -= hintChange;
 
-            //Adaptation by DFactor
-            rate += levelData.DFactorDiff / 4;
+            string boardSizeState = (boardSize < 17) ? "Small" : "Big";
+            string hintChangeState = (hintChange < 0.01f) ? "Low" : "High";
+            string currentState = boardSizeState + "_" + hintChangeState;
 
-            //Warp Tile 꼼수 관련
-            if (boardSize >= 16 && numOfSteps < 5)
+            string bestAction = "";
+            float maxQValue = float.MinValue;
+            foreach (var action in QTable[currentState].Keys)
             {
-                rate = 0;
+                if (QTable[currentState][action] > maxQValue)
+                {
+                    maxQValue = QTable[currentState][action];
+                    bestAction = action;
+                }
             }
 
-            //Lower Level Rate Change Bonus
-            if (playerDFactor < -0.5f && rate > 0)
-            {
-                rate = rate * 1.5f;
-            }
+            float reward = 0;  // 예를 들면, HintUsed나 timeUsed가 줄었을 때 양수로 설정
 
-            //Higher Level Rate Change Decrease
-            if (playerDFactor > 0.5f && rate > 0)
-            {
-                rate = rate * 0.75f;
-            }
+            float oldQValue = QTable[currentState][bestAction];
+            float newQValue = oldQValue + learningRate * (reward + discountFactor * maxQValue - oldQValue);
+            QTable[currentState][bestAction] = newQValue;
 
-            //초반 PlayerDFactor rate change 가중치
-            if (rateChange > 1f)
-            {
-                rateChange -= 0.1f;
-                PlayerPrefs.SetFloat("RateChange", rateChange);
-            }
+            // PlayerPrefs 업데이트
+            SaveQTable();
+
+            Debug.Log("Current State: " + currentState);
+            Debug.Log("Best Action: " + bestAction);
+            Debug.Log("Old Q-Value: " + oldQValue + ", New Q-Value: " + newQValue);
+            Debug.Log("Reward: " + reward);
+            Debug.Log("PlayerDFactor: " + playerDFactor);
+
             rate = rate * rateChange;
-
-            //DISPLAY RATE CHANGE
-            /*
-            Debug.Log("Hint Change : " + hintChange);
-            Debug.Log("Touch Change : " + touchChange);
-            Debug.Log("Time Change : " + timeChange);
-            Debug.Log("Diff Change : " + DFactorDiff / 2);
-            */
-            // Debug.Log("Rating Change : " + rate);
-
             playerDFactor += rate;
             if (playerDFactor <= -1f) playerDFactor = -1f;
             if (playerDFactor >= 1f) playerDFactor = 1f;
             PlayerPrefs.SetFloat("PlayerDFactor", playerDFactor);
         }
     }
+//플레이어의 PlayerDFactor 변경
+//public void ChangeRating(int numOfSteps)
+//{
+//    // RATE ONLY WHEN IT IS FIRST TIME SOLVING
+//    if (applyRating)
+//    {
+//        float playerDFactor = PlayerPrefs.GetFloat("PlayerDFactor", -1f);
+//        float rateChange = PlayerPrefs.GetFloat("RateChange", 4f);
+//        //Base Starting Rate
+//        float rate = 0.01f;
 
-    //오디오믹서의 배경음악 볼륨 조절
-    public void SetMusicVolume(float vol)
+//        int boardSize = levelData.BoardWidthValue * levelData.BoardHeightValue;
+//        int numOfPieces = levelData.NumberOfPieces;
+//        float hintChange;
+//        float touchChange;
+//        float timeChange;
+
+//        //HINT
+//        if (boardSize < 17)  //Small Board
+//        {
+//            if (HintUsed < 3)
+//            {
+//                hintChange = HintUsed * 0.005f;
+//            }
+//            else
+//            {
+//                hintChange = 0.015f;
+//            }
+//        }
+//        else  //Big Board
+//        {
+//            if (HintUsed < 4)
+//            {
+//                hintChange = HintUsed * 0.004f;
+//            }
+//            else
+//            {
+//                hintChange = 0.015f;
+//            }
+//        }
+//        rate -= hintChange;
+
+//        //TOUCH
+//        touchChange = (TouchUsed - numOfPieces) * (-0.005f / (4 * numOfPieces));
+//        rate -= touchChange;
+
+//        //TIME
+//        int timeUsed = (int)elapsedTime;
+//        if (timeUsed <= 200)
+//        {
+//            timeChange = timeUsed * 0.00001f;
+//        }
+//        else if (timeUsed <= 300)
+//        {
+//            timeChange = 0.002f + (timeUsed - 200) * 0.000005f;
+//        }
+//        else
+//        {
+//            timeChange = 0.0025f;
+//        }
+
+//        //Adaptation by DFactor
+//        rate += levelData.DFactorDiff / 4;
+
+//        //Warp Tile 꼼수 관련
+//        if (boardSize >= 16 && numOfSteps < 5)
+//        {
+//            rate = 0;
+//        }
+
+//        //Lower Level Rate Change Bonus
+//        if (playerDFactor < -0.5f && rate > 0)
+//        {
+//            rate = rate * 1.5f;
+//        }
+
+//        //Higher Level Rate Change Decrease
+//        if (playerDFactor > 0.5f && rate > 0)
+//        {
+//            rate = rate * 0.75f;
+//        }
+
+//        //초반 PlayerDFactor rate change 가중치
+//        if (rateChange > 1f)
+//        {
+//            rateChange -= 0.1f;
+//            PlayerPrefs.SetFloat("RateChange", rateChange);
+//        }
+//        rate = rate * rateChange;
+
+//        //DISPLAY RATE CHANGE
+//        /*
+//        Debug.Log("Hint Change : " + hintChange);
+//        Debug.Log("Touch Change : " + touchChange);
+//        Debug.Log("Time Change : " + timeChange);
+//        Debug.Log("Diff Change : " + DFactorDiff / 2);
+//        */
+//        // Debug.Log("Rating Change : " + rate);
+
+//        playerDFactor += rate;
+//        if (playerDFactor <= -1f) playerDFactor = -1f;
+//        if (playerDFactor >= 1f) playerDFactor = 1f;
+//        PlayerPrefs.SetFloat("PlayerDFactor", playerDFactor);
+//    }
+//}
+
+//오디오믹서의 배경음악 볼륨 조절
+public void SetMusicVolume(float vol)
     {
         if (vol <= -4f)
         {
