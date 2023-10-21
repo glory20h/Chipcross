@@ -1069,7 +1069,6 @@ public class Event : MonoBehaviour
     }
 
     // Compute initial Q-value based on old ChangeRating logic
-    // Compute initial Q-value based on old ChangeRating logic
     float ComputeInitialQValueBasedOnOldLogic(int boardSize, int HintUsed, int TouchUsed, float elapsedTime, string action)
     {
         float rate = 0.01f;  // 기본 시작 비율
@@ -1279,22 +1278,25 @@ public class Event : MonoBehaviour
             }
 
             // rate를 바탕으로 reward 설정
-            float reward = rate;  // 또는 다른 로직을 적용하여 rate를 reward로 변환
+            float reward = rate;
 
+            // Q-value 업데이트
             float oldQValue = QTable[currentState][bestAction];
             float newQValue = oldQValue + learningRate * (reward + discountFactor * maxQValue - oldQValue);
             QTable[currentState][bestAction] = newQValue;
 
             // PlayerPrefs 업데이트
             SaveQTable();
+
+            // newQValue를 PlayerDFactor에 반영
+            playerDFactor += newQValue;
             Debug.Log("Current State: " + currentState);
             Debug.Log("Best Action: " + bestAction);
             Debug.Log("Old Q-Value: " + oldQValue + ", New Q-Value: " + newQValue);
             Debug.Log("Reward: " + reward);
             Debug.Log("PlayerDFactor: " + playerDFactor);
             // 나머지 코드 (예: Debug.Log, PlayerPrefs 업데이트 등)
-            rate = rate * rateChange;
-            playerDFactor += rate;
+            //playerDFactor += rate;
             if (playerDFactor <= -1f) playerDFactor = -1f;
             if (playerDFactor >= 1f) playerDFactor = 1f;
             PlayerPrefs.SetFloat("PlayerDFactor", playerDFactor);
